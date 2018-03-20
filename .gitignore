@@ -102,3 +102,6 @@ ENV/
 
 # vscode work file
 .vscode/
+
+# setting.py
+Lutece/settings.py
