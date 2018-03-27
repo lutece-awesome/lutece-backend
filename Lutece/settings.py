@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'Lutece.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Lutece Database',
+        'NAME': 'Lutece',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',
