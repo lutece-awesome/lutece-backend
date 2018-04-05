@@ -22,3 +22,23 @@ class Problem( models.Model ):
 
     def __str__(self):
         return self.title
+
+    def toDict(self):
+        return {
+            'ProblemId' : self.problemId,
+            'title' : self.title,
+            'content' : self.content,
+            'standardInput' : self.standardInput,
+            'standardOutput' : self.standardOutput,
+            'constraints' : self.constraints,
+            'sampleInput' : self.sampleInput,
+            'sampleOutput' : self.sampleOutput,
+            'sampleExplanation' : self.sampleExplanation,
+            'resource' : self.resource,
+            'timeLimit' : self.timeLimit,
+            'memoryLimit' : self.memoryLimit,
+            'solvedNumber' : self.solvedNumber,
+            'tryNumber' : self.tryNumber,
+            'specialJudge' : self.specialJudge,
+            'visible' : self.visible
+        }

@@ -1,0 +1,14 @@
+{% if prob %}
+    <h1>{{prob.title}}</h1>
+    <h3>Time Limit: {{prob.timeLimit}} ms</h3>
+    <h3>Memory Limit: {{prob.memoryLimit}} MB</h3>
+    {{prob.content}}
+    <h2>Standard Input</h2>
+    {{prob.standardInput}}
+    <h2>Standard Output</h2>
+    {{prob.standardOutput}}
+    <h2>Sample Input</h2>
+    {{prob.sampleInput}}
+    <h2>Sample Output</h2>
+    {{prob.sampleOutput}}
+{% endif %}
