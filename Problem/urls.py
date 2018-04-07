@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path( '<int:problemId>/' , views.problemView , name = 'problemViewPage' )
+    path( 'detail/<int:problemId>/' , views.problemView , name = 'problemViewPage' ),
+    path( 'list/<int:page>/' , views.problemList , name = 'getProblemViewList' )
 ]

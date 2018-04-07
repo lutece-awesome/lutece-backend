@@ -1,0 +1,19 @@
+{% include 'title.html' %}
+{% if problist %}
+    {% for it in problist %}
+    <h2>
+        <a href = "/problem/detail/{{it.problemId}}">
+        {{ it.title }} 
+        </a>
+    </h2>
+    <h3>
+        id: {{ it.problemId }} 
+    </h3>
+    <h4>
+        try: {{ it.tryNumber }} 
+    </h4>
+    <h4>
+        solved: {{ it.solvedNumber}}
+    </h4>
+    {% endfor %}
+{% endif %}

@@ -25,7 +25,7 @@ class Problem( models.Model ):
 
     def toDict(self):
         return {
-            'ProblemId' : self.problemId,
+            'problemId' : self.problemId,
             'title' : self.title,
             'content' : self.content,
             'standardInput' : self.standardInput,
