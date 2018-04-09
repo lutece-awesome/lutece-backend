@@ -13,7 +13,7 @@ def problemView( request , problemId ):
 
 
 def problemList( request , page ):
-    p = Problem.objects.raw( 'SELECT problemId , title , tryNumber, solvedNumber FROM problem_problem WHERE problemId BETWEEN {rangel} and {ranger} ORDER BY problemId ASC'.format(
+    p = problem.objects.raw( 'SELECT problemId , title , tryNumber, solvedNumber FROM problem_problem WHERE problemId BETWEEN {rangel} and {ranger} ORDER BY problemId ASC'.format(
         rangel = ( page - 1 ) * config.perPagecount + 1,
         ranger = page * config.perPagecount
     ))
