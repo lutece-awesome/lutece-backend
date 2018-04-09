@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Problem',
-    'Web'
+    'problem',
 ]
 
 MIDDLEWARE = [
@@ -79,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Lutece',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': env.str('LUTECE_DBUSR'),
+        'PASSWORD': env.str('LUTECE_DBPWD'),
         'HOST': '127.0.0.1',
         'PORT' : '3306'
     }
@@ -126,7 +128,7 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend")
+    os.path.join(BASE_DIR, "../frontend")
 ]
 
 STATICFILES_FINDERS = (

@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Problem( models.Model ):
+class problem( models.Model ):
     problemId = models.AutoField( primary_key = True , db_index = True )
     title = models.CharField( max_length = 256 , db_index = True , default = 'Default Title' )
     content = models.CharField( max_length = 58000 , blank = True )
