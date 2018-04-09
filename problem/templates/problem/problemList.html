@@ -1,21 +1,23 @@
 {% extends "base.html" %} 
 {% block content %}
-{% if problist %}
-    {% for it in problist %}
-    <h2>
-        <a href = "/problem/detail/{{it.problemId}}">
-        {{ it.title }} 
-        </a>
-    </h2>
-    <h3>
-        id: {{ it.problemId }} 
-    </h3>
-    <h4>
-        try: {{ it.tryNumber }} 
-    </h4>
-    <h4>
-        solved: {{ it.solvedNumber}}
-    </h4>
+
+<table class = "ui celled table" margin:10px 5px 15px 20px >
+    <thread>
+        <tr>
+            <th>Title</th>
+            <th>Try</th>
+            <th>Solved</th>
+        </tr>
+    </thread>
+    <tbody>
+    {% if problist %}
+        {% for it in problist %}
+        <tr>
+            <td>{{it.title}}</td>
+            <td>{{it.tryNumber}}</td>
+            <td>{{it.solvedNumber}}</td>
+        </tr>
     {% endfor %}
+    </tbody>
 {% endif %}
 {% endblock %}
