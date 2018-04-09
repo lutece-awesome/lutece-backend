@@ -1,4 +1,6 @@
-{% include 'title.html' %}
+
+{% block content %}
+{% extends "base.html" %} 
 {% if prob %}
     <h1>{{prob.title}}</h1>
     <h3>Time Limit: {{prob.timeLimit}} ms</h3>
@@ -13,3 +15,4 @@
     <h2>Sample Output</h2>
     {{prob.sampleOutput}}
 {% endif %}
+{% endblock %}

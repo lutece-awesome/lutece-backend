@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block tile %}
+  <title>Lutece</title>
+  {% endblock %}
+
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/semantic.min.css' %}">
+  <script src="{% static 'jquery/dist/jquery.min.js'%}"></script>
+  <script type="text/javascript" src="{% static 'semantic/dist/semantic.min.js'%}"></script>
+</head>
+
+  {% block top_menu%}
+  <div class="ui large top fixed hidden menu">
+    <div class="ui container">
+    <a class="item" href = {% url 'home' %} >Home</a>
+    <a class="item" href = {% url 'problem_listView' 1 %} >Problem</a>
+    <a class="item" >Contest</a>
+    <div class="right menu">
+        <div class="item">
+        <a class="ui secondary button" href = {% url 'user_signin' %} >Sign in</a>
+        </div>
+    </div>
+    </div>
+   </div>
+  {% endblock %}
+
+  {% block content %}
+  {% endblock %}
+</html>
