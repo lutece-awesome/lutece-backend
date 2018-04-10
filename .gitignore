@@ -104,4 +104,4 @@ ENV/
 .vscode/
 
 # setting.py
-Lutece/settings.py
+Lutece/xiper_local.py
