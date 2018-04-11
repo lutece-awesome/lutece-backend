@@ -105,3 +105,6 @@ ENV/
 
 # setting.py
 Lutece/xiper_local.py
+
+# runserver_xiper
+runserver_xiper.sh
