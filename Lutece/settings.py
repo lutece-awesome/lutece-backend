@@ -58,7 +58,7 @@ ROOT_URLCONF = 'Lutece.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['frontend/common_templates'],
+        'DIRS': ['static/common_templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,7 +118,7 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join( BASE_DIR , 'frontend' )
+    os.path.join( BASE_DIR , 'static' )
 ]
 
 STATICFILES_FINDERS = (
