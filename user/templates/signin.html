@@ -1,29 +1,69 @@
 {% extends 'base.html' %}}
 {% block content %}
 
-<div class="ui modal" >
-  <i class="close icon"></i>
-  <div class="header">
-    LOG IN
-  </div>
-  <div class="ui left icon input">
-      <input placeholder="Username" type="text">
-      <i class="user icon"></i>
-  </div>
+<style type="text/css">
+.ui.signin.modal {
+  width: 450px;
+  height: 320px;
+}
+
+.ui.active.custom.modal {
+  margin-left: 0px;
+}
+
+.header.show{
+  text-align: center;
+  font-size: 1.47em;
+  font-weight: normal;
+}
+
+</style>
+
+
+<div class="ui signin modal">
   <div class="ui hidden divider"></div>
-  <div class="ui left icon input">
-      <input placeholder="Password" type="text">
-      <i class="lock icon"></i>
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+      <div class="ui vertically divided grid">
+       <div class="one column row">
+         <div class="column header show"> <b>LOG IN</b> </div>
+          <!--<div class="ui vertical divider"></div>
+         <div class="column header show"> SIGN UP </div>-->
+       </div>
+     </div>
+     
+      <form class="ui large form">
+        <div class="ui  segment">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="username" name="username" placeholder="Username">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password" placeholder="Password">
+            </div>
+          </div>
+          <div class="ui fluid large primary submit button">Login</div>
+        </div>
+      </form>
+
+      <div class="ui message">
+         No account?
+        <a href="#"> Sign Up</a>
+      </div>
+    </div>
   </div>
-  <div class="ui hidden divider"></div>
-  <div class="ui centered positive icon button">Sign In</div>
 </div>
 
 <script>
-    $('.ui.modal')
-    .modal('setting', 'closable', false)
-    .modal('show')
-  ;
+  $(document).ready(function(){
+      $('.modal')
+      .modal('show')
+      ;
+  });
 </script>
 
 {% endblock %}
