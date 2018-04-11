@@ -106,3 +106,6 @@ Lutece/xiper_local.py
 
 # runserver_xiper
 runserver_xiper.sh
+
+# SQLite3 Default DB
+Lutece.db
