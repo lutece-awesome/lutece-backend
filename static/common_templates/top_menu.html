@@ -1,3 +1,7 @@
+{% if user.is_authenticated %}
+  <script>alert("has authed")</script>
+{% endif %}
+
 {% block Sign_in %}
 <style type="text/css">
   .ui.signin.modal {
