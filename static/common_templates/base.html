@@ -14,21 +14,8 @@
   <script type="text/javascript" src="{% static 'semantic/dist/semantic.min.js'%}"></script>
 </head>
 
-  {% block top_menu%}
-  <div class="ui borderless huge menu">
-    <a class="header item">Lutece</a>
-    <div class="ui container">
-    <a class="item" href = {% url 'home' %} >Home</a>
-    <a class="item" href = {% url 'problem_listView' 1 %} >Problem</a>
-    <a class="item" >Contest</a>
-    <div class="right menu">
-        <div class="item">
-        <a class="ui primary button" href = {% url 'user_signin' %} ><b><i class="sign in icon"></i></b>Sign in</a>
-        </div>
-    </div>
-    </div>
-  </div>
-{% endblock %}
+ {% include 'top_menu.html' %}
+
 {% block content %}
 {% endblock %}
 </html>
