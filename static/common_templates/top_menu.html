@@ -23,21 +23,19 @@
         <div class="ui vertically divided grid">
          <div class="one column row">
            <div class="column header show"> <b>LOG IN</b> </div>
-            <!--<div class="ui vertical divider"></div>
-           <div class="column header show"> SIGN UP </div>-->
          </div>
        </div>
        
         <form class="ui large login form">
           <div class="ui segment">
             <div class="field">
-              <div class="ui left icon input">
+              <div class="ui left icon username input">
                 <i class="user icon"></i>
-                <input id = "usrinput" type="username" name="username" placeholder="Username">
+                <input id = "usrinput" type="username" name="username" placeholder="Username" >
               </div>
             </div>
             <div class="field">
-              <div class="ui left icon input">
+              <div class="ui left icon password input">
                 <i class="lock icon"></i>
                 <input id = "pwdinput" type="password" name="password" placeholder="Password">
               </div>
@@ -50,29 +48,48 @@
            No account?
           <a href="#"> Sign Up</a>
         </div>
+
+        <div id = "error_msg_box" class="ui negative message transition hidden">
+            <div class="header">
+              Your username or password is incorrect.
+            </div>
+        </div>
+
       </div>
     </div>
   </div>
   
   <script>
-    $('.ui.login.form')
-      .form({
-        fields: {
-          username : 'empty',
-          password : ['minLength[6]', 'empty'],
-        }
-      })
-    ;
     $('.login.button').click(function(){
       var username = $("#usrinput")["0"].value;
       var password = $("#pwdinput")["0"].value;
+      if($('.login.button').hasClass('red') )
+        $('.login.button').removeClass( 'red' );
+      if( !$('.login.button').hasClass('primary') )
+        $('.login.button').addClass( 'primary' );
+      if( $('#error_msg_box').hasClass('hidden') == false )
+        $('#error_msg_box').addClass( 'hidden' );
       $('.login.button').addClass( 'loading' );
       $('.login.button').addClass( 'disabled' );
+      $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+      });
       $.post(
         '{% url "user_login" %}',
         {
           'username' : username,
           'password' : password
+        },
+        function(data,status){
+          $('.login.button').removeClass( 'loading' );
+          $('.login.button').removeClass( 'disabled' );
+          if( status == 'success' && data.login_status == true ){
+              location.reload();
+              return;
+          }
+          $('#error_msg_box').removeClass('hidden');
+          $('.login.button').removeClass('primary');
+          $('.login.button').addClass('red');
         }
       );
     });
