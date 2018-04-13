@@ -1,23 +1,51 @@
 {% extends "base.html" %} 
 {% block content %}
 
-<table class = "ui celled table" >
+<style type="text/css">
+    .ui.padding.table{
+        padding: 2.5cm 5cm 22.5cm;
+    }
+
+    .problem.list.menu{
+        text-align: center;
+        font-size: 1.37em;
+        font-weight: normal;
+    }
+
+    .problem.list.thread.title{
+        text-align: center;
+    }
+
+    .problem.list.thread.another{
+        text-align: right;
+    }
+</style>
+
+<table class = "ui padding table" >
     <thread>
-        <tr>
-            <th>Title</th>
-            <th>Try</th>
-            <th>Solved</th>
-        </tr>
+        <div class = 'problem list menu'>
+            <tr>
+                <th class = 'problem list thread title'>Title</th>
+                <th class = 'problem list thread another'>Try / Solved</th>
+                <th class = 'problem list thread another'>AC Ratio</th>
+            </tr>
+        </div>
     </thread>
+
     <tbody>
     {% if problist %}
         {% for it in problist %}
         <tr>
-            <td>{{it.title}}</td>
-            <td>{{it.tryNumber}}</td>
-            <td>{{it.solvedNumber}}</td>
+            <td class = 'problem list thread title' ><a href = {% url 'problem-detail-view' it.problem_id %} >{{it.title}}</td>
+            <td class = 'problem list thread another'>{{it.try_number}} / {{it.solved_number}} </td>
+            {% if it.try_number == 0 %}
+                <td class = 'problem list thread another'> 0.00%</td>
+            {% else %}
+                <tdclass = 'problem list thread another'> {% widthratio it.solved_number it.try_number 100 %} %</td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
+
 {% endif %}
 {% endblock %}

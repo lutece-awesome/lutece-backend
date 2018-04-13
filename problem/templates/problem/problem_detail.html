@@ -1,7 +1,21 @@
 
-{% block content %}
 {% extends "base.html" %} 
+{% block content %}
+
+<style type="text/css">
+    h1,h2,h3,h4 {
+        text-align: center;
+    }
+
+</style>
+
+{% if prob %}
+<div class="ui text container">
+        <h1>{{prob.title}}</h1>
+</div>
+{% endif %}
 <div>
+    <!--
 {% if prob %}
     <h1>{{prob.title}}</h1>
     <h3>Time Limit: {{prob.timeLimit}} ms</h3>
@@ -15,6 +29,6 @@
     {{prob.sampleInput}}
     <h2>Sample Output</h2>
     {{prob.sampleOutput}}
-{% endif %}
+{% endif %}-->
 </div>
 {% endblock %}

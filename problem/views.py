@@ -8,8 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def problem_detail_view(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
-    context = {'prob': prob.toDict()}
-    return render(request, 'problem/problem_detail.html', context)
+    return render(request, 'problem/problem_detail.html', {'prob' : prob})
 
 
 def problem_list_view(request, page):

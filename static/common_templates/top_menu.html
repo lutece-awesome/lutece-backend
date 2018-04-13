@@ -1,6 +1,6 @@
 {% block top_menu%}
 
-<div class="ui borderless huge menu">
+<div id = "main_menu" class="ui fixed top borderless huge menu">
   <a class="header item">Lutece</a>
   <div class="ui container">
   <a class="item" href = {% url 'home' %} >Home</a>
@@ -23,6 +23,11 @@
 {% endif %}
 
 <script>
+  $('.ui.sticky')
+    .sticky({
+      context: '#main_menu'
+    })
+  ;
   // 登陆按钮
 '{% if user.is_authenticated == False %}'
     $(document).ready(function(){
