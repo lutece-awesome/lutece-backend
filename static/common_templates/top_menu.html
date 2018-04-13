@@ -8,7 +8,7 @@
   <a class="header item">Lutece</a>
   <div class="ui container">
   <a class="item" href = {% url 'home' %} >Home</a>
-  <a class="item" href = {% url 'problem_listView' 1 %} >Problem</a>
+  <a class="item" href = {% url 'problem-list-view' 1 %} >Problem</a>
   <a class="item" >Contest</a>
   <div class="right menu">
       <div class="item">
@@ -39,7 +39,7 @@
       $(".signout.button").click(function () {
         $(".signout.button").addClass( 'loading' );
         $.get(
-            '{% url "user_logout" %}',
+            '{% url "user-logout" %}',
             '',
             function(data,status){
               $(".signout.button").removeClass('loading');              

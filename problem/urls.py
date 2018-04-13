@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import problem_view, problem_list
+from .views import problem_detail_view, problem_list_view
 
 urlpatterns = [
-    path('detail/<int:problemId>/', problem_view, name='problem_detailView'),
-    path('list/<int:page>/', problem_list, name='problem_listView')
+    path('detail/<int:problemId>/', problem_detail_view, name='problem-detail-view'),
+    path('list/<int:page>/', problem_list_view, name='problem-list-view')
 ]
