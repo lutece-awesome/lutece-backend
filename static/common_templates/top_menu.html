@@ -37,10 +37,12 @@
   '{% if user.is_authenticated == True %}'
   $(document).ready(function () {
       $(".signout.button").click(function () {
+        $(".signout.button").addClass( 'loading' );
         $.get(
             '{% url "user_logout" %}',
             '',
             function(data,status){
+              $(".signout.button").removeClass('loading');              
               location.reload();
             }
         );
