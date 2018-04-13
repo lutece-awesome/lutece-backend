@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import problem
-# Register your models here.
+from .models import Problem
 
-admin.site.register( problem )
+admin.site.register(Problem)

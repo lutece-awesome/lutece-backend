@@ -109,3 +109,5 @@ runserver_xiper.sh
 
 # SQLite3 Default DB
 Lutece.db
+db.sqlite3
+Lutece/local_hezhu.py

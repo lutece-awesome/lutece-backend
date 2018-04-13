@@ -72,7 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Lutece.wsgi.application'
-AUTH_USER_MODEL = 'user.user'
+AUTH_USER_MODEL = 'user.User'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
