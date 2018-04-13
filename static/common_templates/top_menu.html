@@ -1,9 +1,5 @@
 {% block top_menu%}
 
-{% if user.is_authenticated == False %} 
-  {% include 'login.html' %} 
-{% endif %}
-
 <div class="ui borderless huge menu">
   <a class="header item">Lutece</a>
   <div class="ui container">
@@ -21,6 +17,10 @@
   </div>
   </div>
 </div>
+
+{% if user.is_authenticated == False %} 
+  {% include 'login.html' %} 
+{% endif %}
 
 <script>
   // 登陆按钮
