@@ -104,10 +104,7 @@
                 </div>
             </form>
 
-            <div id="error_msg_box" class="ui negative message transition hidden">
-                <div class="header">
-                    Your username or password is incorrect.
-                </div>
+            <div id="error_msg_box_signup" class="ui negative message transition hidden">
             </div>
 
         </div>
@@ -116,9 +113,32 @@
 
 
 <script>
+
+    /*
+    <div class="ui error message">
+        <i class="close icon"></i>
+        <div class="header">
+            您提交的一些错误
+        </div>
+        <ul class="list">
+            <li>你的密码需要包含至少一个大写和小写字母</li>
+            <li>你需要选择你所在的国家</li>
+        </ul>
+    </div>
+    */
+
+    function get_error_msgText( errlist ){
+        errlist = eval( errlist );
+        var ret = '';
+        for(var i = 0 ; i < errlist.length ; ++ i)
+            ret = ret + '<li>' + errlist[i] + '</li>';
+        return '<ul class=\"list\">' + ret + '</ul>';
+    }
+
     $('.callsignup.button').click(function(){
         $('.ui.signup.modal').modal('show');
     });
+    // Login
     $('.login.button').click(function () {
         var username = $("#usrinput_login")["0"].value;
         var password = $("#pwdinput_login")["0"].value;
@@ -134,7 +154,7 @@
             data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
         });
         $.post(
-            '{% url "user_login" %}',
+            '{% url "user-login" %}',
             {
                 'username': username,
                 'password': password
@@ -149,6 +169,47 @@
                 $('#error_msg_box_login').removeClass('hidden');
                 $('.login.button').removeClass('primary');
                 $('.login.button').addClass('red');
+            }
+        );
+    });
+    // Sign Up
+    $('.signup.button').click(function () {
+        var username = $("#usrinput_signup")["0"].value;
+        var password = $("#pwdinput_signup")["0"].value;
+        var email = $("#emailinput_signup")["0"].value;
+        var displayname = $("#displaynameinput_signup")["0"].value;
+        if ($('.signup.button').hasClass('red'))
+            $('.signup.button').removeClass('red');
+        if (!$('.signup.button').hasClass('primary'))
+            $('.signup.button').addClass('primary');
+        if ($('#error_msg_box_signup').hasClass('hidden') == false)
+            $('#error_msg_box_signup').addClass('hidden');
+        $('.signup.button').addClass('loading');
+        $('.signup.button').addClass('disabled');
+        $.ajaxSetup({
+            data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+        $.post(
+            '{% url "user-signup" %}',
+            {
+                'username': username,
+                'password': password,
+                'email' : email,
+                'displayname' : displayname
+            },
+            function (data, status) {
+                $('.signup.button').removeClass('loading');
+                $('.signup.button').removeClass('disabled');
+                if (status == 'success' && data.signup_status == true) {
+                    location.reload();
+                    return;
+                }
+                var report = get_error_msgText( data.error_msg );
+                $('#error_msg_box_signup').empty();
+                $('#error_msg_box_signup').append(report);
+                $('#error_msg_box_signup').removeClass('hidden');
+                $('.signup.button').removeClass('primary');
+                $('.signup.button').addClass('red');
             }
         );
     });

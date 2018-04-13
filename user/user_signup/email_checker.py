@@ -12,7 +12,7 @@ def get_email_report( email ):
         if validate_email( email ) == False:
             errormsg = 'Invailed email address.'
     except:
-        errormsg = 'Unknown error'
+        errormsg = 'Unknown error.'
     finally:
         return errormsg
 
