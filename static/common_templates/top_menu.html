@@ -1,9 +1,9 @@
+{% block top_menu%}
 
-{% if user.is_authenticated == False %}
-  {% include 'login.html' %}
+{% if user.is_authenticated == False %} 
+  {% include 'login.html' %} 
 {% endif %}
 
-{% block top_menu%}
 <div class="ui borderless huge menu">
   <a class="header item">Lutece</a>
   <div class="ui container">
