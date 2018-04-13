@@ -134,4 +134,5 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
 )
 
+# Set the number of problem one page should be shown
 PER_PAGE_COUNT = 20

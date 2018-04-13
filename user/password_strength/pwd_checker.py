@@ -18,7 +18,7 @@ def get_password_strength( pwd ):
             errormsg.append( 'Password should contain at least one digit.' )
     except:
         errormsg.clear()
-        errormsg.append( 'Unknow error' )
+        errormsg.append( 'Unknown error' )
     finally:
         return errormsg
 
