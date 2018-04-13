@@ -1,17 +1,41 @@
 
 {% extends "base.html" %} 
+
+{% if prob %}
+    {% block tile %}
+    <title>Lutece | {{prob.title}}</title>
+    {% endblock %}
+{% endif %}
+
 {% block content %}
 
 <style type="text/css">
-    h1,h2,h3,h4 {
+    .ui.main.text.container{
+        padding: 2.5cm 5cm 22.5cm 0.73cm;
+    }
+
+    .problem.detail.title {
         text-align: center;
+    }
+
+    .problem.detail.limit {
+        text-align: center;
+    }
+
+    .ui.submit.solution.button {
+        margin-top: 5px;
+        position:relative;left:155px;
     }
 
 </style>
 
 {% if prob %}
-<div class="ui text container">
-        <h1>{{prob.title}}</h1>
+<div class="ui main text container">
+        <h1 class = 'problem detail title'>{{prob.title}}</h1>
+        <div class = 'problem detail limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
+        <div class = 'problem detail limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div> 
+        <div class=  'ui basic primary submit solution button'><b>Submit</b></div>       
+        <div class=  'ui basic secondary submit solution button'><b>Status</b></div> 
 </div>
 {% endif %}
 <div>

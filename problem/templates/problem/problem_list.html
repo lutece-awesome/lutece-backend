@@ -3,7 +3,7 @@
 
 <style type="text/css">
     .ui.padding.table{
-        padding: 2.5cm 5cm 22.5cm;
+        padding: 2.5cm 5cm 22.5cm 0.73cm;
     }
 
     .problem.list.menu{
@@ -17,26 +17,32 @@
     }
 
     .problem.list.thread.another{
-        text-align: right;
+        text-align: center;
     }
 </style>
 
-<table class = "ui padding table" >
+<table class = "ui padded padding table" >
     <thread>
         <div class = 'problem list menu'>
             <tr>
                 <th class = 'problem list thread title'>Title</th>
+                {% if user.is_authenticated == True %}
+                    <th class = 'problem list thread title'>Status</th>
+                {% endif %}
                 <th class = 'problem list thread another'>Try / Solved</th>
                 <th class = 'problem list thread another'>AC Ratio</th>
             </tr>
         </div>
     </thread>
 
+{% if problist %}
     <tbody>
-    {% if problist %}
         {% for it in problist %}
         <tr>
             <td class = 'problem list thread title' ><a href = {% url 'problem-detail-view' it.problem_id %} >{{it.title}}</td>
+            {% if user.is_authenticated == True %}
+                <td class = 'problem list thread title' ><i class="icon green checkmark"></i></td>
+            {% endif %}
             <td class = 'problem list thread another'>{{it.try_number}} / {{it.solved_number}} </td>
             {% if it.try_number == 0 %}
                 <td class = 'problem list thread another'> 0.00%</td>
@@ -48,4 +54,8 @@
     </tbody>
 
 {% endif %}
+
+
+
+
 {% endblock %}
