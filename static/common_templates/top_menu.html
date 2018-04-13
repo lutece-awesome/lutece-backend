@@ -1,104 +1,7 @@
-{% if user.is_authenticated %}
-  <script>alert("has authed")</script>
+
+{% if user.is_authenticated == False %}
+  {% include 'login.html' %}
 {% endif %}
-
-{% block Sign_in %}
-<style type="text/css">
-  .ui.signin.modal {
-    width: 450px;
-    height: 320px;
-  }
-  
-  .ui.active.custom.modal {
-    margin-left: 0px;
-  }
-  
-  .header.show{
-    text-align: center;
-    font-size: 1.37em;
-    font-weight: normal;
-  }
-</style>
-  
-  <div class="ui signin modal">
-    <div class="ui hidden divider"></div>
-    <div class="ui middle aligned center aligned grid">
-      <div class="column">
-        <div class="ui vertically divided grid">
-         <div class="one column row">
-           <div class="column header show"> <b>LOG IN</b> </div>
-         </div>
-       </div>
-       
-        <form class="ui large login form">
-          <div class="ui segment">
-            <div class="field">
-              <div class="ui left icon username input">
-                <i class="user icon"></i>
-                <input id = "usrinput" type="username" name="username" placeholder="Username" >
-              </div>
-            </div>
-            <div class="field">
-              <div class="ui left icon password input">
-                <i class="lock icon"></i>
-                <input id = "pwdinput" type="password" name="password" placeholder="Password">
-              </div>
-            </div>
-            <div class="ui fluid large primary login button">Login</div>
-          </div>
-        </form>
-  
-        <div class="ui message">
-           No account?
-          <a href="#"> Sign Up</a>
-        </div>
-
-        <div id = "error_msg_box" class="ui negative message transition hidden">
-            <div class="header">
-              Your username or password is incorrect.
-            </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  
-  <script>
-    $('.login.button').click(function(){
-      var username = $("#usrinput")["0"].value;
-      var password = $("#pwdinput")["0"].value;
-      if($('.login.button').hasClass('red') )
-        $('.login.button').removeClass( 'red' );
-      if( !$('.login.button').hasClass('primary') )
-        $('.login.button').addClass( 'primary' );
-      if( $('#error_msg_box').hasClass('hidden') == false )
-        $('#error_msg_box').addClass( 'hidden' );
-      $('.login.button').addClass( 'loading' );
-      $('.login.button').addClass( 'disabled' );
-      $.ajaxSetup({
-        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
-      });
-      $.post(
-        '{% url "user_login" %}',
-        {
-          'username' : username,
-          'password' : password
-        },
-        function(data,status){
-          $('.login.button').removeClass( 'loading' );
-          $('.login.button').removeClass( 'disabled' );
-          if( status == 'success' && data.login_status == true ){
-              location.reload();
-              return;
-          }
-          $('#error_msg_box').removeClass('hidden');
-          $('.login.button').removeClass('primary');
-          $('.login.button').addClass('red');
-        }
-      );
-    });
-  </script>
-{% endblock %}
 
 {% block top_menu%}
 <div class="ui borderless huge menu">
@@ -109,13 +12,19 @@
   <a class="item" >Contest</a>
   <div class="right menu">
       <div class="item">
-      <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
+        {% if user.is_authenticated == False %}
+           <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
+        {% else %}
+           <div class="ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>           
+        {% endif %}
       </div>
   </div>
   </div>
 </div>
 
 <script>
+  // 登陆按钮
+'{% if user.is_authenticated == False %}'
     $(document).ready(function(){
       $(".signin.button").click(function(){
         $('.signin.modal')
@@ -123,5 +32,23 @@
         ;
       });
     });
+'{% endif %}'
+ // 登出按钮
+  '{% if user.is_authenticated == True %}'
+  $(document).ready(function () {
+      $(".signout.button").click(function () {
+        $.get(
+            '{% url "user_logout" %}',
+            '',
+            function(data,status){
+              location.reload();
+            }
+        );
+      });
+    });
+  '{% endif %}'
+
 </script>
+
+
 {% endblock %}

@@ -5,6 +5,6 @@ from . import views
 
 
 urlpatterns = [
-    path( 'signin/' , TemplateView.as_view( template_name = 'signin.html'  ) , name = 'user_signin' ),
-    path( 'login/' , views.user_login , name = 'user_login' )
+    path( 'login/' , views.user_login , name = 'user_login' ),
+    path( 'logout/' , views.user_logout , name = 'user_logout' )
 ]
