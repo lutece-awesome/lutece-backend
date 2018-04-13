@@ -37,17 +37,17 @@ def user_logout(request):
     return HttpResponse(dumps(status), content_type='application/json')
 
 
-def ueser_signup(request):
+def user_signup(request):
     status = {
         'signup_status': False,
-        'error_msg' : []
+        'error_msg': []
     }
     try:
         if request.method == 'POST':
-            username = request.POST.get( 'username' )
-            password = request.POST.get( 'password' )
-            email = request.POST.get( 'email' )
-            displayname = request.POST.get( 'displayname' )
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            email = request.POST.get('email')
+            displayname = request.POST.get('displayname')
             if username == None or password == None or email == None or displayname == None:
                 raise ValueError('some signup info do not exist')
             # Check username
@@ -65,7 +65,7 @@ def ueser_signup(request):
                 status['error_msg'].append( pwd_check_report )
             # Check email
             login_user = User.objects.get(
-                email = email)
+                email=email)
             if login_user != None:
                 status['error_msg'].append('email already exists.')
             else:
