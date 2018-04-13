@@ -33,23 +33,76 @@
                     <div class="field">
                         <div class="ui left icon username input">
                             <i class="user icon"></i>
-                            <input id="usrinput" type="username" name="username" placeholder="Username">
+                            <input id="usrinput_login" type="username" name="username" placeholder="Username">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon password input">
                             <i class="lock icon"></i>
-                            <input id="pwdinput" type="password" name="password" placeholder="Password">
+                            <input id="pwdinput_login" type="password" name="password" placeholder="Password">
                         </div>
                     </div>
                     <div class="ui fluid large primary login button">Login</div>
                 </div>
             </form>
 
+            <div id="error_msg_box_login" class="ui negative message transition hidden">
+
+                <div class="header">
+                    Your username or password is incorrect.
+                </div>
+            </div>
+
             <div class="ui message">
                 No account?
-                <a href="#"> Sign Up</a>
+                <div class="ui basic medium callsignup button"><b><i class="add user icon"></i></b> Sign Up</div>
             </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="ui signup modal">
+    <div class="ui hidden divider"></div>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <div class="ui vertically divided grid">
+                <div class="one column row">
+                    <div class="column header show">
+                        <b>SIGN UP</b>
+                    </div>
+                </div>
+            </div>
+
+            <form class="ui large signup form">
+                <div class="ui segment">
+                    <div class="field">
+                        <div class="ui left icon username input">
+                            <i class="user icon"></i>
+                            <input id="usrinput_signup" type="username" name="username" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon password input">
+                            <i class="lock icon"></i>
+                            <input id="pwdinput_signup" type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon email input">
+                            <i class="mail outline icon"></i>
+                            <input id="emailinput_signup" type="email" name="email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon displayname input">
+                            <i class="css3 icon"></i>
+                            <input id="displaynameinput_signup" type="displayname" name="displayname" placeholder="Displayname">
+                        </div>
+                    </div>
+                    <div class="ui fluid large primary signup button">Register</div>
+                </div>
+            </form>
 
             <div id="error_msg_box" class="ui negative message transition hidden">
                 <div class="header">
@@ -61,16 +114,20 @@
     </div>
 </div>
 
+
 <script>
+    $('.callsignup.button').click(function(){
+        $('.ui.signup.modal').modal('show');
+    });
     $('.login.button').click(function () {
-        var username = $("#usrinput")["0"].value;
-        var password = $("#pwdinput")["0"].value;
+        var username = $("#usrinput_login")["0"].value;
+        var password = $("#pwdinput_login")["0"].value;
         if ($('.login.button').hasClass('red'))
             $('.login.button').removeClass('red');
         if (!$('.login.button').hasClass('primary'))
             $('.login.button').addClass('primary');
-        if ($('#error_msg_box').hasClass('hidden') == false)
-            $('#error_msg_box').addClass('hidden');
+        if ($('#error_msg_box_login').hasClass('hidden') == false)
+            $('#error_msg_box_login').addClass('hidden');
         $('.login.button').addClass('loading');
         $('.login.button').addClass('disabled');
         $.ajaxSetup({
@@ -89,7 +146,7 @@
                     location.reload();
                     return;
                 }
-                $('#error_msg_box').removeClass('hidden');
+                $('#error_msg_box_login').removeClass('hidden');
                 $('.login.button').removeClass('primary');
                 $('.login.button').addClass('red');
             }

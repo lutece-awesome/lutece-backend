@@ -3,7 +3,9 @@ from .models import User
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
 from json import dumps
-from .password_strength.pwd_checker import get_password_strength
+from .user_signup.pwd_checker import get_password_strength
+from .user_signup.email_checker import get_email_report
+from .user_signup.usrname_checker import get_username_strength
 
 
 def user_login(request):
@@ -48,18 +50,37 @@ def ueser_signup(request):
             displayname = request.POST.get( 'displayname' )
             if username == None or password == None or email == None or displayname == None:
                 raise ValueError('some signup info do not exist')
+            # Check username
             login_user = User.objects.get( 
                 username = username)
             if login_user != None:
                 status['error_msg'].append('username already exists.')
+            else:
+                usr_report = get_username_strength( username )
+                if len( username ) > 0:
+                    status['error_msg'].append( usr_report )
+            # Check password
+            pwd_check_report = get_password_strength( password )
+            if len( pwd_check_report ) > 0:
+                status['error_msg'].append( pwd_check_report )
+            # Check email
             login_user = User.objects.get(
                 email = email)
             if login_user != None:
                 status['error_msg'].append('email already exists.')
-            pwd_check_report = get_password_strength( password )
-            if len( pwd_check_report ) == 0 and len( status['error_msg'] ) == 0:
-                status['signup_status'] = True
             else:
-                status['error_msg'].append( pwd_check_report )
+                email_report = get_email_report( email )
+                if( len( email_report ) > 0 ):
+                    status['error_msg'].append( email_report )
+            # Check error_msg
+            if len( status['error_msg'] ) == 0:
+                new_user = User(
+                    username = username,
+                    password = password,
+                    email = email,
+                    displayname = displayname
+                )
+                print( new_user.password )
+                status['signup_status'] = True
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
