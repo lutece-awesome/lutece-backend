@@ -31,41 +31,101 @@
         position:relative;left:155px;
     }
 
+    .ui.status.button {
+        margin-top: 5px;
+        position:relative;left:155px;
+    }
+
     .problem.detail.content{
         position:relative;left:-25px;
         text-align: left;
         font-size:15.5px;
     }
 
+    .ui.submit.modal{
+        height: 712px;
+        width: 712px;
+    }
+
+    .solution.textarea{
+        max-height:580px !important;
+        height: 580px !important;
+        line-height: 1.9 !important;
+        font-size: 15px !important;
+        font-family: 'Courier New', Courier, monospace
+    }
+
+    .modal_submit_solution.button{
+        position:relative;left:320px;
+        margin-top:10px;
+    }
+
+    .ui.form.textarea.window{
+        box-shadow:0 1px 0.12px rgba(0,0,0,.5);
+    }
+
 </style>
 
 {% if prob %}
 <div class="ui problem title main text container">
-        <h1 class = 'problem detail title'>{{prob.title}}</h1>
+        <h1 class = 'ui header problem detail title'>{{prob.title}}</h1>
         <div class = 'problem detail limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
         <div class = 'problem detail limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div> 
         <div class=  'ui basic primary submit solution button'><b>Submit</b></div>       
-        <div class=  'ui basic secondary submit solution button'><b>Status</b></div> 
+        <div class=  'ui basic secondary status button'><b>Status</b></div> 
 </div>
 <div class ='ui problem content main text container'>
     <p class = 'problem detail content'>{{prob.content}}</p>
 </div>
-{% endif %}
-<div>
-    <!--
-{% if prob %}
-    <h1>{{prob.title}}</h1>
-    <h3>Time Limit: {{prob.time_limit}} ms</h3>
-    <h3>Memory Limit: {{prob.memory_limit}} MB</h3>
-    {{prob.content}}
-    <h2>Standard Input</h2>
-    {{prob.standard_input}}
-    <h2>Standard Output</h2>
-    {{prob.standard_output}}
-    <h2>Sample Input</h2>
-    {{prob.sample_input}}
-    <h2>Sample Output</h2>
-    {{prob.sample_output}}
-{% endif %}-->
+
+
+<div class="ui submit modal">
+        <div class="ui hidden divider"></div>
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <div class="ui vertically divided grid">
+                    <div class="one column row">
+                        <div class="column header show">
+                            <b>Submit</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui form textarea window">
+            <div>
+                <textarea class = 'solution textarea'>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main( int argc , char * argv[] ){
+    printf( "Hello Lutece!" );
+    return 0;
+}</textarea>
+            </div>
+        </div>
+        <div id = 'submit_solution_button' class = 'ui large secondary modal_submit_solution button'><b>Submit</b></div>
 </div>
+
+
+<!--load SUPPORT_LANGUAGE_LIST %}
+
+    <code id="some-code" class="language-cpp">#include<bits/stdc++.h></code>
+-->
+<script>
+    $('.submit.button').click(function () {
+        $('.ui.submit.modal').modal('show');
+    });
+
+
+    $('#submit_solution_button').click(function(){
+        alert("gao qi");
+        var code = "var data = 1;";
+        var problemid = '{{prob.problem_id}}';
+        $('.solution.textarea').text(html);
+    });
+</script>
+
+{% endif %}
 {% endblock %}
