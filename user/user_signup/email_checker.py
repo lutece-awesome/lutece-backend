@@ -12,13 +12,8 @@ def get_email_report(email):
     try:
         validate_email(email)
     except ValidationError as e:
-        errormsg = 'Invailed email address.'
+        errormsg = 'Invalid email address.'
     except:
         errormsg = 'Unknown error.'
     finally:
         return errormsg
-
-
-if __name__ == '__main__':
-    print(get_email_report('xipersup@mgail.com'))
-    print(get_email_report('xianyu1121mgail.com'))

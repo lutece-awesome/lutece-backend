@@ -25,13 +25,3 @@ def get_password_strength(password):
         errormsg.append('Unknown error.')
     finally:
         return errormsg
-
-
-if __name__ == '__main__':
-    print(get_password_strength('12456'))
-    print(get_password_strength('1234563213213123123213131'))
-    print(get_password_strength('123456'))
-    print(get_password_strength('a123456'))
-    print(get_password_strength('A123456'))
-    print(get_password_strength('aaasdFeff'))
-    print(get_password_strength('aA123456'))
