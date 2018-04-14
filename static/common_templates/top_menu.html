@@ -1,17 +1,23 @@
 {% block top_menu%}
 
+<style type="text/css">
+  .topmenu {
+    font-family: 'Courier New', Courier, monospace
+  }  
+</style>
+
 <div id = "main_menu" class="ui fixed top borderless huge menu">
-  <a class="header item">Lutece</a>
+  <a class="header topmenu item">Lutece</a>
   <div class="ui container">
-  <a class="item" href = {% url 'home' %} >Home</a>
-  <a class="item" href = {% url 'problem-list-view' 1 %} >Problem</a>
-  <a class="item" >Contest</a>
+  <a class="item topmenu" href = {% url 'home' %} >Homepage</a>
+  <a class="item topmenu" href = {% url 'problem-list-view' 1 %} >Problem</a>
+  <a class="item topmenu" >Contest</a>
   <div class="right menu">
       <div class="item">
         {% if user.is_authenticated == False %}
-           <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
+           <div class="topmenu ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
         {% else %}
-           <div class="ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>           
+           <div class="topmenu ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>           
         {% endif %}
       </div>
   </div>
