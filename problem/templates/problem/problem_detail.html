@@ -10,8 +10,12 @@
 {% block content %}
 
 <style type="text/css">
-    .ui.main.text.container{
-        padding: 2.5cm 5cm 22.5cm 0.73cm;
+    .ui.problem.title.main.text.container{
+        padding: 2.5cm 5cm 0.32cm 0.73cm;
+    }
+
+    .ui.problem.content.main.text.container{
+        padding: 0.5cm 1.5cm 0.12cm 0.00cm;
     }
 
     .problem.detail.title {
@@ -27,15 +31,24 @@
         position:relative;left:155px;
     }
 
+    .problem.detail.content{
+        position:relative;left:-25px;
+        text-align: left;
+        font-size:15.5px;
+    }
+
 </style>
 
 {% if prob %}
-<div class="ui main text container">
+<div class="ui problem title main text container">
         <h1 class = 'problem detail title'>{{prob.title}}</h1>
         <div class = 'problem detail limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
         <div class = 'problem detail limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div> 
         <div class=  'ui basic primary submit solution button'><b>Submit</b></div>       
         <div class=  'ui basic secondary submit solution button'><b>Status</b></div> 
+</div>
+<div class ='ui problem content main text container'>
+    <p class = 'problem detail content'>{{prob.content}}</p>
 </div>
 {% endif %}
 <div>

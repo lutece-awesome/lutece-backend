@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Lutece app
     'problem',
-    'user'
+    'user',
+    'judge',
+    'submission'
 ]
 
 MIDDLEWARE = [
