@@ -1,9 +1,11 @@
 {% extends "base.html" %} 
 {% block content %}
+{% if problist %}
 
 <style type="text/css">
     .ui.padding.table{
         padding: 2.5cm 5cm 22.5cm 0.73cm;
+        display: none;
     }
 
     .problem.list.menu{
@@ -21,7 +23,7 @@
     }
 </style>
 
-<table class = "ui padded padding table" >
+<table class = "ui problem padded padding table" >
     <thread>
         <div class = 'problem list menu'>
             <tr>
@@ -35,7 +37,6 @@
         </div>
     </thread>
 
-{% if problist %}
     <tbody>
         {% for it in problist %}
         <tr>
@@ -52,6 +53,11 @@
         </tr>
     {% endfor %}
     </tbody>
+</table>
+
+<script>
+    $('.ui.problem.padding.table').css('display','table');
+</script>
 
 {% endif %}
 

@@ -13,9 +13,18 @@
   <script src="{% static 'jquery/dist/jquery.min.js'%}"></script>
   <script type="text/javascript" src="{% static 'semantic/dist/semantic.min.js'%}"></script>
 </head>
+<div class="ui global list active inverted dimmer">
+    <div class="ui text loader"></div>
+</div>
 
  {% include 'top_menu.html' %}
 
 {% block content %}
 {% endblock %}
+
+<script>
+    $(document).ready(function(){
+        $('.global.dimmer').removeClass('active');
+    });
+</script>
 </html>
