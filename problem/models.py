@@ -7,7 +7,7 @@ class Problem(models.Model):
         max_length=256, db_index=True, default='Default Title')
     content = models.CharField(max_length=58000, blank=True)
     standard_input = models.CharField(max_length=1024, blank=True)
-    standardOutput = models.CharField(max_length=1024, blank=True)
+    standard_output = models.CharField(max_length=1024, blank=True)
     constraints = models.CharField(max_length=1024, blank=True)
     sample_input = models.CharField(max_length=1024, blank=True)
     sample_output = models.CharField(max_length=1024, blank=True)
@@ -22,3 +22,6 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['problem_id']

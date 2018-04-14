@@ -3,9 +3,9 @@ from .models import User
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
 from json import dumps
-from .user_signup.pwd_checker import get_password_strength
+from .user_signup.password_checker import get_password_strength
 from .user_signup.email_checker import get_email_report
-from .user_signup.usrname_checker import get_username_strength
+from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 
 def user_login(request):
