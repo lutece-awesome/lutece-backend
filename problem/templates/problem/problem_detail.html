@@ -127,10 +127,26 @@ int main( int argc , char * argv[] ){
 
 
     $('#submit_solution_button').click(function(){
-        alert("gao qi");
-        var code = "var data = 1;";
+        var code = $('textarea.solution.textarea')["0"].value;
+        alert( "Submit code is " + code );
         var problemid = '{{prob.problem_id}}';
-        $('.solution.textarea').text(html);
+        $.ajaxSetup({
+            data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+        $('#submit_solution_button').addClass("loading");
+        $('#submit_solution_button').addClass("disabled");
+        $.post(
+            '{% url "submit-solution" %}',
+            {
+                'problemid' : problemid,
+                'code' : code,
+            },
+            function(status,data){
+                if( status == 'success' ){
+                    
+                }
+            }
+        )
     });
 </script>
 
