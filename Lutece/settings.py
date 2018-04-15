@@ -136,6 +136,9 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
 )
 
+# Redirected to home page
+LOGIN_URL = 'home'
+
 # Set the number of problem one page should be shown
 PER_PAGE_COUNT = 20
 
