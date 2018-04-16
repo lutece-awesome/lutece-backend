@@ -147,7 +147,7 @@ PER_PAGE_COUNT = 20
     Warning:
         + The change of SUPPORT_LANGUAGE_LIST may need to change the highlight css.
 '''
-SUPPORT_LANGUAGE_LIST={
+SUPPORT_LANGUAGE_LIST=[
     'GNU G++17',
     'CLANG++17',
     'GNU GCC 7.3',
@@ -158,4 +158,4 @@ SUPPORT_LANGUAGE_LIST={
     'Ruby 2.5.1',
     'Rust 1.25.0',
     'Haskell'
-}
+]

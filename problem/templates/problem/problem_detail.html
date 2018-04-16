@@ -63,7 +63,7 @@
     }
 
     .modal_submit_solution.button{
-        position:relative;left:320px;
+        position:relative;left:110px;
         margin-top:10px;
     }
 
@@ -112,21 +112,38 @@ int main( int argc , char * argv[] ){
 }</textarea>
             </div>
         </div>
+
+        <div class="ui language selection dropdown">
+            <input type="hidden" name="gender">
+            <i class="dropdown icon"></i>
+            <div class="default text">Language</div>
+            <div class="menu">
+                {% for it in support_lang %}
+                    <div class="item">{{it}}</div>
+                {% endfor %}
+            </div>
+        </div>
         <div id = 'submit_solution_button' class = 'ui large secondary modal_submit_solution button'><b>Submit</b></div>
 </div>
-
-
 <!--load SUPPORT_LANGUAGE_LIST %}
 
     <code id="some-code" class="language-cpp">#include<bits/stdc++.h></code>
 -->
 <script>
+
+    $('.ui.language.dropdown')
+            .dropdown()
+    ;
+
     $('.submit.button').click(function () {
         $('.ui.submit.modal').modal('show');
     });
 
-
     $('#submit_solution_button').click(function(){
+        '{% if user.is_authenticated == False %}'
+            $('.ui.login.required.modal').modal('show');
+            return ;
+        '{% endif %}'
         var code = $('textarea.solution.textarea')["0"].value;
         alert( "Submit code is " + code );
         var problemid = '{{prob.problem_id}}';
@@ -141,9 +158,9 @@ int main( int argc , char * argv[] ){
                 'problemid' : problemid,
                 'code' : code,
             },
-            function(status,data){
+            function(data,status){
                 if( status == 'success' ){
-                    
+                    alert(data.submission_id);
                 }
             }
         )
