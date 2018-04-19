@@ -116,7 +116,7 @@ int main( int argc , char * argv[] ){
         <div class="ui language selection dropdown">
             <input type="hidden" name="gender">
             <i class="dropdown icon"></i>
-            <div class="default text">Language</div>
+            <div class="submit language text">Language</div>
             <div class="menu">
                 {% for it in support_lang %}
                     <div class="item">{{it}}</div>
@@ -125,10 +125,8 @@ int main( int argc , char * argv[] ){
         </div>
         <div id = 'submit_solution_button' class = 'ui large secondary modal_submit_solution button'><b>Submit</b></div>
 </div>
-<!--load SUPPORT_LANGUAGE_LIST %}
 
-    <code id="some-code" class="language-cpp">#include<bits/stdc++.h></code>
--->
+
 <script>
 
     $('.ui.language.dropdown')
@@ -141,11 +139,12 @@ int main( int argc , char * argv[] ){
 
     $('#submit_solution_button').click(function(){
         '{% if user.is_authenticated == False %}'
-            $('.ui.login.required.modal').modal('show');
-            return ;
+            CallErrorModal('Permission Denied','Please log in first.');
+            return;
         '{% endif %}'
         var code = $('textarea.solution.textarea')["0"].value;
-        alert( "Submit code is " + code );
+        var lang = $(".submit.language.text")[0].innerText;
+        alert( "Submit code is " + code + " Lang is " + lang );
         var problemid = '{{prob.problem_id}}';
         $.ajaxSetup({
             data: { csrfmiddlewaretoken: '{{ csrf_token }}' },

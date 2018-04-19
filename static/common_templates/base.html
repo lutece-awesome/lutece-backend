@@ -22,6 +22,13 @@
 </head>
 
 {% include 'error.html' %}
+<script>
+    function CallErrorModal( Title , Content ) {
+        $("#ErrorModalHeader")["0"].innerHTML = '<i class="red close icon"> ' + Title + '</i>';
+        $("#ErrorModalContent")["0"].innerHTML = '<p>' + Content + '</p>';
+        $('#ErrorModal').modal('show');
+    }
+</script>
 
 {% include 'top_menu.html' %}
 

@@ -2,28 +2,28 @@
 
 <style text = 'text/css'>
 
-    #login_required_modal{
+    #ErrorModal{
         width: 280px;
     }
 
 
-    #login_required_error{
+    #ErrorModalHeader{
         font-size: 7px;
     }
 
-    #login_required_msg{
+    #ErrorModalContent{
         font-size:15px;
         color: red;
         text-align: center;
     }
 </style>
 
-<div id = 'login_required_modal' class="ui login required modal">
-    <div id = 'login_required_error' class="ui icon header">
-        <i class="red close icon"> Permission Denied</i>
+<div id = 'ErrorModal' class="ui Error_Msg modal">
+    <div id = 'ErrorModalHeader' class="ui icon header">
+        <i class="red close icon"></i>
     </div>
-    <div id = 'login_required_msg' class="content">
-        <p>Please log in first.</p>
+    <div id = 'ErrorModalContent' class="content">
+        <p></p>
     </div>
 </div>
 <!---->
