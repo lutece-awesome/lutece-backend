@@ -142,6 +142,13 @@ LOGIN_URL = 'home'
 # Set the number of problem one page should be shown
 PER_PAGE_COUNT = 20
 
+# Set the source code length
+'''
+    Warning:
+        + The change of MAX_SOURCECORE_LENGTH may need to change the submission.model, CharField's MaxLength is 64mb.
+'''
+MAX_SOURCECORE_LENGTH = 60000
+
 # Tht list of language that Osiris current support.
 '''
     Warning:
@@ -159,3 +166,16 @@ SUPPORT_LANGUAGE_LIST=[
     'Rust 1.25.0',
     'Haskell'
 ]
+
+# Judge Status and error code
+JUDGE_RESULT = {
+    'Queuing' : 0,
+    'Compiling' : 1,
+    'Accepted' : 2,
+    'Compilation Error' : 3,
+    'Wrong Answer' : 4,
+    'Runtime Error' : 5,
+    'Time Limit Exceeded' : 6,
+    'Output Limit Exceeded' : 7,
+    'Memory Limit Exceeded' : 8,
+}
