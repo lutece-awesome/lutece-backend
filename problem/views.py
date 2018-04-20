@@ -8,7 +8,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def problem_detail_view(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
-    print(settings.SUPPORT_LANGUAGE_LIST )
     return render(request, 'problem/problem_detail.html', {
         'prob' : prob,
         'support_lang': settings.SUPPORT_LANGUAGE_LIST,
