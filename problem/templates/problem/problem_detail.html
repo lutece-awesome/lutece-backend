@@ -134,16 +134,25 @@ int main( int argc , char * argv[] ){
     ;
 
     $('.submit.button').click(function () {
-        $('.ui.submit.modal').modal('show');
-    });
-
-    $('#submit_solution_button').click(function(){
         '{% if user.is_authenticated == False %}'
             CallErrorModal('Permission Denied','Please log in first.');
             return;
         '{% endif %}'
+        $('.ui.submit.modal').modal('show');
+    });
+
+    $('#submit_solution_button').click(function(){
         var code = $('textarea.solution.textarea')["0"].value;
         var lang = $(".submit.language.text")[0].innerText;
+        var flag = false;
+        '{% for it in support_lang%}'
+            if( '{{it}}' == lang )
+                flag = true;
+        '{% endfor %}'
+        if( flag == false ){
+            CallErrorModal( 'Operation Denied' , 'Please select language.' );
+            return;
+        }
         alert( "Submit code is " + code + " Lang is " + lang );
         var problemid = '{{prob.problem_id}}';
         $.ajaxSetup({
