@@ -139,7 +139,7 @@ STATICFILES_FINDERS = (
 # Redirected to home page
 LOGIN_URL = 'home'
 
-# Set the number of problem one page should be shown
+# Set the number of problem/status one page should be shown
 PER_PAGE_COUNT = 20
 
 # Set the source code max-length

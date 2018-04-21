@@ -5,6 +5,9 @@ from user.models import login_required_ajax
 from json import dumps
 from django.conf import settings
 from .models import Submission
+from problem.models import Problem
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from user.models import User
 # Create your views here.
 
 @login_required_ajax
@@ -25,7 +28,8 @@ def submit_solution(request):
                 raise ValueError( "Unknown language."  )
             s = Submission(
                 language = lang,
-                problem_id = problemid,
+                user = request.user,
+                problem = Problem.objects.get( problem_id = problemid ),
                 judge_status = 'Waiting',
                 code = code
             )
@@ -34,7 +38,14 @@ def submit_solution(request):
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
-
+def get_status_all(request , page):
+    statuslist = Submission.objects.all()
+    paginator = Paginator(statuslist, settings.PER_PAGE_COUNT)
+    try:
+        status = paginator.page(page)
+    except EmptyPage:
+        status = paginator.page(paginator.num_pages)
+    return render(request, 'statusall/status_list.html', {'statuslist': status,})
 
 def fetch_waiting_submission(request):
     if 'HTTP_X_FORWARDED_FOR' in request.META:
