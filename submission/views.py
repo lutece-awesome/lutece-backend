@@ -38,7 +38,7 @@ def submit_solution(request):
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
-def get_status_all(request , page):
+def get_status_list(request , page):
     statuslist = Submission.objects.all()
     paginator = Paginator(statuslist, settings.PER_PAGE_COUNT)
     try:
