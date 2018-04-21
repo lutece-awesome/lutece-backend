@@ -23,19 +23,19 @@
 
 </style>
 
-<table class = "ui status padded padding table" >
+<table class = "ui status selectable padded padding table" >
     <thread>
         <div class = 'status list menu'>
             <tr>
-                <th class = 'ui status list thread title'>ID</th>
-                <th class = 'ui status list thread title'>User</th>                
-                <th class = 'ui status list thread title'>Problem</th>
-                <th class = 'ui status list thread title'>Verdict</th>
-                <th class = 'ui status list thread title'>Time</th>
-                <th class = 'ui status list thread title'>Memory</th>
-                <th class = 'ui status list thread title'>Language</th>
-                <th class = 'ui status list thread title'>Length</th>
-                <th class = 'ui status list thread title'>Submit Time</th>
+                <th class = 'ui one wide status list thread title'>ID</th>
+                <th class = 'ui one wide status list thread title'>User</th>                
+                <th class = 'ui one wide status list thread title'>Problem</th>
+                <th class = 'ui two wide status list thread title'>Verdict</th>
+                <th class = 'ui one wide status list thread title'>Time</th>
+                <th class = 'ui one wide status list thread title'>Memory</th>
+                <th class = 'ui one wide status list thread title'>Language</th>
+                <th class = 'ui one wide status list thread title'>Length</th>
+                <th class = 'ui two wide status list thread title'>Submit Time</th>
             </tr>
         </div>
     </thread>
@@ -48,12 +48,11 @@
                 <td class = 'status list thread another'>{{it.user.display_name}} </td>                
                 <td class = 'status list thread another'>{{it.problem.title}} </td>
                 <td class = 'status list thread another'>{{it.judge_status}} </td>
-                <td class = 'status list thread another'></td>
-                <td class = 'status list thread another'></td>
+                <td class = 'status list thread another'><i class = 'ui help icon'></i> ms</td>
+                <td class = 'status list thread another'><i class = 'ui help icon'></i> kb</td>
                 <td class = 'status list thread another'>{{it.language}}</td>  
                 <td class = 'status list thread another'>{{it.code | length}}</td>  
                 <td class = 'status list thread another'>{{it.submit_time}}</td>  
-
             </tr>
             {% endfor %}
         </tbody>
