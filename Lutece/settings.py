@@ -142,7 +142,7 @@ LOGIN_URL = 'home'
 # Set the number of problem one page should be shown
 PER_PAGE_COUNT = 20
 
-# Set the source code length
+# Set the source code max-length
 '''
     Warning:
         + The change of MAX_SOURCECORE_LENGTH may need to change the submission.model, CharField's MaxLength is 64mb.
@@ -169,13 +169,19 @@ SUPPORT_LANGUAGE_LIST=[
 
 # Judge Status and error code
 JUDGE_RESULT = {
-    'Queuing' : 0,
-    'Compiling' : 1,
-    'Accepted' : 2,
-    'Compilation Error' : 3,
-    'Wrong Answer' : 4,
-    'Runtime Error' : 5,
-    'Time Limit Exceeded' : 6,
-    'Output Limit Exceeded' : 7,
-    'Memory Limit Exceeded' : 8,
+    'Waiting' : 0,
+    'Judging' : 1,
+    'Compiling' : 2,
+    'Accepted' : 3,
+    'Compilation Error' : 4,
+    'Wrong Answer' : 5,
+    'Runtime Error' : 6,
+    'Time Limit Exceeded' : 7,
+    'Output Limit Exceeded' : 8,
+    'Memory Limit Exceeded' : 9,
 }
+
+# Judge Fetch valid ip
+JUDGE_VALID_IPPOOL = [
+    '127.0.0.1'
+]

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from annoying.functions import get_object_or_None
 from user.models import login_required_ajax
 from json import dumps
@@ -26,10 +26,21 @@ def submit_solution(request):
             s = Submission(
                 language = lang,
                 problem_id = problemid,
-                judge_status = 'Queuing',
+                judge_status = 'Waiting',
                 code = code
             )
             s.save()
             status[ 'submission_id' ] = s.submission_id
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
+
+
+
+def fetch_waiting_submission(request):
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        ip = request.META['HTTP_X_FORWARDED_FOR']  
+    else:  
+        ip = request.META['REMOTE_ADDR']
+    if ip not in settings.JUDGE_VALID_IPPOOL:
+        raise Http404( 'Permission Denied' )
+#    return HttpResponse( dumps( wait_submission ) content_type = 'application/json' )

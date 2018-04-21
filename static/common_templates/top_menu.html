@@ -7,11 +7,13 @@
 </style>
 
 <div id = "main_menu" class="ui fixed top borderless huge menu">
-  <a class="header topmenu item">Lutece</a>
+  <div class="header topmenu item">Lutece</div>
   <div class="ui container">
-  <a class="item topmenu" href = {% url 'home' %} >Homepage</a>
-  <a class="item topmenu" href = {% url 'problem-list-view' 1 %} >Problem</a>
-  <a class="item topmenu" >Contest</a>
+  <a class="item topmenu" href = {% url 'home' %} ><i class="home icon"></i>Homepage</a>
+  <a class="item topmenu" href = {% url 'problem-list-view' 1 %} ><i class="university icon"></i>Problem</a>
+  <a class="item topmenu"><i class="bar chart icon"></i>Status</a>
+  <a class="item topmenu" ><i class="trophy icon"></i>Contest</a>
+  <a class="item topmenu" ><i class="lab icon"></i>Lab</a>
   <div class="right menu">
       <div class="item">
         {% if user.is_authenticated == False %}

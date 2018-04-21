@@ -161,7 +161,7 @@ int main( int argc , char * argv[] ){
         $('#submit_solution_button').addClass("loading");
         $('#submit_solution_button').addClass("disabled");
         $.post(
-            '{% url "submit-solution" %}',
+            '{% url "submission-submit-solution" %}',
             {
                 'problemid' : problemid,
                 'code' : code,
