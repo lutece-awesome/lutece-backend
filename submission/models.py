@@ -13,3 +13,6 @@ class Submission(models.Model):
     code = models.CharField(max_length=65535 , blank = True )
     submit_time = models.DateTimeField( 'Submit time' , null = True , default = timezone.now )
     user = models.ForeignKey(User,on_delete = models.CASCADE , null = True)
+
+    class Meta:
+        ordering = ['-submission_id']

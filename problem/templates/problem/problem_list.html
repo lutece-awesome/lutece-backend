@@ -14,12 +14,10 @@
     }
 
     .problem.list.thread.title{
-        font-family: 'Courier New', Courier, monospace;        
         text-align: center;
     }
 
     .problem.list.thread.another{
-        font-family: 'Courier New', Courier, monospace;        
         text-align: center;
     }
 
@@ -29,13 +27,13 @@
     <thread>
         <div class = 'problem list menu'>
             <tr>
-                <th class = 'problem list thread title'>ID</th>
-                <th class = 'problem list thread title'>Title</th>
+                <th class = 'ui problem list thread title'>ID</th>
+                <th class = 'ui problem list thread title'>Title</th>
                 {% if user.is_authenticated == True %}
-                    <th class = 'problem list thread title'>Status</th>
+                    <th class = 'ui problem list thread title'>Status</th>
                 {% endif %}
-                <th class = 'problem list thread title'>Try / Solved</th>
-                <th class = 'problem list thread title'>AC Ratio</th>
+                <th class = 'ui problem list thread title'>Try / Solved</th>
+                <th class = 'ui problem list thread title'>AC Ratio</th>
             </tr>
         </div>
     </thread>
