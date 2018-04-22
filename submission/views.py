@@ -4,10 +4,11 @@ from annoying.functions import get_object_or_None
 from user.models import login_required_ajax
 from json import dumps
 from django.conf import settings
-from .models import Submission
+from .models import Submission, validator_fetch_judge
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import User
+from django.forms.models import model_to_dict
 # Create your views here.
 
 @login_required_ajax
@@ -47,11 +48,22 @@ def get_status_list(request , page):
         status = paginator.page(paginator.num_pages)
     return render(request, 'statusall/status_list.html', {'statuslist': status,})
 
+@validator_fetch_judge
 def fetch_waiting_submission(request):
-    if 'HTTP_X_FORWARDED_FOR' in request.META:
-        ip = request.META['HTTP_X_FORWARDED_FOR']  
-    else:  
-        ip = request.META['REMOTE_ADDR']
-    if ip not in settings.JUDGE_VALID_IPPOOL:
-        raise Http404( 'Permission Denied' )
-#    return HttpResponse( dumps( wait_submission ) content_type = 'application/json' )
+    fetch_status = {
+        'status' : False,
+    }
+    try:
+        s = Submission.objects.raw( 'SELECT submission_id, MAX( submission_id ) from submission_Submission where judge_status == \'Waiting\'' )[0]
+        if s != None:
+            s = model_to_dict( s , fields = Submission.Judge.field )
+            fetch_status = { **s , ** fetch_status }
+            Submission.objects.filter( submission_id = fetch_status['submission_id'] ).update( judge_status = 'Preparing' )
+            fetch_status['status'] = True
+    finally:
+        return HttpResponse( dumps( fetch_status ) , content_type = 'application/json' )
+
+@validator_fetch_judge
+def Modify_submission_status(request):
+    submission_id = request.POST.get( 'submission_id' )
+    print( submission_id )

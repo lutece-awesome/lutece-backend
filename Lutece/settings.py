@@ -169,8 +169,8 @@ SUPPORT_LANGUAGE_LIST=[
 
 # Judge Status and error code
 JUDGE_RESULT = {
-    'Waiting' : 0,
-    'Judging' : 1,
+    'Waiting' : 0, # Waiting for judge
+    'Preparing' : 1, # Submission has been fetched by one judge
     'Compiling' : 2,
     'Accepted' : 3,
     'Compilation Error' : 4,
