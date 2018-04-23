@@ -1,0 +1,9 @@
+.ui.footer{
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.ui.footer>.author{
+    margin-top: 13px;
+}
