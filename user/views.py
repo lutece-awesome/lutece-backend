@@ -84,7 +84,7 @@ def user_signup(request):
             # Check displayname
             if len( displayname ) == 0:
                 errormsg_list.append( 'Displayname can not be empty.' )
-            elif len( displayname ) > 128:
+            elif len( displayname ) > 12:
                 errormsg_list.append( 'The length of displayname too long.' )                
             # Check error_msg
             if len( errormsg_list ) == 0:
