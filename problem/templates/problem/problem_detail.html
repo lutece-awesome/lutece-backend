@@ -11,32 +11,17 @@
 
 <style type="text/css">
     .ui.problem.title.main.text.container{
-        padding: 2.5cm 5cm 0.32cm 0.73cm;
+        text-align: center;
+        margin-top: 80px;
     }
 
     .ui.problem.content.main.text.container{
-        padding: 0.5cm 1.5cm 0.12cm 0.00cm;
-    }
-
-    .problem.detail.title {
-        text-align: center;
+        margin-top:80px;
     }
 
     .problem.detail.limit {
         margin-top: 4px;
         text-align: center;
-
-    }
-
-    .ui.submit.solution.button {
-        margin-top: 15px;
-        position:relative;left:155px;
-
-    }
-
-    .ui.status.button {
-        margin-top: 5px;
-        position:relative;left:155px;
     }
 
     .problem.detail.content{
@@ -67,20 +52,39 @@
         box-shadow:0 1px 0.12px rgba(0,0,0,.5);
     }
 
+    .ui.header.problem.subtitle{
+        text-align: left;
+        position:relative;
+        left:-25px;
+    }
+
+    #button_menu {
+        margin-top:12px;
+    }
+
 </style>
 
 {% if prob %}
 <div class="ui problem title main text container">
         <h1 class = 'ui header problem detail title'>{{prob.title}}</h1>
         <div class = 'problem detail limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
-        <div class = 'problem detail limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div> 
-        <div class=  'ui basic primary submit solution button'><b>Submit</b></div>       
-        <div class=  'ui basic secondary status button'><b>Status</b></div> 
+        <div class = 'problem detail limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div>
+        <div id = 'button_menu'>
+            <div class=  'ui basic primary submit button'><b>Submit</b></div>       
+            <div class=  'ui basic secondary status button'><b>Status</b></div> 
+        </div>
 </div>
 <div class ='ui problem content main text container'>
     <p class = 'problem detail content'>{{prob.content}}</p>
-</div>
-
+    <h2 class='ui header problem subtitle'>Standard Input</h2>
+    <p class='problem detail content'>{{prob.standard_input}}</p>
+    <h2 class='ui header problem subtitle'>Standard Output</h2>
+    <p class='problem detail content'>{{prob.standard_output}}</p>
+    {% if  prob.constraints|length > 0  %}
+    <h2 class='ui header problem subtitle'>Constraints</h2>
+    <p class='problem detail content'>{{prob.constraints}}</p>
+    {% endif %}
+</div>    
 
 <div class="ui submit modal">
         <div class="ui hidden divider"></div>
