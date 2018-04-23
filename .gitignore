@@ -111,3 +111,6 @@ runserver_xiper.sh
 Lutece.db
 db.sqlite3
 Lutece/local_hezhu.py
+
+# Mathjax
+MathJax-2.7.4/

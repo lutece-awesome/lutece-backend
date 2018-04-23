@@ -1,0 +1,20 @@
+.problem.detail>.summary{
+    text-align: center;
+    margin-top: 90px;
+}
+
+.problem.detail>.summary>.limit{
+    line-height: 1.7 !important;
+    font-size: 15px !important;
+}
+
+.problem.detail>.summary>.menu{
+    margin-top:10px;
+}
+
+.problem.detail>.body{
+    margin-right:320px;
+    margin-left:320px;
+    margin-top:16px;
+    font-size: 16px;
+}

@@ -4,21 +4,27 @@ from django.http import HttpResponse
 from .models import Problem
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+import json
 
 def problem_detail_view(request, problem_id):
-    prob = get_object_or_404(Problem, problem_id=problem_id)
-    return render(request, 'problem/problem_detail.html', {
-        'prob' : prob,
-        'support_lang': settings.SUPPORT_LANGUAGE_LIST,
-        })
+    try:
+        prob = get_object_or_404(Problem, problem_id=problem_id)
+        return render(request, 'problem/problem_detail.html', {
+            'prob' : prob,
+            'support_lang': settings.SUPPORT_LANGUAGE_LIST,
+            'sample' : zip( json.loads(prob.sample_input) , json.loads(prob.sample_output) )
+            })
+    except:
+        raise Http404
 
 
 def problem_list_view(request, page):
     problem_list = Problem.objects.all()
     paginator = Paginator(problem_list, settings.PER_PAGE_COUNT)
-    try:
-        problems = paginator.page(page)
-    except EmptyPage:
-        problems = paginator.page(paginator.num_pages)
-    return render(request, 'problem/problem_list.html', {'problist': problems,})
+    problems = paginator.get_page(page)
+    page = min( max( 1 , page ) , paginator.num_pages )
+    return render(request, 'problem/problem_list.html', {
+        'problist': problems,
+        'max_page': paginator.num_pages,
+        'page_list' : range( max( 1 , page - settings.PER_PAGINATOR_COUNT ) , min( page + settings.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )
+    })

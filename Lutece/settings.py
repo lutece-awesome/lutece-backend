@@ -139,8 +139,11 @@ STATICFILES_FINDERS = (
 # Redirected to home page
 LOGIN_URL = 'home'
 
+# Set the paginator number
+PER_PAGINATOR_COUNT = 15
+
 # Set the number of problem/status one page should be shown
-PER_PAGE_COUNT = 20
+PER_PAGE_COUNT = 15
 
 # Set the source code max-length
 '''

@@ -1,180 +1,65 @@
+{% extends "base.html" %}
 
-{% extends "base.html" %} 
+{% block extra_head %}
+    {% load staticfiles %}
+        <link href="{% static 'css/problem/problem_detail.css' %}" rel="stylesheet" />
+        <script src="{% static 'script/problem/problem_detail.js'%}"></script>
+{% endblock extra_head %}
 
-{% if prob %}
-    {% block tile %}
-    <title>Lutece | {{prob.title}}</title>
-    {% endblock %}
-{% endif %}
+{% block title %}
+<title>Lutece | {{prob.title}}</title>
+{% endblock title %}
 
 {% block content %}
-
-<style type="text/css">
-    .ui.problem.title.main.text.container{
-        text-align: center;
-        margin-top: 80px;
-    }
-
-    .ui.problem.content.main.text.container{
-        margin-top:80px;
-    }
-
-    .problem.detail.limit {
-        margin-top: 4px;
-        text-align: center;
-    }
-
-    .problem.detail.content{
-        position:relative;left:-25px;
-        text-align: left;
-        line-height: 1.4 !important;
-        font-size: 15px !important;
-    }
-
-    .ui.submit.modal{
-        height: 712px;
-        width: 712px;
-    }
-
-    .solution.textarea{
-        max-height:580px !important;
-        height: 580px !important;
-        line-height: 1.9 !important;
-        font-size: 15px !important;
-    }
-
-    .modal_submit_solution.button{
-        position:relative;left:110px;
-        margin-top:10px;
-    }
-
-    .ui.form.textarea.window{
-        box-shadow:0 1px 0.12px rgba(0,0,0,.5);
-    }
-
-    .ui.header.problem.subtitle{
-        text-align: left;
-        position:relative;
-        left:-25px;
-    }
-
-    #button_menu {
-        margin-top:12px;
-    }
-
-</style>
-
-{% if prob %}
-<div class="ui problem title main text container">
-        <h1 class = 'ui header problem detail title'>{{prob.title}}</h1>
-        <div class = 'problem detail limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
-        <div class = 'problem detail limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div>
-        <div id = 'button_menu'>
-            <div class=  'ui basic primary submit button'><b>Submit</b></div>       
-            <div class=  'ui basic secondary status button'><b>Status</b></div> 
-        </div>
-</div>
-<div class ='ui problem content main text container'>
-    <p class = 'problem detail content'>{{prob.content}}</p>
-    <h2 class='ui header problem subtitle'>Standard Input</h2>
-    <p class='problem detail content'>{{prob.standard_input}}</p>
-    <h2 class='ui header problem subtitle'>Standard Output</h2>
-    <p class='problem detail content'>{{prob.standard_output}}</p>
-    {% if  prob.constraints|length > 0  %}
-    <h2 class='ui header problem subtitle'>Constraints</h2>
-    <p class='problem detail content'>{{prob.constraints}}</p>
-    {% endif %}
-</div>    
-
-<div class="ui submit modal">
-        <div class="ui hidden divider"></div>
-        <div class="ui middle aligned center aligned grid">
-            <div class="column">
-                <div class="ui vertically divided grid">
-                    <div class="one column row">
-                        <div class="column header show">
-                            <b>Submit</b>
-                        </div>
-                    </div>
-                </div>
+    <div class = 'problem detail'>
+        <div class = 'summary'>
+            <h1 class = 'ui header'>{{prob.title}}</h1>
+            <div class = 'limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
+            <div class = 'limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div>
+            <div class = 'menu'>
+                <div class = 'ui basic primary submit button'><b>Submit</b></div>
+                <div class = 'ui basic secondary status button'><b>Status</b></div>
             </div>
         </div>
-        <div class="ui form textarea window">
-            <div>
-                <textarea class = 'solution textarea'>
-#include <bits/stdc++.h>
+        <div class = 'body'>
+            <p class = 'content'>{{prob.content}}</p>
+            <h2 class= 'ui header'>Standard Input</h2>
+            <p class = 'content'>{{prob.standard_input}}</p>
+            <h2 class= 'ui header'>Standard Output</h2>
+            <p class = 'content'>{{prob.standard_output}}</p>
+            {% if  prob.constraints|length > 0  %}
+                <h2 class='ui header'>Constraints</h2>
+                <p class='content'>{{prob.constraints}}</p>
+            {% endif%}
+            <h2 class= 'ui header'>Sample</h2>
+                <table class="ui table" >
+                        <thead>
+                            <tr>
+                                <th>Input</th>
+                                <th>Output</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for it in sample %}
+                                <tr>
+                                    <td>{{it.0}}</td>
+                                    <td>{{it.1}}</td>
+                                </tr>
+                            {% endfor%}
+                        </tbody>
+                </table>
 
-using namespace std;
 
-int main( int argc , char * argv[] ){
-    printf( "Hello Lutece!" );
-    return 0;
-}</textarea>
-            </div>
+            {% if  prob.sample_explanation|length > 0  %}
+                <h2 class='ui header'>Note</h2>
+                <p class='content'>{{prob.sample_explanation}}</p>
+            {% endif%}
+
+            {% if  prob.resource|length > 0  %}
+                <h2 class='ui header'>Resource</h2>
+                <p class='content'>{{prob.resource}}</p>
+            {% endif%}
         </div>
+    </div>
 
-        <div class="ui language selection dropdown">
-            <input type="hidden" name="gender">
-            <i class="dropdown icon"></i>
-            <div class="submit language text">Language</div>
-            <div class="menu">
-                {% for it in support_lang %}
-                    <div class="item">{{it}}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div id = 'submit_solution_button' class = 'ui large secondary modal_submit_solution button'><b>Submit</b></div>
-</div>
-
-
-<script>
-
-    $('.ui.language.dropdown')
-            .dropdown()
-    ;
-
-    $('.submit.button').click(function () {
-        '{% if user.is_authenticated == False %}'
-            CallErrorModal('Permission Denied','Please log in first.');
-            return;
-        '{% endif %}'
-        $('.ui.submit.modal').modal('show');
-    });
-
-    $('#submit_solution_button').click(function(){
-        var code = $('textarea.solution.textarea')["0"].value;
-        var lang = $(".submit.language.text")[0].innerText;
-        var flag = false;
-        '{% for it in support_lang%}'
-            if( '{{it}}' == lang )
-                flag = true;
-        '{% endfor %}'
-        if( flag == false ){
-            CallErrorModal( 'Operation Denied' , 'Please select language.' );
-            return;
-        }
-        alert( "Submit code is " + code + " Lang is " + lang );
-        var problemid = '{{prob.problem_id}}';
-        $.ajaxSetup({
-            data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-        });
-        $('#submit_solution_button').addClass("loading");
-        $('#submit_solution_button').addClass("disabled");
-        $.post(
-            '{% url "submission-submit-solution" %}',
-            {
-                'problemid' : problemid,
-                'code' : code,
-                'language' : lang,
-            },
-            function(data,status){
-                if( status == 'success' ){
-                    alert(data.submission_id);
-                }
-            }
-        )
-    });
-</script>
-
-{% endif %}
-{% endblock %}
+{% endblock content %}
