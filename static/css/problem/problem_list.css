@@ -1,13 +1,3 @@
-.problem.list{
-    margin-left: 120px;
-    margin-right: 120px;
-}
-
 .problem.list>.pagination{
     margin-top: 120px;
-}
-
-.problem.list>.table{
-    margin-top:10px;
-    margin-right: 10px;
 }
