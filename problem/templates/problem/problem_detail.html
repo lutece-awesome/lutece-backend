@@ -7,7 +7,7 @@
 {% endblock extra_head %}
 
 {% block title %}
-<title>Lutece | {{prob.title}}</title>
+    <title> Lutece | {{prob.title}} </title>
 {% endblock title %}
 
 {% block content %}
@@ -32,6 +32,7 @@
                 <h2 class='ui header'>Constraints</h2>
                 <p class='content'>{{prob.constraints}}</p>
             {% endif%}
+
             <h2 class= 'ui header'>Sample</h2>
                 <table class="ui table" >
                         <thead>
@@ -49,8 +50,6 @@
                             {% endfor%}
                         </tbody>
                 </table>
-
-
             {% if  prob.sample_explanation|length > 0  %}
                 <h2 class='ui header'>Note</h2>
                 <p class='content'>{{prob.sample_explanation}}</p>
@@ -62,5 +61,4 @@
             {% endif%}
         </div>
     </div>
-
 {% endblock content %}

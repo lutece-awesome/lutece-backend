@@ -182,6 +182,7 @@ JUDGE_RESULT = {
     'Time Limit Exceeded' : 7,
     'Output Limit Exceeded' : 8,
     'Memory Limit Exceeded' : 9,
+    'Judgement Error' : 10,
 }
 
 # Judge Fetch valid ip

@@ -1,69 +1,19 @@
-{% block top_menu%}
-
-<style type="text/css">
-  .topmenu {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
-  }  
-</style>
-
-<div id = "main_menu" class="ui fixed top borderless huge menu">
-  <div class="header topmenu item">Lutece</div>
-  <div class="ui container">
-  <a class="item topmenu" href = {% url 'home' %} ><i class="home icon"></i>Home</a>
-  <a class="item topmenu" href = {% url 'problem-list-view' 1 %} ><i class="university icon"></i>Problem</a>
-  <a class="item topmenu" href = {% url 'submission-status-list' 1 %}><i class="bar chart icon"></i>Status</a>
-  <a class="item topmenu" ><i class="trophy icon"></i>Contest</a>
-  <a class="item topmenu" ><i class="lab icon"></i>Lab</a>
-  <div class="right menu">
-      <div class="item">
-        {% if user.is_authenticated == False %}
-           <div class="topmenu ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
-        {% else %}
-           <div class="topmenu ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>           
-        {% endif %}
-      </div>
-  </div>
-  </div>
+<div class = 'ui fixed top borderless huge menu'>
+    <div class="header item">Lutece</div>
+    <div class="ui container">
+        <a class="item" href = {% url 'home' %} ><i class="home icon"></i>Home</a>
+        <a class="item" href = {% url 'problem-list-view' 1 %} ><i class="university icon"></i>Problem</a>
+        <a class="item" href = {% url 'submission-status-list' 1 %}><i class="bar chart icon"></i>Status</a>
+        <a class="item" ><i class="trophy icon"></i>Contest</a>
+        <a class="item" ><i class="lab icon"></i>Lab</a>
+        <div class="right menu">
+            <div class="item">
+                {% if user.is_authenticated == False %}
+                    <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
+                {% else %}
+                    <div class="ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>     
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
-
-{% if user.is_authenticated == False %} 
-  {% include 'signin.html' %} 
-{% endif %}
-
-<script>
-  $('.ui.sticky')
-    .sticky({
-      context: '#main_menu'
-    })
-  ;
-  // 登陆按钮
-'{% if user.is_authenticated == False %}'
-    $(document).ready(function(){
-      $(".signin.button").click(function(){
-        $('.signin.modal')
-        .modal('show')
-        ;
-      });
-    });
-'{% endif %}'
- // 登出按钮
-  '{% if user.is_authenticated == True %}'
-  $(document).ready(function () {
-      $(".signout.button").click(function () {
-        $(".signout.button").addClass( 'loading' );
-        $.get(
-            '{% url "user-logout" %}',
-            '',
-            function(data,status){
-              $(".signout.button").removeClass('loading');              
-              location.reload();
-            }
-        );
-      });
-    });
-  '{% endif %}'
-
-</script>
-
-
-{% endblock %}
