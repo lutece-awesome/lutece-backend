@@ -42,11 +42,13 @@ def submit_solution(request):
 def get_status_list(request , page):
     statuslist = Submission.objects.all()
     paginator = Paginator(statuslist, settings.PER_PAGE_COUNT)
-    try:
-        status = paginator.page(page)
-    except EmptyPage:
-        status = paginator.page(paginator.num_pages)
-    return render(request, 'statusall/status_list.html', {'statuslist': status,})
+    page = min( max( 1 , page ) , paginator.num_pages )
+    status = paginator.get_page(page)
+    return render(request, 'statusall/status_list.html', {
+        'statuslist': status,
+        'max_page': paginator.num_pages,
+        'page_list' : range( max( 1 , page - settings.PER_PAGINATOR_COUNT ) , min( page + settings.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )
+    })
 
 @validator_fetch_judge
 def fetch_waiting_submission(request):

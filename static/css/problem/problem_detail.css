@@ -16,3 +16,29 @@
     margin-top:16px;
     font-size: 16px;
 }
+
+#code_textarea {
+    max-height:650px;
+    height: 650px;
+    line-height: 1.9;
+    font-size: 15px;
+}
+
+#submit_solution_button{
+    text-align: center;
+}
+
+#bottom_menu{
+    margin-top:20px;
+    margin-bottom: 20px;
+}
+
+#languagelist{
+    margin-top:20px;
+}
+
+#code_submit_button{
+    text-align: center;
+    margin-top:-38px;
+    margin-bottom: 20px;
+}

@@ -11,6 +11,10 @@
 
         <div class="ui pagination menu">
                 <a class="icon item" href = {% url 'submission-status-list' 1 %} ><i class="angle double left icon"></i></a>
+                {% for it in page_list %}
+                    <a class="item" href = {% url 'submission-status-list' it %}  >{{it}}</a>
+                {% endfor %}
+                <a class="icon item" href = {% url 'submission-status-list' max_page %} ><i class="angle double right icon"></i></a>
         </div>
 
         <table class = "ui selectable padded table" >

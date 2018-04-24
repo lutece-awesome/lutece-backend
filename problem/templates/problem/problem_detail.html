@@ -3,7 +3,6 @@
 {% block extra_head %}
     {% load staticfiles %}
         <link href="{% static 'css/problem/problem_detail.css' %}" rel="stylesheet" />
-        <script src="{% static 'script/problem/problem_detail.js'%}"></script>
 {% endblock extra_head %}
 
 {% block title %}
@@ -17,9 +16,9 @@
             <div class = 'limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
             <div class = 'limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div>
             <div class = 'menu'>
-                <div class = 'ui basic primary submit button'><b>Submit</b></div>
-                <div class = 'ui basic secondary status button'><b>Status</b></div>
-                <div class = 'ui basic orange edit button'><b>Edit</b></div>
+                <div class = 'ui basic primary submit button'><i class = 'location arrow icon'></i><b>Submit</b></div>
+                <div class = 'ui basic secondary status button'><i class = 'signal icon'></i><b>Status</b></div>
+                <div class = 'ui basic orange edit button'><i class = 'folder open icon'></i><b>Edit</b></div>
             </div>
         </div>
         <div class = 'body'>
@@ -29,7 +28,7 @@
             <h2 class= 'ui header'>Standard Output</h2>
             <p class = 'content'>{{prob.standard_output}}</p>
             {% if  prob.constraints|length > 0  %}
-                <h2 class='ui header'>Constraints</h2>
+                <h2 class='ui header'> Constraints </h2>
                 <p class='content'>{{prob.constraints}}</p>
             {% endif%}
 
@@ -37,8 +36,8 @@
                 <table class="ui table" >
                         <thead>
                             <tr>
-                                <th>Input</th>
-                                <th>Output</th>
+                                <th> Input </th>
+                                <th> Output </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,5 +59,78 @@
                 <p class='content'>{{prob.resource}}</p>
             {% endif%}
         </div>
+
+        <div id = "submit_modal" class="ui submit modal">
+            <br/>
+            <div class = 'ui middle aligned center header'>
+                Submit
+            </div>
+            <div class="ui form textarea window">
+                <textarea id = 'code_textarea'>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main( int argc , char * argv[] ){
+    printf( "Hello Lutece!" );
+    return 0;
+}
+                </textarea>
+            </div>
+
+            <div id = "languagelist" class="ui language selection dropdown">
+                <i class="dropdown icon"></i>
+                <div class="submit language text">{{support_lang.0}}</div>
+                <div class="menu">
+                    {% for it in support_lang %}
+                        <div class="item">{{it}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id = "code_submit_button"><i class = 'ui large secondary button'>Submit</i></div>
+        </div>
     </div>
+
+    <script>
+        $('.ui.language.dropdown')
+            .dropdown()
+        ;
+
+        $('.problem.detail > .summary > .menu > .submit').click(function () {
+            '{% if user.is_authenticated == True %}'
+                $('#submit_modal').modal('show');
+            '{% else %}'
+                $('.login.modal' ).modal( 'show' );
+            '{% endif %}'
+        });
+
+        $('#code_submit_button > .button').click(function(){
+            var code = $('#code_textarea')["0"].value;
+            var lang = $("#languagelist")[0].innerText;
+            //alert( "Submit code is " + code + " Lang is " + lang );
+            $(this)
+                .addClass( 'loading disabled' )
+            ;
+            var problemid = '{{prob.problem_id}}';
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+            $.post(
+                '{% url "submission-submit-solution" %}',
+                {
+                    'problemid' : problemid,
+                    'code' : code,
+                    'language' : lang,
+                },
+                function(data,status){
+                    if( status == 'success' ){
+                        //alert(data.submission_id);
+                    }
+                    $('#code_submit_button > .button').
+                        removeClass( 'loading disabled' )
+                    ;
+                }
+            )
+        });
+    </script>
 {% endblock content %}

@@ -16,4 +16,201 @@
             </div>
         </div>
     </div>
+
+    <div class = 'ui login modal'>
+        <br/>
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <div class="ui vertically divided grid">
+                    <div class="one column row">
+                        <div class="column header show">
+                            <b>LOG IN</b>
+                        </div>
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon username input">
+                                <i class="user icon"></i>
+                                <input id = "usrinput_login" type="username" name="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon password input">
+                                <i class="lock icon"></i>
+                                <input id = "pwdinput_login" type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div id = 'button_login' class="ui fluid large primary login button">Login</div>
+                    </div>
+                </form>
+                <div id = "error_msg_box_login" class="ui negative message transition hidden">
+                    <div class="header">
+                        Your username or password is incorrect.
+                    </div>
+                </div>
+                <div class="ui message">
+                    No account?
+                    <div id = 'botton_signup' class="ui basic medium callsignup button"><b><i class="add user icon"></i></b> Sign Up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="ui signup modal">
+        <br/>
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <div class="ui vertically divided grid">
+                    <div class="one column row">
+                        <div class="column header show">
+                            <b>SIGN UP</b>
+                        </div>
+                    </div>
+                </div>
+                <form class="ui large form">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon username input">
+                                <i class="user icon"></i>
+                                <input id="usrinput_signup" type="username" name="username" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon password input">
+                                <i class="lock icon"></i>
+                                <input id="pwdinput_signup" type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon email input">
+                                <i class="mail outline icon"></i>
+                                <input id="emailinput_signup" type="email" name="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon displayname input">
+                                <i class="css3 icon"></i>
+                                <input id="displaynameinput_signup" type="displayname" name="displayname" placeholder="Displayname">
+                            </div>
+                        </div>
+                        <div class="ui fluid large primary signup button">Register</div>
+                    </div>
+                </form>
+                <div id = "error_msg_box_signup" class="ui negative message transition hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function get_error_msgText( errlist ){
+            errlist = eval( errlist );
+            var ret = '';
+            for(var i = 0 ; i < errlist.length ; ++ i)
+                ret = ret + '<li>' + errlist[i] + '</li>';
+            return '<ul class=\"list\">' + ret + '</ul>';
+        }
+
+        $(document).ready(function(){
+
+            $('.signup.button').click(function () {
+                var username = $("#usrinput_signup")["0"].value;
+                var password = $("#pwdinput_signup")["0"].value;
+                var email = $("#emailinput_signup")["0"].value;
+                var displayname = $("#displaynameinput_signup")["0"].value;
+                $(this)
+                    .removeClass('red')
+                    .addClass( 'primary loading disabled' )
+                ;
+                $('#error_msg_box_signup').addClass('hidden');
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{% url "user-signup" %}',
+                    {
+                        'username': username,
+                        'password': password,
+                        'email' : email,
+                        'displayname' : displayname
+                    },
+                    function (data, status) {
+                        if (status == 'success' && data.signup_status == true) {
+                            location.reload();
+                            return;
+                        }
+                        $('.signup.button')
+                            .removeClass('loading disabled primary')
+                            .addClass( 'red' )
+                        ;
+                        var report = get_error_msgText( data.error_msg );
+                        $('#error_msg_box_signup')
+                            .empty()
+                            .append(report)
+                            .removeClass('hidden')
+                        ;
+                    }
+                );
+            });
+
+            $('#button_login').click(function(){
+                var username = $("#usrinput_login")["0"].value;
+                var password = $("#pwdinput_login")["0"].value;
+                $('#error_msg_box_login').addClass('hidden');
+                $(this)
+                    .removeClass( 'red' )
+                    .addClass( 'loading disabled primary' )
+                ;
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{% url "user-login" %}',
+                    {
+                        'username': username,
+                        'password': password
+                    },
+                    function (data, status) {
+                        if (status == 'success' && data.login_status == true) {
+                            location.reload();
+                            return;
+                        }
+                        $('#error_msg_box_login').removeClass('hidden');
+                        $('#button_login')
+                            .removeClass( 'loading disabled primary' )
+                            .addClass('red')
+                        ;
+                    }
+                );
+            });
+
+
+            var login_modal = $('.top.menu > .login.modal' )
+            $('.top.menu > .container > .right.menu > .item > .signin.button')
+            .click( function(){
+                $(login_modal).modal('show')
+            });
+
+            var signup_modal = $('.top.menu > .signup.modal' )
+            $('#botton_signup')
+            .click( function(){
+                $(signup_modal).modal('show')
+            });
+
+            $('.top.menu > .container > .right.menu > .item > .signout.button')
+            .click( function(){
+                $(this).addClass( 'loading disabled' );
+                $.get(
+                    '{% url "user-logout" %}',
+                    '',
+                    function(data,status){
+                      $("this").removeClass('loading disabled');
+                      location.reload();
+                    }
+                );
+            });
+        });
+    </script>
 </div>
