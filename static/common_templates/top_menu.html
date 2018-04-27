@@ -10,9 +10,9 @@
     <div class="right menu">
         <div class="item">
             {% if user.is_authenticated == False %}
-                <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
+                <div class="ui primary button" id="signin"><b><i class="sign in icon"></i></b>Sign in</div>
             {% else %}
-                <div class="ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>     
+                <div class="ui red button" id="signout"><b><i class="sign out icon"></i></b>Sign out</div>     
             {% endif %}
         </div>
     </div>
@@ -188,7 +188,7 @@
 
 
             var login_modal = $('.top.menu > .login.modal' )
-            $('.top.menu > .container > .right.menu > .item > .signin.button')
+            $('#signin')
             .click( function(){
                 $(login_modal).modal('show')
             });
@@ -199,7 +199,7 @@
                 $(signup_modal).modal('show')
             });
 
-            $('.top.menu > .container > .right.menu > .item > .signout.button')
+            $('#signout')
             .click( function(){
                 $(this).addClass( 'loading disabled' );
                 $.get(
