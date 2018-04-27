@@ -21,7 +21,6 @@ class Submission(models.Model):
     class Judge:
         field = ['submission_id' , 'language' , 'problem' , 'code' ]
 
-
 def validator_fetch_judge( function ):
     def wrapper( * argv , ** kw ):
         try:

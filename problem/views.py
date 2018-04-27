@@ -9,10 +9,11 @@ import json
 def problem_detail_view(request, problem_id):
     try:
         prob = get_object_or_404(Problem, problem_id=problem_id)
+        print(prob.sample_set.all() )
         return render(request, 'problem/problem_detail.html', {
             'prob' : prob,
             'support_lang': settings.SUPPORT_LANGUAGE_LIST,
-            'sample' : zip( json.loads(prob.sample_input) , json.loads(prob.sample_output) )
+            'sample': prob.sample_set.all()
             })
     except:
         raise Http404
