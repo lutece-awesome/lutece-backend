@@ -6,6 +6,8 @@ class Problem(models.Model):
     title = models.CharField(
         max_length=256, db_index=True, default='Default Title')
     content = models.CharField(max_length=58000, blank=True)
+    standard_input = models.CharField(max_length = 1024 , blank = True)
+    standard_output = models.CharField(max_length = 1024 , blank = True)
     constraints = models.CharField(max_length=1024, blank=True)
     sample_explanation = models.CharField(max_length=1024, blank=True)
     resource = models.CharField(max_length=256, blank=True)
