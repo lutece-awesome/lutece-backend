@@ -21,6 +21,17 @@ class Submission(models.Model):
     class Judge:
         field = ['submission_id' , 'language' , 'problem' , 'code' ]
 
+class Judgeinfo(models.Model):
+    judgeinfo_id = models.AutoField(primary_key=True, db_index=True)
+    submission = models.OneToOneField(Submission, on_delete=models.CASCADE)
+    timecost = models.CharField( max_length = 12 )
+    memorycost = models.CharField( max_length = 12 )
+    addition_info = models.CharField( max_length = 512 )
+
+    def __str__(self):
+        return str(self.judgeinfo_id)
+
+
 def validator_fetch_judge( function ):
     def wrapper( * argv , ** kw ):
         try:

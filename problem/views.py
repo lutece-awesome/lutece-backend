@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from .models import Problem
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import json
 
 def problem_detail_view(request, problem_id):
     try:

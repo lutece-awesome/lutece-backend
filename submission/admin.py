@@ -1,5 +1,13 @@
 from django.contrib import admin
-from .models import Submission
+from .models import Submission, Judgeinfo
 
-# Register your models here.
-admin.site.register(Submission)
+
+class Inline(admin.StackedInline):
+    model = Judgeinfo
+
+
+class SubmissionAdmin(admin.ModelAdmin):
+    inlines = (Inline,)
+
+
+admin.site.register( Submission , SubmissionAdmin)
