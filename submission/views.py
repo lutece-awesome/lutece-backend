@@ -44,7 +44,7 @@ def get_status_list(request , page):
     paginator = Paginator(statuslist, settings.PER_PAGE_COUNT)
     page = min( max( 1 , page ) , paginator.num_pages )
     status = paginator.get_page(page)
-    return render(request, 'statusall/status_list.html', {
+    return render(request, 'status/status_list.html', {
         'statuslist': status,
         'max_page': paginator.num_pages,
         'page_list' : range( max( 1 , page - settings.PER_PAGINATOR_COUNT ) , min( page + settings.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )
@@ -69,3 +69,7 @@ def fetch_waiting_submission(request):
 def Modify_submission_status(request):
     submission_id = request.POST.get( 'submission_id' )
     print( submission_id )
+
+def get_status_detail(request , submission_id):
+    f = Submission.objects.get( submission_id = submission_id )
+    pass
