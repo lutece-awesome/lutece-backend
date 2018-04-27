@@ -61,33 +61,32 @@
         </div>
 
         <div id = "submit_modal" class="ui submit modal">
-            <br/>
             <div class = 'ui middle aligned center header'>
                 Submit
             </div>
-            <div class="ui form textarea window">
-                <textarea id = 'code_textarea'>
+            <textarea id='code_textarea'>
 #include <bits/stdc++.h>
 
 using namespace std;
 
 int main( int argc , char * argv[] ){
-    printf( "Hello Lutece!" );
-    return 0;
+printf( "Hello Lutece!" );
+return 0;
 }
-                </textarea>
-            </div>
+            </textarea>
 
-            <div id = "languagelist" class="ui language selection dropdown">
-                <i class="dropdown icon"></i>
-                <div class="submit language text">{{support_lang.0}}</div>
-                <div class="menu">
-                    {% for it in support_lang %}
-                        <div class="item">{{it}}</div>
-                    {% endfor %}
+            <div id="bottom_menu">
+                <div id = "languagelist" class="ui language selection dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="submit language text">{{support_lang.0}}</div>
+                    <div class="menu">
+                        {% for it in support_lang %}
+                            <div class="item">{{it}}</div>
+                        {% endfor %}
+                    </div>
                 </div>
+                <div id = "code_submit_button"><i class = 'ui large secondary button'>Submit</i></div>
             </div>
-            <div id = "code_submit_button"><i class = 'ui large secondary button'>Submit</i></div>
         </div>
     </div>
 
