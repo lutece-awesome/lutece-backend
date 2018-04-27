@@ -6,14 +6,14 @@
         <a class="item" href = {% url 'submission-status-list' 1 %}><i class="bar chart icon"></i>Status</a>
         <a class="item" ><i class="trophy icon"></i>Contest</a>
         <a class="item" ><i class="lab icon"></i>Lab</a>
-        <div class="right menu">
-            <div class="item">
-                {% if user.is_authenticated == False %}
-                    <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
-                {% else %}
-                    <div class="ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>     
-                {% endif %}
-            </div>
+    </div>
+    <div class="right menu">
+        <div class="item">
+            {% if user.is_authenticated == False %}
+                <div class="ui primary signin button"><b><i class="sign in icon"></i></b>Sign in</div>
+            {% else %}
+                <div class="ui red signout button"><b><i class="sign out icon"></i></b>Sign out</div>     
+            {% endif %}
         </div>
     </div>
 

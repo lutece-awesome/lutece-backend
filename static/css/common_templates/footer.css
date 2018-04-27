@@ -1,10 +1,10 @@
 .ui.footer{
-    margin-top: 50px;
+    margin-top: 20px;
     width: 100%;
     font-size: 16px;
     text-align: center;
 }
 
-.ui.footer>.author{
-    margin-top: 13px;
+.ui.footer{
+    line-height: 30px;
 }
