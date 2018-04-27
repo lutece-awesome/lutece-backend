@@ -1,6 +1,5 @@
 .problem.detail>.summary{
     text-align: center;
-    margin-top: 90px;
 }
 
 .problem.detail>.summary>.limit{
@@ -17,9 +16,13 @@
     font-size: 16px;
 }
 
+.textarea {
+    height: 100%;
+}
+
 #code_textarea {
-    max-height:650px;
-    height: 650px;
+    height: 500px;
+    width: 100%;
     line-height: 1.9;
     font-size: 15px;
 }
@@ -28,17 +31,22 @@
     text-align: center;
 }
 
-#bottom_menu{
-    margin-top:20px;
-    margin-bottom: 20px;
+#bottom_menu {
+    height: 60px;
+    line-height: 60px;
+    width: 100%;
+    text-align: center;
 }
 
 #languagelist{
-    margin-top:20px;
+    position: absolute;
+    left: 0;
 }
 
 #code_submit_button{
-    text-align: center;
-    margin-top:-38px;
-    margin-bottom: 20px;
+    display: inline-block;
+}
+
+#submit_modal {
+    display: table;
 }
