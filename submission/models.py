@@ -23,11 +23,12 @@ class Submission(models.Model):
 
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index=True)
-    submission = models.OneToOneField(Submission, on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    result = models.CharField( max_length = 64 , default = '' )
     timecost = models.CharField( max_length = 12 )
     memorycost = models.CharField( max_length = 12 )
     addition_info = models.CharField( max_length = 512 )
-
+    case = models.IntegerField( default = 0 , unique = True )
     def __str__(self):
         return str(self.judgeinfo_id)
 

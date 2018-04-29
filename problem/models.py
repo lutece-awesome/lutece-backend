@@ -5,7 +5,8 @@ class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
     title = models.CharField(
         max_length=256, db_index=True, default='Default Title')
-    content = models.CharField(max_length=58000, blank=True)
+    #content = models.CharField(max_length=58000, blank=True)
+    content = models.TextField( blank=True )
     standard_input = models.CharField(max_length = 1024 , blank = True)
     standard_output = models.CharField(max_length = 1024 , blank = True)
     constraints = models.CharField(max_length=1024, blank=True)

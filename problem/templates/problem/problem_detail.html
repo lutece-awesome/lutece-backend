@@ -22,9 +22,9 @@
             </div>
         </div>
         <div class = 'body'>
-            <p class = 'content'>{{prob.content}}</p>
+            <p class = 'content'>{{prob.content|linebreaks}}</p>
             <h2 class= 'ui header'>Standard Input</h2>
-            <p class = 'content'>{{prob.standard_input}}</p>
+            <p class = 'content'>{{prob.standard_input|linebreaks}}</p>
             <h2 class= 'ui header'>Standard Output</h2>
             <p class = 'content'>{{prob.standard_output}}</p>
             {% if  prob.constraints|length > 0  %}

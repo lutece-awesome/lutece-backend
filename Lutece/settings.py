@@ -159,15 +159,13 @@ MAX_SOURCECORE_LENGTH = 60000
 '''
 SUPPORT_LANGUAGE_LIST=[
     'GNU G++17',
-    'CLANG++17',
+    'Clang 6.0.0',
     'GNU GCC 7.3',
     'Python 3.6.5',
-    'Python 2.7.12',
-    'Java 1.9.0',
+    'Java 10',
     'Go 1.9.2',
     'Ruby 2.5.1',
     'Rust 1.25.0',
-    'Haskell'
 ]
 
 # Judge Status and error code
@@ -182,7 +180,7 @@ JUDGE_RESULT = {
     'Time Limit Exceeded' : 7,
     'Output Limit Exceeded' : 8,
     'Memory Limit Exceeded' : 9,
-    'Judgement Error' : 10,
+    'Judger Error' : 10,
 }
 
 # Judge Fetch valid ip

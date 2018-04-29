@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse,Http404
+from django.views.decorators.csrf import csrf_exempt
 from annoying.functions import get_object_or_None
 from user.models import login_required_ajax
 from json import dumps
 from django.conf import settings
-from .models import Submission, validator_fetch_judge
+from .models import Submission, validator_fetch_judge, Judgeinfo
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import User
@@ -65,10 +66,25 @@ def fetch_waiting_submission(request):
     finally:
         return HttpResponse( dumps( fetch_status ) , content_type = 'application/json' )
 
+
+@csrf_exempt
 @validator_fetch_judge
 def Modify_submission_status(request):
     submission_id = request.POST.get( 'submission_id' )
-    print( submission_id )
+    status = request.POST.get( 'status' )
+    timecost = request.POST.get( 'timecost' )
+    memorycost = request.POST.get( 'memorycost' )
+    info = request.POST.get( 'info' )
+    case = request.POST.get( 'case' )
+    Judgeinfo(
+        submission = Submission.objects.get( submission_id = submission_id ),
+        result = status,
+        timecost = timecost,
+        memorycost = memorycost,
+        addition_info = info,
+        case = case
+    ).save()
+    return HttpResponse( dumps( {'status': 'success'} ) , content_type = 'application/json' )
 
 def get_status_detail(request , submission_id):
     f = Submission.objects.get( submission_id = submission_id )
