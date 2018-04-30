@@ -37,7 +37,7 @@
                         <tr>
                             <td>{{it.submission_id}} </td>
                             <td>{{it.user.display_name}} </td>                
-                            <td>{{it.problem.title}} </td>
+                            <td ><a href = {% url 'problem-detail-view' it.problem.problem_id %} >{{it.problem.title}}</a></td>
                             <td>{{it.judge_status}} </td>
                             <td><i class = 'ui help icon'></i></td>
                             <td><i class = 'ui help icon'></i></td>

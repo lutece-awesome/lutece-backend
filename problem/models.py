@@ -23,6 +23,9 @@ class Problem(models.Model):
 
     class Meta:
         ordering = ['problem_id']
+        permissions = (
+            ('download_data' , 'Can download test data' ),
+        )
 
 
 class Sample(models.Model):

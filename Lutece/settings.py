@@ -183,7 +183,7 @@ JUDGE_RESULT = {
     'Judger Error' : 10,
 }
 
-# Judge Fetch valid ip
+# Judge Fetch valid ip pool
 JUDGE_VALID_IPPOOL = [
     '127.0.0.1'
 ]

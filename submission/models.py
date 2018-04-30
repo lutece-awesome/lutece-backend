@@ -40,7 +40,7 @@ class Judgeinfo(models.Model):
     time_cost = models.CharField( max_length = 12 )
     memory_cost = models.CharField( max_length = 12 )
     additional_info = models.CharField( max_length = 512 )
-    case = models.SmallIntegerField( null = True , editable = False )
+    case = models.SmallIntegerField( null = True , editable = False , db_index = True )
 
     def __str__(self):
         return str(self.judgeinfo_id)
