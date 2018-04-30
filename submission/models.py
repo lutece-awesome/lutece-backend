@@ -20,17 +20,33 @@ class Submission(models.Model):
 
     class Judge:
         field = ['submission_id' , 'language' , 'problem' , 'code' ]
+        problem_field = [ 'time_limit' , 'memory_limit' , 'checker' ]
+        ignore_field = [ 'complete' ]
+
+    def get_problem_field( self , dic ):
+        for _ in self.Judge.problem_field:
+            dic[_] = getattr( self.problem , _ )
+    
+            
+def get_update_field( dic ):
+    for _ in Submission.Judge.ignore_field:
+        dic.pop( _ )
+    return dic
 
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index=True)
-    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE )
     result = models.CharField( max_length = 64 , default = '' )
-    timecost = models.CharField( max_length = 12 )
-    memorycost = models.CharField( max_length = 12 )
-    addition_info = models.CharField( max_length = 512 )
-    case = models.IntegerField( default = 0 , unique = True )
+    time_cost = models.CharField( max_length = 12 )
+    memory_cost = models.CharField( max_length = 12 )
+    additional_info = models.CharField( max_length = 512 )
+    case = models.SmallIntegerField( null = True , editable = False )
+
     def __str__(self):
         return str(self.judgeinfo_id)
+    
+    class Meat:
+        ordering = ['case']
 
 
 def validator_fetch_judge( function ):

@@ -11,3 +11,4 @@ class SubmissionAdmin(admin.ModelAdmin):
 
 
 admin.site.register( Submission , SubmissionAdmin)
+admin.site.register( Judgeinfo )

@@ -26,10 +26,10 @@
             <h2 class= 'ui header'>Standard Input</h2>
             <p class = 'content'>{{prob.standard_input|linebreaks}}</p>
             <h2 class= 'ui header'>Standard Output</h2>
-            <p class = 'content'>{{prob.standard_output}}</p>
+            <p class = 'content'>{{prob.standard_output|linebreaks}}</p>
             {% if  prob.constraints|length > 0  %}
                 <h2 class='ui header'> Constraints </h2>
-                <p class='content'>{{prob.constraints}}</p>
+                <p class='content'>{{prob.constraints|linebreaks}}</p>
             {% endif%}
 
             <h2 class= 'ui header'>Sample</h2>
@@ -43,15 +43,15 @@
                         <tbody>
                             {% for it in sample %}
                                 <tr>
-                                    <td>{{it.input_content}}</td>
-                                    <td>{{it.output_content}}</td>
+                                    <td>{{it.input_content|linebreaks}}</td>
+                                    <td>{{it.output_content|linebreaks}}</td>
                                 </tr>
                             {% endfor%}
                         </tbody>
                 </table>
             {% if  prob.sample_explanation|length > 0  %}
                 <h2 class='ui header'>Note</h2>
-                <p class='content'>{{prob.sample_explanation}}</p>
+                <p class='content'>{{prob.sample_explanation|linebreaks}}</p>
             {% endif%}
 
             {% if  prob.resource|length > 0  %}

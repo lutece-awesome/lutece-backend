@@ -5,7 +5,7 @@ from annoying.functions import get_object_or_None
 from user.models import login_required_ajax
 from json import dumps
 from django.conf import settings
-from .models import Submission, validator_fetch_judge, Judgeinfo
+from .models import Submission, validator_fetch_judge, Judgeinfo, get_update_field
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from user.models import User
@@ -57,10 +57,10 @@ def fetch_waiting_submission(request):
         'status' : False,
     }
     try:
-        s = Submission.objects.raw( 'SELECT submission_id, MAX( submission_id ) from submission_Submission where judge_status == \'Waiting\'' )[0]
+        s = Submission.objects.raw( 'SELECT submission_id, MIN( submission_id ) from submission_Submission where judge_status == \'Waiting\'' )[0]
         if s != None:
-            s = model_to_dict( s , fields = Submission.Judge.field )
-            fetch_status = { **s , ** fetch_status }
+            s.get_problem_field( fetch_status )
+            fetch_status = { ** fetch_status ,  ** model_to_dict( s , fields = Submission.Judge.field ) }
             Submission.objects.filter( submission_id = fetch_status['submission_id'] ).update( judge_status = 'Preparing' )
             fetch_status['status'] = True
     finally:
@@ -70,21 +70,26 @@ def fetch_waiting_submission(request):
 @csrf_exempt
 @validator_fetch_judge
 def Modify_submission_status(request):
-    submission_id = request.POST.get( 'submission_id' )
-    status = request.POST.get( 'status' )
-    timecost = request.POST.get( 'timecost' )
-    memorycost = request.POST.get( 'memorycost' )
-    info = request.POST.get( 'info' )
+    submission = request.POST.get( 'submission' )
     case = request.POST.get( 'case' )
-    Judgeinfo(
-        submission = Submission.objects.get( submission_id = submission_id ),
-        result = status,
-        timecost = timecost,
-        memorycost = memorycost,
-        addition_info = info,
-        case = case
-    ).save()
-    return HttpResponse( dumps( {'status': 'success'} ) , content_type = 'application/json' )
+    result = request.POST.get( 'result' )
+    complete = request.POST.get( 'complete' )
+    if result == 'Running':
+        Submission.objects.filter( submission_id = submission ).update( judge_status = 'Running on test ' + str( case ) )
+    else:
+        sub = Submission.objects.get( submission_id = submission )
+        if get_object_or_None( Judgeinfo , submission = sub , case = case ) == None:
+            Judgeinfo(
+                submission = sub,
+                case = case).save()
+        Judgeinfo.objects.filter( submission = submission , case = case ).update( ** get_update_field( request.POST.dict() ) )
+        if complete == 'True':
+            msg = result
+            if result != 'Accepted' and result != 'Compile Error' and result != 'Judger Error':
+                msg += ' on test ' + str( case )
+            Submission.objects.filter( submission_id = submission ).update( judge_status = msg )
+    return HttpResponse( None )
+
 
 def get_status_detail(request , submission_id):
     f = Submission.objects.get( submission_id = submission_id )

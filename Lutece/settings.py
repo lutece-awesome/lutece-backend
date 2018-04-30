@@ -172,9 +172,9 @@ SUPPORT_LANGUAGE_LIST=[
 JUDGE_RESULT = {
     'Waiting' : 0, # Waiting for judge
     'Preparing' : 1, # Submission has been fetched by one judge
-    'Compiling' : 2,
+    'Running' : 2,
     'Accepted' : 3,
-    'Compilation Error' : 4,
+    'Compile Error' : 4,
     'Wrong Answer' : 5,
     'Runtime Error' : 6,
     'Time Limit Exceeded' : 7,
