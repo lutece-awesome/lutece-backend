@@ -4,6 +4,10 @@
     font-size: 12px;
 }
 
+.edit.container #content-textarea{
+    max-height: 100%;
+}
+
 .edit.container #submit{
     display: block;
 }
