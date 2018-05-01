@@ -2,7 +2,6 @@ from django.db import models
 from user.models import User
 from problem.models import Problem
 import django.utils.timezone as timezone
-from submission.validator import validate_fetch_judge
 from django.http import Http404
 
 # Create your models here.
@@ -17,21 +16,20 @@ class Submission(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE , null = True)
     class Meta:
         ordering = ['-submission_id']
+        permissions = (
+            ('view_all' , 'Can view all submission' ),
+        )
 
     class Judge:
         field = ['submission_id' , 'language' , 'problem' , 'code' ]
         problem_field = [ 'time_limit' , 'memory_limit' , 'checker' ]
-        ignore_field = [ 'complete' ]
+        update_field = [ 'submission' , 'result' , 'time_cost' , 'memory_cost' , 'additional_info' , 'case' ]
 
     def get_problem_field( self , dic ):
         for _ in self.Judge.problem_field:
             dic[_] = getattr( self.problem , _ )
     
             
-def get_update_field( dic ):
-    for _ in Submission.Judge.ignore_field:
-        dic.pop( _ )
-    return dic
 
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index=True)
@@ -48,15 +46,3 @@ class Judgeinfo(models.Model):
     class Meat:
         ordering = ['case']
 
-
-def validator_fetch_judge( function ):
-    def wrapper( * argv , ** kw ):
-        try:
-            if validate_fetch_judge( argv[0] ) == False:
-                raise PermissionError()
-        except PermissionError:
-            raise Http404( 'Permission Denied' )
-        except:
-            raise Http404( 'Unknown Error' )
-        return function( * argv , ** kw )
-    return wrapper

@@ -2,13 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse,Http404
 from django.views.decorators.csrf import csrf_exempt
 from annoying.functions import get_object_or_None
-from user.models import login_required_ajax
+from user.models import User
+from user.decorators import login_required_ajax
 from json import dumps
 from django.conf import settings
-from .models import Submission, validator_fetch_judge, Judgeinfo, get_update_field
+from .models import Submission, Judgeinfo
+from .decorators import validator_fetch_judge
+from .util import get_update_dict
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from user.models import User
 from django.forms.models import model_to_dict
 # Create your views here.
 
@@ -82,7 +84,7 @@ def Modify_submission_status(request):
             Judgeinfo(
                 submission = sub,
                 case = case).save()
-        Judgeinfo.objects.filter( submission = submission , case = case ).update( ** get_update_field( request.POST.dict() ) )
+        Judgeinfo.objects.filter( submission = submission , case = case ).update( ** get_update_dict( request.POST.dict() ) )
         if complete == 'True':
             msg = result
             if result != 'Accepted' and result != 'Compile Error' and result != 'Judger Error':

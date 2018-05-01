@@ -168,6 +168,28 @@ SUPPORT_LANGUAGE_LIST=[
     'Rust 1.25.0',
 ]
 
+# basic checker from testlib.h
+CHECKER_LIST=[
+    'wcmp: compare sequences of tokens',
+    'acmp: compare two doubles, maximal absolute error = 1.5E-6',
+    'caseicmp: Single int64 checker with testcase-support',
+    'casencmp: Many int64s checker with testcase-support',
+    'casewcmp: Tokens checker with testcase-support',
+    'dcmp: compare two doubles, maximal absolute or relative error = 1E-6',
+    'fcmp: compare files as sequence of lines',
+    'hcmp: compare two signed huge integers',
+    'icmp: compare two signed int',
+    'lcmp: compare files as sequence of tokens in lines' ,
+    'ncmp: compare ordered sequences of signed int numbers' ,
+    'rcmp: compare two doubles, maximal absolute error = 1.5E-6' ,
+    'rcmp4: compare two sequences of doubles, max absolute or relative error = 1E-4' ,
+    'rcmp6: compare two sequences of doubles, max absolute or relative  error = 1E-6' ,
+    'rcmp9: compare two sequences of doubles, max absolute or relative error = 1E-9' ,
+    'rncmp: compare two sequences of doubles, maximal absolute error = 1.5E-5' ,
+    'uncmp: compare unordered sequences of signed int numbers' ,
+]
+
+
 # Judge Status and error code
 JUDGE_RESULT = {
     'Waiting' : 0, # Waiting for judge

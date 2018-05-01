@@ -18,7 +18,9 @@
             <div class = 'menu'>
                 <div class = 'ui basic primary submit button'><i class = 'location arrow icon'></i><b>Submit</b></div>
                 <div class = 'ui basic secondary status button'><i class = 'signal icon'></i><b>Status</b></div>
-                <div class = 'ui basic orange edit button'><i class = 'folder open icon'></i><b>Edit</b></div>
+                {% if perms.problem.change_problem %}
+                    <div class = 'ui basic orange edit button'><i class = 'edit icon'></i><b>Edit</b></div>
+                {% endif %}
             </div>
         </div>
         <div class = 'body'>
@@ -64,17 +66,137 @@
             <div class = 'ui middle aligned center header'>
                 Submit
             </div>
-            <textarea id='code_textarea'>
-#include <bits/stdc++.h>
+            <textarea spellcheck = "false" id='code_textarea'>
+#include <cstdio>
+#include <algorithm>
 
 using namespace std;
 
-int main( int argc , char * argv[] ){
-printf( "Hello Lutece!" );
-return 0;
-}
-            </textarea>
+const int maxn = 1e5 + 50;
 
+using ul = unsigned int;
+
+int n , Q;
+ul a[maxn];
+
+namespace SegmentTree{
+    struct Node{
+        int l , r;
+        pair < ul , ul > g;
+        ul sum , lzy , pw;
+
+        void Backup( pair < ul , ul > s ){
+            g.first += s.first , g.second += s.first * lzy + s.second;
+            pw += s.first * sum + s.second * ( r - l + 1 );
+        }
+
+        void Update( ul x ){
+            if( l ^ r ) lzy += x;
+            sum += x * ( r - l + 1 );
+        }
+    }tree[maxn << 2];
+
+    void ReleaseLabel( int o ){
+        tree[o << 1].Backup( tree[o].g );
+        tree[o << 1 | 1].Backup( tree[o].g );
+        tree[o].g = make_pair( 0 , 0 );
+        if( tree[o].lzy ){
+            tree[o << 1].Update( tree[o].lzy );
+            tree[o << 1 | 1].Update( tree[o].lzy );
+            tree[o].lzy = 0;
+        }
+    }
+
+    void Maintain( int o ){
+        tree[o].sum = tree[o << 1].sum + tree[o << 1 | 1].sum;
+        tree[o].pw = tree[o << 1].pw + tree[o << 1 | 1].pw;
+    }
+
+    void Build( int l , int r , int o ){
+        tree[o].l = l , tree[o].r = r;
+        if( l < r ){
+            int mid = l + r >> 1;
+            Build( l , mid , o << 1 );
+            Build( mid + 1 , r , o << 1 | 1 );
+            Maintain( o );
+        }else
+            tree[o].sum = a[l];
+    }
+
+    void Backup( int ql , int qr , ul k , ul b , int o ){
+        int l = tree[o].l , r = tree[o].r;
+        if( ql <= l && r <= qr )
+            tree[o].Backup( { k , b } );
+        else{
+            int mid = l + r >> 1;
+            ReleaseLabel( o );
+            if( ql <= mid )
+                Backup( ql , qr , k , b , o << 1 );
+            if( qr > mid )
+                Backup( ql , qr , k , b , o << 1 | 1 );
+            Maintain( o );
+        }
+    }
+
+    void Modify( int ql , int qr , ul x , int o ){
+        int l = tree[o].l , r = tree[o].r;
+        if( ql <= l && r <= qr )
+            tree[o].Update( x );
+        else{
+            int mid = l + r >> 1;
+            ReleaseLabel( o );
+            if( ql <= mid )
+                Modify( ql , qr , x , o << 1 );
+            if( qr > mid )
+                Modify( ql , qr , x , o << 1 | 1 );
+            Maintain( o );
+        }
+    }
+
+    ul Query( int ql , int qr , int o ){
+        int l = tree[o].l , r = tree[o].r;
+        if( ql <= l && r <= qr )
+            return tree[o].pw;
+        else{
+            int mid = l + r >> 1;
+            ReleaseLabel( o );
+            ul ret = 0;
+            if( ql <= mid ) ret += Query( ql , qr , o << 1 );
+            if( qr > mid ) ret += Query( ql , qr , o << 1 | 1 );
+            Maintain( o );
+            return ret;
+        }
+    }
+};
+
+int main( int argc , char * argv[] ){
+    scanf( "%d%d" , & n , & Q );
+    for(int i = 1 ; i <= n ; ++ i)
+        scanf( "%u" , a + i );
+    SegmentTree::Build( 1 , n , 1 );
+    while( Q -- ){
+        int type ;
+        scanf( "%d" , & type );
+        if( type == 1 ){
+            int l , r;
+            ul x;
+            scanf( "%d%d%u" , & l , & r , & x );
+            SegmentTree::Modify( l , r , x , 1 );
+        }
+        if( type == 2 ){
+            int l , r;
+            ul k , b;
+            scanf( "%d%d%u%u" , & l , & r , & k , & b );
+            SegmentTree::Backup( l , r , k , b , 1 );
+        }
+        if( type == 3 ){
+            int l , r;
+            scanf( "%d%d" , & l , & r );
+            printf( "%u\n" , SegmentTree::Query( l , r , 1 ) );
+        }
+    }
+    return 0;
+}</textarea>
             <div id="bottom_menu">
                 <div id = "languagelist" class="ui language selection dropdown">
                     <i class="dropdown icon"></i>
@@ -91,45 +213,52 @@ return 0;
     </div>
 
     <script>
-        $('.ui.language.dropdown')
-            .dropdown()
-        ;
 
-        $('.problem.detail > .summary > .menu > .submit').click(function () {
-            '{% if user.is_authenticated == True %}'
-                $('#submit_modal').modal('show');
-            '{% else %}'
-                $('.login.modal' ).modal( 'show' );
-            '{% endif %}'
-        });
-
-        $('#code_submit_button > .button').click(function(){
-            var code = $('#code_textarea')["0"].value;
-            var lang = $("#languagelist")[0].innerText;
-            //alert( "Submit code is " + code + " Lang is " + lang );
-            $(this)
-                .addClass( 'loading disabled' )
+        $(document).ready(function(){
+            $('.ui.language.dropdown')
+                .dropdown()
             ;
-            var problemid = '{{prob.problem_id}}';
-            $.ajaxSetup({
-                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+
+            $('.problem.detail > .summary > .menu > .submit').click(function () {
+                '{% if user.is_authenticated == True %}'
+                    $('#submit_modal').modal('show');
+                '{% else %}'
+                    $('.login.modal' ).modal( 'show' );
+                '{% endif %}'
             });
-            $.post(
-                '{% url "submission-submit-solution" %}',
-                {
-                    'problemid' : problemid,
-                    'code' : code,
-                    'language' : lang,
-                },
-                function(data,status){
-                    if( status == 'success' ){
-                        //alert(data.submission_id);
+    
+            $('.problem.detail > .summary > .menu > .edit').click(function () {
+                window.location = '{% url "problem-edit-view" prob.problem_id %} ';
+            });
+    
+            $('#code_submit_button > .button').click(function(){
+                var code = $('#code_textarea')["0"].value;
+                var lang = $("#languagelist")[0].innerText;
+                //alert( "Submit code is " + code + " Lang is " + lang );
+                $(this)
+                    .addClass( 'loading disabled' )
+                ;
+                var problemid = '{{prob.problem_id}}';
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{% url "submission-submit-solution" %}',
+                    {
+                        'problemid' : problemid,
+                        'code' : code,
+                        'language' : lang,
+                    },
+                    function(data,status){
+                        if( status == 'success' ){
+                            //alert(data.submission_id);
+                        }
+                        $('#code_submit_button > .button').
+                            removeClass( 'loading disabled' )
+                        ;
                     }
-                    $('#code_submit_button > .button').
-                        removeClass( 'loading disabled' )
-                    ;
-                }
-            )
+                )
+            });                
         });
     </script>
 {% endblock content %}

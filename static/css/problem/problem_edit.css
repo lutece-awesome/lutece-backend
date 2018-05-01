@@ -1,0 +1,9 @@
+.edit.container textarea,input,#checker-selection{
+    font-family: 'monospace';
+    line-height: 1.2;
+    font-size: 12px;
+}
+
+.edit.container #submit{
+    display: block;
+}

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+
+{% block extra_head %}
+    {% load staticfiles %}
+        <link href="{% static 'css/problem/problem_edit.css' %}" rel="stylesheet" />
+{% endblock extra_head %}
+
+{% block title %}
+    <title> Lutece | {{prob.title}} </title>
+{% endblock title %}
+
+{% block content %}
+    <div class ='edit container'>
+        <form class="ui form segment">
+            
+            <h1 class="ui aligned center header">Problem {{ prob.problem_id }} </h1>
+
+
+            <div id = "title-box" class = "title field aligned center" >
+                <label>Title</label>
+                <input type = "text" name = "Title" placeholder = "Title" value = {{ prob.title }} maxlength = "32" >
+            </div>
+
+            
+            <div class="inline fields">
+                <div class = 'field'>
+                    <i class = 'ui red clock icon'></i>
+                </div>
+                <div class="field">
+                    <input type="text" name="Timelimit" maxlength = "5" value = {{ prob.time_limit }} >
+                </div>
+                <div class="field">
+                    Milliseconds
+                </div>
+            </div>
+
+            <div class="inline fields">
+                <div class = 'field'>
+                    <i class = 'ui exclamation circle icon'></i>
+                </div>
+                <div class="field">
+                    <input type="text" name="Memorylimit" maxlength = "4" value = {{ prob.memory_limit }} >
+                </div>
+                <div class="field">
+                    Megabytes
+                </div>
+            </div>
+
+            <div id = 'checker-selection' class ='inline fields'>
+                <label>Checker</label>
+                <div id = "checkerlist" class="ui fluid selection dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="submit language text">{{checker.0}}</div>
+                    <div class="menu">
+                        {% for it in checker %}
+                            <div class="item">{{it}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="inline fields">
+                <label>Visible</label>
+                <div id = "visible-checkbox" class="ui toggle checkbox">
+                    <input type="checkbox" tabindex="0" class="hidden">
+                </div>
+            </div>
+
+
+            <div class="field">
+                <label> Content</label>
+                <textarea id = "content-textarea" >{{ prob.content }}</textarea>
+            </div>
+
+            <div class="field">
+                <label> Standard Input</label>
+                <textarea id = "standard-input-textarea">{{ prob.standard_input }}</textarea>
+            </div>
+
+            <div class="field">
+                <label> Standard Output</label>
+                <textarea id = "standard-output-textarea">{{ prob.standard_output }}</textarea>
+            </div>
+
+            <div class="field">
+                <label> Constraints</label>
+                <textarea id = "constraints-textarea">{{ prob.constraints }}</textarea>
+            </div>
+
+            <div id = "resource-box" class = 'four wide field'>
+                <label>Resource</label>
+                <input type="text" name="Resource" maxlength = "200" >
+            </div>
+
+            <div id = "submit" class = 'ui primary button'>Submit</div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#visible-checkbox').checkbox();
+
+            $('#checkerlist')
+                .dropdown()
+            ;
+
+        });
+    </script>
+{% endblock content %}

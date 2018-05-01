@@ -4,11 +4,11 @@ from django.http import HttpResponse
 from .models import Problem
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import permission_required
 
 def problem_detail_view(request, problem_id):
     try:
         prob = get_object_or_404(Problem, problem_id=problem_id)
-        print(prob.sample_set.all() )
         return render(request, 'problem/problem_detail.html', {
             'prob' : prob,
             'support_lang': settings.SUPPORT_LANGUAGE_LIST,
@@ -28,3 +28,10 @@ def problem_list_view(request, page):
         'max_page': paginator.num_pages,
         'page_list' : range( max( 1 , page - settings.PER_PAGINATOR_COUNT ) , min( page + settings.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )
     })
+
+@permission_required( 'problem.change_problem' )
+def problem_edit_view( request , problem_id ):
+    prob = get_object_or_404(Problem, problem_id=problem_id)
+    return render( request , 'problem/problem_edit.html',{
+        'prob' : prob,
+        'checker' : settings.CHECKER_LIST })

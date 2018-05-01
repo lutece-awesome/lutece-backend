@@ -21,10 +21,11 @@
 }
 
 #code_textarea {
-    height: 500px;
+    height: 600px;
     width: 100%;
-    line-height: 1.9;
-    font-size: 15px;
+    line-height: 2.0;
+    font-size: 12px;
+    font-family: 'monospace'
 }
 
 #submit_solution_button{
