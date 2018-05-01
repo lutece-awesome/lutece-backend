@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import User
+from .models import User, Group
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
 from json import dumps
@@ -91,10 +91,13 @@ def user_signup(request):
                 new_user = User(
                     username = username,
                     email = email,
-                    display_name = displayname
+                    display_name = displayname,
+                    is_staff = False,
+                    is_superuser = False,
                 )
                 new_user.set_password( password )
                 status['signup_status'] = True
+                new_user.set_group( Group.normal_user )
                 new_user.save()
                 login(request,new_user)
     finally:
