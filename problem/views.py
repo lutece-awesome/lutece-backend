@@ -5,6 +5,8 @@ from .models import Problem
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
+from .validator import check_title, check_timelimit, check_memorylimit
+from json import dumps
 
 def problem_detail_view(request, problem_id):
     try:
@@ -35,3 +37,43 @@ def problem_edit_view( request , problem_id ):
     return render( request , 'problem/problem_edit.html',{
         'prob' : prob,
         'checker' : settings.CHECKER_LIST })
+
+@permission_required( 'problem.change_problem' )
+def problem_update_view( request , problem_id ):
+    status = {
+        'update_status' : False,
+        'error_list': []}
+    err = status['error_list']
+    try:
+        title = request.POST.get('title')
+        timelimit = request.POST.get( 'timelimit' )
+        memorylimit = request.POST.get( 'memorylimit' )
+        checker = request.POST.get( 'checker' )
+        visible = request.POST.get( 'visible' )
+        content = request.POST.get('content')
+        standard_input = request.POST.get('standard_input')
+        standard_output = request.POST.get('standard_output')
+        constraints = request.POST.get('constraints')
+        resource = request.POST.get('resource')
+        check_title( title , err )
+        check_timelimit( timelimit , err )
+        check_memorylimit( memorylimit , err )
+        if len( err ) > 0:
+            raise ValueError( "Some Update field wrong" )
+        Problem.objects.filter( problem_id = problem_id ).update( 
+            title = title,
+            time_limit = int( timelimit ),
+            memory_limit = int( memorylimit ),
+            checker = checker,
+            visible = True if visible == 'true' else False,
+            content = content,
+            standard_input = standard_input,
+            standard_output = standard_output,
+            constraints = constraints,
+            resource = resource)
+        status['update_status'] = True
+    except Exception as e:
+        err.append( str( e ) )
+        err.reverse()
+    finally:
+        return HttpResponse(dumps(status), content_type='application/json')

@@ -12,14 +12,14 @@
 
 {% block content %}
     <div class ='edit container'>
-        <form class="ui form segment">
+        <form id = 'edit-form' class="ui form segment">
             
             <h1 class="ui aligned center header">Problem {{ prob.problem_id }} </h1>
 
 
-            <div id = "title-box" class = "title field aligned center" >
+            <div class = "inline title field aligned center" >
                 <label>Title</label>
-                <input type = "text" name = "Title" placeholder = "Title" value = {{ prob.title }} maxlength = "32" >
+                <input id = 'title-input' type = "text" name = "title"  value = {{ prob.title }} maxlength = "32" >
             </div>
 
             
@@ -28,7 +28,7 @@
                     <i class = 'ui red clock icon'></i>
                 </div>
                 <div class="field">
-                    <input type="text" name="Timelimit" maxlength = "5" value = {{ prob.time_limit }} >
+                    <input id = 'timelimit-input' type="number" name="Timelimit" maxlength = "5" value = {{ prob.time_limit }} >
                 </div>
                 <div class="field">
                     Milliseconds
@@ -40,7 +40,7 @@
                     <i class = 'ui exclamation circle icon'></i>
                 </div>
                 <div class="field">
-                    <input type="text" name="Memorylimit" maxlength = "4" value = {{ prob.memory_limit }} >
+                    <input id = 'memorylimit-input' type="number" name="Memorylimit" maxlength = "4" value = {{ prob.memory_limit }} >
                 </div>
                 <div class="field">
                     Megabytes
@@ -61,7 +61,7 @@
             </div>
 
             <div class="inline fields">
-                <label>Visible</label>
+                <label>Visible {{ prob.visible }} </label>
                 <div id = "visible-checkbox" class="ui toggle checkbox">
                     <input type="checkbox" tabindex="0" class="hidden">
                 </div>
@@ -115,18 +115,26 @@
                 </div>
             </div>
 
-            <div id = "resource-box" class = 'four wide field'>
+            <div class = 'seven wide field'>
                 <label>Resource</label>
-                <input type="text" name="Resource" maxlength = "200" >
+                <input id = "resource" type="text" name="resource" maxlength = "200" >
             </div>
 
-            <div id = "submit" class = 'ui primary button'>Submit</div>
+            <div id = "submit-form" class = 'ui primary button'>Submit</div>
+
+            <div id = "form-error-msg" class="ui negative message transition hidden"></div>
         </form>
     </div>
 
     <script>
+
         $(document).ready(function(){
+
             $('#visible-checkbox').checkbox();
+
+            '{%  if prob.visible == True %}'
+                $('#visible-checkbox').checkbox( 'set checked' );
+            '{% endif %}'
 
             $('#checker-selection').dropdown();
 
@@ -145,10 +153,65 @@
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub,"standard_output-textarea-render"]);
              });
 
-
              $('#constraints-textarea')[0].addEventListener('input' , function(){
                 $('#constraints-textarea-render')[0].innerText = $(this).val();
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub,"constraints-textarea-render"]);
+             });
+
+            function get_error_msgText( errlist ){
+                errlist = eval( errlist );
+                var ret = '';
+                for(var i = 0 ; i < errlist.length ; ++ i)
+                    ret = ret + '<li>' + errlist[i] + '</li>';
+                return '<ul class=\"list\">' + ret + '</ul>';
+            }
+
+             $('#submit-form').click(function(){
+                var title = $('#title-input').val();
+                var timelimit = $('#timelimit-input').val();
+                var memorylimit = $('#memorylimit-input').val();
+                var checker = $("#checker-selection")[0].innerText.split(":")[0];
+                var visible = $('#visible-checkbox').hasClass('checked');
+                var content = $('#content-textarea').val();
+                var standard_input = $('#standard_input-textarea').val();
+                var standard_output = $('#standard_output-textarea').val();
+                var constraints = $('#constraints-textarea').val();
+                var resource = $('#resource').val();
+                $(this)
+                    .addClass( 'loading disabled' )
+                ;
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{% url "problem-update-view" prob.problem_id %}',
+                    {
+                        'title' : title,
+                        'timelimit' : timelimit,
+                        'memorylimit' : memorylimit,
+                        'checker' : checker,
+                        'visible' : visible,
+                        'content' : content,
+                        'standard_input' : standard_input,
+                        'standard_output' : standard_output,
+                        'constraints' : constraints,
+                        'resource' : resource
+                    },
+                    function(data,status){
+                        if( status == 'success'  && data.update_status == true ){
+                            window.location = '{% url "problem-detail-view" prob.problem_id %} ';
+                        }
+                        $('#submit-form')
+                            .removeClass( 'loading disabled primary' )
+                            .addClass('red')
+                        ;
+                        $('#form-error-msg')
+                            .empty()
+                            .removeClass( 'hidden' )
+                            .append(get_error_msgText( data.error_list ))
+                        ;
+                    }
+                )
              });
         });
     </script>
