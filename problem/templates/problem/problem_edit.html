@@ -67,32 +67,52 @@
                 </div>
             </div>
 
+            <h4> Content</h4>
             <div class="inline two fields">
-                <label> Content</label>
                 <div class="field">
                     <textarea id = "content-textarea">{{ prob.content }}</textarea>
                 </div>
                 <div class ='field'>
-                    <div class="ui fluid container raised segment">
+                    <div id = "content-textarea-render" class="ui fluid container raised segment">
                         {{ prob.content | linebreaks }}
                     </div>
                 </div>
             </div>
 
-
-            <div class="field">
-                <label> Standard Input</label>
-                <textarea id = "standard-input-textarea">{{ prob.standard_input }}</textarea>
+            <h4> Standard Input</h4>
+            <div class="inline two fields">
+                <div class="field">
+                    <textarea id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
+                </div>
+                <div class ='field'>
+                    <div id = "standard_input-textarea-render" class="ui fluid container raised segment">
+                        {{ prob.standard_input | linebreaks }}
+                    </div>
+                </div>
             </div>
 
-            <div class="field">
-                <label> Standard Output</label>
-                <textarea id = "standard-output-textarea">{{ prob.standard_output }}</textarea>
+            <h4> Standard Output</h4>
+            <div class="inline two fields">
+                <div class="field">
+                    <textarea id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
+                </div>
+                <div class ='field'>
+                    <div id = "standard_output-textarea-render" class="ui fluid container raised segment">
+                        {{ prob.standard_output | linebreaks }}
+                    </div>
+                </div>
             </div>
 
-            <div class="field">
-                <label> Constraints</label>
-                <textarea id = "constraints-textarea">{{ prob.constraints }}</textarea>
+            <h4> Constraints</h4>
+            <div class="inline two fields">
+                <div class="field">
+                    <textarea id = "constraints-textarea">{{ prob.constraints }}</textarea>
+                </div>
+                <div class ='field'>
+                    <div id = "constraints-textarea-render" class="ui fluid container raised segment">
+                        {{ prob.constraints | linebreaks }}
+                    </div>
+                </div>
             </div>
 
             <div id = "resource-box" class = 'four wide field'>
@@ -110,12 +130,26 @@
 
             $('#checker-selection').dropdown();
 
-            var myElement = $("#content-textarea")[0];
-            var observer = new MutationObserver(function(mutations) {
-                alert( myElement );
+            $('#content-textarea')[0].addEventListener('input' , function(){
+               $('#content-textarea-render')[0].innerText = $(this).val();
+               MathJax.Hub.Queue(["Typeset",MathJax.Hub,"content-textarea-render"]);
             });
-            observer.observe(document, {attributes: true, childList: true, characterData: true, subtree:true});
 
+            $('#standard_input-textarea')[0].addEventListener('input' , function(){
+                $('#standard_input-textarea-render')[0].innerText = $(this).val();
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,"standard_input-textarea-render"]);
+             });
+
+             $('#standard_output-textarea')[0].addEventListener('input' , function(){
+                $('#standard_output-textarea-render')[0].innerText = $(this).val();
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,"standard_output-textarea-render"]);
+             });
+
+
+             $('#constraints-textarea')[0].addEventListener('input' , function(){
+                $('#constraints-textarea-render')[0].innerText = $(this).val();
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub,"constraints-textarea-render"]);
+             });
         });
     </script>
 {% endblock content %}
