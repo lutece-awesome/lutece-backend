@@ -77,3 +77,9 @@ def problem_update_view( request , problem_id ):
         err.reverse()
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
+
+
+@permission_required( 'problem.add_problem' )
+def problem_create_view( request ):
+    
+    pass
