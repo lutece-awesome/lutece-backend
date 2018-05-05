@@ -10,7 +10,9 @@ https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from submission.tasks import init_push_waiting_submission
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Lutece.settings")
 
 application = get_wsgi_application()
+init_push_waiting_submission()

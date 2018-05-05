@@ -1,6 +1,8 @@
 from django.db import models
 from user.models import User
 from problem.models import Problem
+from django.forms.models import model_to_dict
+
 import django.utils.timezone as timezone
 from django.http import Http404
 
@@ -29,7 +31,10 @@ class Submission(models.Model):
         for _ in self.Judge.problem_field:
             dic[_] = getattr( self.problem , _ )
     
-            
+    def get_push_dict( self ):
+        dic = {}
+        self.get_problem_field( dic )
+        return { ** dic , ** model_to_dict( self , fields = self.Judge.field ) }
 
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index=True)

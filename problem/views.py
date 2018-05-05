@@ -3,6 +3,7 @@ from django.http import Http404
 from django.http import HttpResponse
 from .models import Problem
 from django.conf import settings
+import Lutece.config as config
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
@@ -13,7 +14,7 @@ def problem_detail_view(request, problem_id):
         prob = get_object_or_404(Problem, problem_id=problem_id)
         return render(request, 'problem/problem_detail.html', {
             'prob' : prob,
-            'support_lang': settings.SUPPORT_LANGUAGE_LIST,
+            'support_lang': config.SUPPORT_LANGUAGE_LIST,
             'sample': prob.sample_set.all()
             })
     except:
@@ -22,21 +23,20 @@ def problem_detail_view(request, problem_id):
 
 def problem_list_view(request, page):
     problem_list = Problem.objects.all()
-    paginator = Paginator(problem_list, settings.PER_PAGE_COUNT)
+    paginator = Paginator(problem_list, config.PER_PAGE_COUNT)
     problems = paginator.get_page(page)
     page = min( max( 1 , page ) , paginator.num_pages )
     return render(request, 'problem/problem_list.html', {
         'problist': problems,
         'max_page': paginator.num_pages,
-        'page_list' : range( max( 1 , page - settings.PER_PAGINATOR_COUNT ) , min( page + settings.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )
-    })
+        'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
 
 @permission_required( 'problem.change_problem' )
 def problem_edit_view( request , problem_id ):
     prob = get_object_or_404(Problem, problem_id=problem_id)
     return render( request , 'problem/problem_edit.html',{
         'prob' : prob,
-        'checker' : settings.CHECKER_LIST })
+        'checker' : config.CHECKER_LIST })
 
 @permission_required( 'problem.change_problem' )
 def problem_update_view( request , problem_id ):
