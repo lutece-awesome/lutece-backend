@@ -1,5 +1,5 @@
 from pickle import loads
-from settings import header_length, buffersize
+from . settings import header_length, buffersize
 
 def read_header_length( msg ):
     package_length = 0
@@ -14,12 +14,9 @@ def recv_data( soc ):
     while True:
         data = soc.recv( buffersize )
         msg.append( data )
-        print( data )
         curlen += len( data )
-        print( 'curlen is' , curlen )
         if curlen >= header_length and maxlength == -1:
             maxlength = read_header_length( ( b''.join( msg ) ) )
-        print( 'maxlength is' , maxlength )
         if curlen == maxlength:
             break
     msg = b''.join( msg )

@@ -1,6 +1,6 @@
 import socket , pickle , logging , os , hashlib 
-from settings import data_dir, META_FIELD, port, max_connection
-from communication import recv_data, send_data
+from . settings import data_dir, META_FIELD, port, max_connection
+from . communication import recv_data, send_data
 
 def cal_md5_or_create( problem , force = False ):
     '''
@@ -8,11 +8,11 @@ def cal_md5_or_create( problem , force = False ):
         if force is True, always create/update md5 file
     '''
     try:
-        path = os.path.join( settings.data_dir , str( problem ) )
+        path = os.path.join( data_dir , str( problem ) )
         li = os.listdir( path )
         if 'md5' in li and force is False:
             return True
-        li = list( filter( lambda x : os.path.splitext( x )[1] in settings.META_FIELD['md5'] , li ) )
+        li = list( filter( lambda x : os.path.splitext( x )[1] in META_FIELD['md5'] , li ) )
         kwargs = []
         for _ in li:
             f = open( os.path.join( path , _ ) , "rb" )
@@ -40,7 +40,6 @@ def process( soc , problem , data_type ):
             return True
         li = list(filter( lambda x: os.path.splitext(x)[1] in META_FIELD[data_type] , os.listdir( path ) ))
         li.sort()
-        print( li )
         rcv = {}
         for _ in li:
             f = open( os.path.join( path , _ ) , "rb" )
@@ -51,7 +50,7 @@ def process( soc , problem , data_type ):
         return False
     return True
 
-def run_server():
+def run_data_server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ip = '127.0.0.1'
     s.bind( ( ip , port ) )  
@@ -62,7 +61,6 @@ def run_server():
         print( 'Listen ' + str( add ) )
         try:
             js = recv_data( soc )
-            print( js )
             process( soc , js['problem'] , js['type']  )
         finally:
             print( 'Close ' + str( add ) )

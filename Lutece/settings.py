@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     # Lutece app
     'problem',
     'user',
-    'submission'
+    'submission',
+    'data_server'
 ]
 
 MIDDLEWARE = [
