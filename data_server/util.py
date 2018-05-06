@@ -1,5 +1,6 @@
 from os import path, listdir
 from .settings import META_FIELD, data_dir
+import hashlib
 
 def get_data( problem , data_type ):
     '''
@@ -23,9 +24,9 @@ def cal_md5_or_create( problem , force = False ):
     try:
         dr = path.join( data_dir , str( problem ) )
         li = listdir( dr )
-        if '.md5' in li and force is False:
+        if 'data.md5' in li and force is False:
             return True , None
-        li = list( filter( lambda x : path.splitext( x )[1] in META_FIELD['md5-checker'] , li ) )
+        li = list( filter( lambda x : path.splitext( x )[1] in META_FIELD['md5-check'] , li ) )
         args = []
         for _ in li:
             f = open( path.join( dr , _ ) , "rb" )
@@ -35,7 +36,7 @@ def cal_md5_or_create( problem , force = False ):
             f.close()
             args.append( ( _ , content ) )
         args.sort()
-        f = open( os.path.join( dr , '.md5' ) , "w" )
+        f = open( path.join( dr , 'data.md5' ) , "w" )
         f.write( str( args ) )
         f.close()
     except Exception as e:
@@ -48,7 +49,8 @@ def process( request ):
         process the target request
     '''
     problem = request.POST.get( 'problem' )
-    data_type = request.POST.get( 'data_type' )
+    data_type = request.POST.get( 'type' )
+    print( 'data_type' , data_type )
     if data_type == 'md5-file':
         cal_md5_or_create( problem )
     return get_data( problem , data_type )

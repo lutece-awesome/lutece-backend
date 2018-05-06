@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse,Http404
-from django.views.decorators.csrf import csrf_exempt
 from annoying.functions import get_object_or_None
 from user.models import User
 from user.decorators import login_required_ajax
