@@ -63,8 +63,3 @@ JUDGE_RESULT = {
     'Memory Limit Exceeded' : 9,
     'Judger Error' : 10,
 }
-
-# Judge Fetch valid ip pool
-JUDGE_VALID_IPPOOL = [
-    '127.0.0.1'
-]

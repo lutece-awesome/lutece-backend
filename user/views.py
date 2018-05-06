@@ -10,8 +10,7 @@ from annoying.functions import get_object_or_None
 
 def user_login(request):
     status = {
-        'login_status': False
-    }
+        'login_status': False}
     try:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -30,8 +29,7 @@ def user_login(request):
 
 def user_logout(request):
     status = {
-        'logout_status': True
-    }
+        'logout_status': True}
     logout(request)
     return HttpResponse(dumps(status), content_type='application/json')
 
@@ -39,8 +37,7 @@ def user_logout(request):
 def user_signup(request):
     status = {
         'signup_status': False,
-        'error_msg': []
-    }
+        'error_msg': []}
     errormsg_list = status['error_msg']
     try:
         if request.method == 'POST':
