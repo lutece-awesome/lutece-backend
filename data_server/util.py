@@ -8,6 +8,7 @@ def get_data( problem , data_type ):
     '''
     dr = path.join( data_dir , str( problem ) )
     li = list(filter( lambda x: path.splitext(x)[1] in META_FIELD[data_type] , listdir( dr ) ) )
+    li.sort()
     _send = {}
     for _ in li:
         f = open( path.join( dr , _ ) , "rb" )
@@ -50,7 +51,6 @@ def process( request ):
     '''
     problem = request.POST.get( 'problem' )
     data_type = request.POST.get( 'type' )
-    print( 'data_type' , data_type )
     if data_type == 'md5-file':
         cal_md5_or_create( problem )
     return get_data( problem , data_type )

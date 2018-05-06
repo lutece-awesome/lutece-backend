@@ -7,4 +7,4 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @judger_auth
 def fetch_data( request ):
-    return HttpResponse( pickle_dumps( process( request ) ) , content_type = 'application/json' )
+    return HttpResponse( pickle_dumps( process( request ) , 2 ) , content_type = 'application/json' )

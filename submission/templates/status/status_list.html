@@ -16,19 +16,18 @@
                 <a class="icon item" href = {% url 'submission-status-list' max_page %} ><i class="angle double right icon"></i></a>
         </div>
 
-        <table class = "ui selectable padded table" >
+        <table class = "ui selectable very padded padded table" >
             <thread>
                     <div class = 'status list menu'>
                         <tr>
-                            <th class = 'ui one wide'>ID</th>
-                            <th class = 'ui two wide'>User</th>                
-                            <th class = 'ui two wide'>Problem</th>
-                            <th class = 'ui two wide'>Verdict</th>
-                            <th class = 'ui one wide'>Time</th>
-                            <th class = 'ui one wide'>Memory</th>
-                            <th class = 'ui one wide'>Language</th>
-                            <th class = 'ui one wide'>Length</th>
-                            <th class = 'ui two wide'>Submit Time</th>
+                            <th>ID</th>
+                            <th>When</th>
+                            <th>User</th>                
+                            <th>Problem</th>
+                            <th>Verdict</th>
+                            <th>Time</th>
+                            <th>Memory</th>
+                            <th>Language</th>
                         </tr>
                     </div>
             </thread>
@@ -36,17 +35,43 @@
                     {% for it in statuslist %}
                         <tr>
                             <td>{{it.submission_id}} </td>
+                            <td>{{it.submit_time |date:"Y-m-d H:i:s" }}</td>  
                             <td>{{it.user.display_name}} </td>                
-                            <td ><a href = {% url 'problem-detail-view' it.problem.problem_id %} >{{it.problem.title}}</a></td>
-                            <td>{{it.judge_status}} </td>
+                            <td><a href = {% url 'problem-detail-view' it.problem.problem_id %} >{{it.problem.title}}</a></td>
+                            <td class = 'judge_info' >{{it.judge_status}}</td>
                             <td><i class = 'ui help icon'></i></td>
                             <td><i class = 'ui help icon'></i></td>
                             <td>{{it.language}}</td>  
-                            <td>{{it.code | length}} B</td>  
-                            <td>{{it.submit_time}}</td>  
                         </tr>
                     {% endfor %}
                 </tbody>
         </table>
     </div>
+
+    <script>
+        // color of judge_status
+        $(document).ready(function(){
+            var process_queue = $('.status.list .judge_info');
+            for( let i = 0 ; i < process_queue.length ; ++ i){
+                let j = process_queue[i];
+                let k = j.innerText;
+                if( k == "Accepted" ){
+                    $(j).css( 'color' , 'green' )
+                        .prepend( "<i class = 'check icon'</i>" );
+                }else if( k == 'Waiting' || k == 'Preparing' ){
+                    $(j).css( 'color' , 'grey' );
+                }else if( k == 'Compile Error' || k == 'Judger Error' ){
+                    $(j).css( 'color' , 'orange' )
+                        .prepend( "<i class = 'exclamation icon'</i>" );
+                }else if( k.substring( 0 , 7 ) == 'Running' ){
+                    $(j).css( 'color' , 'black' )
+                        .prepend( "<i class = 'sync icon'</i>" );
+                }else{
+                    $(j).css( 'color' , 'red' )
+                        .prepend( "<i class = 'times icon'</i>" ); 
+                }
+            }
+        });
+    </script>
 {% endblock content %}
+
