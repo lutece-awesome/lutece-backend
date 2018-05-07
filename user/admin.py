@@ -1,10 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User
+from .models import User, Userinfo
 
 
-class UserAdmin(BaseUserAdmin):
-    pass
+class Inline(admin.StackedInline):
+    model = Userinfo
 
 
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    inlines = (Inline,)
+
+admin.site.register( User , UserAdmin )

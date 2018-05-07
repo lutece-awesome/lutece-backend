@@ -23,6 +23,8 @@ def user_login(request):
             if login_user.check_password(password):
                 login(request, login_user)
                 status['login_status'] = True
+    except Exception as e:
+        print( 'Error on user_login' , str( e ) )
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
@@ -97,5 +99,7 @@ def user_signup(request):
                 new_user.set_group( Group.normal_user )
                 new_user.save()
                 login(request,new_user)
+    except Exception as e:
+        print( 'Error on user_signup' , str( e ) )
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
