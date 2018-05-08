@@ -7,6 +7,8 @@ from .user_signup.password_checker import get_password_strength
 from .user_signup.email_checker import get_email_report
 from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
+from django.contrib.auth.decorators import login_required
+
 
 def user_login(request):
     status = {
@@ -103,3 +105,8 @@ def user_signup(request):
         print( 'Error on user_signup' , str( e ) )
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
+
+
+@login_required
+def user_detail( request , user_id ):
+    return HttpResponse( 'Ye' )

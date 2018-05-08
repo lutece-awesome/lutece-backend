@@ -12,16 +12,14 @@
         {% if user.is_authenticated %}
             <div class = 'item'>
                 <img src="{% gravatar_url user.email 150 %}" width="40" height="40" alt="" />
-                <div id = 'info-menu' style = "margin-left:10px;margin-top:8px;" class="ui inline dropdown">
-                    <div class="text">{{user.display_name}}</div>
+                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {% url 'user-detail' user.pk %} style = "color:black" >{{user.display_name}}</a></div>
+                <!--<div id = 'info-menu' style = "margin-left:10px;margin-top:8px;" class="ui inline dropdown">
                     <i class="dropdown icon"></i>
                     <div class="menu">
-                        <div class="header">Adjust time span</div>
-                        <div class="active item" data-text="today">Today</div>
-                        <div class="item" data-text="this week">This Week</div>
-                        <div class="item" data-text="this month">This Month</div>
+                        <div class="item" ><i class = 'user icon'></i>Info</div>
+                        <div class="item" ><i class = 'whmcs icon'></i>Settings</div>
                     </div>
-                </div>
+                </div>-->
             </div>
         {% endif %}
         <div class="item">
