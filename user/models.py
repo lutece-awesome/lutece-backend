@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser , Permission
 from json import dumps
 from django.http import HttpResponse
-
+from annoying.functions import get_object_or_None
+from problem.models import Problem
 
 class Group:
 
@@ -15,7 +16,7 @@ class Group:
 
 
 class User(AbstractUser):
-    display_name = models.CharField(max_length=128)
+    display_name = models.CharField(max_length=16)
     group = models.CharField( max_length = 64 , default = Group.normal_user )
 
     def __str__(self):
@@ -27,11 +28,11 @@ class User(AbstractUser):
 
     def save( self , * args , ** kwargs ):
         super( User , self ).save()
-        Userinfo( user = self ) .save()
+        if Userinfo.objects.get( user = self ) == None:
+            Userinfo( user = self ) .save()
 
 class Userinfo(models.Model):
     user = models.OneToOneField( User , on_delete = models.CASCADE , primary_key = True )
-    
     school = models.CharField( max_length = 128 , blank = True )
     company = models.CharField( max_length = 128 , blank = True )
     location = models.CharField( max_length = 128 , blank = True )

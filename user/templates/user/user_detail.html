@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% load gravatar %}
+
+{% block extra_head %}
+    {% load staticfiles %}
+        <link href="{% static 'css/user/user_detail.css' %}" rel="stylesheet" />
+{% endblock extra_head %}
+
+{% block title %}
+    <title> Lutece | {{ user.display_name }} </title>
+{% endblock title %}
+
+{% block content %}
+    <div class = 'user detail'>
+
+        <div class = 'ui grid segement'>
+
+
+            <div class="ui three column grid">
+
+                <div class = 'column'>
+
+                    <div class = 'ui one column grid'>
+
+                        <div class = 'column'>
+                            <img class="ui small bordered image" src= {% gravatar_url user.email 200 %} >
+                            <span><a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a></span>
+                        </div>
+                        
+                        
+                        <div class = 'column'>
+                            <div class = 'label'><b>About</b></div>
+                            <div class = 'ui form'>
+                                <div class = 'field'>
+                                    <textarea>{{ info.about }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class = 'column'>
+
+                    <div class = 'ui header'>Personal Information</div> 
+
+                    <h5> Tell others how awesome you are </h5>
+                    
+                    <br/>
+
+                    <div class = 'ui one column grid'>
+
+                        <div class = 'column'>
+                            <div class="label"><b>School</b></div>
+                            <div class="ui fluid input">
+                                <input type ="text" value= "{{ info.school }}" maxlength = 16 >
+                            </div>
+                        </div>
+
+                        <div class = 'column'>
+                            <div class="label"><b>Company</b></div>
+                            <div class="ui fluid input">
+                                <input type ="text" value= "{{ info.company }}" maxlength = 16 >
+                            </div>
+                        </div>
+
+                        <div class = 'column'>
+                            <div class="label"><b>Location</b></div>
+                            <div class="ui fluid input">
+                                <input type ="text" value= "{{ info.location }}" maxlength = 16 >
+                            </div>
+                        </div>
+
+                        <div class = 'column'>
+                            <div class = "label"><b>Display name</b></div>
+                            <div class="ui  fluid input">
+                                <input type ="text" value= "{{ user.display_name }}" maxlength = 16 >
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class = 'three wide column'>
+                    <div id="solve-analysis" style="width: 530px;height:410px;"></div>
+                </div>
+                
+            </div>
+
+        </div>
+
+        <div class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
+
+    </div>
+
+    <script>
+
+        $(document).ready(function(){
+            var myChart = echarts.init(document.getElementById('solve-analysis'));
+            var option = {
+                series : [
+                    {
+                        type: 'pie',
+                        radius: '55%',
+                        data:[
+                            {% for key , value in analysis.summary.items %}
+                                {% if value > 0 %}
+                                    {
+                                        value: {{value}} ,
+                                        name: '{{key}}',
+                                        itemStyle: {
+                                            color: 
+                                            {% for a , b in judge_color.items %}
+                                                {% if a == key %}
+                                                    '{{ b }}'
+                                                {% endif %}
+                                            {% endfor %}
+                                        }
+                                    },
+                                {% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        });
+
+    </script>
+
+{% endblock content %}

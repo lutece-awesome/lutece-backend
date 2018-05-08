@@ -50,16 +50,16 @@ CHECKER_LIST=[
 
 
 # Judge Status and error code
-JUDGE_RESULT = {
-    'Waiting' : 0, # Waiting for judge
-    'Preparing' : 1, # Submission has been fetched by one judge
-    'Running' : 2,
-    'Accepted' : 3,
-    'Compile Error' : 4,
-    'Wrong Answer' : 5,
-    'Runtime Error' : 6,
-    'Time Limit Exceeded' : 7,
-    'Output Limit Exceeded' : 8,
-    'Memory Limit Exceeded' : 9,
-    'Judger Error' : 10,
-}
+JUDGE_RESULT = [
+    'Waiting', # Waiting for judge
+    'Preparing', # Submission has been fetched by one judge
+    'Running',
+    'Accepted',
+    'Compile Error',
+    'Wrong Answer',
+    'Runtime Error',
+    'Time Limit Exceeded',
+    'Output Limit Exceeded',
+    'Memory Limit Exceeded',
+    'Judger Error',
+]

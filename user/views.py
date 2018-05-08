@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import User, Group
+from .models import User, Group, Userinfo
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
 from json import dumps
@@ -8,6 +8,8 @@ from .user_signup.email_checker import get_email_report
 from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
+from .util import get_report
+from .util import Usersolveinfo
 
 
 def user_login(request):
@@ -108,5 +110,8 @@ def user_signup(request):
 
 
 @login_required
-def user_detail( request , user_id ):
-    return HttpResponse( 'Ye' )
+def user_detail( request ):
+    return render( request , 'user/user_detail.html' , {
+        'info' : Userinfo.objects.get( user = request.user ),
+        'analysis' : get_report( request.user ),
+        'judge_color' : Usersolveinfo.colour })

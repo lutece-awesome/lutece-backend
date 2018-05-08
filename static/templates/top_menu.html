@@ -12,7 +12,7 @@
         {% if user.is_authenticated %}
             <div class = 'item'>
                 <img src="{% gravatar_url user.email 150 %}" width="40" height="40" alt="" />
-                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {% url 'user-detail' user.pk %} style = "color:black" >{{user.display_name}}</a></div>
+                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {% url 'user-detail' %} style = "color:black" >{{user.display_name}}</a></div>
                 <!--<div id = 'info-menu' style = "margin-left:10px;margin-top:8px;" class="ui inline dropdown">
                     <i class="dropdown icon"></i>
                     <div class="menu">
@@ -221,7 +221,7 @@
                     '',
                     function(data,status){
                       $("this").removeClass('loading disabled');
-                      location.reload();
+                      window.location = '{% url "home" %}';
                     }
                 );
             });

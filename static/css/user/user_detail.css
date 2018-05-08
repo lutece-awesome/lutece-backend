@@ -1,0 +1,9 @@
+.user.detail textarea{
+    font-family: 'monospace';
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.user.detail{
+    margin-top: 40px;
+}
