@@ -1,3 +1,4 @@
+{% load gravatar %}
 <div class = 'ui fixed top borderless huge menu'>
     <div class="header item">Lutece</div>
     <div class="ui container">
@@ -8,6 +9,21 @@
         <a class="item" ><i class="lab icon"></i>Lab</a>
     </div>
     <div class="right menu">
+        {% if user.is_authenticated %}
+            <div class = 'item'>
+                <img src="{% gravatar_url user.email 150 %}" width="40" height="40" alt="" />
+                <div id = 'info-menu' style = "margin-left:10px;margin-top:8px;" class="ui inline dropdown">
+                    <div class="text">{{user.display_name}}</div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="header">Adjust time span</div>
+                        <div class="active item" data-text="today">Today</div>
+                        <div class="item" data-text="this week">This Week</div>
+                        <div class="item" data-text="this month">This Month</div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
         <div class="item">
             {% if user.is_authenticated == False %}
                 <div class="ui primary button" id="signin"><b><i class="sign in icon"></i></b>Sign in</div>
@@ -102,7 +118,7 @@
                 <div id = "error_msg_box_signup" class="ui negative message transition hidden"></div>
             </div>
         </div>
-    </div>
+    </div>         
 
     <script>
         function get_error_msgText( errlist ){
@@ -211,6 +227,7 @@
                     }
                 );
             });
+
         });
     </script>
 </div>
