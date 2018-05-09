@@ -82,11 +82,50 @@
                 </div>
 
                 <div class = 'three wide column'>
-                    <div id="solve-analysis" style="width: 530px;height:410px;"></div>
+                    <div id="solve-analysis" style="width: 430px;height:410px;"></div>
                 </div>
                 
             </div>
 
+        </div>
+
+        <div class = 'ui two column grid'>
+            <div class = 'column'>
+                <div class = "label"><b>Detail</b></div>
+                {% for x in analysis.result %}
+                    {% if x.1 == True %}
+                        <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
+                    {% else %}
+                        <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class = 'column'>
+                <div class = "label"><b>Recently</b></div>
+                <table class = "ui basic fixed selectable padded table bordered" >
+                    <thread>
+                        <div class = 'status list menu'>
+                            <tr>
+                                <th>ID</th>
+                                <th>When</th>
+                                <th>Problem</th>
+                                <th>Verdict</th>
+                            </tr>
+                        </div>
+                    </thread>
+                    <tbody>
+                        {% for x in recently %}
+                            <tr>
+                                <td>{{ x.pk }}</td>
+                                <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
+                                <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
+                                <td class = 'judge_info' >{{ x.judge_status }} </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
@@ -112,8 +151,17 @@
                 series : [
                     {
                         type: 'pie',
-                        radius: '65%',
+                        radius: '70%',
                         selectedMode: 'single',
+                        rosetype: 'angle',
+                        label: {
+                            normal: {
+                                show: false
+                            },
+                            emphasis: {
+                                show: false
+                            }
+                        },
                         data:[
                             {% for name in analysis.summary %}
                                 {% if analysis.summary[name] > 0 %}
@@ -132,6 +180,27 @@
             };
             myChart.setOption(option);
         });
+
+        var process_queue = $('.user.detail .judge_info');
+            for( let i = 0 ; i < process_queue.length ; ++ i){
+                let j = process_queue[i];
+                let k = j.innerText;
+                if( k == "Accepted" ){
+                    $(j).css( 'color' , 'green' )
+                        .prepend( "<i class = 'check icon'</i>" );
+                }else if( k == 'Waiting' || k == 'Preparing' ){
+                    $(j).css( 'color' , 'grey' );
+                }else if( k == 'Compile Error' || k == 'Judger Error' ){
+                    $(j).css( 'color' , 'orange' )
+                        .prepend( "<i class = 'exclamation icon'</i>" );
+                }else if( k.substring( 0 , 7 ) == 'Running' ){
+                    $(j).css( 'color' , 'black' )
+                        .prepend( "<i class = 'sync icon'</i>" );
+                }else{
+                    $(j).css( 'color' , 'red' )
+                        .prepend( "<i class = 'times icon'</i>" ); 
+                }
+            }
 
     </script>
 

@@ -63,3 +63,7 @@ JUDGE_RESULT = [
     'Memory Limit Exceeded',
     'Judger Error',
 ]
+
+
+# The RECENT info number
+RECENT_NUMBER = 4

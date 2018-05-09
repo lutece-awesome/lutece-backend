@@ -6,15 +6,18 @@ def get_data( problem , data_type ):
     '''
         get data of data_type
     '''
-    dr = path.join( data_dir , str( problem ) )
-    li = list(filter( lambda x: path.splitext(x)[1] in META_FIELD[data_type] , listdir( dr ) ) )
-    li.sort()
-    _send = {}
-    for _ in li:
-        f = open( path.join( dr , _ ) , "rb" )
-        _send[_] = f.read()
-        f.close()
-    return _send
+    try:
+        dr = path.join( data_dir , str( problem ) )
+        li = list(filter( lambda x: path.splitext(x)[1] in META_FIELD[data_type] , listdir( dr ) ) )
+        li.sort()
+        _send = {}
+        for _ in li:
+            f = open( path.join( dr , _ ) , "rb" )
+            _send[_] = f.read()
+            f.close()
+        return _send
+    except:
+        return None
 
 
 def cal_md5_or_create( problem , force = False ):

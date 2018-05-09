@@ -7,3 +7,7 @@
 .user.detail{
     margin-top: 40px;
 }
+
+.user.detail td,th{
+    text-align: center;
+}

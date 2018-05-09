@@ -8,8 +8,9 @@ from .user_signup.email_checker import get_email_report
 from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
-from .util import get_report
+from .util import get_report , get_recently
 from submission.judge_result import Judge_info
+from Lutece.config import RECENT_NUMBER
 
 
 def user_login(request):
@@ -114,4 +115,5 @@ def user_detail( request ):
     return render( request , 'user/user_detail.html' , {
         'info' : Userinfo.objects.get( user = request.user ),
         'analysis' : get_report( request.user ),
-        'judge_color' : Judge_info.colour })
+        'judge_color' : Judge_info.colour,
+        'recently' : get_recently( request.user , RECENT_NUMBER ) })
