@@ -1,8 +1,7 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block extra_head %}
-    {% load staticfiles %}
-        <link href="{% static 'css/problem/problem_detail.css' %}" rel="stylesheet" />
+    <link href="{{ static('css/problem/problem_detail.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block title %}
@@ -24,14 +23,14 @@
             </div>
         </div>
         <div class = 'body'>
-            <p class = 'content'>{{prob.content|linebreaks}}</p>
+            <p class = 'content'>{{prob.content.replace( '\n' , '<br/>' ) | safe }}</p>
             <h2 class= 'ui header'>Standard Input</h2>
-            <p class = 'content'>{{prob.standard_input|linebreaks}}</p>
+            <p class = 'content'>{{prob.standard_input.replace( '\n' , '<br/>' ) | safe }}</p>
             <h2 class= 'ui header'>Standard Output</h2>
-            <p class = 'content'>{{prob.standard_output|linebreaks}}</p>
+            <p class = 'content'>{{prob.standard_output}}</p>
             {% if  prob.constraints|length > 0  %}
                 <h2 class='ui header'> Constraints </h2>
-                <p class='content'>{{prob.constraints|linebreaks}}</p>
+                <p class='content'>{{prob.constraints}}</p>
             {% endif%}
 
             <h2 class= 'ui header'>Sample</h2>
@@ -45,15 +44,15 @@
                         <tbody>
                             {% for it in sample %}
                                 <tr>
-                                    <td>{{it.input_content|linebreaks}}</td>
-                                    <td>{{it.output_content|linebreaks}}</td>
+                                    <td>{{it.input_content}}</td>
+                                    <td>{{it.output_content}}</td>
                                 </tr>
                             {% endfor%}
                         </tbody>
                 </table>
             {% if  prob.sample_explanation|length > 0  %}
                 <h2 class='ui header'>Note</h2>
-                <p class='content'>{{prob.sample_explanation|linebreaks}}</p>
+                <p class='content'>{{prob.sample_explanation}}</p>
             {% endif%}
 
             {% if  prob.resource|length > 0  %}
@@ -228,7 +227,7 @@ int main( int argc , char * argv[] ){
             });
     
             $('.problem.detail > .summary > .menu > .edit').click(function () {
-                window.location = '{% url "problem-edit-view" prob.problem_id %} ';
+                window.location = '{{ url("problem-edit-view" , args = (prob.problem_id,) ) }} ';
             });
     
             $('#code_submit_button > .button').click(function(){
@@ -243,7 +242,7 @@ int main( int argc , char * argv[] ){
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
                 });
                 $.post(
-                    '{% url "submission-submit-solution" %}',
+                    '{{ url("submission-submit-solution") }}',
                     {
                         'problemid' : problemid,
                         'code' : code,

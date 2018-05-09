@@ -1,10 +1,7 @@
-{% extends "base.html" %}
-
-{% load gravatar %}
+{% extends "base/base.html" %}
 
 {% block extra_head %}
-    {% load staticfiles %}
-        <link href="{% static 'css/user/user_detail.css' %}" rel="stylesheet" />
+    <link href="{{ static('css/user/user_detail.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block title %}
@@ -24,7 +21,7 @@
                     <div class = 'ui one column grid'>
 
                         <div class = 'column'>
-                            <img class="ui small bordered image" src= {% gravatar_url user.email 200 %} >
+                            <img class="ui small bordered image" src= {{ gravatar_url( email = user.email , size = 200 ) }} >
                             <span><a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a></span>
                         </div>
                         
@@ -32,7 +29,7 @@
                         <div class = 'column'>
                             <div class = 'label'><b>About</b></div>
                             <div class = 'ui form'>
-                                <div class = 'field'>
+                                <div class = 'field'>                                
                                     <textarea>{{ info.about }}</textarea>
                                 </div>
                             </div>
@@ -101,24 +98,31 @@
         $(document).ready(function(){
             var myChart = echarts.init(document.getElementById('solve-analysis'));
             var option = {
+                aria: {
+                    show: true
+                },
+                title: {
+                    text: 'Summary',
+                    x: 'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{b} : {c} ({d}%)"
+                },
                 series : [
                     {
                         type: 'pie',
-                        radius: '55%',
+                        radius: '65%',
+                        selectedMode: 'single',
                         data:[
-                            {% for key , value in analysis.summary.items %}
-                                {% if value > 0 %}
+                            {% for name in analysis.summary %}
+                                {% if analysis.summary[name] > 0 %}
                                     {
-                                        value: {{value}} ,
-                                        name: '{{key}}',
-                                        itemStyle: {
-                                            color: 
-                                            {% for a , b in judge_color.items %}
-                                                {% if a == key %}
-                                                    '{{ b }}'
-                                                {% endif %}
-                                            {% endfor %}
-                                        }
+                                        value: {{ analysis.summary[name] }},
+                                        name: '{{ name }}',
+                                        itemStyle:{
+                                            color: '{{ judge_color[name] }}',
+                                        },
                                     },
                                 {% endif %}
                             {% endfor %}

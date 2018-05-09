@@ -19,10 +19,8 @@ def Modify_submission_status( ** report ):
                 case = case).save()
         Judgeinfo.objects.filter( submission = submission , case = case ).update( ** get_update_dict( report ) )
         if complete == True:
-            msg = result
-            if result != 'Accepted' and result != 'Compile Error' and result != 'Judger Error':
-                msg += ' on test ' + str( case )
-            Submission.objects.filter( submission_id = submission ).update( judge_status = msg )
+            Submission.objects.filter( submission_id = submission ).update( judge_status = result )
+
 
 def push_submission( submission ):
     JudgeQueue.task.put( submission.get_push_dict() )
@@ -38,5 +36,5 @@ def init_push_waiting_submission():
         for _ in f:
             push_submission( _ )
     except Exception as e:
-        print( '- Init push waitting submission failed:' , str( e ) )
-    print( '- Init push waitting submission completed,' , str( len( f ) ) + '(s) waitting submissions.' )
+        print( '- Init push waiting submission failed:' , str( e ) )
+    print( '- Init push waiting submission completed,' , str( len( f ) ) + '(s) waiting submissions.' )

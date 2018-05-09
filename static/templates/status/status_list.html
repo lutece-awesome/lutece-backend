@@ -1,19 +1,18 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block extra_head %}
-    {% load staticfiles %}
-        <link href="{% static 'css/submission/status_list.css' %}" rel="stylesheet" />
+    <link href="{{ static('css/submission/status_list.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block content %}
     <div class = 'status list'>
 
         <div class="ui pagination menu">
-                <a class="icon item" href = {% url 'submission-status-list' 1 %} ><i class="angle double left icon"></i></a>
+                <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
                 {% for it in page_list %}
-                    <a class="item" href = {% url 'submission-status-list' it %}  >{{it}}</a>
+                    <a class="item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>
                 {% endfor %}
-                <a class="icon item" href = {% url 'submission-status-list' max_page %} ><i class="angle double right icon"></i></a>
+                <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
         </div>
 
         <table class = "ui selectable very padded padded table" >
@@ -35,9 +34,9 @@
                     {% for it in statuslist %}
                         <tr>
                             <td>{{it.submission_id}} </td>
-                            <td>{{it.submit_time |date:"Y-m-d H:i:s" }}</td>  
+                            <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
                             <td>{{it.user.display_name}} </td>                
-                            <td><a href = {% url 'problem-detail-view' it.problem.problem_id %} >{{it.problem.title}}</a></td>
+                            <td><a href = {{ url('problem-detail-view' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
                             <td class = 'judge_info' >{{it.judge_status}}</td>
                             <td><i class = 'ui help icon'></i></td>
                             <td><i class = 'ui help icon'></i></td>

@@ -1,9 +1,8 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 
 {% block extra_head %}
-    {% load staticfiles %}
-        <link href="{% static 'css/problem/problem_list.css' %}" rel="stylesheet" />
+    <link href="{{ static('css/problem/problem_list.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block content%}
@@ -11,11 +10,11 @@
 <div class = 'problem list'>
 
     <div class="ui pagination menu">
-        <a class="icon item" href = {% url 'problem-list-view' 1 %} ><i class="angle double left icon"></i></a>
+        <a class="icon item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
         {% for it in page_list %}
-            <a class="item" href = {% url 'problem-list-view' it %}  >{{it}}</a>
+            <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
         {% endfor %}
-        <a class="icon item" href = {% url 'problem-list-view' max_page %} ><i class="angle double right icon"></i></a>
+        <a class="icon item" href = {{ url('problem-list-view' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
         {% if perms.problem.add_problem %}
         <div class="item">
             <div class = 'ui basic orange edit button'><i class = 'add icon'></i><b>Create</b></div>
@@ -39,7 +38,7 @@
                 {% for it in problist %}
                 <tr>
                     <td>{{it.problem_id}} </td>
-                    <td><a href = {% url 'problem-detail-view' it.problem_id %} >{{it.title}}</td>
+                    <td><a href = {{ url('problem-detail-view' , args = (it.problem_id,) ) }} >{{it.title}}</td>
                     {% if user.is_authenticated == True %}
                         <td><i class="icon green checkmark"></i></td>
                     {% endif %}
@@ -47,7 +46,7 @@
                     {% if it.try_number == 0 %}
                         <td> 0.00%</td>
                     {% else %}
-                        <t> {% widthratio it.solved_number it.try_number 100 %} %</td>
+                        <t> {{ it.solved_number / it.try_number }} %</td>
                     {% endif %}
                 </tr>
                 {% endfor %}

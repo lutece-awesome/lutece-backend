@@ -1,25 +1,17 @@
-{% load gravatar %}
 <div class = 'ui fixed top borderless huge menu'>
     <div class="header item">Lutece</div>
     <div class="ui container">
-        <a class="item" href = {% url 'home' %} ><i class="home icon"></i>Home</a>
-        <a class="item" href = {% url 'problem-list-view' 1 %} ><i class="university icon"></i>Problem</a>
-        <a class="item" href = {% url 'submission-status-list' 1 %}><i class="bar chart icon"></i>Status</a>
+        <a class="item" href = {{ url('home') }} ><i class="home icon"></i>Home</a>
+        <a class="item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="university icon"></i>Problem</a>
+        <a class="item" href = {{ url('submission-status-list' , args = (1,) ) }}><i class="bar chart icon"></i>Status</a>
         <a class="item" ><i class="trophy icon"></i>Contest</a>
         <a class="item" ><i class="lab icon"></i>Lab</a>
     </div>
     <div class="right menu">
         {% if user.is_authenticated %}
             <div class = 'item'>
-                <img src="{% gravatar_url user.email 150 %}" width="40" height="40" alt="" />
-                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {% url 'user-detail' %} style = "color:black" >{{user.display_name}}</a></div>
-                <!--<div id = 'info-menu' style = "margin-left:10px;margin-top:8px;" class="ui inline dropdown">
-                    <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <div class="item" ><i class = 'user icon'></i>Info</div>
-                        <div class="item" ><i class = 'whmcs icon'></i>Settings</div>
-                    </div>
-                </div>-->
+                <img src="{{ gravatar_url( email = user.email , size = 150 ) }}" width="40" height="40" alt="" />
+                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {{ url('user-detail') }} style = "color:black" >{{user.display_name}}</a></div>
             </div>
         {% endif %}
         <div class="item">
@@ -143,7 +135,7 @@
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
                 });
                 $.post(
-                    '{% url "user-signup" %}',
+                    "{{ url('user-signup') }}",
                     {
                         'username': username,
                         'password': password,
@@ -181,7 +173,7 @@
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
                 });
                 $.post(
-                    '{% url "user-login" %}',
+                    "{{ url('user-login') }}",
                     {
                         'username': username,
                         'password': password
@@ -217,11 +209,11 @@
             .click( function(){
                 $(this).addClass( 'loading disabled' );
                 $.get(
-                    '{% url "user-logout" %}',
+                    "{{ url('user-logout') }}",
                     '',
                     function(data,status){
                       $("this").removeClass('loading disabled');
-                      window.location = '{% url "home" %}';
+                      window.location = "{{ url('home') }}";
                     }
                 );
             });
