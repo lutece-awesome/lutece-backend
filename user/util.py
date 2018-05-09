@@ -34,6 +34,4 @@ def get_report( user ):
 
 
 def get_recently( user , number ):
-    s = list( Submission.objects.raw( 
-        'SELECT submission_id from Submission_submission ORDER BY -submission_id limit %d' %( number )) )
-    return s
+    return list( Submission.objects.filter( user = user )[:number] )
