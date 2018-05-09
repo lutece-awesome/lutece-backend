@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import User, Group, Userinfo
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
@@ -109,11 +109,48 @@ def user_signup(request):
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
-
 @login_required
-def user_detail( request ):
+def user_infomodify( request ):
+    status = {
+        'status': False,
+        'error_msg': []}
+    msg = status['error_msg']
+    try:
+        if request.method == 'POST':
+            about = request.POST.get( 'about' )
+            school = request.POST.get( 'school' )
+            company = request.POST.get( 'company' )
+            location = request.POST.get( 'location' )
+            display_name = request.POST.get( 'display_name' )
+            if len( about ) > 256:
+                msg.append( 'About\'s length is too long' )
+            if len( school ) > 32:
+                msg.append( 'Are u sure this is a valid school?' )
+            if len( company ) > 32:
+                msg.append( 'Are u sure this is a valid company?' )
+            if len( location ) > 32:
+                msg.append( 'Are u sure this is a valid location?' )
+            if len( display_name ) > 16:
+                msg.append( 'Your display name too long' )
+            if len( msg ) == 0:
+                Userinfo.objects.filter( user = request.user ).update(
+                    about = about,
+                    school = school,
+                    company = company,
+                    location = location)
+                User.objects.filter( id = request.user.pk ).update(
+                    display_name = display_name) 
+                status['status'] = True
+    except Exception as e:
+        print( str( e ) )
+    finally:
+        return HttpResponse( dumps( status ) , content_type = 'application/json' )
+
+def user_detail( request , user_id ):
+    target_user = get_object_or_404( User , pk = user_id )
     return render( request , 'user/user_detail.html' , {
-        'info' : Userinfo.objects.get( user = request.user ),
-        'analysis' : get_report( request.user ),
+        'target_user' : target_user,
+        'info' : Userinfo.objects.get( user = target_user ),
+        'analysis' : get_report( target_user ),
         'judge_color' : Judge_info.colour,
-        'recently' : get_recently( request.user , RECENT_NUMBER ) })
+        'recently' : get_recently( target_user , RECENT_NUMBER ) })

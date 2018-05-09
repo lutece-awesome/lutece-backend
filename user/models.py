@@ -33,9 +33,9 @@ class User(AbstractUser):
 
 class Userinfo(models.Model):
     user = models.OneToOneField( User , on_delete = models.CASCADE , primary_key = True )
-    school = models.CharField( max_length = 128 , blank = True )
-    company = models.CharField( max_length = 128 , blank = True )
-    location = models.CharField( max_length = 128 , blank = True )
+    school = models.CharField( max_length = 32 , blank = True )
+    company = models.CharField( max_length = 32 , blank = True )
+    location = models.CharField( max_length = 32 , blank = True )
     about = models.CharField( max_length = 256 , blank = True ) # tell others how awesome you are
 
     def __str__( self ):

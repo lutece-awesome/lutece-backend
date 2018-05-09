@@ -5,7 +5,7 @@
 {% endblock extra_head %}
 
 {% block title %}
-    <title> Lutece | {{ user.display_name }} </title>
+    <title> Lutece | {{ target_user.display_name }} </title>
 {% endblock title %}
 
 {% block content %}
@@ -21,16 +21,18 @@
                     <div class = 'ui one column grid'>
 
                         <div class = 'column'>
-                            <img class="ui small bordered image" src= {{ gravatar_url( email = user.email , size = 200 ) }} >
-                            <span><a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a></span>
+                            <img class="ui small bordered image" src= {{ gravatar_url( email = target_user.email , size = 200 ) }} >
+                            {% if user == target_user %}
+                                <span><a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a></span>
+                            {% endif %}
                         </div>
                         
                         
                         <div class = 'column'>
                             <div class = 'label'><b>About</b></div>
                             <div class = 'ui form'>
-                                <div class = 'field'>                                
-                                    <textarea>{{ info.about }}</textarea>
+                                <div class = 'field' id = 'about-info'>                                
+                                    <textarea >{{ info.about }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -51,29 +53,29 @@
 
                         <div class = 'column'>
                             <div class="label"><b>School</b></div>
-                            <div class="ui fluid input">
-                                <input type ="text" value= "{{ info.school }}" maxlength = 16 >
+                            <div class="ui fluid input" id = 'school-info'>
+                                <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 32 >
                             </div>
                         </div>
 
                         <div class = 'column'>
                             <div class="label"><b>Company</b></div>
-                            <div class="ui fluid input">
-                                <input type ="text" value= "{{ info.company }}" maxlength = 16 >
+                            <div class="ui fluid input" id = 'company-info'>
+                                <input type ="text" value= "{{ info.company }}" maxlength = 32 >
                             </div>
                         </div>
 
                         <div class = 'column'>
                             <div class="label"><b>Location</b></div>
-                            <div class="ui fluid input">
-                                <input type ="text" value= "{{ info.location }}" maxlength = 16 >
+                            <div class="ui fluid input" id = 'location-info'>
+                                <input type ="text" value= "{{ info.location }}" maxlength = 32 >
                             </div>
                         </div>
 
                         <div class = 'column'>
                             <div class = "label"><b>Display name</b></div>
-                            <div class="ui  fluid input">
-                                <input type ="text" value= "{{ user.display_name }}" maxlength = 16 >
+                            <div class="ui  fluid input" id = 'display_name-info'>
+                                <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
                             </div>
                         </div>
 
@@ -125,10 +127,13 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <div id = "user-detail-error" class="ui negative message transition hidden"></div>
             </div>
         </div>
 
-        <div class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
+        {% if user == target_user %}
+            <div id = 'user-detail-button' class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
+        {% endif %}
 
     </div>
 
@@ -201,6 +206,47 @@
                         .prepend( "<i class = 'times icon'</i>" ); 
                 }
             }
+        
+        {% if user != target_user %}
+            $('#about-info,#school-info,#company-info,#location-info,#display_name-info').addClass( 'disabled' );
+        {% else %}
+            $('#user-detail-button').click(function(){
+                var about = $('#about-info > textarea')[0].value;
+                var school = $('#school-info > input')[0].value;
+                var company = $('#company-info > input')[0].value;
+                var _location = $('#location-info > input')[0].value;
+                var display_name = $('#display_name-info > input')[0].value;
+                $(this).addClass( 'disabled loading' );
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{{ url("user-infomodify") }}',
+                    {
+                        'about' : about,
+                        'school' : school,
+                        'company' : company,
+                        'location' : _location,
+                        'display_name' : display_name
+                    },
+                    function(data,status){
+                        if( status == 'success'  && data.status == true ){
+                            location.reload();
+                        }else{
+                            $('#user-detail-button')
+                                .removeClass( 'loading disabled primary' )
+                                .addClass('red')
+                            ;
+                            $('#user-detail-error')
+                                .empty()
+                                .removeClass( 'hidden' )
+                                .append(get_error_msgText( data.error_msg ))
+                            ;
+                        }
+                    }
+                )
+            });
+        {% endif %}
 
     </script>
 

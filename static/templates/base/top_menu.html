@@ -11,7 +11,7 @@
         {% if user.is_authenticated %}
             <div class = 'item'>
                 <img src="{{ gravatar_url( email = user.email , size = 150 ) }}" width="40" height="40" alt="" />
-                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {{ url('user-detail') }} style = "color:black" >{{user.display_name}}</a></div>
+                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {{ url('user-detail' , args = (user.pk,) ) }} style = "color:black" >{{user.display_name}}</a></div>
             </div>
         {% endif %}
         <div class="item">
