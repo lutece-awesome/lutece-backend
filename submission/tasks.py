@@ -13,11 +13,9 @@ def Modify_submission_status( ** report ):
         Submission.objects.filter( submission_id = submission ).update( judge_status = 'Running on test ' + str( case ) )
     else:
         sub = Submission.objects.get( submission_id = submission )
-        if get_object_or_None( Judgeinfo , submission = sub , case = case ) == None:
-            Judgeinfo(
-                submission = sub,
-                case = case).save()
-        Judgeinfo.objects.filter( submission = submission , case = case ).update( ** get_update_dict( report ) )
+        Judgeinfo(
+            submission = sub,
+            ** get_update_dict( report )).save()
         if complete == True:
             Submission.objects.filter( submission_id = submission ).update( judge_status = result , completed = True )
 

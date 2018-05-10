@@ -33,9 +33,9 @@
                 <tbody>
                     {% for it in statuslist %}
                         <tr>
-                            <td>{{it.submission_id}} </td>
+                            <td><a href = {{ url('submission-status-detail' , args = (it.submission_id,) ) }}> {{it.submission_id}} </a></td>
                             <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
-                            <td>{{it.user.display_name}} </td>                
+                            <td><a href = {{ url('user-detail' , args = (it.user.pk,) ) }}>{{it.user.display_name}}</a></td>                
                             <td><a href = {{ url('problem-detail-view' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
                             <td class = 'judge_info' >{{it.judge_status}}</td>
                             <td><i class = 'ui help icon'></i></td>

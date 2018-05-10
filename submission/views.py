@@ -38,8 +38,6 @@ def submit_solution(request):
             s.save()
             push_submission( s )
             status[ 'submission_id' ] = s.submission_id
-    except Exception as e:
-        print( str( e ) )
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
@@ -62,12 +60,14 @@ def get_status_detail(request , submission_id):
         'case_number' : get_case_number( target.problem.pk ),
         'prism' : prism_name_transfer( target.language ) })
 
+
 def get_status_detail_json( request , submission_id ):
-    status = {
-        'status' : False,
-        'detail' : []}
-    li = status['detail']
-    print( 'enter here' )
-    s = Judgeinfo.objects.filter( submission = Submission.objects.get( pk = submission_id ) )
-    print( s )
-    pass
+    try:
+        status = {
+            'status' : False,
+            'detail' : []}
+        s = Judgeinfo.objects.filter( submission = Submission.objects.get( pk = submission_id ) )
+        status['detail'] = [ ( ( x.case , x.result ,  x.time_cost , x.memory_cost ) ) for x in s ]
+        status['status'] = True
+    finally:
+        return HttpResponse( dumps( status ) , content_type = 'application/json' )

@@ -118,7 +118,7 @@
                         <tbody>
                             {% for x in recently %}
                                 <tr>
-                                    <td>{{ x.pk }}</td>
+                                    <td><a href = {{ url('submission-status-detail' , args = (x.pk,) ) }}> {{ x.pk }}</a></td>
                                     <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
                                     <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
                                     <td class = 'judge_info' >{{ x.judge_status }} </td>

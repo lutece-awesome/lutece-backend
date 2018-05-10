@@ -27,7 +27,7 @@ class Submission(models.Model):
     class Judge:
         field = ['submission_id' , 'language' , 'problem' , 'code' ]
         problem_field = [ 'time_limit' , 'memory_limit' , 'checker' ]
-        update_field = [ 'submission' , 'result' , 'time_cost' , 'memory_cost' , 'additional_info' , 'case' ]
+        update_field = [ 'result' , 'time_cost' , 'memory_cost' , 'additional_info' , 'case' ]
 
     def get_problem_field( self , dic ):
         for _ in self.Judge.problem_field:

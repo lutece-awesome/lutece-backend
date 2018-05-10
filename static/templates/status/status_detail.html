@@ -5,59 +5,70 @@
         <div class="ui segment">
             <div class="ui one column grid">
 
-                <div class = 'column'>
-                    <div class="label" ><b>Code</b></div>
-                    <pre><code class = "{{ prism }}" >{{ status.code }} </code></pre>
-                </div>
+                {% if user == status.user %}
+                    <div class = 'column'>
+                        <div class="label" ><b>Code</b></div>
+                        <pre><code class = "{{ prism }}" >{{ status.code }} </code></pre>
+                    </div>
+                {% endif %}
 
                 <div class = 'column'>
                     <div class="label" ><b>Detail</b></div>
+                    <div id = 'case-detail'>
+                    </div>
                 </div>
 
                 <div class = 'column'>
 
-                    <div class = "ui progress" id = 'progress-detail' >
+                    <div class = "ui indicating progress" id = 'progress-detail' >
 
                     <div class="bar">
                         <div class="progress"></div>
                     </div>
 
-                    <div class="label">OJBK</div>
+                    <div class="label">Judge Status</div>
 
                     </div>
 
                 </div>
 
+                <div class = 'column'>
+                    <div id = "status-detail-error" class="ui negative message transition hidden">Can not get data from server, please refresh.</div>
+                </div>
+
             </div>
-
-
-            
 
         </div>
     </div>
-
     <script>
-
         function Upadate_status(){
-            //alert( "fuck");
-            $('#progress-detail')
-                .progress( 'set progress' , 20 )
-                .progress( 'set label' , '20 de 50'  )
-            ;
             $.get(
                 '{{ url("submission-status-detail-data-json" , args = (status.pk,) ) }} ',
                 function(data,status){
                     if( status == 'success' && data.status == true ){
-                        
+                        $('#progress-detail')
+                            .progress( 'set progress' , data.detail.length )
+                            .progress( 'set label' , String( data.detail.length ) + ' de {{ case_number }}'  )
+                        ;
+                        var ob = $('#case-detail');
+                        var len = data.detail.length;
+                        ob.empty();
+                        for(let i = 0 ; i < len ; ++ i){
+                            var gen = "<div class = 'ui tiny " + (data.detail[i][1] == 'Accepted' ? 'green' : 'red')  + " button' tabindex = '0' data-position ='top left' style = 'width:50px;height:30px;margin-top:10px;' data-tooltip = '" + String( data.detail[i][2] ) + " ms / " + String( data.detail[i][3] ) + " kb'>" + String( data.detail[i][0] ) + "</div>";
+                            ob.append( gen );
+                        }
+                        if( len > 0 && data.detail[len - 1][1] != 'Accepted' )
+                            $('#progress-detail').progress( 'set error' );
+                        else if( len != {{ case_number }} )
+                            setTimeout( "Upadate_status()" , 1000 );
                     }else{
-
+                        $('#status-detail-error').removeClass( 'hidden' );
                     }
                 }
             )
         }
 
         $(document).ready(function(){
-
             $('#progress-detail').progress( 'set total' , {{ case_number }} );
             Upadate_status();
         });
