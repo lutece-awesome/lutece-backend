@@ -1,14 +1,16 @@
 from django.db import models
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
     title = models.CharField(
         max_length=256, db_index=True, default='Default Title')
-    content = models.TextField( blank=True )
-    standard_input = models.TextField( blank = True)
-    standard_output = models.TextField( blank = True)
-    constraints = models.TextField( blank=True )
+    content = MarkdownxField( blank = True )
+    standard_input = MarkdownxField( blank = True )
+    standard_output = MarkdownxField( blank = True )
+    constraints = MarkdownxField( blank = True )
     resource = models.CharField(max_length=256, blank=True)
     time_limit = models.PositiveIntegerField(default=2000)
     memory_limit = models.PositiveIntegerField(default=128)
@@ -19,6 +21,22 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
+    
+    @property
+    def content_markdown(self):
+        return markdownify( self.content )
+    
+    @property
+    def standard_input_markdown(self):
+        return markdownify( self.standard_input )
+    
+    @property
+    def standard_output_markdown(self):
+        return markdownify( self.standard_output )
+    
+    @property
+    def constraints_markdown(self):
+        return markdownify( self.constraints )
 
     class Meta:
         ordering = ['problem_id']

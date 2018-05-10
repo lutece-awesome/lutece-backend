@@ -23,14 +23,14 @@
             </div>
         </div>
         <div class = 'body'>
-            <p class = 'content'>{{prob.content.replace( '\n' , '<br/>' ) | safe }}</p>
+            <p class = 'content'> {{ prob.content_markdown | safe }} </p>
             <h2 class= 'ui header'>Standard Input</h2>
-            <p class = 'content'>{{prob.standard_input.replace( '\n' , '<br/>' ) | safe }}</p>
+            <p class = 'content'>{{ prob.standard_input_markdown | safe }}</p>
             <h2 class= 'ui header'>Standard Output</h2>
-            <p class = 'content'>{{prob.standard_output}}</p>
+            <p class = 'content'>{{prob.standard_output_markdown | safe }}</p>
             {% if  prob.constraints|length > 0  %}
                 <h2 class='ui header'> Constraints </h2>
-                <p class='content'>{{prob.constraints}}</p>
+                <p class='content'>{{prob.constraints_markdown | safe }}</p>
             {% endif%}
 
             <h2 class= 'ui header'>Sample</h2>

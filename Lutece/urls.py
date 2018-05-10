@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include , path
 from django.views.generic import TemplateView
+from markdownx import urls as markdownx
 
 urlpatterns = [
     path( '' , TemplateView.as_view(template_name='home/home.html') , name = 'home' ),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('problem/' , include( 'problem.urls' )  ),
     path('user/' , include( 'user.urls' ) ),
     path('submission/', include( 'submission.urls' ) ),
-    path('data_server/' , include ('data_server.urls') )
+    path('data_server/' , include ('data_server.urls') ),
+    path('markdownx/' , include( markdownx ) )
 ]

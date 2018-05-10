@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_gravatar',
+    'markdownx',
     # Lutece app
     'problem',
     'user',
@@ -149,6 +150,8 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
 )
+
+# STATIC_ROOT = os.path.join( BASE_DIR , 'static' )
 
 # set judge config
 JUDGE_AUTH_KEY = b'772002'
