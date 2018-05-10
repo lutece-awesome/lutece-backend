@@ -8,6 +8,14 @@ def get_user_problem_analysis( user , problem ):
         return 1
     return 0
 
-def get_problem_analys( problem ):
+def get_problem_analysis( problem ):
     return ( len( { x.user for x in Submission.objects.filter( problem = problem , judge_status = 'Accepted' ) } ),
              len( { x.user for x in Submission.objects.filter( problem = problem ) } ))
+
+
+def get_search_url():
+    return '/problem/search'
+
+
+def build_detail_url( prob_pk ):
+    return '/problem/detail/' + str( prob_pk )

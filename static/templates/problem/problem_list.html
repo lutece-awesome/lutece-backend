@@ -89,14 +89,14 @@
     $('.problem.list .ui.search')
         .search({
             apiSettings: {
-                url: '//api.github.com/search/repositories?q={query}'
+                url: "{{ searchurl }}/{query}"
             },
             fields: {
                 results : 'items',
-                title   : 'name',
-                url     : 'html_url'
+                title   : 'title',
+                url     : 'url'
             },
-            minCharacters : 3
+            minCharacters : 2
         })
     ;
 </script>

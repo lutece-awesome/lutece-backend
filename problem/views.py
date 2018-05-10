@@ -7,7 +7,7 @@ import Lutece.config as config
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
-from .util import get_problem_analys , get_user_problem_analysis
+from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url
 from json import dumps
 
 def problem_detail_view(request, problem_id):
@@ -15,9 +15,7 @@ def problem_detail_view(request, problem_id):
     return render(request, 'problem/problem_detail.html', {
         'prob' : prob,
         'support_lang': config.SUPPORT_LANGUAGE_LIST,
-        'sample': prob.sample_set.all()
-        })
-
+        'sample': prob.sample_set.all()})
 
 def problem_list_view(request, page):
     problem_list = Problem.objects.all()
@@ -29,9 +27,10 @@ def problem_list_view(request, page):
         user_analysis = [ get_user_problem_analysis( user = request.user , problem = x ) for x in problems ]
     return render(request, 'problem/problem_list.html', {
         'problist': problems,
+        'searchurl' : get_search_url(),
         'currentpage' : page,
         'user_analysis' : user_analysis,
-        'problem_analysis' : [ get_problem_analys( x ) for x in problems ],
+        'problem_analysis' : [ get_problem_analysis( x ) for x in problems ],
         'max_page': paginator.num_pages,
         'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
 
@@ -82,8 +81,10 @@ def problem_update_view( request , problem_id ):
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
+def search_view( request , til ):
+    ret = Problem.objects.filter(title__icontains=til)[:5]
+    return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
 
 @permission_required( 'problem.add_problem' )
 def problem_create_view( request ):
-    
     pass
