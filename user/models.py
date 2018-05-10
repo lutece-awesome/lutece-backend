@@ -28,7 +28,7 @@ class User(AbstractUser):
 
     def save( self , * args , ** kwargs ):
         super( User , self ).save()
-        if Userinfo.objects.get( user = self ) == None:
+        if get_object_or_None( Userinfo , user = self ) == None:
             Userinfo( user = self ) .save()
 
 class Userinfo(models.Model):

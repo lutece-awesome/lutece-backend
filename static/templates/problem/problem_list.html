@@ -9,21 +9,42 @@
 
 <div class = 'problem list'>
 
-    <div class="ui pagination menu">
-        <a class="icon item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
-        {% for it in page_list %}
-            {% if it == currentpage %}
-                <a class="active item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
-            {% else %}
-                <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
-            {% endif %}
-        {% endfor %}
-        <a class="icon item" href = {{ url('problem-list-view' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
-        {% if perms.problem.add_problem %}
-            <div class="item">
-                <div class = 'ui basic orange edit button'><i class = 'add icon'></i><b>Create</b></div>
+    <div class = 'ui two column grid'>
+
+        <div class = 'column'>
+
+            <div class="ui pagination menu">
+
+                <a class="icon item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
+                {% for it in page_list %}
+                    {% if it == currentpage %}
+                        <a class="active item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
+                    {% else %}
+                        <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
+                    {% endif %}
+                {% endfor %}
+                <a class="icon item" href = {{ url('problem-list-view' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+
             </div>
-        {% endif %}
+        
+        </div>
+
+        <div class = 'column'>
+            {% if perms.problem.add_problem %}
+                <div style = 'float:right' >
+                    <div class = 'ui primary edit button'><i class = 'add icon'></i><b>New</b></div>
+                </div>
+            {% endif %}
+
+            <div class="ui search" style = 'float:right;'>
+                <div class="ui left icon input" >
+                    <input class="prompt" type="text" placeholder="Search">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
     <table class = "ui basic fixed selectable padded table bordered" >
@@ -32,9 +53,9 @@
                 <th>ID</th>
                 <th>Title</th>
                 {% if user.is_authenticated == True %}
-                <th>Status</th>
+                    <th>Status</th>
                 {% endif %}
-                <th>Try / Solved</th>
+                <th>Solve / Try</th>
                 <th>AC Ratio</th>
             </tr>
         </thread>
@@ -44,17 +65,39 @@
                     <td>{{it.problem_id}} </td>
                     <td><a href = {{ url('problem-detail-view' , args = (it.problem_id,) ) }} >{{it.title}}</td>
                     {% if user.is_authenticated == True %}
-                        <td><i class="icon green checkmark"></i></td>
+                        <td>
+                            {% if user_analysis[ loop.index0 ] == 2 %}
+                                <i class="green checkmark icon"></i>
+                            {% elif user_analysis[ loop.index0 ] == 1 %}
+                                 <i class = 'red times icon'> </i>
+                            {% endif %}
+                        </td>
                     {% endif %}
-                    <td>{{it.try_number}} / {{it.solved_number}} </td>
-                    {% if it.try_number == 0 %}
-                        <td> 0.00%</td>
+                    <td>{{ problem_analysis[ loop.index0 ].0 }} / {{ problem_analysis[ loop.index0 ].1 }} </td>
+                    {% if problem_analysis[ loop.index0 ].1 == 0 %}
+                        <td> 0.00% </td>
                     {% else %}
-                        <t> {{ it.solved_number / it.try_number }} %</td>
+                        <td> {{ "%.2f" | format( problem_analysis[ loop.index0 ].0 / problem_analysis[ loop.index0 ].1 * 100 ) }} %</td>
                     {% endif %}
                 </tr>
                 {% endfor %}
         </tbody>
     </table>
 </div>
+
+<script>
+    $('.problem.list .ui.search')
+        .search({
+            apiSettings: {
+                url: '//api.github.com/search/repositories?q={query}'
+            },
+            fields: {
+                results : 'items',
+                title   : 'name',
+                url     : 'html_url'
+            },
+            minCharacters : 3
+        })
+    ;
+</script>
 {% endblock %}

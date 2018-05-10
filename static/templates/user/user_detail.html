@@ -2,6 +2,7 @@
 
 {% block extra_head %}
     <link href="{{ static('css/user/user_detail.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ static('echarts/echarts.min.js') }}"></script>
 {% endblock extra_head %}
 
 {% block title %}
@@ -94,9 +95,9 @@
                     <div style = "margin-top:13px;">
                         {% for x in analysis.result %}
                             {% if x.1 == True %}
-                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
+                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
                             {% else %}
-                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
+                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
                             {% endif %}
                         {% endfor %}
                     </div>

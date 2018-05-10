@@ -16,7 +16,18 @@ MAX_SOURCECORE_LENGTH = 60000
     Warning:
         + The change of SUPPORT_LANGUAGE_LIST may need to change the highlight css.
 '''
-SUPPORT_LANGUAGE_LIST={
+SUPPORT_LANGUAGE_LIST=[
+    'GNU G++17',
+    'Clang 6.0.0',
+    'GNU GCC 7.3',
+    'Python 3.6.5',
+    'Java 10',
+    'Go 1.9.2',
+    'Ruby 2.5.1',
+    'Rust 1.25.0'
+]
+
+PRISM_LANGUAGE = {
     'GNU G++17' : 'language-cpp',
     'Clang 6.0.0' : 'language-cpp',
     'GNU GCC 7.3' : 'language-c',
@@ -24,7 +35,7 @@ SUPPORT_LANGUAGE_LIST={
     'Java 10': 'language-java',
     'Go 1.9.2' : 'language-go',
     'Ruby 2.5.1' : 'language-ruby',
-    'Rust 1.25.0' : 'language-rust',
+    'Rust 1.25.0' : 'language-rust'
 }
 
 # basic checker from testlib.h

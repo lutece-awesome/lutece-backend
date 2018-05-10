@@ -7,6 +7,7 @@ import Lutece.config as config
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
+from .util import get_problem_analys , get_user_problem_analysis
 from json import dumps
 
 def problem_detail_view(request, problem_id):
@@ -23,9 +24,14 @@ def problem_list_view(request, page):
     paginator = Paginator(problem_list, config.PER_PAGE_COUNT)
     problems = paginator.get_page(page)
     page = min( max( 1 , page ) , paginator.num_pages )
+    user_analysis = None
+    if request.user.is_authenticated:
+        user_analysis = [ get_user_problem_analysis( user = request.user , problem = x ) for x in problems ]
     return render(request, 'problem/problem_list.html', {
         'problist': problems,
         'currentpage' : page,
+        'user_analysis' : user_analysis,
+        'problem_analysis' : [ get_problem_analys( x ) for x in problems ],
         'max_page': paginator.num_pages,
         'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
 

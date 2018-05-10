@@ -14,8 +14,6 @@ class Problem(models.Model):
     resource = models.CharField(max_length=256, blank=True)
     time_limit = models.PositiveIntegerField(default=2000)
     memory_limit = models.PositiveIntegerField(default=128)
-    solved_number = models.PositiveIntegerField(default=0, editable=False)
-    try_number = models.PositiveIntegerField(default=0, editable=False)
     checker = models.CharField( max_length = 256 , default = 'wcmp' )
     visible = models.BooleanField(default=False)
 

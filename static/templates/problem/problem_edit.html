@@ -1,9 +1,8 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 
 {% block extra_head %}
-    {% load staticfiles %}
-        <link href="{% static 'css/problem/problem_edit.css' %}" rel="stylesheet" />
+    <link href="{{ static('css/problem/problem_edit.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block title %}
@@ -74,7 +73,7 @@
                 </div>
                 <div class ='field'>
                     <div id = "content-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.content | linebreaks }}
+                        {{ prob.content_markdown | safe }}
                     </div>
                 </div>
             </div>
@@ -86,7 +85,7 @@
                 </div>
                 <div class ='field'>
                     <div id = "standard_input-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.standard_input | linebreaks }}
+                        {{ prob.standard_input_markdown | safe }}
                     </div>
                 </div>
             </div>
@@ -98,7 +97,7 @@
                 </div>
                 <div class ='field'>
                     <div id = "standard_output-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.standard_output | linebreaks }}
+                        {{ prob.standard_output_markdown | safe }}
                     </div>
                 </div>
             </div>
@@ -110,7 +109,7 @@
                 </div>
                 <div class ='field'>
                     <div id = "constraints-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.constraints | linebreaks }}
+                        {{ prob.constraints_markdown | safe }}
                     </div>
                 </div>
             </div>
@@ -184,7 +183,7 @@
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
                 });
                 $.post(
-                    '{% url "problem-update-view" prob.problem_id %}',
+                    '{{ url("problem-update-view" , args = (prob.problem_id , ) ) }}',
                     {
                         'title' : title,
                         'timelimit' : timelimit,
@@ -199,7 +198,7 @@
                     },
                     function(data,status){
                         if( status == 'success'  && data.update_status == true ){
-                            window.location = '{% url "problem-detail-view" prob.problem_id %} ';
+                            window.location = '{{ url("problem-detail-view" , args = ( prob.problem_id , ) )  }} ';
                         }
                         $('#submit-form')
                             .removeClass( 'loading disabled primary' )
