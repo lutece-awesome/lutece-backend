@@ -213,7 +213,7 @@
                     '',
                     function(data,status){
                       $("this").removeClass('loading disabled');
-                      window.location = "{{ url('home') }}";
+                      location.reload();
                     }
                 );
             });
