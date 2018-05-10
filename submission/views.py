@@ -49,6 +49,7 @@ def get_status_list(request , page):
     status = paginator.get_page(page)
     return render(request, 'status/status_list.html', {
         'statuslist': status,
+        'currentpage' : page,
         'max_page': paginator.num_pages,
         'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
 

@@ -12,13 +12,17 @@
     <div class="ui pagination menu">
         <a class="icon item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
         {% for it in page_list %}
-            <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
+            {% if it == currentpage %}
+                <a class="active item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
+            {% else %}
+                <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
+            {% endif %}
         {% endfor %}
         <a class="icon item" href = {{ url('problem-list-view' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
         {% if perms.problem.add_problem %}
-        <div class="item">
-            <div class = 'ui basic orange edit button'><i class = 'add icon'></i><b>Create</b></div>
-        </div>
+            <div class="item">
+                <div class = 'ui basic orange edit button'><i class = 'add icon'></i><b>Create</b></div>
+            </div>
         {% endif %}
     </div>
 

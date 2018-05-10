@@ -25,6 +25,7 @@ def problem_list_view(request, page):
     page = min( max( 1 , page ) , paginator.num_pages )
     return render(request, 'problem/problem_list.html', {
         'problist': problems,
+        'currentpage' : page,
         'max_page': paginator.num_pages,
         'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
 
