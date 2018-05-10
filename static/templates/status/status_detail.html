@@ -2,6 +2,65 @@
 
 {% block content %}
     <div class = "status detail">
-        
+        <div class="ui segment">
+            <div class="ui one column grid">
+
+                <div class = 'column'>
+                    <div class="label" ><b>Code</b></div>
+                    <pre><code class = "{{ prism }}" >{{ status.code }} </code></pre>
+                </div>
+
+                <div class = 'column'>
+                    <div class="label" ><b>Detail</b></div>
+                </div>
+
+                <div class = 'column'>
+
+                    <div class = "ui progress" id = 'progress-detail' >
+
+                    <div class="bar">
+                        <div class="progress"></div>
+                    </div>
+
+                    <div class="label">OJBK</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            
+
+        </div>
     </div>
+
+    <script>
+
+        function Upadate_status(){
+            //alert( "fuck");
+            $('#progress-detail')
+                .progress( 'set progress' , 20 )
+                .progress( 'set label' , '20 de 50'  )
+            ;
+            $.get(
+                '{{ url("submission-status-detail-data-json" , args = (status.pk,) ) }} ',
+                function(data,status){
+                    if( status == 'success' && data.status == true ){
+                        
+                    }else{
+
+                    }
+                }
+            )
+        }
+
+        $(document).ready(function(){
+
+            $('#progress-detail').progress( 'set total' , {{ case_number }} );
+            Upadate_status();
+        });
+    </script>
+
 {% endblock content %}

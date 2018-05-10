@@ -39,13 +39,13 @@ class Submission(models.Model):
         return { ** dic , ** model_to_dict( self , fields = self.Judge.field ) }
 
 class Judgeinfo(models.Model):
-    judgeinfo_id = models.AutoField(primary_key=True, db_index=True)
-    submission = models.ForeignKey(Submission, on_delete=models.CASCADE )
+    judgeinfo_id = models.AutoField(primary_key=True, db_index = True )
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE , db_index = True )
     result = models.CharField( max_length = 64 , default = '' )
     time_cost = models.CharField( max_length = 12 )
     memory_cost = models.CharField( max_length = 12 )
     additional_info = models.CharField( max_length = 512 )
-    case = models.SmallIntegerField( null = True , editable = False , db_index = True )
+    case = models.SmallIntegerField( null = True , editable = False )
 
     def __str__(self):
         return str(self.judgeinfo_id)

@@ -11,8 +11,7 @@
 {% block content %}
     <div class = 'user detail'>
 
-        <div class = 'ui grid segement'>
-
+        <div>
 
             <div class="ui three column grid">
 
@@ -89,52 +88,51 @@
                 
             </div>
 
-        </div>
-
-        <div class = 'ui two column grid'>
-            <div class = 'column'>
-                <div class = "label"><b>Detail</b></div>
-                {% for x in analysis.result %}
-                    {% if x.1 == True %}
-                        <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
-                    {% else %}
-                        <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <div class = 'column'>
-                <div class = "label"><b>Recently</b></div>
-                <table class = "ui basic fixed selectable padded table bordered" >
-                    <thread>
-                        <div class = 'status list menu'>
-                            <tr>
-                                <th>ID</th>
-                                <th>When</th>
-                                <th>Problem</th>
-                                <th>Verdict</th>
-                            </tr>
-                        </div>
-                    </thread>
-                    <tbody>
-                        {% for x in recently %}
-                            <tr>
-                                <td>{{ x.pk }}</td>
-                                <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
-                                <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
-                                <td class = 'judge_info' >{{ x.judge_status }} </td>
-                            </tr>
+            <div class = 'ui two column grid'>
+                <div class = 'column'>
+                    <div class = "label"><b>Detail</b></div>
+                    <div style = "margin-top:13px;">
+                        {% for x in analysis.result %}
+                            {% if x.1 == True %}
+                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
+                            {% else %}
+                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:3px;" >{{x.0}}</div></a>
+                            {% endif %}
                         {% endfor %}
-                    </tbody>
-                </table>
-                <div id = "user-detail-error" class="ui negative message transition hidden"></div>
+                    </div>
+                </div>
+
+                <div class = 'column'>
+                    <div class = "label"><b>Recently</b></div>
+                    <table class = "ui basic fixed selectable padded table bordered" >
+                        <thread>
+                            <div class = 'status list menu'>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>When</th>
+                                    <th>Problem</th>
+                                    <th>Verdict</th>
+                                </tr>
+                            </div>
+                        </thread>
+                        <tbody>
+                            {% for x in recently %}
+                                <tr>
+                                    <td>{{ x.pk }}</td>
+                                    <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
+                                    <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
+                                    <td class = 'judge_info' >{{ x.judge_status }} </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div id = "user-detail-error" class="ui negative message transition hidden"></div>
+                </div>
             </div>
+            {% if user == target_user %}
+                <div id = 'user-detail-button' class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
+            {% endif %}
         </div>
-
-        {% if user == target_user %}
-            <div id = 'user-detail-button' class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
-        {% endif %}
-
     </div>
 
     <script>

@@ -19,7 +19,7 @@ def Modify_submission_status( ** report ):
                 case = case).save()
         Judgeinfo.objects.filter( submission = submission , case = case ).update( ** get_update_dict( report ) )
         if complete == True:
-            Submission.objects.filter( submission_id = submission ).update( judge_status = result )
+            Submission.objects.filter( submission_id = submission ).update( judge_status = result , completed = True )
 
 
 def push_submission( submission ):

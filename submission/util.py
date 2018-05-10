@@ -1,4 +1,5 @@
 from .models import Submission
+from Lutece.config import SUPPORT_LANGUAGE_LIST
 
 def get_update_dict( dic ):
     L = []
@@ -9,3 +10,7 @@ def get_update_dict( dic ):
     for _ in L:
         t.pop( _ )
     return t
+
+
+def prism_name_transfer( lang ):
+    return SUPPORT_LANGUAGE_LIST[lang]

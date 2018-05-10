@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 from django.http import HttpResponse,Http404
 from annoying.functions import get_object_or_None
 from user.models import User
@@ -10,6 +10,8 @@ from .models import Submission, Judgeinfo
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .tasks import push_submission
+from data_server.util import get_case_number
+from .util import prism_name_transfer
 # Create your views here.
 
 @login_required_ajax
@@ -54,5 +56,18 @@ def get_status_list(request , page):
 
 
 def get_status_detail(request , submission_id):
-    f = Submission.objects.get( submission_id = submission_id )
+    target = get_object_or_404( Submission , pk = submission_id )
+    return render( request , 'status/status_detail.html' , {
+        'status' : target,
+        'case_number' : get_case_number( target.problem.pk ),
+        'prism' : prism_name_transfer( target.language ) })
+
+def get_status_detail_json( request , submission_id ):
+    status = {
+        'status' : False,
+        'detail' : []}
+    li = status['detail']
+    print( 'enter here' )
+    s = Judgeinfo.objects.filter( submission = Submission.objects.get( pk = submission_id ) )
+    print( s )
     pass

@@ -57,3 +57,8 @@ def process( request ):
     if data_type == 'md5-file':
         cal_md5_or_create( problem )
     return get_data( problem , data_type )
+
+
+def get_case_number( problem ):
+    dr = path.join( data_dir , str( problem ) )
+    return len( list( filter( lambda x : path.splitext( x )[1] == '.in' , listdir( dr ) ) ) )
