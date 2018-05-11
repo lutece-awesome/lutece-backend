@@ -1,25 +1,25 @@
 <div class = 'ui fixed top borderless huge menu'>
-    <div class="header item">Lutece</div>
-    <div class="ui container">
+    <div class="ui container" id="top-menu">
+        <div class="header item">Lutece</div>
         <a class="item" href = {{ url('home') }} ><i class="home icon"></i>Home</a>
         <a class="item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="university icon"></i>Problem</a>
         <a class="item" href = {{ url('submission-status-list' , args = (1,) ) }}><i class="bar chart icon"></i>Status</a>
         <a class="item" ><i class="trophy icon"></i>Contest</a>
         <a class="item" ><i class="lab icon"></i>Lab</a>
-    </div>
-    <div class="right menu">
-        {% if user.is_authenticated %}
-            <div class = 'item'>
-                <img src="{{ gravatar_url( email = user.email , size = 150 ) }}" width="40" height="40" alt="" />
-                <div id = 'user-info' style = "margin-left:10px;margin-top:8px;" ><a href =  {{ url('user-detail' , args = (user.pk,) ) }} style = "color:black" >{{user.display_name}}</a></div>
-            </div>
-        {% endif %}
-        <div class="item">
-            {% if user.is_authenticated == False %}
-                <div class="ui primary button" id="signin"><b><i class="sign in icon"></i></b>Sign in</div>
-            {% else %}
-                <div class="ui red button" id="signout"><b><i class="sign out icon"></i></b>Sign out</div>     
+        <div class="right menu">
+            {% if user.is_authenticated %}
+                <div class = 'item'>
+                    <img src="{{ gravatar_url( email = user.email , size = 150 ) }}" alt="" />
+                    <div id = 'user-info'><a href =  {{ url('user-detail' , args = (user.pk,) ) }} style = "color:black" >{{user.display_name}}</a></div>
+                </div>
             {% endif %}
+            <div class="item">
+                {% if user.is_authenticated == False %}
+                    <div class="ui primary button" id="signin"><b><i class="sign in icon"></i></b>Sign in</div>
+                {% else %}
+                    <div class="ui red button" id="signout"><b><i class="sign out icon"></i></b>Sign out</div>     
+                {% endif %}
+            </div>
         </div>
     </div>
 
