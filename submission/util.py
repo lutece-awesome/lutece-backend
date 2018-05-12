@@ -14,3 +14,4 @@ def get_update_dict( dic ):
 
 def prism_name_transfer( lang ):
     return PRISM_LANGUAGE[lang]
+
