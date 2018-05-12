@@ -10,6 +10,7 @@ from .models import Submission, Judgeinfo
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .tasks import push_submission
+from utils.paginator_menu import get_range as page_range
 from data_server.util import get_case_number
 from .util import prism_name_transfer
 # Create your views here.
@@ -51,7 +52,7 @@ def get_status_list(request , page):
         'statuslist': status,
         'currentpage' : page,
         'max_page': paginator.num_pages,
-        'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
+        'page_list' : page_range( page , paginator.num_pages )})
 
 
 def get_status_detail(request , submission_id):

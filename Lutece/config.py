@@ -1,5 +1,5 @@
 # Set the paginator number
-PER_PAGINATOR_COUNT = 20
+PER_PAGINATOR_COUNT = 8
 
 # Set the number of problem/status one page should be shown
 PER_PAGE_COUNT = 20

@@ -9,7 +9,7 @@
 
         <div class = 'ui grid'>
 
-            <div class = 'four wide column'>
+            <div class = 'five wide column'>
                 <div class="ui pagination menu">
                     <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
                     {% for it in page_list %}
@@ -20,15 +20,6 @@
                         {% endif %}
                     {% endfor %}
                     <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
-                </div>
-            </div>
-
-            <div class = 'two wide column'>
-                <div class="ui search">
-                    <div class="ui fluid left icon input" >
-                        <input class="prompt" type="text" placeholder="Status ID">
-                        <i class="search icon"></i>
-                    </div>
                 </div>
             </div>
 
@@ -93,6 +84,12 @@
                     </div>
                 </div>
             </div>
+
+            <div class = 'one wide column'>
+                <div class = 'ui secondary button'> Apply </div>
+            </div>
+
+
         </div>
 
         <table class = "ui selectable very padded padded table" >
@@ -125,7 +122,7 @@
                                 <td><i class = 'ui help icon'></i></td>
                                 <td><i class = 'ui help icon'></i></td>
                             {% endif %}
-                            <td>{{it.language}}</td>  
+                            <td>{{it.language}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

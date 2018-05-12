@@ -1,6 +1,5 @@
 from submission.models import Submission
-from submission.judge_result import gen_base, get_index
-from submission.judge_result import Judge_info
+from submission.judge_result import gen_base, get_index, Judge_info
 
 def get_report( user ):
     s = [ ( x.pk , x.problem.pk , x.judge_status ) for x in Submission.objects.filter( user = user ) ]

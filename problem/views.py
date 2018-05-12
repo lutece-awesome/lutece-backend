@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
 from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url
+from utils.paginator_menu import get_range as page_range
 from json import dumps
 
 def problem_detail_view(request, problem_id):
@@ -32,7 +33,7 @@ def problem_list_view(request, page):
         'user_analysis' : user_analysis,
         'problem_analysis' : [ get_problem_analysis( x ) for x in problems ],
         'max_page': paginator.num_pages,
-        'page_list' : range( max( 1 , page - config.PER_PAGINATOR_COUNT ) , min( page + config.PER_PAGINATOR_COUNT , paginator.num_pages + 1 ) )})
+        'page_list' : page_range( page , paginator.num_pages ) })
 
 @permission_required( 'problem.change_problem' )
 def problem_edit_view( request , problem_id ):

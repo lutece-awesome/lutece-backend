@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'problem',
     'user',
     'submission',
-    'data_server'
+    'data_server',
+    'utils'
 ]
 
 MIDDLEWARE = [
