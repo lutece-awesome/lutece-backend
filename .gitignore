@@ -117,3 +117,9 @@ Lutece/local_hezhu.py
 
 # Mathjax
 MathJax-2.7.4/
+
+# migrations
+*/migrations/
+
+# Lutece_Data
+*/Lutece_Data/
