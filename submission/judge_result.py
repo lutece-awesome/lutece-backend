@@ -2,6 +2,7 @@ from re import compile, search
 from enum import Enum, unique
 from .models import Judgeinfo
 
+
 class _result:
     __slots__ = (
         'full',
@@ -149,3 +150,6 @@ def is_judger_error( result ):
 
 def get_CE_JE_info( submission ):
     return Judgeinfo.objects.get( submission = submission ).additional_info
+
+def get_judge_result_list():
+    return list( Judge_result )

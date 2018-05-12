@@ -13,6 +13,9 @@ from .tasks import push_submission
 from utils.paginator_menu import get_range as page_range
 from data_server.util import get_case_number
 from .util import prism_name_transfer
+from .judge_result import get_judge_result_list
+from problem.util import get_search_url as problem_search_url
+from user.util import get_search_url as user_search_url
 # Create your views here.
 
 @login_required_ajax
@@ -51,6 +54,10 @@ def get_status_list(request , page):
     return render(request, 'status/status_list.html', {
         'statuslist': status,
         'currentpage' : page,
+        'judge_result_list' : get_judge_result_list(),
+        'language_list' : config.SUPPORT_LANGUAGE_LIST,
+        'user_search_url' : user_search_url(),
+        'problem_search_url' : problem_search_url(),
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages )})
 
