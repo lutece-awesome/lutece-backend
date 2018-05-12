@@ -9,7 +9,7 @@ from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
 from .util import get_report , get_recently
-from submission.judge_result import Judge_info
+from submission import judge_result
 from Lutece.config import RECENT_NUMBER
 
 
@@ -152,5 +152,4 @@ def user_detail( request , user_id ):
         'target_user' : target_user,
         'info' : Userinfo.objects.get( user = target_user ),
         'analysis' : get_report( target_user ),
-        'judge_color' : Judge_info.colour,
         'recently' : get_recently( target_user , RECENT_NUMBER ) })

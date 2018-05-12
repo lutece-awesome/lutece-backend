@@ -1,13 +1,13 @@
 from submission.models import Submission
-from submission.judge_result import gen_base, get_index, Judge_info
+from submission.judge_result import get_judge_result
 
 def get_report( user ):
     s = [ ( x.pk , x.problem.pk , x.judge_status ) for x in Submission.objects.filter( user = user ) ]
-    base = gen_base( Judge_info.user_detail_fields )
+    base = judge_result.gen_base( judge_result.user_detail_fields )
     analysis = {}
     s.sort()
     for x in s:
-        st , _id = get_index( judge_status = x[2] , fields = Judge_info.user_detail_fields )
+        st , _id = judge_result.get_index( judge_status = x[2] , fields = judge_result.user_detail_fields )
         if st == False:
             continue
         if x[1] not in analysis:

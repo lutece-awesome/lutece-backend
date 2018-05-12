@@ -1,44 +1,120 @@
-from user.models import User
-from .models import Submission
 from re import compile, search
+from enum import Enum, unique
 
-class Judge_info:
+class _result:
+    __slots__ = (
+        'full',
+        'alias',
+        'color',
+        'regex',
+        'detail',
+        '_field'
+    )
 
-    colour = {
-        'Waiting': 'grey',
-        'Preparing' : 'grey',
-        'Accepted' : '#32CD32',
-        'Running' : 'black',
-        'Compile Error' : 'orange',
-        'Wrong Answer' : '#EE2C2C',
-        'Runtime Error' : '#CD4F39',
-        'Time Limit Exceeded' : '#6495ED' ,
-        'Output Limit Exceeded' : '#B03060',
-        'Memory Limit Exceeded' : '#EE3B3B',
-        'Judger Error' : 'red'}
+    def __init__( self , ** kw ):
+        for _ in kw:
+            self.__setattr__( _ , kw[_] )
+        self._field = kw
 
-    WT = ( compile( '^Waiting$' ) , 'Waiting' , 'WT' )
-    PR = ( compile( '^Preparing$' ) , 'Preparing' , 'PR' )
-    AC = ( compile( '^Accepted$' ) , 'Accepted' , 'AC' )
-    RN = ( compile( '^Running.*$' ) , 'Running' , 'RN' )
-    CE = ( compile( '^Compile Error$' ) , 'Compile Error' , 'CE' )
-    WA = ( compile( '^Wrong Answer.*$' ) , 'Wrong Answer' , 'WA' )
-    RE = ( compile( '^Runtime Error.*$' ) , 'Runtime Error' , 'RE' )
-    TLE = ( compile( '^Time Limit Exceeded.*$' ) , 'Time Limit Exceeded' , 'TLE' )
-    OLE = ( compile( '^Output Limit Exceeded.*$' ) , 'Output Limit Exceeded' , 'OLE' )
-    MLE = ( compile( '^Memory Limit Exceeded.*$' ) , 'Memory Limit Exceeded' , 'MLE' )
-    JE = ( compile( '^Judger Error$' ) , 'Judger Error' , 'JE' )
-    
-    _fields = ( WT , PR , AC , RN , CE , WA , RE , TLE , OLE , MLE , JE )
+    def __str__(self):
+        return self.full
 
-    user_detail_fields = ( AC , CE , WA , RE , TLE , OLE , MLE )
+    def __repr__(self):
+        return str( self.full )
+
+    @property
+    def attribute(self):
+        return self._field
 
 
-def get_index( judge_status , fields = Judge_info._fields ):
-    for x in fields:
-        if x[0].search( judge_status ) is not None:
-            return True , x[1]
-    return False , None
+@unique
+class Judge_result( Enum ):
+    WT = _result(
+        full = 'Waiting',
+        alias = 'WT',
+        color = 'grey',
+        detail = 'Judger is too busy to judge your solution. Just be kindly patient to waiting a moment.',
+        regex = compile( '^Waiting$' )
+    )
+    PR = _result(
+        full = 'Preparing',
+        alias = 'PR',
+        color = 'grey',
+        detail = 'Judger has fetched your solution, now is preparing test data.',
+        regex = compile( '^Preparing$' )
+    )
+    AC = _result(
+        full = 'Accepted',
+        alias = 'AC',
+        color = '#32CD32',
+        detail = 'Your solution has produced exactly right output.',
+        regex = compile( '^Accepted$' )
+    )
+    RN = _result(
+        full = 'Running',
+        alias = 'RN',
+        color = 'black',
+        detail = 'The program of your solution is running on the judger.',
+        regex = compile( '^Running.*$' )
+    )
+    CE = _result(
+        full = 'Compile Error',
+        alias = 'CE',
+        color = 'orange',
+        detail = 'Your solution cannot be compiled into any program that executed by the system.',
+        regex = compile( '^Compile Error$' )
+    )
+    WA = _result(
+        full = 'Wrong Answer',
+        alias = 'WA',
+        color = '#EE2C2C',
+        detail = 'Your solution has not produced the desired output for the input given by system.',
+        regex = compile( '^Wrong Answer.*$' )
+    )
+    RE = _result(
+        full = 'Runtime Error',
+        alias = 'RE',
+        color = '#CD4F39',
+        detail = 'Your solution has caused an unhandled exception during execution.',
+        regex = compile( '^Runtime Error.*$' )
+    )
+    TLE = _result(
+        full = 'Time Limit Exceeded',
+        alias = 'TLE',
+        color = '#6495ED',
+        detail = 'Your solution has run for longer time than permitted time limit.',
+        regex = compile( '^Time Limit Exceeded.*$' )
+    )
+    OLE = _result(
+        full = 'Output Limit Exceeded',
+        alias = 'OLE',
+        color = '#B03060',
+        detail = 'Your solution has produced overmuch output.',
+        regex = compile( '^Output Limit Exceeded.*$' )    
+    )
+    MLE = _result(
+        full = 'Memory Limit Exceeded',
+        alias = 'MLE',
+        color = '#EE3B3B',
+        detail = 'Your solution has consumed more memory than permitted memory limit.',
+        regex = compile( '^Memory Limit Exceeded.*$' )    
+    )
+    JE = _result(
+        full = 'Judger Error',
+        alias = 'JE',
+        color = 'red',
+        detail = 'Some unexpected errors occur in judger.',
+        regex = compile( '^Judger Error$' )  
+    )
 
-def gen_base( fields ):
-    return { x[1]:0 for x in fields }
+@unique
+class Query_field( Enum ):
+    all_fields = ( Judge_result.WT , Judge_result.PR , Judge_result.AC , Judge_result.RN , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE , Judge_result.JE )
+    user_detail_fields = ( Judge_result.AC , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
+
+
+def get_judge_result( result ):
+    for x in Judge_result:
+        if x.value.regex.search( result ) is not None:
+            return x
+    return None

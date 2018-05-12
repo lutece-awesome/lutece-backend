@@ -1,5 +1,5 @@
 from .models import Submission, Judgeinfo
-from . import JudgeQueue
+from . import judge_queue
 from annoying.functions import get_object_or_None
 from .util import get_update_dict
 
@@ -21,11 +21,11 @@ def Modify_submission_status( ** report ):
 
 
 def push_submission( submission ):
-    JudgeQueue.task.put( submission.get_push_dict() )
+    judge_queue.task.put( submission.get_push_dict() )
 
 def read_modify_status():
     while True:
-        s = JudgeQueue.result.get( block = True )
+        s = judge_queue.result.get( block = True )
         Modify_submission_status( ** s )
 
 def init_push_waiting_submission():
