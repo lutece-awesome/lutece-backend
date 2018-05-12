@@ -1,5 +1,6 @@
 from re import compile, search
 from enum import Enum, unique
+from .models import Judgeinfo
 
 class _result:
     __slots__ = (
@@ -34,14 +35,14 @@ class Judge_result( Enum ):
         alias = 'WT',
         color = 'grey',
         detail = 'Judger is too busy to judge your solution. Just be kindly patient to waiting a moment.',
-        icon = 'coffee icon',
+        icon = 'ui coffee icon',
         regex = compile( '^Waiting$' )
     )
     PR = _result(
         full = 'Preparing',
         alias = 'PR',
         color = 'grey',
-        icon = 'coffee icon',
+        icon = 'ui coffee icon',
         detail = 'Judger has fetched your solution, now is preparing test data.',
         regex = compile( '^Preparing$' )
     )
@@ -49,7 +50,7 @@ class Judge_result( Enum ):
         full = 'Accepted',
         alias = 'AC',
         color = '#21ba45',
-        icon = 'check icon',
+        icon = 'ui check icon',
         detail = 'Your solution has produced exactly right output.',
         regex = compile( '^Accepted$' )
     )
@@ -57,7 +58,7 @@ class Judge_result( Enum ):
         full = 'Running',
         alias = 'RN',
         color = '#666699',
-        icon = 'hourglass half icon',
+        icon = 'ui hourglass half icon',
         detail = 'The program of your solution is running on the judger.',
         regex = compile( '^Running.*$' )
     )
@@ -65,7 +66,7 @@ class Judge_result( Enum ):
         full = 'Compile Error',
         alias = 'CE',
         color = 'orange',
-        icon = 'exclamation icon',
+        icon = 'ui exclamation icon',
         detail = 'Your solution cannot be compiled into any program that executed by the system.',
         regex = compile( '^Compile Error$' )
     )
@@ -73,7 +74,7 @@ class Judge_result( Enum ):
         full = 'Wrong Answer',
         alias = 'WA',
         color = 'red',
-        icon = 'times icon',
+        icon = 'ui times icon',
         detail = 'Your solution has not produced the desired output for the input given by system.',
         regex = compile( '^Wrong Answer.*$' )
     )
@@ -81,7 +82,7 @@ class Judge_result( Enum ):
         full = 'Runtime Error',
         alias = 'RE',
         color = '#CC0033',
-        icon = 'times icon',
+        icon = 'ui times icon',
         detail = 'Your solution has caused an unhandled exception during execution.',
         regex = compile( '^Runtime Error.*$' )
     )
@@ -89,7 +90,7 @@ class Judge_result( Enum ):
         full = 'Time Limit Exceeded',
         alias = 'TLE',
         color = '#6666FF',
-        icon = 'times icon',
+        icon = 'ui times icon',
         detail = 'Your solution has run for longer time than permitted time limit.',
         regex = compile( '^Time Limit Exceeded.*$' )
     )
@@ -97,7 +98,7 @@ class Judge_result( Enum ):
         full = 'Output Limit Exceeded',
         alias = 'OLE',
         color = '#FF0033',
-        icon = 'times icon',
+        icon = 'ui times icon',
         detail = 'Your solution has produced overmuch output.',
         regex = compile( '^Output Limit Exceeded.*$' )    
     )
@@ -105,7 +106,7 @@ class Judge_result( Enum ):
         full = 'Memory Limit Exceeded',
         alias = 'MLE',
         color = '#CC3333',
-        icon = 'times icon',
+        icon = 'ui times icon',
         detail = 'Your solution has consumed more memory than permitted memory limit.',
         regex = compile( '^Memory Limit Exceeded.*$' )    
     )
@@ -113,7 +114,7 @@ class Judge_result( Enum ):
         full = 'Judger Error',
         alias = 'JE',
         color = '#EE2C2C',
-        icon = 'exclamation circle icon',
+        icon = 'ui exclamation circle icon',
         detail = 'Some unexpected errors occur in judger.',
         regex = compile( '^Judger Error$' )  
     )
@@ -131,7 +132,6 @@ def get_judge_result( result ):
             return x
     return None
 
-
 def get_judge_result_color( result ):
     return get_judge_result( result ).value.color
 
@@ -140,3 +140,12 @@ def get_judge_result_icon( result ):
 
 def check_judge_result_in_listshow_field( result ):
     return get_judge_result( result ) in Query_field.listshow_field.value
+
+def is_compile_error( result ):
+    return get_judge_result( result ) is Judge_result.CE
+
+def is_judger_error( result ):
+    return get_judge_result( result )is Judge_result.JE
+
+def get_CE_JE_info( submission ):
+    return Judgeinfo.objects.get( submission = submission ).additional_info

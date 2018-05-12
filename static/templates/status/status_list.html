@@ -114,7 +114,7 @@
                             <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
                             <td><a href = {{ url('user-detail' , args = (it.user.pk,) ) }}>{{it.user.display_name}}</a></td>                
                             <td><a href = {{ url('problem-detail-view' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
-                            <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = 'ui {{ it.judge_status | get_judge_result_icon }} '></i>{{ it.judge_status }} </td>
+                            <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = '{{ it.judge_status | get_judge_result_icon }}'></i>{{ it.judge_status }}</td>
                             {% if it.completed %}
                                 <td>
                                     {% if it.judge_status | check_judge_result_in_listshow_field %}

@@ -2,6 +2,7 @@
 
 {% block extra_head %}
     <link href="{{ static('prism/dist/prism.css') }}" rel="stylesheet" />
+    <link href="{{ static('css/submission/status_detail.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ static('prism/dist/prism.js') }}"></script>
 {% endblock extra_head %}
 
@@ -9,8 +10,10 @@
     <div class = "status detail">
         <div class="ui segment">
             <div class="ui one column grid">
-
-                {% if user == status.user %}
+                {# 
+                    View detail code permisison
+                #}
+                {% if user == status.user or perms.problem.view_all %}
                     <div class = 'column'>
                         <div class="label" ><b>Code</b></div>
                         <pre><code class = "{{ prism }}" >{{ status.code }} </code></pre>
@@ -27,15 +30,27 @@
 
                     <div class = "ui indicating progress" id = 'progress-detail' >
 
-                    <div class="bar">
-                        <div class="progress"></div>
-                    </div>
+                        <div class="bar">
+                            <div class="progress"></div>
+                        </div>
 
-                    <div class="label">Judge Status</div>
+                        <div class="label">Judge Status</div>
 
                     </div>
 
                 </div>
+
+                {% if status.judge_status | is_compile_error and ( status.user == user or perms.problem.view_all ) %}
+                    <div class ='column'>
+                        <div class="label" ><b>Additional Info</b></div>
+                        <div class = "ui fluid container segment" > {{ status | get_CE_JE_info }} </div>
+                    </div>
+                {% elif  status.judge_status | is_judger_error and perms.problem.view_all %}
+                    <div class ='column'>
+                        <div class="label" ><b>Judger Info</b></div>
+                        <div class = "ui fluid container segment"> {{ status | get_CE_JE_info }} </div>
+                    </div>
+                {% endif %}
 
                 <div class = 'column'>
                     <div id = "status-detail-error" class="ui negative message transition hidden">Can not get data from server, please refresh.</div>
