@@ -84,7 +84,7 @@ def problem_update_view( request , problem_id ):
 
 def search_view( request , til ):
     ret = Problem.objects.filter(title__icontains=til)[:5]
-    return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
+    return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
 
 @permission_required( 'problem.add_problem' )
 def problem_create_view( request ):

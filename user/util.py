@@ -28,3 +28,9 @@ def get_user_report( user ):
 
 def get_recently( user , number ):
     return list( Submission.objects.filter( user = user )[:number] )
+
+def get_search_url():
+    return '/user/search'
+
+def build_detail_url( user_pk ):
+    return '/user/detail/' + str( user_pk )

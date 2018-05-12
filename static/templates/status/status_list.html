@@ -24,7 +24,7 @@
             </div>
 
             <div class = 'two wide column'>
-                <div class="ui search">
+                <div id = 'user-search' class="ui search">
                     <div class="ui fluid left icon input" >
                         <input class="prompt" type="text" placeholder="User">
                         <i class="search icon"></i>
@@ -33,7 +33,7 @@
             </div>
 
             <div class = 'two wide column'>
-                <div class="ui fluid search">
+                <div id = 'problem-search'  class="ui fluid search">
                     <div class="ui fluid left icon input" >
                         <input class="prompt" type="text" placeholder="Problem">
                         <i class="search icon"></i>
@@ -50,18 +50,11 @@
                         <div class="item" data-value="ALL">
                             All verdicts
                         </div>
-                        <div class="item" data-value="AC">
-                            Accepted
-                        </div>
-                        <div class="item" data-value="WA">
-                            Wrong Answer
-                        </div>
-                        <div class="item" data-value="TLE">
-                            Time Limit Exceeded
-                        </div>
-                        <div class="item" data-value="MLE">
-                            Memory Limit Exceeded
-                        </div>
+                        {% for each in judge_result_list %}
+                            <div class = 'item' data-value = {{ each.value.alias }}>
+                                {{ each.value.full }}
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -75,12 +68,11 @@
                         <div class="item" data-value="ALL">
                             All languages
                         </div>
-                        <div class="item" data-value="CPP">
-                            C++
-                        </div>
-                        <div class="item" data-value="C">
-                            C
-                        </div>
+                        {% for each in language_list %}
+                            <div class = 'item' data-value = {{ each }}>
+                                {{ each }}
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -140,6 +132,31 @@
     <script>
         // initialize dropdown
         $('.ui.dropdown').dropdown();
+
+        $('#user-search')
+        .search({
+            apiSettings: {
+                url: "{{ user_search_url }}/{query}"
+            },
+            fields: {
+                results : 'items',
+                title   : 'title',
+            },
+            minCharacters : 2
+        })
+
+        $('#problem-search')
+        .search({
+            apiSettings: {
+                url: "{{ problem_search_url }}/{query}"
+            },
+            fields: {
+                results : 'items',
+                title   : 'title',
+            },
+            minCharacters : 2
+        })
+    ;
     </script>
 {% endblock content %}
 
