@@ -1,36 +1,30 @@
 from submission.models import Submission
-from submission.judge_result import get_judge_result
+from submission.judge_result import get_judge_result, Judge_result, Query_field
 
-def get_report( user ):
-    s = [ ( x.pk , x.problem.pk , x.judge_status ) for x in Submission.objects.filter( user = user ) ]
-    base = judge_result.gen_base( judge_result.user_detail_fields )
-    analysis = {}
-    s.sort()
-    for x in s:
-        st , _id = judge_result.get_index( judge_status = x[2] , fields = judge_result.user_detail_fields )
-        if st == False:
+def get_user_report( user ):
+    _all = Submission.objects.filter( user = user ).order_by( 'pk' )
+    analysis = dict()
+    solved = set()
+    tried = set()
+    for sub in _all:
+        prob = sub.problem.pk
+        result = get_judge_result( sub.judge_status )
+        if result not in Query_field.basic_field.value:
             continue
-        if x[1] not in analysis:
-            analysis[x[1]] = base.copy()
-        if analysis[x[1]][Judge_info.AC[1]] > 0:
-            continue
-        analysis[x[1]][_id] += 1
-    solved = 0 
-    tried = 0
-    summary = base.copy()
-    result_li = []
-    for x in analysis:
-        for y in analysis[x]:
-            summary[y] += analysis[x][y]
-        if analysis[x][Judge_info.AC[1]] > 0:
-            solved += 1
-            result_li.append( ( x , True ) )
+        tried.add( prob )
+        if result not in analysis:
+            analysis[result] = 0
+        if prob not in solved:
+            analysis[result] += 1
+        if result == Judge_result.AC:
+            solved.add( prob )
+    result = list()
+    for each in tried:
+        if each in solved:
+            result.append( ( each , True ) )
         else:
-            tried += 1
-            result_li.append( ( x , False ) )
-    result_li.sort()
-    return { ** analysis , ** { 'solved' : solved , 'tried' : tried , 'summary' : summary , 'result' : result_li } }
-
+            result.append( ( each , False ) )
+    return { 'analysis': analysis , 'result' : result }
 
 def get_recently( user , number ):
     return list( Submission.objects.filter( user = user )[:number] )

@@ -114,10 +114,18 @@
                             <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
                             <td><a href = {{ url('user-detail' , args = (it.user.pk,) ) }}>{{it.user.display_name}}</a></td>                
                             <td><a href = {{ url('problem-detail-view' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
-                            <td class = 'judge_info' >{{it.judge_status}}</td>
+                            <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = 'ui {{ it.judge_status | get_judge_result_icon }} '></i>{{ it.judge_status }} </td>
                             {% if it.completed %}
-                                <td>{{ it.get_time_cost }} ms</td>
-                                <td>{{ it.get_memory_cost }} kb</td>
+                                <td>
+                                    {% if it.judge_status | check_judge_result_in_listshow_field %}
+                                        {{ it.get_time_cost }} ms
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if it.judge_status | check_judge_result_in_listshow_field == True %}
+                                        {{ it.get_memory_cost }} kb
+                                    {% endif %}
+                                </td>
                             {% else %}
                                 <td><i class = 'ui help icon'></i></td>
                                 <td><i class = 'ui help icon'></i></td>
@@ -130,30 +138,6 @@
     </div>
 
     <script>
-        // color of judge_status
-        $(document).ready(function(){
-            var process_queue = $('.status.list .judge_info');
-            for( let i = 0 ; i < process_queue.length ; ++ i){
-                let j = process_queue[i];
-                let k = j.innerText;
-                if( k == "Accepted" ){
-                    $(j).css( 'color' , 'green' )
-                        .prepend( "<i class = 'check icon'</i>" );
-                }else if( k == 'Waiting' || k == 'Preparing' ){
-                    $(j).css( 'color' , 'grey' );
-                }else if( k == 'Compile Error' || k == 'Judger Error' ){
-                    $(j).css( 'color' , 'orange' )
-                        .prepend( "<i class = 'exclamation icon'</i>" );
-                }else if( k.substring( 0 , 7 ) == 'Running' ){
-                    $(j).css( 'color' , 'black' )
-                        .prepend( "<i class = 'sync icon'</i>" );
-                }else{
-                    $(j).css( 'color' , 'red' )
-                        .prepend( "<i class = 'times icon'</i>" ); 
-                }
-            }
-        });
-
         // initialize dropdown
         $('.ui.dropdown').dropdown();
     </script>

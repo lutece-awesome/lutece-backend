@@ -8,6 +8,7 @@ class _result:
         'color',
         'regex',
         'detail',
+        'icon',
         '_field'
     )
 
@@ -21,11 +22,10 @@ class _result:
 
     def __repr__(self):
         return str( self.full )
-
+    
     @property
     def attribute(self):
         return self._field
-
 
 @unique
 class Judge_result( Enum ):
@@ -34,26 +34,30 @@ class Judge_result( Enum ):
         alias = 'WT',
         color = 'grey',
         detail = 'Judger is too busy to judge your solution. Just be kindly patient to waiting a moment.',
+        icon = 'coffee icon',
         regex = compile( '^Waiting$' )
     )
     PR = _result(
         full = 'Preparing',
         alias = 'PR',
         color = 'grey',
+        icon = 'coffee icon',
         detail = 'Judger has fetched your solution, now is preparing test data.',
         regex = compile( '^Preparing$' )
     )
     AC = _result(
         full = 'Accepted',
         alias = 'AC',
-        color = '#32CD32',
+        color = '#21ba45',
+        icon = 'check icon',
         detail = 'Your solution has produced exactly right output.',
         regex = compile( '^Accepted$' )
     )
     RN = _result(
         full = 'Running',
         alias = 'RN',
-        color = 'black',
+        color = '#666699',
+        icon = 'hourglass half icon',
         detail = 'The program of your solution is running on the judger.',
         regex = compile( '^Running.*$' )
     )
@@ -61,48 +65,55 @@ class Judge_result( Enum ):
         full = 'Compile Error',
         alias = 'CE',
         color = 'orange',
+        icon = 'exclamation icon',
         detail = 'Your solution cannot be compiled into any program that executed by the system.',
         regex = compile( '^Compile Error$' )
     )
     WA = _result(
         full = 'Wrong Answer',
         alias = 'WA',
-        color = '#EE2C2C',
+        color = 'red',
+        icon = 'times icon',
         detail = 'Your solution has not produced the desired output for the input given by system.',
         regex = compile( '^Wrong Answer.*$' )
     )
     RE = _result(
         full = 'Runtime Error',
         alias = 'RE',
-        color = '#CD4F39',
+        color = '#CC0033',
+        icon = 'times icon',
         detail = 'Your solution has caused an unhandled exception during execution.',
         regex = compile( '^Runtime Error.*$' )
     )
     TLE = _result(
         full = 'Time Limit Exceeded',
         alias = 'TLE',
-        color = '#6495ED',
+        color = '#6666FF',
+        icon = 'times icon',
         detail = 'Your solution has run for longer time than permitted time limit.',
         regex = compile( '^Time Limit Exceeded.*$' )
     )
     OLE = _result(
         full = 'Output Limit Exceeded',
         alias = 'OLE',
-        color = '#B03060',
+        color = '#FF0033',
+        icon = 'times icon',
         detail = 'Your solution has produced overmuch output.',
         regex = compile( '^Output Limit Exceeded.*$' )    
     )
     MLE = _result(
         full = 'Memory Limit Exceeded',
         alias = 'MLE',
-        color = '#EE3B3B',
+        color = '#CC3333',
+        icon = 'times icon',
         detail = 'Your solution has consumed more memory than permitted memory limit.',
         regex = compile( '^Memory Limit Exceeded.*$' )    
     )
     JE = _result(
         full = 'Judger Error',
         alias = 'JE',
-        color = 'red',
+        color = '#EE2C2C',
+        icon = 'exclamation circle icon',
         detail = 'Some unexpected errors occur in judger.',
         regex = compile( '^Judger Error$' )  
     )
@@ -110,7 +121,8 @@ class Judge_result( Enum ):
 @unique
 class Query_field( Enum ):
     all_fields = ( Judge_result.WT , Judge_result.PR , Judge_result.AC , Judge_result.RN , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE , Judge_result.JE )
-    user_detail_fields = ( Judge_result.AC , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
+    basic_field = ( Judge_result.AC , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
+    listshow_field = ( Judge_result.AC , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
 
 
 def get_judge_result( result ):
@@ -118,3 +130,13 @@ def get_judge_result( result ):
         if x.value.regex.search( result ) is not None:
             return x
     return None
+
+
+def get_judge_result_color( result ):
+    return get_judge_result( result ).value.color
+
+def get_judge_result_icon( result ):
+    return get_judge_result( result ).value.icon
+
+def check_judge_result_in_listshow_field( result ):
+    return get_judge_result( result ) in Query_field.listshow_field.value
