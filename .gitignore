@@ -120,3 +120,6 @@ MathJax-2.7.4/
 
 # migrations
 */migrations/
+
+# Lutece_Data
+*/Lutece_Data/
