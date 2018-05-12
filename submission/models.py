@@ -17,7 +17,6 @@ class Submission(models.Model):
     submit_time = models.DateTimeField( 'Submit time' , null = True , default = timezone.now )
     user = models.ForeignKey( User , on_delete = models.CASCADE , null = True , db_index = True )
     completed = models.BooleanField( default = False )
-
     class Meta:
         ordering = ['-submission_id']
         permissions = (
@@ -59,7 +58,5 @@ class Judgeinfo(models.Model):
 
     def __str__(self):
         return str(self.judgeinfo_id)
-    
     class Meat:
         ordering = ['case']
-

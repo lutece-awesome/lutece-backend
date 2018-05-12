@@ -89,7 +89,7 @@ def user_signup(request):
             if len( displayname ) == 0:
                 errormsg_list.append( 'Displayname can not be empty.' )
             elif len( displayname ) > 12:
-                errormsg_list.append( 'The length of displayname too long.' )                
+                errormsg_list.append( 'The length of displayname too long.' )
             # Check error_msg
             if len( errormsg_list ) == 0:
                 new_user = User(
@@ -155,5 +155,5 @@ def user_detail( request , user_id ):
         'recently' : get_recently( target_user , RECENT_NUMBER ) })
 
 def user_search( request , displayname ):
-    ret = User.objects.filter(display_name__icontains = displayname)[:5]
+    ret = User.objects.filter(display_name__contains = displayname)[:5]
     return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')

@@ -6,7 +6,7 @@ from markdownx.utils import markdownify
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
     title = models.CharField(
-        max_length=256, db_index=True, default='Default Title')
+        max_length=256, db_index=True, default='Default Title', unique = True )
     content = MarkdownxField( blank = True )
     standard_input = MarkdownxField( blank = True )
     standard_output = MarkdownxField( blank = True )

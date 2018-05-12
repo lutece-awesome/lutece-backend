@@ -42,7 +42,7 @@
             </div>
 
             <div class='three wide column'>
-                <div class="ui fluid selection dropdown">
+                <div id = 'verdict-dropdown' class="ui fluid selection dropdown">
                     <input type="hidden" name="verdict" value="ALL">
                     <i class="dropdown icon"></i>
                     <div class="text">All</div>
@@ -51,7 +51,7 @@
                             All verdicts
                         </div>
                         {% for each in judge_result_list %}
-                            <div class = 'item' data-value = {{ each.value.alias }}>
+                            <div class = 'item' data-value = '{{ each.value.full }}'>
                                 {{ each.value.full }}
                             </div>
                         {% endfor %}
@@ -60,7 +60,7 @@
             </div>
 
             <div class='three wide column'>
-                <div class="ui fluid selection dropdown">
+                <div id = 'language-dropdown' class="ui fluid selection dropdown">
                     <input type="hidden" name="verdict" value="ALL">
                     <i class="dropdown icon"></i>
                     <div class="text">All languages</div>
@@ -69,7 +69,7 @@
                             All languages
                         </div>
                         {% for each in language_list %}
-                            <div class = 'item' data-value = {{ each }}>
+                            <div class = 'item' data-value = '{{ each }}'>
                                 {{ each }}
                             </div>
                         {% endfor %}
@@ -78,7 +78,7 @@
             </div>
 
             <div class = 'one wide column'>
-                <div class = 'ui secondary button'> Apply </div>
+                <div id = 'apply-button' class = 'ui secondary button'> Apply </div>
             </div>
 
 
@@ -143,7 +143,7 @@
                 title   : 'title',
             },
             minCharacters : 2
-        })
+        });
 
         $('#problem-search')
         .search({
@@ -155,8 +155,20 @@
                 title   : 'title',
             },
             minCharacters : 2
-        })
-    ;
+        });
+
+        $('#apply-button').click(function(){
+            var user = $('#user-search .prompt').val();
+            var problem = $('#problem-search .prompt').val();
+            var verdict = $('#verdict-dropdown')[0].innerText;
+            var lang = $('#language-dropdown')[0].innerText;
+            if( verdict == 'All verdicts' )
+                verdict = "";
+            if( lang == 'All languages' )
+                lang = "";
+            $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' },});
+            $(this).addClass( 'disabled loading' );
+        });
     </script>
 {% endblock content %}
 

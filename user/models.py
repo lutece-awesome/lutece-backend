@@ -16,8 +16,9 @@ class Group:
 
 
 class User(AbstractUser):
-    display_name = models.CharField(max_length=16)
+    display_name = models.CharField(max_length = 16 , unique = True )
     group = models.CharField( max_length = 64 , default = Group.normal_user )
+    email = models.EmailField( blank=True , unique = True )
 
     def __str__(self):
         return self.username
