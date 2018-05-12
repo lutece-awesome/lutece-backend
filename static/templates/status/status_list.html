@@ -7,16 +7,92 @@
 {% block content %}
     <div class = 'status list'>
 
-        <div class="ui pagination menu">
-            <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
-            {% for it in page_list %}
-                {% if it == currentpage %}
-                    <a class="active item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>
-                {% else %}
-                    <a class="item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>                    
-                {% endif %}
-            {% endfor %}
-            <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+        <div class = 'ui grid'>
+
+            <div class = 'four wide column'>
+                <div class="ui pagination menu">
+                    <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
+                    {% for it in page_list %}
+                        {% if it == currentpage %}
+                            <a class="active item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>
+                        {% else %}
+                            <a class="item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>                    
+                        {% endif %}
+                    {% endfor %}
+                    <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+                </div>
+            </div>
+
+            <div class = 'two wide column'>
+                <div class="ui search">
+                    <div class="ui fluid left icon input" >
+                        <input class="prompt" type="text" placeholder="Status ID">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class = 'two wide column'>
+                <div class="ui search">
+                    <div class="ui fluid left icon input" >
+                        <input class="prompt" type="text" placeholder="User">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class = 'two wide column'>
+                <div class="ui fluid search">
+                    <div class="ui fluid left icon input" >
+                        <input class="prompt" type="text" placeholder="Problem">
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class='three wide column'>
+                <div class="ui fluid selection dropdown">
+                    <input type="hidden" name="verdict" value="ALL">
+                    <i class="dropdown icon"></i>
+                    <div class="text">All</div>
+                    <div class="menu">
+                        <div class="item" data-value="ALL">
+                            All verdicts
+                        </div>
+                        <div class="item" data-value="AC">
+                            Accepted
+                        </div>
+                        <div class="item" data-value="WA">
+                            Wrong Answer
+                        </div>
+                        <div class="item" data-value="TLE">
+                            Time Limit Exceeded
+                        </div>
+                        <div class="item" data-value="MLE">
+                            Memory Limit Exceeded
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='three wide column'>
+                <div class="ui fluid selection dropdown">
+                    <input type="hidden" name="verdict" value="ALL">
+                    <i class="dropdown icon"></i>
+                    <div class="text">All languages</div>
+                    <div class="menu">
+                        <div class="item" data-value="ALL">
+                            All languages
+                        </div>
+                        <div class="item" data-value="CPP">
+                            C++
+                        </div>
+                        <div class="item" data-value="C">
+                            C
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <table class = "ui selectable very padded padded table" >
@@ -80,6 +156,9 @@
                 }
             }
         });
+
+        // initialize dropdown
+        $('.ui.dropdown').dropdown();
     </script>
 {% endblock content %}
 
