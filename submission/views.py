@@ -48,22 +48,27 @@ def submit_solution(request):
 
 def get_status_list(request , page):
     statuslist = Submission.objects.all()
-    username = request.GET.get( 'username' )
+    display_name = request.GET.get( 'display_name' )
     title = request.GET.get( 'title' )
     verdict = request.GET.get( 'verdict' )
     lang = request.GET.get( 'lang' )
-    if username is not None:
-        statuslist = statuslist.filter( user = User.objects.get( username = username ) )
-    if title is not None:
-        statuslist = statuslist.filter( problem = Problem.objects.get( title = title ) )
-    if verdict is not None:
-        statuslist = statuslist.filter( judge_status = verdict )
-    if lang is not None:
-        statuslist = statuslist.filter( language = lang )
+    try:
+        if display_name is not None:
+            statuslist = statuslist.filter( user = User.objects.get( display_name = display_name ) )
+        if title is not None:
+            statuslist = statuslist.filter( problem = Problem.objects.get( title = title ) )
+        if verdict is not None:
+            statuslist = statuslist.filter( judge_status = verdict )
+        if lang is not None:
+            statuslist = statuslist.filter( language = lang )
+    except:
+        statuslist = Submission.objects.none()
     paginator = Paginator(statuslist, config.PER_PAGE_COUNT)
     page = min( max( 1 , page ) , paginator.num_pages )
     status = paginator.get_page(page)
     return render(request, 'status/status_list.html', {
+        'querystring': request.META['QUERY_STRING'],
+        'meta': request.GET.dict(),
         'statuslist': status,
         'currentpage' : page,
         'judge_result_list' : get_judge_result_list(),

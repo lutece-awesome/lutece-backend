@@ -90,6 +90,8 @@ def user_signup(request):
                 errormsg_list.append( 'Displayname can not be empty.' )
             elif len( displayname ) > 12:
                 errormsg_list.append( 'The length of displayname too long.' )
+            elif get_object_or_None( User , display_name = displayname ) is not None:
+                errormsg_list.append( 'Display name already exists.' )
             # Check error_msg
             if len( errormsg_list ) == 0:
                 new_user = User(
@@ -122,6 +124,7 @@ def user_infomodify( request ):
             company = request.POST.get( 'company' )
             location = request.POST.get( 'location' )
             display_name = request.POST.get( 'display_name' )
+            oridisplay_name = User.objects.get( user = request.user )
             if len( about ) > 256:
                 msg.append( 'About\'s length is too long' )
             if len( school ) > 32:
@@ -132,6 +135,8 @@ def user_infomodify( request ):
                 msg.append( 'Are u sure this is a valid location?' )
             if len( display_name ) > 16:
                 msg.append( 'Your display name too long' )
+            if display_name != oridisplay_name and get_object_or_None( User , display_name = display_name ) is not None:
+                msg.append( 'Display name already exists.' )
             if len( msg ) == 0:
                 Userinfo.objects.filter( user = request.user ).update(
                     about = about,

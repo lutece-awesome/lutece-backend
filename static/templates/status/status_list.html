@@ -11,22 +11,26 @@
 
             <div class = 'five wide column'>
                 <div class="ui pagination menu">
-                    <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
+                    <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) | append_query_parameters( querystring ) }} ><i class="angle double left icon"></i></a>
                     {% for it in page_list %}
                         {% if it == currentpage %}
-                            <a class="active item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>
+                            <a class="active item" href = {{ url('submission-status-list' , args = (it,) ) | append_query_parameters( querystring ) }}  >{{it}}</a>
                         {% else %}
-                            <a class="item" href = {{ url('submission-status-list' , args = (it,) ) }}  >{{it}}</a>                    
+                            <a class="item" href = {{ url('submission-status-list' , args = (it,) ) | append_query_parameters( querystring )  }}  >{{it}}</a>                    
                         {% endif %}
                     {% endfor %}
-                    <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+                    <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) | append_query_parameters( querystring ) }} ><i class="angle double right icon"></i></a>
                 </div>
             </div>
 
             <div class = 'two wide column'>
                 <div id = 'user-search' class="ui search">
                     <div class="ui fluid left icon input" >
-                        <input class="prompt" type="text" placeholder="User">
+                        <input class="prompt" type="text" placeholder="User"
+                            {% if 'display_name' in meta %}
+                                value = "{{ meta.display_name }}"
+                            {% endif %}
+                        >
                         <i class="search icon"></i>
                     </div>
                 </div>
@@ -35,7 +39,11 @@
             <div class = 'two wide column'>
                 <div id = 'problem-search'  class="ui fluid search">
                     <div class="ui fluid left icon input" >
-                        <input class="prompt" type="text" placeholder="Problem">
+                        <input class="prompt" type="text" placeholder="Problem"
+                            {% if 'title' in meta %}
+                                value = "{{ meta.title }}" 
+                            {% endif %}
+                        >
                         <i class="search icon"></i>
                     </div>
                 </div>
@@ -43,7 +51,13 @@
 
             <div class='three wide column'>
                 <div id = 'verdict-dropdown' class="ui fluid selection dropdown">
-                    <input type="hidden" name="verdict" value="ALL">
+                    <input type="hidden" name="verdict" 
+                        {% if 'verdict' in meta %}
+                            value = "{{ meta.verdict }}"
+                        {% else %}
+                            value = "ALL" 
+                        {% endif %}
+                    >
                     <i class="dropdown icon"></i>
                     <div class="text">All</div>
                     <div class="menu">
@@ -61,7 +75,13 @@
 
             <div class='three wide column'>
                 <div id = 'language-dropdown' class="ui fluid selection dropdown">
-                    <input type="hidden" name="verdict" value="ALL">
+                    <input type="hidden" name="verdict" 
+                        {% if 'lang' in meta %}
+                            value = "{{ meta.lang }}"
+                        {% else %}
+                            value = "ALL"
+                        {% endif %}
+                    >
                     <i class="dropdown icon"></i>
                     <div class="text">All languages</div>
                     <div class="menu">
@@ -158,16 +178,25 @@
         });
 
         $('#apply-button').click(function(){
-            var user = $('#user-search .prompt').val();
-            var problem = $('#problem-search .prompt').val();
+            var displayname = $('#user-search .prompt').val();
+            var title = $('#problem-search .prompt').val();
             var verdict = $('#verdict-dropdown')[0].innerText;
             var lang = $('#language-dropdown')[0].innerText;
             if( verdict == 'All verdicts' )
                 verdict = "";
             if( lang == 'All languages' )
                 lang = "";
-            $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' },});
             $(this).addClass( 'disabled loading' );
+            var base_url = '{{ url('submission-status-list' , args = (1,) ) }}';
+            var query = '';
+            var params = {};
+            if( displayname.length > 0 ) params['display_name'] = displayname;
+            if( title.length > 0 ) params['title'] = title;
+            if( verdict.length > 0 ) params['verdict'] = verdict;
+            if( lang.length > 0 ) params['lang'] = lang;
+            c = $.param(params);
+            if( c.length > 0 ) c = '?' + c;
+            window.location = base_url + c;
         });
     </script>
 {% endblock content %}

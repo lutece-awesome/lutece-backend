@@ -13,12 +13,16 @@ def register_judge_result( env ):
     env.filters['is_judger_error'] = is_judger_error
     env.filters['get_CE_JE_info'] = get_CE_JE_info
 
+def append_query_parameters( url , query ):
+    return url + '?' + query if len( query ) else url
+
 def environment(**options):
     env = Environment(**options)
     register_judge_result( env )
+    env.filters['append_query_parameters'] = append_query_parameters
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,
-        'gravatar_url': get_gravatar_url
+        'gravatar_url': get_gravatar_url,
     })
     return env
