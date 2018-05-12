@@ -38,6 +38,16 @@ class Submission(models.Model):
         self.get_problem_field( dic )
         return { ** dic , ** model_to_dict( self , fields = self.Judge.field ) }
 
+    @property
+    def get_time_cost( self ):
+        s = Judgeinfo.objects.filter( submission = self )
+        return max( [ x.time_cost for x in s ] )
+
+    @property
+    def get_memory_cost( self ):
+        s = Judgeinfo.objects.filter( submission = self )
+        return max( [ x.memory_cost for x in s ] )
+        
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index = True )
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE , db_index = True )

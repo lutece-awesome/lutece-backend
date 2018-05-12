@@ -42,8 +42,13 @@
                             <td><a href = {{ url('user-detail' , args = (it.user.pk,) ) }}>{{it.user.display_name}}</a></td>                
                             <td><a href = {{ url('problem-detail-view' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
                             <td class = 'judge_info' >{{it.judge_status}}</td>
-                            <td><i class = 'ui help icon'></i></td>
-                            <td><i class = 'ui help icon'></i></td>
+                            {% if it.completed %}
+                                <td>{{ it.get_time_cost }} ms</td>
+                                <td>{{ it.get_memory_cost }} kb</td>
+                            {% else %}
+                                <td><i class = 'ui help icon'></i></td>
+                                <td><i class = 'ui help icon'></i></td>
+                            {% endif %}
                             <td>{{it.language}}</td>  
                         </tr>
                     {% endfor %}
