@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
 from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url, check_visible_permission_or_404
 from utils.paginator_menu import get_range as page_range
+from utils.language import get_language_list
 from json import dumps
 
 def problem_detail_view(request, problem_id):
@@ -16,7 +17,7 @@ def problem_detail_view(request, problem_id):
     check_visible_permission_or_404( user = request.user , problem = prob )
     return render(request, 'problem/problem_detail.html', {
         'prob' : prob,
-        'support_lang': config.SUPPORT_LANGUAGE_LIST,
+        'support_lang': get_language_list(),
         'sample': prob.sample_set.all()})
 
 def problem_list_view(request, page):

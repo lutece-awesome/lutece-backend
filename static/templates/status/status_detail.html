@@ -16,7 +16,7 @@
                 {% if user == status.user or perms.problem.view_all %}
                     <div class = 'column'>
                         <div class="label" ><b>Code</b></div>
-                        <pre><code class = "{{ prism }}" >{{ status.code }} </code></pre>
+                        <pre><code class = "{{ status.language | get_prism }}" >{{ status.code }} </code></pre>
                     </div>
                 {% endif %}
 

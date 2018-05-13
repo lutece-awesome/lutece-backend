@@ -89,8 +89,8 @@
                             All languages
                         </div>
                         {% for each in language_list %}
-                            <div class = 'item' data-value = '{{ each }}'>
-                                {{ each }}
+                            <div class = 'item' data-value = '{{ each.value.full }}'>
+                                {{ each.value.full }}
                             </div>
                         {% endfor %}
                     </div>

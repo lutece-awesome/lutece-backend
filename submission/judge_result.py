@@ -3,7 +3,7 @@ from enum import Enum, unique
 from .models import Judgeinfo
 
 
-class _result:
+class _meta:
     __slots__ = (
         'full',
         'alias',
@@ -31,7 +31,7 @@ class _result:
 
 @unique
 class Judge_result( Enum ):
-    WT = _result(
+    WT = _meta(
         full = 'Waiting',
         alias = 'WT',
         color = 'grey',
@@ -39,7 +39,7 @@ class Judge_result( Enum ):
         icon = 'ui coffee icon',
         regex = compile( '^Waiting$' )
     )
-    PR = _result(
+    PR = _meta(
         full = 'Preparing',
         alias = 'PR',
         color = 'grey',
@@ -47,7 +47,7 @@ class Judge_result( Enum ):
         detail = 'Judger has fetched your solution, now is preparing test data.',
         regex = compile( '^Preparing$' )
     )
-    AC = _result(
+    AC = _meta(
         full = 'Accepted',
         alias = 'AC',
         color = '#21ba45',
@@ -55,7 +55,7 @@ class Judge_result( Enum ):
         detail = 'Your solution has produced exactly right output.',
         regex = compile( '^Accepted$' )
     )
-    RN = _result(
+    RN = _meta(
         full = 'Running',
         alias = 'RN',
         color = '#666699',
@@ -63,7 +63,7 @@ class Judge_result( Enum ):
         detail = 'The program of your solution is running on the judger.',
         regex = compile( '^Running.*$' )
     )
-    CE = _result(
+    CE = _meta(
         full = 'Compile Error',
         alias = 'CE',
         color = 'orange',
@@ -71,7 +71,7 @@ class Judge_result( Enum ):
         detail = 'Your solution cannot be compiled into any program that executed by the system.',
         regex = compile( '^Compile Error$' )
     )
-    WA = _result(
+    WA = _meta(
         full = 'Wrong Answer',
         alias = 'WA',
         color = 'red',
@@ -79,7 +79,7 @@ class Judge_result( Enum ):
         detail = 'Your solution has not produced the desired output for the input given by system.',
         regex = compile( '^Wrong Answer.*$' )
     )
-    RE = _result(
+    RE = _meta(
         full = 'Runtime Error',
         alias = 'RE',
         color = '#CC0033',
@@ -87,7 +87,7 @@ class Judge_result( Enum ):
         detail = 'Your solution has caused an unhandled exception during execution.',
         regex = compile( '^Runtime Error.*$' )
     )
-    TLE = _result(
+    TLE = _meta(
         full = 'Time Limit Exceeded',
         alias = 'TLE',
         color = '#6666FF',
@@ -95,7 +95,7 @@ class Judge_result( Enum ):
         detail = 'Your solution has run for longer time than permitted time limit.',
         regex = compile( '^Time Limit Exceeded.*$' )
     )
-    OLE = _result(
+    OLE = _meta(
         full = 'Output Limit Exceeded',
         alias = 'OLE',
         color = '#FF0033',
@@ -103,7 +103,7 @@ class Judge_result( Enum ):
         detail = 'Your solution has produced overmuch output.',
         regex = compile( '^Output Limit Exceeded.*$' )    
     )
-    MLE = _result(
+    MLE = _meta(
         full = 'Memory Limit Exceeded',
         alias = 'MLE',
         color = '#CC3333',
@@ -111,7 +111,7 @@ class Judge_result( Enum ):
         detail = 'Your solution has consumed more memory than permitted memory limit.',
         regex = compile( '^Memory Limit Exceeded.*$' )    
     )
-    JE = _result(
+    JE = _meta(
         full = 'Judger Error',
         alias = 'JE',
         color = '#EE2C2C',

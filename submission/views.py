@@ -12,11 +12,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .tasks import push_submission
 from utils.paginator_menu import get_range as page_range
 from data_server.util import get_case_number
-from .util import prism_name_transfer
 from .judge_result import get_judge_result_list
 from problem.util import get_search_url as problem_search_url
 from user.util import get_search_url as user_search_url
 from problem.util import check_visible_permission_or_404
+from utils.language import get_language, get_language_list
 # Create your views here.
 
 @login_required_ajax
@@ -31,12 +31,12 @@ def submit_solution(request):
             problem = Problem.objects.get( pk = problemid )
             if problemid == None or code == None or lang == None:
                 raise ValueError( "Some solution info missed." )
+            if get_language( lang ) is None:
+                raise ValueError( 'Unknown language' )
             if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
                 raise ValueError( "Permission Denied" )
             if len( code ) > config.MAX_SOURCECORE_LENGTH:
                 raise ValueError( "Length of source code is too long." )
-            if lang not in config.SUPPORT_LANGUAGE_LIST:
-                raise ValueError( "Unknown language."  )
             s = Submission(
                 language = lang,
                 user = request.user,
@@ -79,7 +79,7 @@ def get_status_list(request , page):
         'statuslist': status,
         'currentpage' : page,
         'judge_result_list' : get_judge_result_list(),
-        'language_list' : config.SUPPORT_LANGUAGE_LIST,
+        'language_list' : get_language_list(),
         'user_search_url' : user_search_url(),
         'problem_search_url' : problem_search_url(),
         'max_page': paginator.num_pages,
@@ -90,9 +90,7 @@ def get_status_detail(request , submission_id):
     target = get_object_or_404( Submission , pk = submission_id )
     check_visible_permission_or_404( user = request.user , problem = target.problem )
     return render( request , 'status/status_detail.html' , {
-        'status' : target,
-        'prism' : prism_name_transfer( target.language ) })
-
+        'status' : target })
 
 def get_status_detail_json( request , submission_id ):
     try:

@@ -1,9 +1,17 @@
 {% extends "base/base.html" %}
 
 {% block extra_head %}
-    <link href="{{ static('css/problem/problem_detail.css') }}" rel="stylesheet" />
     <script type="text/x-mathjax-config">MathJax.Hub.Config({showProcessingMessages: false,messageStyle: "none",extensions: ["tex2jax.js"],jax: ["input/TeX", "output/HTML-CSS"],tex2jax: {inlineMath:  [ ["$", "$"] ],displayMath: [ ["$$","$$"] ],skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code','a'],ignoreClass:"comment-content"},"HTML-CSS": {availableFonts: ["STIX","TeX"],}});MathJax.Hub.Queue(["Typeset",MathJax.Hub]);</script>
     <script type="text/javascript" src="{{ static('/mathjax/MathJax-2.7.4/MathJax.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/lib/codemirror.js') }}"></script>
+    <link rel="stylesheet" href="{{ static('/codemirror-5.37.0/dist/lib/codemirror.css') }}"/>
+    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/clike/clike.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/go/go.js') }}"></script>
+    {# <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/rust/rust.js') }}"></script> #}
+    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/ruby/ruby.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/python/python.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/keymap/sublime.js') }}"></script>
+    <link href="{{ static('css/problem/problem_detail.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block title %}
@@ -34,10 +42,10 @@
             <div class = 'row'>
                 <div class = 'column'>
                     <div class = 'menu'>
-                        <div class = 'ui basic primary button'><i class = 'paper plane outline icon'></i>Submit</div>
-                        <div class = 'ui basic secondary button'><i class = 'signal icon'></i>Status</div>
+                        <div id = 'status-view-button' class = 'ui basic secondary button'><i class = 'signal icon'></i>Status</div>
+                        <div id = 'summary-view-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
                         {% if perms.problem.change_problem %}
-                            <div class = 'ui basic orange edit button'><i class = 'edit icon'></i><b>Edit</b></div>
+                            <div id = 'edit-view-button' class = 'ui basic orange button'><i class = 'edit icon'></i><b>Edit</b></div>
                         {% endif %}
                     </div>
                 </div>
@@ -111,110 +119,105 @@
                     </div>
                 </div>
             {% endif %}
+
         </div>
 
-        
-
-            {# <div class = 'row'>
-                <div class = 'column'>
-                    <div class = 'container'>
-                        <div class = 'ui segment'>
-                            <div class = 'ui grid'>
-
-                                <div class = 'row'>
-                                    <div class = 'ten wide column grid' style = 'margin-top:12px;'>
-                                        <div class = 'ui header'>Current Buffer</div>
-                                    </div>
-
-                                    <div class = 'three wide column'>
-                                        <div id = "language-dropdown" class="ui fluid selection dropdown">
-                                            <i class="dropdown icon"></i>
-                                            <input type="hidden" name="language">
-                                            <div class="text">{{ support_lang.0 }}</div>
-                                            <div class="menu">
-                                                {% for it in support_lang %}
-                                                    <div class="item">{{it}}</div>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="ui clearing divider"></div>
-
-                                <div class = 'row'>
-                                        das<br/>
-                                        das<br/>
-                                        sa
-                                </div>
-
+        <div style = 'margin-top:10px;'>
+            <div class = 'ui borderless menu'>
+                <div class = 'header item' style = 'font-size:16px;' >Current Buffer</div>
+                <div class="right menu">
+                    <div class = 'item'>
+                        <div id = "language-dropdown" class="ui selection dropdown">
+                            <i class="dropdown icon"></i>
+                            <input type="hidden" name="language">
+                            <div class="text">{{ support_lang.0.value.info }}</div>
+                            <div class="menu">
+                                {% for it in support_lang %}
+                                    <div class="item">{{it.value.info}}</div>
+                                {% endfor %}
                             </div>
-
-
-
                         </div>
-
-
                     </div>
                 </div>
-            </div> #}
+            </div>
 
+            <div class = 'ui segment'>
+                <textarea class="form-control" id="code" name="code" ></textarea>
+            </div>
 
-        
+            <div id = 'solution-submit-button' class = 'ui primary button' style = 'display:grid;'> Submit </div>
+
+        </div>
+
     </div>
 
     <script>
 
+        function get_codemirror( s ){
+            {% for x in support_lang %}
+                if( s == '{{x.value.info}}' )
+                    return '{{x.value.codemirror}}';
+            {% endfor %}
+        }
+
         $(document).ready(function(){
-            $('#language-dropdown')
-                .dropdown()
-            ;
 
-        });
-
-        /*$(document).ready(function(){
-            $('.ui.language.dropdown')
-                .dropdown()
-            ;
-
-            $('.problem.detail > .summary > .menu > .submit').click(function () {
-                '{% if user.is_authenticated == True %}'
-                    $('#submit_modal').modal('show');
-                '{% else %}'
-                    $('.login.modal' ).modal( 'show' );
-                '{% endif %}'
+            var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                mode: "{{ support_lang.0.value.codemirror }}",
+                indentUnit : 4,
+                lineNumbers: true,
+                foldGutter: true,
+                keyMap: 'sublime',
+                tabindex : '0',
+                matchBrackets: true,
             });
-    
-            $('.problem.detail > .summary > .menu > .edit').click(function () {
-                window.location = '{{ url("problem-edit-view" , args = (prob.problem_id,) ) }} ';
+
+            $('#language-dropdown').dropdown({
+                onChange:function( text , value ){
+                    editor.setOption( 'mode' , get_codemirror( value ) );
+                }
             });
-    
-            $('#code_submit_button > .button').click(function(){
-                var code = $('#code_textarea')["0"].value;
-                var lang = $("#languagelist")[0].innerText;
-                //alert( "Submit code is " + code + " Lang is " + lang );
-                $(this)
-                    .addClass( 'loading disabled' )
-                ;
-                var problemid = '{{prob.problem_id}}';
-                $.ajaxSetup({
-                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+
+            $('#status-view-button').click(function(){
+                window.location = '{{ url("submission-status-list" , args = (1,) ) }}?title={{prob.title}}' ;
+            });
+
+            $('#summary-view-button').click(function(){
+                alert( 'Coming soon' );
+                // to do
+            });
+
+            {% if perms.problem.change_problem %}
+                $('#edit-view-button').click(function(){
+                    window.location = '{{ url("problem-edit-view" , args = (prob.problem_id,) ) }} ';
                 });
-                $.post(
-                    '{{ url("submission-submit-solution") }}',
-                    {
-                        'problemid' : problemid,
-                        'code' : code,
-                        'language' : lang,
-                    },
-                    function(data,status){
-                        if( status == 'success' ){
-                            window.location = '/submission/status/detail/' + String( data.submission_id );
+            {% endif %}
+
+            $('#solution-submit-button').click(function () {
+                {% if user.is_authenticated == True %}
+                    var code = editor.getValue();
+                    var lang = $('#language-dropdown')[0].innerText;                    
+                    $(this).addClass( 'loading disabled' );
+                    var problemid = {{prob.problem_id}};
+                    $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' },});
+                    $.post(
+                        '{{ url("submission-submit-solution") }}',
+                        {
+                            'problemid' : problemid,
+                            'code' : code,
+                            'language' : lang,
+                        },
+                        function(data,status){
+                            if( status == 'success' ){
+                                window.location = '/submission/status/detail/' + String( data.submission_id );
+                            }
                         }
-                    }
-                )
-            });                
+                    )
+                {% else %}
+                    $('.login.modal' ).modal( 'show' );
+                {% endif %}
+            });
+
         });
-        */
     </script>
 {% endblock content %}

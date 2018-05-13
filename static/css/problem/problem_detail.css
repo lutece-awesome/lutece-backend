@@ -6,3 +6,8 @@
     font-style: normal;
 }
 
+.CodeMirror {
+    border: 1px solid #eee;
+    height: 600px;
+}
+  
