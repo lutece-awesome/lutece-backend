@@ -1,53 +1,8 @@
-.problem.detail>.summary{
-    text-align: center;
+
+@font-face {
+    font-family: 'UbuntuMono-R';
+    src: url('/static/font/UbuntuMono-R.ttf');
+    font-weight: normal;    
+    font-style: normal;
 }
 
-.problem.detail>.summary>.limit{
-    line-height: 1.7 !important;
-    font-size: 15px !important;
-}
-
-.problem.detail>.summary>.menu{
-    margin-top:10px;
-}
-
-.problem.detail>.body{
-    margin-top:16px;
-    font-size: 16px;
-}
-
-.textarea {
-    height: 100%;
-}
-
-#code_textarea {
-    height: 600px;
-    width: 100%;
-    line-height: 2.0;
-    font-size: 12px;
-    font-family: 'monospace'
-}
-
-#submit_solution_button{
-    text-align: center;
-}
-
-#bottom_menu {
-    height: 60px;
-    line-height: 60px;
-    width: 100%;
-    text-align: center;
-}
-
-#languagelist{
-    position: absolute;
-    left: 0;
-}
-
-#code_submit_button{
-    display: inline-block;
-}
-
-#submit_modal {
-    display: none;
-}

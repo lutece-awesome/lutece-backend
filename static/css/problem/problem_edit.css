@@ -1,8 +1,16 @@
-.edit.container textarea,input,#checker-selection{
-    font-family: 'monospace';
-    line-height: 1.2;
-    font-size: 12px;
+@font-face {
+    font-family: 'UbuntuMono-R';
+    src: url('/static/font/UbuntuMono-R.ttf');
+    font-weight: normal;    
+    font-style: normal;
 }
+
+.edit.container textarea,input,#checker-selection{
+    font-family: 'Inconsolata';
+    line-height: 1.2;
+    font-size: 16px;
+}
+
 
 .edit.container #content-textarea{
     max-height: 100%;

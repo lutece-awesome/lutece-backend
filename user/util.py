@@ -2,9 +2,10 @@ from submission.models import Submission
 from submission.judge_result import get_judge_result, Judge_result, Query_field
 
 def get_user_report( user ):
-    _all = Submission.objects.filter( user = user ).order_by( 'pk' )
+    _all = Submission.objects.filter( user = user )
     if not user.has_perm( 'problem.view_all' ):
         _all = _all.filter( problem__visible = True )
+    _all = _all.order_by( 'pk' )
     analysis = dict()
     solved = set()
     tried = set()
@@ -26,6 +27,7 @@ def get_user_report( user ):
             result.append( ( each , True ) )
         else:
             result.append( ( each , False ) )
+    result.sort()
     return { 'analysis': analysis , 'result' : result }
 
 def get_recently( user , number ):

@@ -12,6 +12,7 @@ class Problem(models.Model):
     standard_output = MarkdownxField( blank = True )
     constraints = MarkdownxField( blank = True )
     resource = models.CharField(max_length=256, blank=True)
+    note = models.TextField( blank = True )
     time_limit = models.PositiveIntegerField(default=2000)
     memory_limit = models.PositiveIntegerField(default=128)
     checker = models.CharField( max_length = 256 , default = 'wcmp' )

@@ -99,9 +99,10 @@ def get_status_detail_json( request , submission_id ):
         status = {
             'status' : False,
             'detail' : []}
-        s = Judgeinfo.objects.filter( submission = Submission.objects.get( pk = submission_id ) )
-        if not request.user.has_perm( 'problem.view_all' ):
-            s = s.fileter( problem__visible = True )
+        sub = submission = Submission.objects.get( pk = submission_id )
+        s = Judgeinfo.objects.filter( submission = sub )
+        if not request.user.has_perm( 'problem.view_all' ) and not sub.problem.visible:
+            raise RuntimeError( 'Permission Denied' )
         status['detail'] = [ ( ( x.case , x.result ,  x.time_cost , x.memory_cost ) ) for x in s ]
         status['status'] = True
     finally:

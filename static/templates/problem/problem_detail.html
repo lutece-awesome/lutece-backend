@@ -11,31 +11,69 @@
 {% endblock title %}
 
 {% block content %}
-    <div class = 'problem detail'>
-        <div class = 'summary'>
-            <h1 class = 'ui header'>{{prob.title}}</h1>
-            <div class = 'limit'><b>TimeLimit: {{prob.time_limit}} Milliseconds</b></div>
-            <div class = 'limit'><b>MemoryLimit: {{prob.memory_limit}} Megabytes</b></div>
-            <div class = 'menu'>
-                <div class = 'ui basic primary submit button'><i class = 'location arrow icon'></i><b>Submit</b></div>
-                <div class = 'ui basic secondary status button'><i class = 'signal icon'></i><b>Status</b></div>
-                {% if perms.problem.change_problem %}
-                    <div class = 'ui basic orange edit button'><i class = 'edit icon'></i><b>Edit</b></div>
-                {% endif %}
+    <div class = 'problem detail' style='font-family:"UbuntuMono-R"'>
+
+        <div class = 'ui center aligned one wide grid'>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <h2> {{ prob.title }} </h2>
+                </div>
+            </div>
+            <div>
+                <div class = 'row'>
+                    <div class = 'column' style='font-size:16px;'>
+                        <div class = 'text'>Timelimit: {{ prob.time_limit }} Milliseconds </div>
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'column' style='font-size:16px;'>
+                        <div class = 'text'>Memorylimit: {{ prob.memory_limit }} Megabytes </div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class = 'menu'>
+                        <div class = 'ui basic primary button'><i class = 'paper plane outline icon'></i>Submit</div>
+                        <div class = 'ui basic secondary button'><i class = 'signal icon'></i>Status</div>
+                        {% if perms.problem.change_problem %}
+                            <div class = 'ui basic orange edit button'><i class = 'edit icon'></i><b>Edit</b></div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class = 'body'>
-            <p class = 'content'> {{ prob.content_markdown | safe }} </p>
-            <h2 class= 'ui header'>Standard Input</h2>
-            <p class = 'content'>{{ prob.standard_input_markdown | safe }}</p>
-            <h2 class= 'ui header'>Standard Output</h2>
-            <p class = 'content'>{{prob.standard_output_markdown | safe }}</p>
-            {% if  prob.constraints|length > 0  %}
-                <h2 class='ui header'> Constraints </h2>
-                <p class='content'>{{prob.constraints_markdown | safe }}</p>
-            {% endif%}
 
-            <h2 class= 'ui header'>Sample</h2>
+        <div class = 'ui one wide grid'>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <p class = 'content'> {{ prob.content_markdown | safe }} </p>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <h2 class= 'ui header'>Standard Input</h2>
+                    <p class = 'content'>{{ prob.standard_input_markdown | safe }}</p>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <h2 class= 'ui header'>Standard Output</h2>
+                    <p class = 'content'>{{prob.standard_output_markdown | safe }}</p>
+                </div>
+            </div>
+            {% if  prob.constraints|length > 0  %}
+                <div class = 'row'>
+                    <div class = 'column'>
+                        <h2 class='ui header'> Constraints </h2>
+                        <p class='content'>{{prob.constraints_markdown | safe }}</p>
+                    </div>
+                </div>
+            {% endif%}
+        </div>
+
+        <div class = 'ui two wide grid'>
+            <div class = 'column'>
                 <table class="ui table" >
                         <thead>
                             <tr>
@@ -52,40 +90,89 @@
                             {% endfor%}
                         </tbody>
                 </table>
-            {% if  prob.sample_explanation|length > 0  %}
-                <h2 class='ui header'>Note</h2>
-                <p class='content'>{{prob.sample_explanation}}</p>
-            {% endif%}
-
-            {% if  prob.resource|length > 0  %}
-                <h2 class='ui header'>Resource</h2>
-                <p class='content'>{{prob.resource}}</p>
-            {% endif%}
+            </div>
         </div>
 
-        <div id = "submit_modal" class="ui submit modal">
-            <div class = 'ui middle aligned center header'>
-                Submit
-            </div>
-            <textarea spellcheck = "false" id='code_textarea'></textarea>
-            <div id="bottom_menu">
-                <div id = "languagelist" class="ui language selection dropdown">
-                    <i class="dropdown icon"></i>
-                    <div class="submit language text">{{support_lang.0}}</div>
-                    <div class="menu">
-                        {% for it in support_lang %}
-                            <div class="item">{{it}}</div>
-                        {% endfor %}
+        <div class = 'ui one wide grid'>
+            {% if  prob.note | length > 0  %}
+                <div class = 'row'>
+                    <div class = 'column'>
+                        <h2 class='ui header'>Note</h2>
+                        <p class='content'>{{prob.note}}</p>
                     </div>
                 </div>
-                <div id = "code_submit_button"><i class = 'ui large secondary button'>Submit</i></div>
-            </div>
+            {% endif %}
+
+            {% if  prob.resource | length > 0  %}
+                <div class = 'row'>
+                    <div class = 'column'>
+                        <h2 class='ui header'>Resource</h2>
+                        <p class='content'>{{prob.resource}}</p>
+                    </div>
+                </div>
+            {% endif %}
         </div>
+
+        
+
+            {# <div class = 'row'>
+                <div class = 'column'>
+                    <div class = 'container'>
+                        <div class = 'ui segment'>
+                            <div class = 'ui grid'>
+
+                                <div class = 'row'>
+                                    <div class = 'ten wide column grid' style = 'margin-top:12px;'>
+                                        <div class = 'ui header'>Current Buffer</div>
+                                    </div>
+
+                                    <div class = 'three wide column'>
+                                        <div id = "language-dropdown" class="ui fluid selection dropdown">
+                                            <i class="dropdown icon"></i>
+                                            <input type="hidden" name="language">
+                                            <div class="text">{{ support_lang.0 }}</div>
+                                            <div class="menu">
+                                                {% for it in support_lang %}
+                                                    <div class="item">{{it}}</div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ui clearing divider"></div>
+
+                                <div class = 'row'>
+                                        das<br/>
+                                        das<br/>
+                                        sa
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div> #}
+
+
+        
     </div>
 
     <script>
 
         $(document).ready(function(){
+            $('#language-dropdown')
+                .dropdown()
+            ;
+
+        });
+
+        /*$(document).ready(function(){
             $('.ui.language.dropdown')
                 .dropdown()
             ;
@@ -122,11 +209,12 @@
                     },
                     function(data,status){
                         if( status == 'success' ){
-                            window.location = '/submission/status/detail    /' + String( data.submission_id );
+                            window.location = '/submission/status/detail/' + String( data.submission_id );
                         }
                     }
                 )
             });                
         });
+        */
     </script>
 {% endblock content %}
