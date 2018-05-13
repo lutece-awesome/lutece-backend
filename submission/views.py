@@ -16,6 +16,7 @@ from .util import prism_name_transfer
 from .judge_result import get_judge_result_list
 from problem.util import get_search_url as problem_search_url
 from user.util import get_search_url as user_search_url
+from problem.util import check_visible_permission_or_404
 # Create your views here.
 
 @login_required_ajax
@@ -27,8 +28,11 @@ def submit_solution(request):
             problemid = request.POST.get( 'problemid' )
             code = request.POST.get( 'code' )
             lang = request.POST.get( 'language' )
+            problem = Problem.objects.get( pk = problemid )
             if problemid == None or code == None or lang == None:
                 raise ValueError( "Some solution info missed." )
+            if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
+                raise ValueError( "Permission Denied" )
             if len( code ) > config.MAX_SOURCECORE_LENGTH:
                 raise ValueError( "Length of source code is too long." )
             if lang not in config.SUPPORT_LANGUAGE_LIST:
@@ -36,7 +40,8 @@ def submit_solution(request):
             s = Submission(
                 language = lang,
                 user = request.user,
-                problem = Problem.objects.get( problem_id = problemid ),
+                problem = problem,
+                case_number = get_case_number( problemid ),
                 judge_status = 'Waiting',
                 code = code)
             s.save()
@@ -53,6 +58,8 @@ def get_status_list(request , page):
     verdict = request.GET.get( 'verdict' )
     lang = request.GET.get( 'lang' )
     try:
+        if not request.user.has_perm( 'problem.view_all' ):
+            statuslist = statuslist.filter( problem__visible = True )
         if display_name is not None:
             statuslist = statuslist.filter( user = User.objects.get( display_name = display_name ) )
         if title is not None:
@@ -81,9 +88,9 @@ def get_status_list(request , page):
 
 def get_status_detail(request , submission_id):
     target = get_object_or_404( Submission , pk = submission_id )
+    check_visible_permission_or_404( user = request.user , problem = target.problem )
     return render( request , 'status/status_detail.html' , {
         'status' : target,
-        'case_number' : get_case_number( target.problem.pk ),
         'prism' : prism_name_transfer( target.language ) })
 
 
@@ -93,6 +100,8 @@ def get_status_detail_json( request , submission_id ):
             'status' : False,
             'detail' : []}
         s = Judgeinfo.objects.filter( submission = Submission.objects.get( pk = submission_id ) )
+        if not request.user.has_perm( 'problem.view_all' ):
+            s = s.fileter( problem__visible = True )
         status['detail'] = [ ( ( x.case , x.result ,  x.time_cost , x.memory_cost ) ) for x in s ]
         status['status'] = True
     finally:

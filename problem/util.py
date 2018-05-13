@@ -1,4 +1,5 @@
 from submission.models import Submission
+from django.http import Http404
 
 
 def get_user_problem_analysis( user , problem ):
@@ -20,9 +21,13 @@ def get_problem_analysis( problem ):
             ac_user.add( x.user.pk )
     return ( len( ac_user ) , _all )
 
+def check_visible_permission_or_404( user , problem ):
+    if not user.has_perm( 'problem.view_all' ) and problem.visible is False:
+        raise Http404( 'Permission Denied' )
+
+
 def get_search_url():
     return '/problem/search'
-
 
 def build_detail_url( prob_pk ):
     return '/problem/detail/' + str( prob_pk )

@@ -17,6 +17,7 @@ class Submission(models.Model):
     submit_time = models.DateTimeField( 'Submit time' , null = True , default = timezone.now )
     user = models.ForeignKey( User , on_delete = models.CASCADE , null = True , db_index = True )
     completed = models.BooleanField( default = False )
+    case_number = models.IntegerField( default = 0 )
     class Meta:
         ordering = ['-submission_id']
         permissions = (

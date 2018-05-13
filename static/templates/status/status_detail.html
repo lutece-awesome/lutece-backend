@@ -68,7 +68,7 @@
                     if( status == 'success' && data.status == true ){
                         $('#progress-detail')
                             .progress( 'set progress' , data.detail.length )
-                            .progress( 'set label' , String( data.detail.length ) + ' de {{ case_number }}'  )
+                            .progress( 'set label' , String( data.detail.length ) + ' de {{ status.case_number }}'  )
                         ;
                         var ob = $('#case-detail');
                         var len = data.detail.length;
@@ -79,7 +79,7 @@
                         }
                         if( len > 0 && data.detail[len - 1][1] != 'Accepted' )
                             $('#progress-detail').progress( 'set error' );
-                        else if( len != {{ case_number }} )
+                        else if( len != {{ status.case_number }} )
                             setTimeout( "Upadate_status()" , 1000 );
                     }else{
                         $('#status-detail-error').removeClass( 'hidden' );
@@ -89,7 +89,7 @@
         }
 
         $(document).ready(function(){
-            $('#progress-detail').progress( 'set total' , {{ case_number }} );
+            $('#progress-detail').progress( 'set total' , {{ status.case_number }} );
             Upadate_status();
         });
     </script>

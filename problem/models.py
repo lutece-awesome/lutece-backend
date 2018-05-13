@@ -39,6 +39,7 @@ class Problem(models.Model):
     class Meta:
         ordering = ['problem_id']
         permissions = (
+            ('view_all' , 'Can view all problems'),
             ('download_problem_data' , 'Can download test data' ),
         )
 

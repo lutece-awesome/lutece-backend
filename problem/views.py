@@ -7,12 +7,13 @@ import Lutece.config as config
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
-from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url
+from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url, check_visible_permission_or_404
 from utils.paginator_menu import get_range as page_range
 from json import dumps
 
 def problem_detail_view(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
+    check_visible_permission_or_404( user = request.user , problem = prob )
     return render(request, 'problem/problem_detail.html', {
         'prob' : prob,
         'support_lang': config.SUPPORT_LANGUAGE_LIST,
@@ -20,6 +21,8 @@ def problem_detail_view(request, problem_id):
 
 def problem_list_view(request, page):
     problem_list = Problem.objects.all()
+    if not request.user.has_perm( 'problem.view_all' ):
+        problem_list = problem_list.filter( visible = True )
     paginator = Paginator(problem_list, config.PER_PAGE_COUNT)
     problems = paginator.get_page(page)
     page = min( max( 1 , page ) , paginator.num_pages )

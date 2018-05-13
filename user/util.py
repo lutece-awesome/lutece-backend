@@ -3,6 +3,8 @@ from submission.judge_result import get_judge_result, Judge_result, Query_field
 
 def get_user_report( user ):
     _all = Submission.objects.filter( user = user ).order_by( 'pk' )
+    if not user.has_perm( 'problem.view_all' ):
+        _all = _all.filter( problem__visible = True )
     analysis = dict()
     solved = set()
     tried = set()
@@ -27,7 +29,10 @@ def get_user_report( user ):
     return { 'analysis': analysis , 'result' : result }
 
 def get_recently( user , number ):
-    return list( Submission.objects.filter( user = user )[:number] )
+    s = Submission.objects.filter( user = user )
+    if not user.has_perm( 'problem.view_all' ):
+        s = s.filter( problem__visible = True )
+    return list( s[:number] )
 
 def get_search_url():
     return '/user/search'
