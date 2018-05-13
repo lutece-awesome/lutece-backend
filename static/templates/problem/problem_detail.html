@@ -122,11 +122,8 @@
                     },
                     function(data,status){
                         if( status == 'success' ){
-                            //alert(data.submission_id);
+                            window.location = '/submission/status/detail    /' + String( data.submission_id );
                         }
-                        $('#code_submit_button > .button').
-                            removeClass( 'loading disabled' )
-                        ;
                     }
                 )
             });                

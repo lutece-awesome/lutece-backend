@@ -43,12 +43,12 @@
                 {% if status.judge_status | is_compile_error and ( status.user == user or perms.problem.view_all ) %}
                     <div class ='column'>
                         <div class="label" ><b>Additional Info</b></div>
-                        <div class = "ui fluid container segment" > {{ status | get_CE_JE_info }} </div>
+                        <div class = "ui fluid container segment" > {{ status | get_CE_JE_info | replace("\n", "<br/>") | safe }} </div>
                     </div>
                 {% elif  status.judge_status | is_judger_error and perms.problem.view_all %}
                     <div class ='column'>
                         <div class="label" ><b>Judger Info</b></div>
-                        <div class = "ui fluid container segment"> {{ status | get_CE_JE_info }} </div>
+                        <div class = "ui fluid container segment"> {{ status | get_CE_JE_info | replace("\n", "<br/>") | safe }} </div>
                     </div>
                 {% endif %}
 
