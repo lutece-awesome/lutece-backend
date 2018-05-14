@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_gravatar',
     'markdownx',
+    'gunicorn',
     # Lutece app
     'problem',
     'user',
