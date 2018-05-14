@@ -53,15 +53,15 @@ def problem_edit_view( request , problem_id ):
 @permission_required( 'problem.change_problem')
 @csrf_exempt
 def problem_upload_data_view( request , problem_id ):
-    status = {
-        'status': False,
-        'error_list': []}
+    status = {'error_list': []}
     data = request.FILES['data']
     status['status'] = upload_data( 
         data = data ,
         problem = problem_id,
         errlist = status['error_list'])
-    return HttpResponse()
+    if status['status'] is True:
+        status['case_number'] = get_case_number( problem_id ) 
+    return HttpResponse(dumps(status), content_type='application/json')
 
 @permission_required( 'problem.change_problem' )
 def problem_update_view( request , problem_id ):

@@ -52,7 +52,7 @@
                 <div class = 'four wide column'>
                     <div class="ui large label">
                         Current Data:
-                        <div class = 'detail'>{{ case_number }}</div>
+                        <div id = 'case-number' class = 'detail'>{{ case_number }}</div>
                     </div>
                 </div>
 
@@ -82,6 +82,12 @@
                         </div>
                         <div class="label">Upload status</div>
                     </div>
+                </div>
+            </div>
+
+            <div class = 'row' id = 'upload-error-div' style = 'display:none' >
+                <div class = 'column'>
+                    <div id = "upload-error-msg" class="ui negative message transition"></div>
                 </div>
             </div>
 
@@ -243,6 +249,18 @@
 
             function upload_success(e){
                 $("#upload-data-button").removeClass( 'disabled loading');
+                if( e.status == false ){
+                    alert( e.status );
+                    $("#upload-data-button").removeClass( 'primary' );
+                    $("#upload-data-button").addClass( 'red' );
+                    $('#upload-error-div').css( 'display' , 'block' );
+                    $('#upload-error-msg')
+                        .empty()
+                        .removeClass( 'hidden' )
+                        .append(get_error_msgText( e.error_list ))
+                    ;
+                }else
+                    $('#case-number')[0].innerText = e.case_number;
             }
 
             function upload_error(e){
@@ -261,9 +279,11 @@
                 formData.append( 'data' , file );
                 $.ajax({
                     url : '{{ url("problem-upload-data-view" , args = (prob.problem_id , ) ) }}',
-                    async:true,
+                    async: true,
                     xhr: function() {  // custom xhr
-                        $("#upload-data-button").addClass( 'disabled loading')
+                        $("#upload-data-button").removeClass( 'red' );
+                        $("#upload-data-button").addClass( 'disabled loading primary')
+                        $('#upload-error-div').css( 'display' , 'none' );
                         myXhr = $.ajaxSettings.xhr();
                         $('#upload-div').css( 'display' , 'block' );
                         $("#upload-progress").progress( 'set total' , file.size);

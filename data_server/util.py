@@ -68,12 +68,22 @@ def get_case_number( problem ):
 
 def check_upload_file( tempdir , errlist ):
     li = listdir( tempdir )
+    fields = [ x for x in META_FIELD['test-data'] ] + [ x for x in ZIP_FIELD ]
     for each in li:
-        if each not in META_FIELD['test-data']:
-            errlist.append( 'Unknown file' + str( each ) )
+        if path.splitext( each )[1] not in fields:
+            errlist.append( 'Unknown file ' + str( each ) )
             return False
-    if len( list( filter( lambda x : path.splitext( x )[1] == '.in' , li ) ) ) != len( list( filter( lambda x : path.splitext( x )[1] == '.out' , li ) ) ):
-        errlist.append( 'The number of input files nq the number of output files' )
+    _in = list( filter( lambda x : path.splitext( x )[1] == '.in' , li ) )
+    _out = list( filter( lambda x : path.splitext( x )[1] == '.out' , li ) )
+    if len( _in ) != len( _out ):
+        errlist.append( 'The number of input files ne the number of output files' )
+        return False
+    _in = [ path.splitext( x )[0] for x in _in ]
+    _out = [ path.splitext( x )[0] for x in _out ]
+    _in.sort()
+    _out.sort()
+    if _in != _out:
+        errlist.append( 'Some input/output can not match' )
         return False
     return True
 
@@ -89,13 +99,13 @@ def upload_data( data , problem , errlist ):
     temp_dir = path.join( data_dir , temp_dir )
     mkdir( temp_dir )
     try:
-        file = path.join(  temp_dir , 'DATA-FILE' + extension )
+        file = path.join( temp_dir , 'DATA-FILE' + extension )
         with open( file , 'wb' ) as destination:
             for chunk in data.chunks():
                 destination.write( chunk )
         command = ZIP_FIELD[extension].format(
                 path = temp_dir,
-                sourcefile = file)
+                sourcefile = file ) + ' 1>/dev/null 2>&1'
         system( command )
         check_upload_file( temp_dir , errlist )
         if len( errlist ) > 0:
@@ -103,6 +113,7 @@ def upload_data( data , problem , errlist ):
         target = path.join( data_dir , str( problem ) )
         system( 'rm -rf ' + target )
         system( 'mv ' + temp_dir + ' ' + target )
+        return True
     except Exception as e:
         print( str( e ) )
         errlist.append( str( e ) )
