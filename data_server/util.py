@@ -1,6 +1,6 @@
-from os import path, listdir
-from .settings import META_FIELD, data_dir
-import hashlib
+from os import path, listdir, mkdir, system
+from .settings import META_FIELD, data_dir, ZIP_FIELD
+import hashlib, random
 
 def get_data( problem , data_type ):
     '''
@@ -60,5 +60,53 @@ def process( request ):
 
 
 def get_case_number( problem ):
+    '''
+        return case number
+    '''
     dr = path.join( data_dir , str( problem ) )
     return len( list( filter( lambda x : path.splitext( x )[1] == '.in' , listdir( dr ) ) ) )
+
+def check_upload_file( tempdir , errlist ):
+    li = listdir( tempdir )
+    for each in li:
+        if each not in META_FIELD['test-data']:
+            errlist.append( 'Unknown file' + str( each ) )
+            return False
+    if len( list( filter( lambda x : path.splitext( x )[1] == '.in' , li ) ) ) != len( list( filter( lambda x : path.splitext( x )[1] == '.out' , li ) ) ):
+        errlist.append( 'The number of input files nq the number of output files' )
+        return False
+    return True
+
+def upload_data( data , problem , errlist ):
+    extension = path.splitext( data.name )[1]
+    if extension not in ZIP_FIELD:
+        errlist.append( 'Unsupported file extension, Lutece only support ' + str( [ x for x in ZIP_FIELD ] ) )
+        return False
+    random.seed()
+    temp_dir = ''
+    for i in range( 32 ):
+        temp_dir = temp_dir + chr( random.randint( 0 , 25 ) + 65 )
+    temp_dir = path.join( data_dir , temp_dir )
+    mkdir( temp_dir )
+    try:
+        file = path.join(  temp_dir , 'DATA-FILE' + extension )
+        with open( file , 'wb' ) as destination:
+            for chunk in data.chunks():
+                destination.write( chunk )
+        command = ZIP_FIELD[extension].format(
+                path = temp_dir,
+                sourcefile = file)
+        system( command )
+        check_upload_file( temp_dir , errlist )
+        if len( errlist ) > 0:
+            return False
+        target = path.join( data_dir , str( problem ) )
+        system( 'rm -rf ' + target )
+        system( 'mv ' + temp_dir + ' ' + target )
+    except Exception as e:
+        print( str( e ) )
+        errlist.append( str( e ) )
+        return False
+    finally:
+        if path.exists( temp_dir ):
+            system( 'rm -rf ' + temp_dir )

@@ -12,6 +12,8 @@ from utils.paginator_menu import get_range as page_range
 from utils.language import get_language_list
 from json import dumps
 from data_server.util import get_case_number
+from django.views.decorators.csrf import csrf_exempt
+from data_server.util import upload_data
 
 def problem_detail_view(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
@@ -47,6 +49,19 @@ def problem_edit_view( request , problem_id ):
         'prob' : prob,
         'case_number' : get_case_number( problem_id ),
         'checker' : config.CHECKER_LIST })
+
+@permission_required( 'problem.change_problem')
+@csrf_exempt
+def problem_upload_data_view( request , problem_id ):
+    status = {
+        'status': False,
+        'error_list': []}
+    data = request.FILES['data']
+    status['status'] = upload_data( 
+        data = data ,
+        problem = problem_id,
+        errlist = status['error_list'])
+    return HttpResponse()
 
 @permission_required( 'problem.change_problem' )
 def problem_update_view( request , problem_id ):

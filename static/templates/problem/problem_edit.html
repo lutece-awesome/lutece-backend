@@ -67,7 +67,21 @@
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class = 'ui primary button' ><i class = 'upload icon' ></i>Upload Data</div>
+                    <form>
+                        <input type = "file" name = 'data' id = "__upload" style = 'display:none'>
+                        <div id = 'upload-data-button' class = 'ui primary button' ><i class = 'upload icon'></i>Upload Data</div>
+                    </form>
+                </div>
+            </div>
+
+            <div class = 'row' id = 'upload-div' style = 'display:none'>
+                <div class = 'column' >
+                    <div class = "ui indicating progress" id = 'upload-progress' >
+                        <div class="bar">
+                            <div class="progress"></div>
+                        </div>
+                        <div class="label">Upload status</div>
+                    </div>
                 </div>
             </div>
 
@@ -91,56 +105,64 @@
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class="ui large label">Content</div>
-                    <textarea style = 'width:100%;height:300px;' id = "content-textarea">{{ prob.content }}</textarea>
+                    <div class = 'ui form'>
+                        <div class="ui large label">Content</div>
+                        <textarea style = 'width:100%;height:300px;' id = "content-textarea" >{{ prob.content }}</textarea>
+                    </div>
                 </div>
             </div>
             <div class = 'row'>
                 <div class ='column'>
                     <div id = "content-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.content }}
+                        {{ prob.content_markdown | safe }}
                     </div>
                 </div>
             </div>
             
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class="ui large label">Standard Input</div>
-                    <textarea style = 'width:100%;height:150px;' id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
+                    <div class = 'ui form'>
+                        <div class="ui large label">Standard Input</div>
+                        <textarea style = 'width:100%;height:150px;' id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
+                    </div>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <div id = "standard_input-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.standard_input }}
+                        {{ prob.standard_input_markdown | safe }}
                     </div>
                 </div>
             </div>
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class="ui large label">Standard Output</div>
-                    <textarea style = 'width:100%;height:150px;' id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
+                    <div class = 'ui form'>
+                        <div class="ui large label">Standard Output</div>
+                        <textarea style = 'width:100%;height:150px;' id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
+                    </div>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <div id = "standard_output-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.standard_output }}
+                        {{ prob.standard_output_markdown | safe }}
                     </div>
                 </div>
             </div>
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class="ui large label">Constraints</div>
-                    <textarea style = 'width:100%;height:150px;' id = "constraints-textarea">{{ prob.constraints }}</textarea>
+                    <div class = 'ui form'>
+                        <div class="ui large label">Constraints</div>
+                        <textarea style = 'width:100%;height:150px;' id = "constraints-textarea">{{ prob.constraints }}</textarea>
+                    </div>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <div id = "constraints-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.constraints }}
+                        {{ prob.constraints_markdown | safe }}
                     </div>
                 </div>
             </div>
@@ -165,48 +187,7 @@
                     <div id = "submit-form" class = 'ui primary button'>Submit</div>
                 </div>
             </div>
-            
-            {# <h4> Standard Input</h4>
-            <div class="field">
-            </div>
-            <div class ='field'>
-                <div id = "standard_input-textarea-render" class="ui fluid container raised segment">
-                    {{ prob.standard_input_markdown | safe }}
-                </div>
-            </div>
 
-            <h4> Standard Output</h4>
-            <div class="inline two fields">
-                <div class="field">
-                    <textarea id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
-                </div>
-                <div class ='field'>
-                    <div id = "standard_output-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.standard_output_markdown | safe }}
-                    </div>
-                </div>
-            </div>
-
-            <h4> Constraints</h4>
-            <div class="inline two fields">
-                <div class="field">
-                    <textarea id = "constraints-textarea">{{ prob.constraints }}</textarea>
-                </div>
-                <div class ='field'>
-                    <div id = "constraints-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.constraints_markdown | safe }}
-                    </div>
-                </div>
-            </div>
-
-            <div class = 'field'>
-                <label>Resource</label>
-                <input id = "resource" type="text" name="resource" maxlength = "200" >
-            </div>
-
-            <div id = "submit-form" class = 'ui primary button'>Submit</div>
-
-            <div id = "form-error-msg" class="ui negative message transition hidden"></div> #}
         </div>
     </div>
 
@@ -250,7 +231,58 @@
                 return '<ul class=\"list\">' + ret + '</ul>';
             }
 
-             $('#submit-form').click(function(){
+            $('#upload-data-button').click(function(){
+                $('#__upload').click();
+            });
+
+            function progressHandlingFunction(e){
+                if(e.lengthComputable){
+                    $('#upload-progress').progress( 'set progress' , e.loaded );
+                }
+            }
+
+            function upload_success(e){
+                $("#upload-data-button").removeClass( 'disabled loading');
+            }
+
+            function upload_error(e){
+                $("#upload-data-button").removeClass( 'disabled loading primary');
+                $("#upload-data-button").addClass( 'disabled red');
+                alert( 'Uploaded error' );
+            }
+
+            $('#__upload').on( 'change' , function(){
+                var file = $('#__upload')[0].files[0];
+                if( file.size > 100 * 1024 * 1024 ){
+                    alert( "file too large" );
+                    return;
+                }
+                var formData = new FormData();
+                formData.append( 'data' , file );
+                $.ajax({
+                    url : '{{ url("problem-upload-data-view" , args = (prob.problem_id , ) ) }}',
+                    async:true,
+                    xhr: function() {  // custom xhr
+                        $("#upload-data-button").addClass( 'disabled loading')
+                        myXhr = $.ajaxSettings.xhr();
+                        $('#upload-div').css( 'display' , 'block' );
+                        $("#upload-progress").progress( 'set total' , file.size);
+                        if(myXhr.upload){
+                            myXhr.upload.addEventListener('progress',progressHandlingFunction, false);
+                        }
+                        return myXhr;
+                    },
+                    type : 'POST',
+                    success:upload_success,
+                    error:upload_error,
+                    cache: false,
+                    data : formData,
+                    contentType: false,
+                    processData: false
+                });
+            });
+
+            $('#submit-form').click(function(){
                 var title = $('#title-input').val();
                 var timelimit = $('#timelimit-input').val();
                 var memorylimit = $('#memorylimit-input').val();
@@ -279,7 +311,7 @@
                         'standard_input' : standard_input,
                         'standard_output' : standard_output,
                         'constraints' : constraints,
-                        'resource' : resource
+                        'resource' : resource,
                     },
                     function(data,status){
                         if( status == 'success'  && data.update_status == true ){
@@ -297,7 +329,7 @@
                         }
                     }
                 )
-             });
+            });
         });
     </script>
 {% endblock content %}

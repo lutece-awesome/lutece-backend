@@ -9,3 +9,8 @@ META_FIELD = {
     'md5-check' : ['.in' , '.out'],
     'md5-file' : ['.md5']
 }
+
+ZIP_FIELD = {
+    '.zip' : 'unzip -d {path} {sourcefile}',
+    '.tar' : 'tar -xvf {sourcefile} -C {path}',
+}
