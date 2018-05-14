@@ -2,6 +2,33 @@
 
 {% block content %}
     <div class = 'home'>
-        
+        <div class="ui inverted vertical masthead center aligned segment" style = 'min-height:700px'>
+            <div class="ui text container">
+                <h1 class="ui inverted header" style = 'margin-top:3em;margin-bottom:0em;font-size:4em;' > Lutece </h1>
+                <h2>Meet the future <i class = 'small cog icon'></i></h2>
+                <div class = 'ui container'>
+                    <div id = 'start-button' class = "ui huge primary button" style = 'margin-top:1em;'><i class = 'play icon'></i>Started</div>
+                    <div id = 'github-button' class = "ui huge button" style = 'margin-top:1em;'><i class="github icon"></i>GitHub</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+
+        $('#github-button').click(function(){
+            window.location = 'https://github.com/LaPluses/Lutece';
+        });
+
+        $('#start-button').click(function(){
+            {% if user.is_authenticated == True %}
+                window.location = '{{ url("problem-list-view" , args = (1,) ) }} ';
+            {% else %}
+                $('.login.modal' ).modal( 'show' );
+            {% endif %}
+        });
+
+
+
+    </script>
 {% endblock content %}

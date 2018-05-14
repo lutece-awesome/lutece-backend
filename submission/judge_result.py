@@ -59,7 +59,7 @@ class Judge_result( Enum ):
         full = 'Running',
         alias = 'RN',
         color = '#666699',
-        icon = 'ui hourglass half icon',
+        icon = 'notched circle loading icon',
         detail = 'The program of your solution is running on the judger.',
         regex = compile( '^Running.*$' )
     )
