@@ -13,82 +13,165 @@
 
 {% block content %}
     <div class ='edit container'>
-        <form id = 'edit-form' class="ui form segment">
+        <div class = 'ui grid'>
+
+            <div class = 'row'>
+                <div class = 'column aligned center'>
+                    <h1 class="ui aligned center header">Problem {{ prob.problem_id }} </h1>
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class="ui large label">Title</div>
+                    <div class = 'ui fluid input'>
+                        <input id = 'title-input' type = "text" value = '{{ prob.title }}' maxlength = "64">
+                    </div>
+                </div>
+            </div>
             
-            <h1 class="ui aligned center header">Problem {{ prob.problem_id }} </h1>
-
-
-            <div class = "inline title field aligned center" >
-                <label>Title</label>
-                <input id = 'title-input' type = "text" name = "title"  value = {{ prob.title }} maxlength = "64" >
+            <div class = 'row'>
+                <div class = 'four wide column'>
+                    <div class="ui large label">Timelimit</div>
+                    <div class = 'ui right labeled input'>
+                        <input id = 'timelimit-input' type="number"  maxlength = "5" value = {{ prob.time_limit }} >
+                        <div class="ui basic label">Milliseconds</div>
+                    </div>
+                </div>
+                <div class = 'four wide column'>
+                    <div class="ui large label">Memorylimit</div>
+                    <div class = 'ui right labeled input'>
+                        <input id = 'memorylimit-input' type="number" maxlength = "4" value = {{ prob.memory_limit }} >
+                        <div class="ui basic label">Megabytes</div>
+                    </div>
+                </div>
             </div>
 
+            <div class = 'row'>
+
+                <div class = 'four wide column'>
+                    <div class="ui large label">
+                        Current Data:
+                        <div class = 'detail'>{{ case_number }}</div>
+                    </div>
+                </div>
+
+
+                <div class = 'four wide column'>
+                    <div id = "visible-checkbox" class="ui toggle checkbox">
+                        <input type="checkbox" tabindex="0" class="hidden">
+                        <label> <b>Visible</b> </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class = 'ui primary button' ><i class = 'upload icon' ></i>Upload Data</div>
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    
+                    <div class="ui large label">Checker</div>
+                    <div id = "checker-selection" class="ui fluid selection dropdown">
+                        <i class="dropdown icon"></i>
+                        <div class="submit language text">{{prob.checker}}</div>
+                        <div class="menu">
+                            {% for it in checker %}
+                                <div class="item">{{it}}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class="ui large label">Content</div>
+                    <textarea style = 'width:100%;height:300px;' id = "content-textarea">{{ prob.content }}</textarea>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class ='column'>
+                    <div id = "content-textarea-render" class="ui render fluid container raised segment">
+                        {{ prob.content }}
+                    </div>
+                </div>
+            </div>
             
-            <div class="inline fields">
-                <div class = 'field'>
-                    <i class = 'ui red clock icon'></i>
-                </div>
-                <div class="field">
-                    <input id = 'timelimit-input' type="number" name="Timelimit" maxlength = "5" value = {{ prob.time_limit }} >
-                </div>
-                <div class="field">
-                    Milliseconds
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class="ui large label">Standard Input</div>
+                    <textarea style = 'width:100%;height:150px;' id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
                 </div>
             </div>
-
-            <div class="inline fields">
-                <div class = 'field'>
-                    <i class = 'ui exclamation circle icon'></i>
-                </div>
-                <div class="field">
-                    <input id = 'memorylimit-input' type="number" name="Memorylimit" maxlength = "4" value = {{ prob.memory_limit }} >
-                </div>
-                <div class="field">
-                    Megabytes
-                </div>
-            </div>
-
-            <div class ='inline fields'>
-                <label>Checker</label>
-                <div id = "checker-selection" class="ui fluid selection dropdown">
-                    <i class="dropdown icon"></i>
-                    <div class="submit language text">{{prob.checker}}</div>
-                    <div class="menu">
-                        {% for it in checker %}
-                            <div class="item">{{it}}</div>
-                        {% endfor %}
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "standard_input-textarea-render" class="ui render fluid container raised segment">
+                        {{ prob.standard_input }}
                     </div>
                 </div>
             </div>
 
-            <div class="inline fields">
-                <label>Visible</label>
-                <div id = "visible-checkbox" class="ui toggle checkbox">
-                    <input type="checkbox" tabindex="0" class="hidden">
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class="ui large label">Standard Output</div>
+                    <textarea style = 'width:100%;height:150px;' id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
                 </div>
             </div>
-
-            <h4> Content</h4>
-            <div class="inline two fields">
-                <div class="field">
-                    <textarea id = "content-textarea">{{ prob.content }}</textarea>
-                </div>
-                <div class ='field'>
-                    <div id = "content-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.content_markdown | safe }}
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "standard_output-textarea-render" class="ui render fluid container raised segment">
+                        {{ prob.standard_output }}
                     </div>
                 </div>
             </div>
 
-            <h4> Standard Input</h4>
-            <div class="inline two fields">
-                <div class="field">
-                    <textarea id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class="ui large label">Constraints</div>
+                    <textarea style = 'width:100%;height:150px;' id = "constraints-textarea">{{ prob.constraints }}</textarea>
                 </div>
-                <div class ='field'>
-                    <div id = "standard_input-textarea-render" class="ui fluid container raised segment">
-                        {{ prob.standard_input_markdown | safe }}
+            </div>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "constraints-textarea-render" class="ui render fluid container raised segment">
+                        {{ prob.constraints }}
                     </div>
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div class="ui large label">Resource</div>
+                    <div class = 'ui fluid input'>
+                        <input id = "resource" type="text" value = {{ prob.resource }} maxlength = "200"  >
+                    </div>
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "form-error-msg" class="ui negative message transition hidden"></div>
+                </div>
+            </div>
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "submit-form" class = 'ui primary button'>Submit</div>
+                </div>
+            </div>
+            
+            {# <h4> Standard Input</h4>
+            <div class="field">
+            </div>
+            <div class ='field'>
+                <div id = "standard_input-textarea-render" class="ui fluid container raised segment">
+                    {{ prob.standard_input_markdown | safe }}
                 </div>
             </div>
 
@@ -116,15 +199,15 @@
                 </div>
             </div>
 
-            <div class = 'seven wide field'>
+            <div class = 'field'>
                 <label>Resource</label>
                 <input id = "resource" type="text" name="resource" maxlength = "200" >
             </div>
 
             <div id = "submit-form" class = 'ui primary button'>Submit</div>
 
-            <div id = "form-error-msg" class="ui negative message transition hidden"></div>
-        </form>
+            <div id = "form-error-msg" class="ui negative message transition hidden"></div> #}
+        </div>
     </div>
 
     <script>
@@ -201,16 +284,17 @@
                     function(data,status){
                         if( status == 'success'  && data.update_status == true ){
                             window.location = '{{ url("problem-detail-view" , args = ( prob.problem_id , ) )  }} ';
+                        }else{
+                            $('#submit-form')
+                                .removeClass( 'loading disabled primary' )
+                                .addClass('red')
+                            ;
+                            $('#form-error-msg')
+                                .empty()
+                                .removeClass( 'hidden' )
+                                .append(get_error_msgText( data.error_list ))
+                            ;
                         }
-                        $('#submit-form')
-                            .removeClass( 'loading disabled primary' )
-                            .addClass('red')
-                        ;
-                        $('#form-error-msg')
-                            .empty()
-                            .removeClass( 'hidden' )
-                            .append(get_error_msgText( data.error_list ))
-                        ;
                     }
                 )
              });

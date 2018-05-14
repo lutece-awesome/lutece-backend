@@ -11,6 +11,7 @@ from .util import get_problem_analysis , get_user_problem_analysis, get_search_u
 from utils.paginator_menu import get_range as page_range
 from utils.language import get_language_list
 from json import dumps
+from data_server.util import get_case_number
 
 def problem_detail_view(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
@@ -44,6 +45,7 @@ def problem_edit_view( request , problem_id ):
     prob = get_object_or_404(Problem, problem_id=problem_id)
     return render( request , 'problem/problem_edit.html',{
         'prob' : prob,
+        'case_number' : get_case_number( problem_id ),
         'checker' : config.CHECKER_LIST })
 
 @permission_required( 'problem.change_problem' )

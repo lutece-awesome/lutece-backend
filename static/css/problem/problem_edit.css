@@ -5,12 +5,11 @@
     font-style: normal;
 }
 
-.edit.container textarea,input,#checker-selection{
-    font-family: 'Inconsolata';
-    line-height: 1.2;
+.edit.container textarea,input,#checker-selection,.render{
+    font-family: 'UbuntuMono-R';
+    line-height: 1.6;
     font-size: 16px;
 }
-
 
 .edit.container #content-textarea{
     max-height: 100%;
