@@ -9,7 +9,6 @@ import Lutece.config as config
 from .models import Submission, Judgeinfo
 from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .tasks import push_submission
 from utils.paginator_menu import get_range as page_range
 from data_server.util import get_case_number
 from .judge_result import get_judge_result_list
@@ -17,6 +16,7 @@ from problem.util import get_search_url as problem_search_url
 from user.util import get_search_url as user_search_url
 from problem.util import check_visible_permission_or_404
 from utils.language import get_language, get_language_list
+from . import judge_queue
 # Create your views here.
 
 @login_required_ajax
@@ -45,7 +45,7 @@ def submit_solution(request):
                 judge_status = 'Waiting',
                 code = code)
             s.save()
-            push_submission( s )
+            judge_queue.push_submission( s )
             status[ 'submission_id' ] = s.submission_id
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
