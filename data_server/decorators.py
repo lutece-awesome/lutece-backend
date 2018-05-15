@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from Lutece.settings import JUDGE_AUTH_KEY
+from Lutece.production import JUDGE_AUTH_KEY
 
 def judger_auth( function ):
     def wrapper( * argv , ** kw ):

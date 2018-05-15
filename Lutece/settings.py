@@ -154,7 +154,3 @@ STATICFILES_FINDERS = (
 )
 
 # STATIC_ROOT = os.path.join( BASE_DIR , 'static' )
-
-# set judge config
-JUDGE_AUTH_KEY = b'772002'
-JUDGE_PORT = 6106

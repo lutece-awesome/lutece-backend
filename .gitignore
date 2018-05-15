@@ -126,3 +126,4 @@ MathJax-2.7.4/
 
 # production.py
 production.py
+static/codemirror-5.37.0/dist/

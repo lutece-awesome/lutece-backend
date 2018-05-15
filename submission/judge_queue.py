@@ -1,4 +1,4 @@
-from Lutece.settings import JUDGE_AUTH_KEY, JUDGE_PORT
+from Lutece.production import JUDGE_AUTH_KEY, JUDGE_PORT
 from multiprocessing.managers import BaseManager
 import queue
 from sys import modules
@@ -20,6 +20,12 @@ def get_update_dict( dic ):
 
 class _JudgeQueue:
 
+    def get_task_queue( self ):
+        return self.manager.get_task_queue()
+    
+    def get_result_queue( self ):
+        return self.manager.get_result_queue()
+
     def init_push_waiting_submission(self):
         try:
             f = Submission.objects.filter( judge_status = 'Waiting' )
@@ -30,7 +36,9 @@ class _JudgeQueue:
         print( '- Init push waiting submission completed,' , str( len( f ) ) + '(s) waiting submissions.' )
 
     def push_submission( self , submission ):
-        self.task.put( submission.get_push_dict() )
+        print( 'push' )
+        ret = self.task.put( submission.get_push_dict() )
+        print( 'push completed' , ret , self.task.qsize() )
 
     def Modify_submission_status( self , ** report ):
         submission = report[ 'submission' ]
@@ -54,14 +62,12 @@ class _JudgeQueue:
             self.Modify_submission_status( ** s )
 
     def __init__( self ):
-        task_queue = queue.Queue()
-        result_queue = queue.Queue()
         QueueManager.register('get_task_queue', callable=lambda: task_queue)
         QueueManager.register('get_result_queue', callable=lambda: result_queue)
-        manager = QueueManager( address=('127.0.0.1', JUDGE_PORT), authkey = JUDGE_AUTH_KEY )
-        manager.start()
-        self.task = manager.get_task_queue()
-        self.result = manager.get_result_queue()
+        self.manager = QueueManager( address=('0.0.0.0', JUDGE_PORT), authkey = JUDGE_AUTH_KEY )        
+        self.manager.connect()
+        self.task = self.get_task_queue()
+        self.result = self.get_result_queue()
         self.init_push_waiting_submission()
         Thread( target = self.read_modify_status , daemon = True ).start()
 
