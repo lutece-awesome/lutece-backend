@@ -124,7 +124,7 @@ def user_infomodify( request ):
             company = request.POST.get( 'company' )
             location = request.POST.get( 'location' )
             display_name = request.POST.get( 'display_name' )
-            oridisplay_name = User.objects.get( user = request.user )
+            oridisplay_name = User.objects.get( id = request.user.pk ).display_name
             if len( about ) > 256:
                 msg.append( 'About\'s length is too long' )
             if len( school ) > 32:
@@ -143,6 +143,7 @@ def user_infomodify( request ):
                     school = school,
                     company = company,
                     location = location)
+                print( 'gao here' )
                 User.objects.filter( id = request.user.pk ).update(
                     display_name = display_name) 
                 status['status'] = True
