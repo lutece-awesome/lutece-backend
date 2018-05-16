@@ -16,7 +16,7 @@ from problem.util import get_search_url as problem_search_url
 from user.util import get_search_url as user_search_url
 from problem.util import check_visible_permission_or_404
 from utils.language import get_language, get_language_list
-from . import judge_queue
+from .tasks import Submission_task
 # Create your views here.
 
 @login_required_ajax
@@ -45,8 +45,10 @@ def submit_solution(request):
                 judge_status = 'Waiting',
                 code = code)
             s.save()
-            judge_queue.push_submission( s )
+            Submission_task.delay( submission = s.get_push_dict() )
             status[ 'submission_id' ] = s.submission_id
+    except Exception as e:
+        print( 'error happen on submit submission' + str( e ) )
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 

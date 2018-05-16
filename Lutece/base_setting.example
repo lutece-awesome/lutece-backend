@@ -24,4 +24,10 @@ ALLOWED_HOSTS = ['*']
 
 # set judge config
 JUDGE_AUTH_KEY = b'666' # set the auth key
-JUDGE_PORT = 6106
+
+
+rabbitmq_ip = '127.0.0.1'
+rabbitmq_port = '5672'
+rabbitmq_user = 'task_user'
+rabbitmq_pwd = '' # set rabbitmq-server password
+rabbitmq_vhost = 'judger_host'
