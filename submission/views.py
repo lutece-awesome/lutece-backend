@@ -45,7 +45,7 @@ def submit_solution(request):
                 judge_status = 'Waiting',
                 code = code)
             s.save()
-            Submission_task.delay( submission = s.get_push_dict() )
+            Submission_task.apply_async( args = (s.get_push_dict() ,) , queue = settings.TASK_QUEUE )
             status[ 'submission_id' ] = s.submission_id
     except Exception as e:
         print( 'error happen on submit submission' + str( e ) )

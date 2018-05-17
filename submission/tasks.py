@@ -3,6 +3,6 @@ from celery import shared_task
 from time import sleep
 
 
-@shared_task
+@shared_task( name = 'Judger.task' )
 def Submission_task( submission ):
     pass

@@ -27,14 +27,14 @@ class _meta:
 
 @unique
 class Language( Enum ):
-    CPP = _meta(
+    GNUCPP = _meta(
         full = 'GNU G++',
         version = '7.3.0',
         prism = 'language-cpp',
         info = 'GNU G++17',
         codemirror = 'text/x-c++src',
     )
-    GCC = _meta(
+    GNUGCC = _meta(
         full = 'GNU GCC',
         version = '7.3.0',
         prism = 'language-c',
