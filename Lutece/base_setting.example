@@ -31,3 +31,7 @@ rabbitmq_port = '5672'
 rabbitmq_user = 'task_user'
 rabbitmq_pwd = '' # set rabbitmq-server password
 rabbitmq_vhost = 'judger_host'
+
+# do not change this
+TASK_QUEUE = 'task'
+RESULT_QUEUE = 'result'

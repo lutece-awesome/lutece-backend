@@ -1,4 +1,4 @@
-from .models import Submission
+from .models import Submission, Judgeinfo
 
 
 def Modify_submission_status( ** report ):
@@ -31,8 +31,3 @@ def get_update_dict( dic ):
     for _ in L:
         t.pop( _ )
     return t
-
-def read_modify_status( ):
-    pass
-    # s = self.result.get( block = True )
-    # Modify_submission_status( ** s )
