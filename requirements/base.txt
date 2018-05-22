@@ -1,4 +1,3 @@
-pytz==2018.3  # https://github.com/stub42/pytz
 awesome-slugify==1.6.5  # https://github.com/dimka665/awesome-slugify
 Pillow==5.1.0  # https://github.com/python-pillow/Pillow
 argon2-cffi==18.1.0  # https://github.com/hynek/argon2_cffi
