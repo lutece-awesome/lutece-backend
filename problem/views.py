@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404
 from django.http import HttpResponse
-from .models import Problem
+from .models import Problem, Sample
 from django.conf import settings
 import Lutece.config as config
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,7 +10,7 @@ from .validator import check_title, check_timelimit, check_memorylimit
 from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url, check_visible_permission_or_404
 from utils.paginator_menu import get_range as page_range
 from utils.language import get_language_list
-from json import dumps
+from json import dumps, loads
 from data_server.util import get_case_number, make_data_folder
 from django.views.decorators.csrf import csrf_exempt
 from data_server.util import upload_data
@@ -49,6 +49,7 @@ def problem_edit_view( request , problem_id ):
     return render( request , 'problem/problem_edit.html',{
         'prob' : prob,
         'case_number' : get_case_number( problem_id ),
+        'sample': prob.sample_set.all(),
         'checker' : config.CHECKER_LIST })
 
 @permission_required( 'problem.change_problem')
@@ -82,6 +83,15 @@ def problem_update_view( request , problem_id ):
         standard_output = request.POST.get('standard_output')
         constraints = request.POST.get('constraints')
         resource = request.POST.get('resource')
+        sample = loads(request.POST.get( 'sample' ))
+        prob = Problem.objects.get( pk = problem_id )
+        prob.sample_set.all().delete()
+        for x in sample:
+            Sample(
+                input_content = x[0],
+                output_content = x[1],
+                problem = prob
+            ).save()
         check_title( title , err )
         check_timelimit( timelimit , err )
         check_memorylimit( memorylimit , err )
