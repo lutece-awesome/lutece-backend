@@ -1,8 +1,11 @@
 {% extends "base/base.html" %}
 
 {% block extra_head %}
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({showProcessingMessages: false,messageStyle: "none",extensions: ["tex2jax.js"],jax: ["input/TeX", "output/HTML-CSS"],tex2jax: {inlineMath:  [ ["$", "$"] ],displayMath: [ ["$$","$$"] ],skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code','a'],ignoreClass:"comment-content"},"HTML-CSS": {availableFonts: ["STIX","TeX"],}});MathJax.Hub.Queue(["Typeset",MathJax.Hub]);</script>
-    <script type="text/javascript" src="{{ static('/mathjax/MathJax-2.7.4/MathJax.js') }}"></script>
+    {# <script type="text/x-mathjax-config">MathJax.Hub.Config({showProcessingMessages: false,messageStyle: "none",extensions: ["tex2jax.js"],jax: ["input/TeX", "output/HTML-CSS"],tex2jax: {inlineMath:  [ ["$", "$"] ],displayMath: [ ["$$","$$"] ],skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code','a'],ignoreClass:"comment-content"},"HTML-CSS": {availableFonts: ["STIX","TeX"],}});MathJax.Hub.Queue(["Typeset",MathJax.Hub]);</script> #}
+    {# <script type="text/javascript" src="{{ static('/mathjax/MathJax-2.7.4/MathJax.js') }}"></script> #}
+    <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
     <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/lib/codemirror.js') }}"></script>
     <link rel="stylesheet" href="{{ static('/codemirror-5.37.0/dist/lib/codemirror.css') }}"/>
     <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/clike/clike.js') }}"></script>
@@ -55,26 +58,26 @@
         <div class = 'ui one wide grid'>
             <div class = 'row'>
                 <div class = 'column'>
-                    <p class = 'content'> {{ prob.content_markdown | safe }} </p>
+                    <p class = 'content'> {{ prob.content}} </p>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <h2 class= 'ui header'>Standard Input</h2>
-                    <p class = 'content'>{{ prob.standard_input_markdown | safe }}</p>
+                    <p class = 'content'>{{ prob.standard_input}}</p>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <h2 class= 'ui header'>Standard Output</h2>
-                    <p class = 'content'>{{prob.standard_output_markdown | safe }}</p>
+                    <p class = 'content'>{{prob.standard_output}}</p>
                 </div>
             </div>
             {% if  prob.constraints|length > 0  %}
                 <div class = 'row'>
                     <div class = 'column'>
                         <h2 class='ui header'> Constraints </h2>
-                        <p class='content'>{{prob.constraints_markdown | safe }}</p>
+                        <p class='content'>{{prob.constraints}}</p>
                     </div>
                 </div>
             {% endif%}
@@ -161,6 +164,16 @@
         }
 
         $(document).ready(function(){
+            renderMathInElement(
+                document.body,
+                {
+                    delimiters : [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},                    
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
 
             var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
                 mode: "{{ support_lang.0.value.codemirror }}",

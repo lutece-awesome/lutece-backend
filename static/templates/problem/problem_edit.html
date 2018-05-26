@@ -3,8 +3,9 @@
 
 {% block extra_head %}
     <link href="{{ static('css/problem/problem_edit.css') }}" rel="stylesheet" />
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({showProcessingMessages: false,messageStyle: "none",extensions: ["tex2jax.js"],jax: ["input/TeX", "output/HTML-CSS"],tex2jax: {inlineMath:  [ ["$", "$"] ],displayMath: [ ["$$","$$"] ],skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code','a'],ignoreClass:"comment-content"},"HTML-CSS": {availableFonts: ["STIX","TeX"],}});MathJax.Hub.Queue(["Typeset",MathJax.Hub]);</script>
-    <script type="text/javascript" src="{{ static('/mathjax/MathJax-2.7.4/MathJax.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
 {% endblock extra_head %}
 
 {% block title %}
@@ -30,21 +31,40 @@
                 </div>
             </div>
             
-            <div class = 'row'>
-                <div class = 'four wide column'>
+            <div class = 'equal width row'>
+
+                <div class = 'column'>
                     <div class="ui large label">Timelimit</div>
                     <div class = 'ui right labeled input'>
                         <input id = 'timelimit-input' type="number"  maxlength = "5" value = {{ prob.time_limit }} >
                         <div class="ui basic label">Milliseconds</div>
                     </div>
                 </div>
-                <div class = 'four wide column'>
+
+                <div class = 'column'>
                     <div class="ui large label">Memorylimit</div>
                     <div class = 'ui right labeled input'>
                         <input id = 'memorylimit-input' type="number" maxlength = "4" value = {{ prob.memory_limit }} >
                         <div class="ui basic label">Megabytes</div>
                     </div>
                 </div>
+
+                <div class = 'column'>
+                    <div class="ui large label">CPUCoreLimit</div>
+                    <div class = 'ui right labeled input'>
+                        <input id = 'memorylimit-input' type="number" maxlength = "4" value = 1 disabled = "" >
+                        <div class="ui basic label">Cores</div>
+                    </div>
+                </div>
+
+                <div class = 'column'>
+                    <div class="ui large label">Outputlimit</div>
+                    <div class = 'ui right labeled input'>
+                        <input id = 'memorylimit-input' type="number" maxlength = "4" value = 64  disabled = "" >
+                        <div class="ui basic label">Megabytes</div>
+                    </div>
+                </div>
+
             </div>
 
             <div class = 'row'>
@@ -110,68 +130,77 @@
             </div>
 
             <div class = 'row'>
-                <div class = 'column'>
+
+
+                <div class = 'eight wide column'>
                     <div class = 'ui form'>
                         <div class="ui large label">Content</div>
-                        <textarea style = 'width:100%;height:300px;' id = "content-textarea" >{{ prob.content }}</textarea>
+                        <textarea style = 'width:100%;height:400px;' id = "content-textarea" >{{ prob.content }}</textarea>
                     </div>
                 </div>
-            </div>
-            <div class = 'row'>
-                <div class ='column'>
-                    <div id = "content-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.content_markdown | safe }}
+
+                <div class ='eight wide column'>
+                    <div class="ui large label">Content Preview</div>
+                    <div id = "content-textarea-render" style = 'width:100%;height:auto;min-height:400px;margin-top:0;' class="ui render fluid container raised segment">
+                        {{ prob.content }}
                     </div>
                 </div>
+
             </div>
+
             
             <div class = 'row'>
-                <div class = 'column'>
+
+                <div class = 'eight wide column'>
                     <div class = 'ui form'>
                         <div class="ui large label">Standard Input</div>
-                        <textarea style = 'width:100%;height:150px;' id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
+                        <textarea style = 'width:100%;height:200px;' id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
                     </div>
                 </div>
-            </div>
-            <div class = 'row'>
-                <div class = 'column'>
-                    <div id = "standard_input-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.standard_input_markdown | safe }}
+
+                <div class = 'eight wide column'>
+                    <div class="ui large label">Input Preview</div>
+                    <div id = "standard_input-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment">
+                        {{ prob.standard_input }}
                     </div>
                 </div>
+
             </div>
 
+
             <div class = 'row'>
-                <div class = 'column'>
+
+                <div class = 'eight wide column'>
                     <div class = 'ui form'>
                         <div class="ui large label">Standard Output</div>
-                        <textarea style = 'width:100%;height:150px;' id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
+                        <textarea style = 'width:100%;height:200px;' id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
                     </div>
                 </div>
+
+                <div class = 'eight wide column'>
+                    <div class="ui large label">Output Preview</div>
+                    <div id = "standard_output-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment">
+                        {{ prob.standard_output }}
+                    </div>
+                </div>
+
             </div>
+
             <div class = 'row'>
-                <div class = 'column'>
-                    <div id = "standard_output-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.standard_output_markdown | safe }}
+                <div class = 'eight wide column'>
+                    <div class = 'ui form'>
+                        <div class="ui large label">Constraints</div>
+                        <textarea style = 'width:100%;height:200px;' id = "constraints-textarea">{{ prob.constraints }}</textarea>
+                    </div>
+                </div>
+                <div class = 'eight wide column'>
+                    <div class="ui large label">Constraints Preview</div>
+                    <div id = "constraints-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment">
+                        {{ prob.constraints }}
                     </div>
                 </div>
             </div>
 
-            <div class = 'row'>
-                <div class = 'column'>
-                    <div class = 'ui form'>
-                        <div class="ui large label">Constraints</div>
-                        <textarea style = 'width:100%;height:150px;' id = "constraints-textarea">{{ prob.constraints }}</textarea>
-                    </div>
-                </div>
-            </div>
-            <div class = 'row'>
-                <div class = 'column'>
-                    <div id = "constraints-textarea-render" class="ui render fluid container raised segment">
-                        {{ prob.constraints_markdown | safe }}
-                    </div>
-                </div>
-            </div>
 
             <div class = 'row'>
                 <div class = 'column'>
@@ -199,35 +228,47 @@
 
     <script>
 
+        function Pewview( content , render ){
+            $('#' + content )[0].addEventListener('input' , function(){
+               $('#' + render )[0].innerText = $(this).val();
+                renderMathInElement(
+                document.body,
+                {
+                    delimiters : [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},                    
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
+            });
+        }
+
         $(document).ready(function(){
 
             $('#visible-checkbox').checkbox();
 
-            '{%  if prob.visible == True %}'
+            {%  if prob.visible == True %}
                 $('#visible-checkbox').checkbox( 'set checked' );
-            '{% endif %}'
+            {% endif %}
 
             $('#checker-selection').dropdown();
 
-            $('#content-textarea')[0].addEventListener('input' , function(){
-               $('#content-textarea-render')[0].innerText = $(this).val();
-               MathJax.Hub.Queue(["Typeset",MathJax.Hub,"content-textarea-render"]);
-            });
+             renderMathInElement(
+                document.body,
+                {
+                    delimiters : [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false},                    
+                        {left: "\\[", right: "\\]", display: true},
+                        {left: "\\(", right: "\\)", display: false}
+                    ]
+                });
+            Pewview( 'content-textarea' , 'content-textarea-render' );
+            Pewview( 'standard_input-textarea' , 'standard_input-textarea-render' );
+            Pewview( 'standard_output-textarea' , 'standard_output-textarea-render' );
+            Pewview( 'constraints-textarea' , 'constraints-textarea-render' );
 
-            $('#standard_input-textarea')[0].addEventListener('input' , function(){
-                $('#standard_input-textarea-render')[0].innerText = $(this).val();
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub,"standard_input-textarea-render"]);
-             });
-
-             $('#standard_output-textarea')[0].addEventListener('input' , function(){
-                $('#standard_output-textarea-render')[0].innerText = $(this).val();
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub,"standard_output-textarea-render"]);
-             });
-
-             $('#constraints-textarea')[0].addEventListener('input' , function(){
-                $('#constraints-textarea-render')[0].innerText = $(this).val();
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub,"constraints-textarea-render"]);
-             });
 
             function get_error_msgText( errlist ){
                 errlist = eval( errlist );
