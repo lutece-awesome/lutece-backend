@@ -121,3 +121,6 @@ def upload_data( data , problem , errlist ):
     finally:
         if path.exists( temp_dir ):
             system( 'rm -rf ' + temp_dir )
+
+def make_data_folder( problem ):
+    mkdir( path.join( data_dir , str( problem ) ) )

@@ -18,7 +18,7 @@ def user_login(request):
         'login_status': False}
     try:
         if request.method == 'POST':
-            username = request.POST.get('username')
+            username = request.POST.get('username').strip()
             password = request.POST.get('password')
             if username == None or password == None:
                 raise ValueError("username or password do not exist")
@@ -48,10 +48,10 @@ def user_signup(request):
     errormsg_list = status['error_msg']
     try:
         if request.method == 'POST':
-            username = request.POST.get('username')
+            username = request.POST.get('username').strip()
             password = request.POST.get('password')
-            email = request.POST.get('email')
-            displayname = request.POST.get('displayname')
+            email = request.POST.get('email').strip()
+            displayname = request.POST.get('displayname').strip()
             if username == None or password == None or email == None or displayname == None:
                 raise ValueError( "Some sign up info do not exist." )
             # Check username
@@ -119,11 +119,11 @@ def user_infomodify( request ):
     msg = status['error_msg']
     try:
         if request.method == 'POST':
-            about = request.POST.get( 'about' )
-            school = request.POST.get( 'school' )
-            company = request.POST.get( 'company' )
-            location = request.POST.get( 'location' )
-            display_name = request.POST.get( 'display_name' )
+            about = request.POST.get( 'about' ).strip()
+            school = request.POST.get( 'school' ).strip()
+            company = request.POST.get( 'company' ).strip()
+            location = request.POST.get( 'location' ).strip()
+            display_name = request.POST.get( 'display_name' ).strip()
             oridisplay_name = User.objects.get( id = request.user.pk ).display_name
             if len( about ) > 256:
                 msg.append( 'About\'s length is too long' )

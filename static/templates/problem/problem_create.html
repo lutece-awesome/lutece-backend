@@ -1,3 +1,75 @@
-{% include '/problem/templates/problem/problem_edit.html' %}
+{% extends "base/base.html" %}
 
-asd
+{% block content %}
+
+<div class = 'problem create'>
+
+    <div class = 'ui grid'>
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <form class = 'ui form'>
+                    <div class = 'title'>
+                        <div class="ui large label">Title</div>
+                        <div class = 'ui fluid input'>
+                            <input id = 'title-input' type = "text" maxlength = "64" placeholder = 'Input the new title' >
+                        </div>
+                    </div>
+                </from>
+            </div>
+        </div>
+
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <div id = 'submit-button' class = 'ui primary button' style = 'display:grid;' > Submit </div>
+            </div>
+        </div>
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <div id = "form-error-msg" class="ui negative message transition hidden"></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    $('#submit-button').click(function(){
+        var title = $('#title-input')[0].value;
+        $(this)
+            .addClass( 'loading disabled' )
+        ;
+        $.ajaxSetup({
+            data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+        $.post(
+            '{{ url("problem-create-check-view") }}',
+            {
+                'title' : title,
+            },
+            function(data,status){
+                if( status == 'success'  && data.status == true ){
+                    window.location = '/problem/edit/' + String( data.problem_id );
+                }else{
+                    $('#submit-button')
+                        .removeClass( 'loading disabled primary' )
+                        .addClass('red')
+                    ;
+                    $('#form-error-msg')
+                        .empty()
+                        .removeClass( 'hidden' )
+                        .append(get_error_msgText( data.error_list ))
+                    ;
+                }
+            }
+        )
+    })
+    
+</script>
+
+
+{% endblock %}

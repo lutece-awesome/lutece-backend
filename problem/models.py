@@ -16,7 +16,7 @@ class Problem(models.Model):
     time_limit = models.PositiveIntegerField(default=2000)
     memory_limit = models.PositiveIntegerField(default=128)
     checker = models.CharField( max_length = 256 , default = 'wcmp' )
-    visible = models.BooleanField(default=False)
+    visible = models.BooleanField(default = False )
 
     def __str__(self):
         return self.title

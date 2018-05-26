@@ -11,9 +11,10 @@ from .util import get_problem_analysis , get_user_problem_analysis, get_search_u
 from utils.paginator_menu import get_range as page_range
 from utils.language import get_language_list
 from json import dumps
-from data_server.util import get_case_number
+from data_server.util import get_case_number, make_data_folder
 from django.views.decorators.csrf import csrf_exempt
 from data_server.util import upload_data
+from annoying.functions import get_object_or_None
 
 def problem_detail_view(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
@@ -70,7 +71,7 @@ def problem_update_view( request , problem_id ):
         'error_list': []}
     err = status['error_list']
     try:
-        title = request.POST.get('title')
+        title = request.POST.get('title').strip()
         timelimit = request.POST.get( 'timelimit' )
         memorylimit = request.POST.get( 'memorylimit' )
         checker = request.POST.get( 'checker' )
@@ -109,4 +110,26 @@ def search_view( request , til ):
 
 @permission_required( 'problem.add_problem' )
 def problem_create_view( request ):
-    pass
+    return render( request , 'problem/problem_create.html' )
+
+@permission_required( 'problem.add_problem' )
+def problem_create_check_view( request ):
+    status = {
+        'status' : False,
+        'error_list': []}
+    err = status['error_list']
+    try:
+        title = request.POST.get( 'title' ).strip()
+        check_title( title , err )
+        if get_object_or_None( Problem , title = title ) is not None:
+            err.append( 'Title should be unique' )
+        s = Problem( title = title )
+        s.save()
+        status['problem_id'] = s.pk
+        make_data_folder( s.pk )
+        if len( err ) == 0:
+            status['status'] = True
+    except Exception as e:
+        print( str( e ) )
+    finally:
+        return HttpResponse(dumps(status), content_type='application/json')

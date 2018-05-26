@@ -97,10 +97,10 @@
                     <div class="ui large label">Checker</div>
                     <div id = "checker-selection" class="ui fluid selection dropdown">
                         <i class="dropdown icon"></i>
-                        <div class="submit language text">{{prob.checker}}</div>
+                        <div class="submit language text">{{prob.checker}}: {{ checker[ prob.checker ] }}</div>
                         <div class="menu">
-                            {% for it in checker %}
-                                <div class="item">{{it}}</div>
+                            {% for key, value in checker.items() %}
+                                <div class="item">{{ key }}: {{value}}</div>
                             {% endfor %}
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                 <div class = 'column'>
                     <div class="ui large label">Resource</div>
                     <div class = 'ui fluid input'>
-                        <input id = "resource" type="text" value = {{ prob.resource }} maxlength = "200"  >
+                        <input id = "resource" type="text" value = {{ prob.resource }} >
                     </div>
                 </div>
             </div>

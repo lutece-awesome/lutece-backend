@@ -32,7 +32,7 @@
         <div class = 'column'>
             {% if perms.problem.add_problem %}
                 <div style = 'float:right' >
-                    <div class = 'ui primary edit button'><i class = 'add icon'></i><b>New</b></div>
+                    <div id = 'new-button' class = 'ui primary edit button'><i class = 'add icon'></i><b>New</b></div>
                 </div>
             {% endif %}
 
@@ -100,5 +100,11 @@
             minCharacters : 2
         })
     ;
+
+    {% if perms.problem.add_problem %}
+        $('#new-button').click(function(){
+            window.location = "{{url( 'problem-create-view' )}}";
+        })
+    {% endif %}
 </script>
 {% endblock %}
