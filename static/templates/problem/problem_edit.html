@@ -6,6 +6,7 @@
     <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>
     <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
     <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
+    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>
 {% endblock extra_head %}
 
 {% block title %}
@@ -141,9 +142,7 @@
 
                 <div class ='eight wide column'>
                     <div class="ui large label">Content Preview</div>
-                    <div id = "content-textarea-render" style = 'width:100%;height:auto;min-height:400px;margin-top:0;' class="ui render fluid container raised segment">
-                        {{ prob.content }}
-                    </div>
+                    <div id = "content-textarea-render" style = 'width:100%;height:auto;min-height:400px;margin-top:0;' class="ui render fluid container raised segment"></div>
                 </div>
 
             </div>
@@ -160,9 +159,7 @@
 
                 <div class = 'eight wide column'>
                     <div class="ui large label">Input Preview</div>
-                    <div id = "standard_input-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment">
-                        {{ prob.standard_input }}
-                    </div>
+                    <div id = "standard_input-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
                 </div>
 
             </div>
@@ -179,9 +176,7 @@
 
                 <div class = 'eight wide column'>
                     <div class="ui large label">Output Preview</div>
-                    <div id = "standard_output-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment">
-                        {{ prob.standard_output }}
-                    </div>
+                    <div id = "standard_output-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
                 </div>
 
             </div>
@@ -195,9 +190,21 @@
                 </div>
                 <div class = 'eight wide column'>
                     <div class="ui large label">Constraints Preview</div>
-                    <div id = "constraints-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment">
-                        {{ prob.constraints }}
+                    <div id = "constraints-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
+                </div>
+            </div>
+
+
+            <div class = 'row'>
+                <div class = 'eight wide column'>
+                    <div class = 'ui form'>
+                        <div class="ui large label">Note</div>
+                        <textarea style = 'width:100%;height:200px;' id = "note-textarea">{{ prob.note }}</textarea>
                     </div>
+                </div>
+                <div class = 'eight wide column'>
+                    <div class="ui large label">Note Preview</div>
+                    <div id = "note-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
                 </div>
             </div>
 
@@ -230,9 +237,9 @@
 
         function Pewview( content , render ){
             $('#' + content )[0].addEventListener('input' , function(){
-               $('#' + render )[0].innerText = $(this).val();
+               $('#' + render )[0].innerHTML = marked($(this).val());
                 renderMathInElement(
-                document.body,
+                document.getElementById( render ),
                 {
                     delimiters : [
                         {left: "$$", right: "$$", display: true},
@@ -242,6 +249,7 @@
                     ]
                 });
             });
+            $('#' + render )[0].innerHTML = marked( $('#' + content).val() );
         }
 
         $(document).ready(function(){
@@ -254,7 +262,12 @@
 
             $('#checker-selection').dropdown();
 
-             renderMathInElement(
+            Pewview( 'content-textarea' , 'content-textarea-render' );
+            Pewview( 'standard_input-textarea' , 'standard_input-textarea-render' );
+            Pewview( 'standard_output-textarea' , 'standard_output-textarea-render' );
+            Pewview( 'constraints-textarea' , 'constraints-textarea-render' );
+            Pewview( 'note-textarea' , 'note-textarea-render' );
+            renderMathInElement(
                 document.body,
                 {
                     delimiters : [
@@ -263,12 +276,7 @@
                         {left: "\\[", right: "\\]", display: true},
                         {left: "\\(", right: "\\)", display: false}
                     ]
-                });
-            Pewview( 'content-textarea' , 'content-textarea-render' );
-            Pewview( 'standard_input-textarea' , 'standard_input-textarea-render' );
-            Pewview( 'standard_output-textarea' , 'standard_output-textarea-render' );
-            Pewview( 'constraints-textarea' , 'constraints-textarea-render' );
-
+            });
 
             function get_error_msgText( errlist ){
                 errlist = eval( errlist );
@@ -352,6 +360,7 @@
                 var content = $('#content-textarea').val();
                 var standard_input = $('#standard_input-textarea').val();
                 var standard_output = $('#standard_output-textarea').val();
+                var note = $('#note-textarea').val();
                 var constraints = $('#constraints-textarea').val();
                 var resource = $('#resource').val();
                 $(this)
@@ -366,6 +375,7 @@
                         'title' : title,
                         'timelimit' : timelimit,
                         'memorylimit' : memorylimit,
+                        'note' : note,
                         'checker' : checker,
                         'visible' : visible,
                         'content' : content,

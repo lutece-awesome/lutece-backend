@@ -77,6 +77,7 @@ def problem_update_view( request , problem_id ):
         checker = request.POST.get( 'checker' )
         visible = request.POST.get( 'visible' )
         content = request.POST.get('content')
+        note = request.POST.get( 'note' )
         standard_input = request.POST.get('standard_input')
         standard_output = request.POST.get('standard_output')
         constraints = request.POST.get('constraints')
@@ -93,6 +94,7 @@ def problem_update_view( request , problem_id ):
             checker = checker,
             visible = True if visible == 'true' else False,
             content = content,
+            note = note,
             standard_input = standard_input,
             standard_output = standard_output,
             constraints = constraints,

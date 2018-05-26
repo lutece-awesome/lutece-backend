@@ -15,6 +15,7 @@
     <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/python/python.js') }}"></script>
     <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/keymap/sublime.js') }}"></script>
     <link href="{{ static('css/problem/problem_detail.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>
 {% endblock extra_head %}
 
 {% block title %}
@@ -58,7 +59,7 @@
         <div class = 'ui one wide grid'>
             <div class = 'row'>
                 <div class = 'column'>
-                    <p class = 'content'> {{ prob.content}} </p>
+                    <p class = "content" > {{ prob.content }} </p>
                 </div>
             </div>
             <div class = 'row'>
@@ -73,7 +74,7 @@
                     <p class = 'content'>{{prob.standard_output}}</p>
                 </div>
             </div>
-            {% if  prob.constraints|length > 0  %}
+            {% if prob.constraints | length > 0  %}
                 <div class = 'row'>
                     <div class = 'column'>
                         <h2 class='ui header'> Constraints </h2>
@@ -164,6 +165,13 @@
         }
 
         $(document).ready(function(){
+
+            var sel = $('.problem.detail .content');
+            for(let i = 0 ; i < sel.length ; ++ i){
+                let obj = sel[i];
+                obj.innerHTML = marked( $(obj).text() );
+            }
+
             renderMathInElement(
                 document.body,
                 {
