@@ -12,151 +12,182 @@
 {% block content %}
     <div class = 'user detail'>
 
-        <div>
+        <div class = 'ui grid'>
 
-            <div class="ui three column grid">
+            <div class = 'row'>
 
-                <div class = 'column'>
-
-                    <div class = 'ui one column grid'>
-
-                        <div class = 'column'>
-                            <img class="ui small bordered image" src= {{ gravatar_url( email = target_user.email , size = 200 ) }} >
-                            {% if user == target_user %}
-                                <span><a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a></span>
-                            {% endif %}
-                        </div>
-                        
-                        
-                        <div class = 'column'>
-                            <div class = 'label'><b>About</b></div>
-                            <div class = 'ui form'>
-                                <div class = 'field' id = 'about-info'>                                
-                                    <textarea >{{ info.about }}</textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class = 'column'>
+                <div class = 'twelve wide column'>
 
                     <div class = 'ui header'>Personal Information</div> 
 
                     {% if user == target_user %}
                         <h5> Tell others how awesome you are </h5>
+                    {% else %}
+                        <h5> Basic info </h5>
                     {% endif %}
 
+                    <div class = 'ui grid raised segment'>
 
-                    <div class = 'ui one column raised segment grid'>
+                        <div class = 'row'>
+                            <div class = 'four wide column'>
+                                <img class="ui image" src= {{ gravatar_url( email = target_user.email , size = 150 ) }} >
+                                {% if user == target_user %}
+                                    <span><a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a></span>
+                                {% endif %}
+                            </div>
 
-                        {% if user == target_user %}
-                            <div class = 'column'>
-                                <div class = "label"><b>Display name</b></div>
-                                <div class="ui  fluid input" id = 'display_name-info'>
-                                <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
+                            {% if user == target_user %}
+
+                                <div class = 'six wide column'>
+
+                                    <div class = 'ui grid'>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <div data-tooltip = "Display name" data-position="top left" class="ui fluid left icon input" id = 'display_name-info'>
+                                                    <i class = 'user icon'> </i>
+                                                    <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <div data-tooltip = "School" data-position="top left" class="ui fluid left icon input" id = 'school-info'>
+                                                    <i class = 'university icon'></i>
+                                                    <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 64 >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <div data-tooltip = "Company" data-position="top left" class="ui fluid left icon input" id = 'company-info'>
+                                                    <i class = 'shopping bag icon'></i>
+                                                    <input type ="text" value= "{{ info.company }}" maxlength = 32 >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <div data-tooltip = "Location" data-position="top left" class="ui fluid left icon input" id = 'location-info'>
+                                                    <i class = 'map marker alternate icon'></i>
+                                                    <input type ="text" value= "{{ info.location }}" maxlength = 32 >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 </div>
-                            </div>
 
-                            <div class = 'column'>
-                                <div class="label"><b>School</b></div>
-                                <div class="ui fluid input" id = 'school-info'>
-                                    <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 64 >
+                                <div class = 'six wide column'>
+                                    <textarea class="ui fluid container raised segment" style = 'width:100%;height:100px;min-height:100%;' id = 'about-info'>{{ info.about }}</textarea>
                                 </div>
-                            </div>
 
-                            <div class = 'column'>
-                                <div class="label"><b>Company</b></div>
-                                <div class="ui fluid input" id = 'company-info'>
-                                    <input type ="text" value= "{{ info.company }}" maxlength = 32 >
+                            {% else %}
+
+                                <div class = 'six wide column'>
+                                    <div class = 'ui grid'>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <i class = 'user icon'> </i> {{ target_user.display_name }}
+                                            </div>
+                                        </div>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <i class = 'university icon'></i> {{ info.school }}
+                                            </div>
+                                        </div>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <i class = 'shopping bag icon'></i> {{ info.company }}
+                                            </div>
+                                        </div>
+
+                                        <div class = 'row'>
+                                            <div class = 'column'>
+                                                <i class = 'map marker alternate icon'></i>{{ info.location }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 </div>
-                            </div>
 
-                            <div class = 'column'>
-                                <div class="label"><b>Location</b></div>
-                                <div class="ui fluid input" id = 'location-info'>
-                                    <input type ="text" value= "{{ info.location }}" maxlength = 32 >
+                                <div class = 'six wide column'>
+                                    <div class="ui fluid container raised segment" style = 'width:100%;height:100px;min-height:100%;overflow: hidden;' >{{ info.about | nl2br }}</div>
                                 </div>
-                            </div>
-                        {% else %}
-                        
-                            <div class = 'column'>
-                                <i class = 'user icon'> </i> {{ target_user.display_name }}
-                            </div>
 
-                            <div class = 'column'>
-                                <i class = 'university icon'></i> {{ info.school }}
-                            </div>
+                            {% endif %}
 
-                            <div class = 'column'>
-                                <i class = 'shopping bag icon'></i> {{ info.company }}
-                            </div>
-
-                            <div class = 'column'>
-                                <i class = 'map marker alternate icon'></i>{{ info.location }}
-                            </div>
-
-                        {% endif %}
+                        </div>
 
 
                     </div>
 
                 </div>
 
-                <div class = 'three wide column'>
+
+                <div class = 'four wide column'>
                     <div id="solve-analysis" style="width: 430px;height:410px;"></div>
                 </div>
-                
+
+            </div>
+        
+        </div>
+
+        <div class = 'ui two column grid'>
+
+            <div class = 'column'>
+                <div class = "label"><b>Detail</b></div>
+                <div style = "margin-top:13px;">
+                    {% for x in result %}
+                        {% if x.1 == True %}
+                            <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
+                        {% else %}
+                            <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
 
-            <div class = 'ui two column grid'>
-                <div class = 'column'>
-                    <div class = "label"><b>Detail</b></div>
-                    <div style = "margin-top:13px;">
-                        {% for x in result %}
-                            {% if x.1 == True %}
-                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
-                            {% else %}
-                                <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
-                            {% endif %}
+            <div class = 'column'>
+                <div class = "label"><b>Recently</b></div>
+                <table class = "ui basic fixed selectable padded table bordered" >
+                    <thread>
+                        <div class = 'status list menu'>
+                            <tr>
+                                <th>ID</th>
+                                <th>When</th>
+                                <th>Problem</th>
+                                <th>Verdict</th>
+                            </tr>
+                        </div>
+                    </thread>
+                    <tbody>
+                        {% for x in recently %}
+                            <tr>
+                                <td><a href = {{ url('submission-status-detail' , args = (x.pk,) ) }}> {{ x.pk }}</a></td>
+                                <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
+                                <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
+                                <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
+                            </tr>
                         {% endfor %}
-                    </div>
-                </div>
-
-                <div class = 'column'>
-                    <div class = "label"><b>Recently</b></div>
-                    <table class = "ui basic fixed selectable padded table bordered" >
-                        <thread>
-                            <div class = 'status list menu'>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>When</th>
-                                    <th>Problem</th>
-                                    <th>Verdict</th>
-                                </tr>
-                            </div>
-                        </thread>
-                        <tbody>
-                            {% for x in recently %}
-                                <tr>
-                                    <td><a href = {{ url('submission-status-detail' , args = (x.pk,) ) }}> {{ x.pk }}</a></td>
-                                    <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
-                                    <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
-                                    <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div id = "user-detail-error" class="ui negative message transition hidden"></div>
-                </div>
+                    </tbody>
+                </table>
+                <div id = "user-detail-error" class="ui negative message transition hidden"></div>
             </div>
-            {% if user == target_user %}
-                <div id = 'user-detail-button' class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
-            {% endif %}
         </div>
         
+        {% if user == target_user %}
+            <div id = 'user-detail-button' class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
+        {% endif %}
+    
     </div>
 
     <script>
@@ -208,11 +239,11 @@
         
         {% if user == target_user %}
             $('#user-detail-button').click(function(){
-                var about = $('#about-info > textarea')[0].value;
-                var school = $('#school-info > input')[0].value;
-                var company = $('#company-info > input')[0].value;
-                var _location = $('#location-info > input')[0].value;
-                var display_name = $('#display_name-info > input')[0].value;
+                var about = $('#about-info').val();
+                var school = $('#school-info > input').val();
+                var company = $('#company-info > input').val();
+                var _location = $('#location-info > input').val();
+                var display_name = $('#display_name-info > input').val();
                 $(this).addClass( 'disabled loading' );
                 $.ajaxSetup({
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
