@@ -377,10 +377,6 @@
 
             $('#__upload').on( 'change' , function(){
                 var file = $('#__upload')[0].files[0];
-                if( file.size > 100 * 1024 * 1024 ){
-                    alert( "file too large" );
-                    return;
-                }
                 var formData = new FormData();
                 formData.append( 'data' , file );
                 $.ajax({

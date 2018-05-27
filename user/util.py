@@ -19,7 +19,7 @@ def get_user_report( user ):
             analysis[result] = 0
         if prob not in solved:
             analysis[result] += 1
-        if result == Judge_result.AC:
+        if result is Judge_result.AC:
             solved.add( prob )
     result = list()
     for each in tried:

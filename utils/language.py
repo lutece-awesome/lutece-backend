@@ -92,7 +92,6 @@ def get_language( result ):
     return None
 
 def get_prism( result ):
-    print( result )
     return get_language( result ).value.prism
 
 def get_language_list():

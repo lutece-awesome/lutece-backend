@@ -36,14 +36,14 @@ class Judge_result( Enum ):
         alias = 'WT',
         color = 'grey',
         detail = 'Judger is too busy to judge your solution. Just be kindly patient to waiting a moment.',
-        icon = 'ui coffee icon',
+        icon = 'coffee icon',
         regex = compile( '^Waiting$' )
     )
     PR = _meta(
         full = 'Preparing',
         alias = 'PR',
         color = 'grey',
-        icon = 'ui coffee icon',
+        icon = 'coffee icon',
         detail = 'Judger has fetched your solution, now is preparing test data.',
         regex = compile( '^Preparing$' )
     )
@@ -51,7 +51,7 @@ class Judge_result( Enum ):
         full = 'Accepted',
         alias = 'AC',
         color = '#21ba45',
-        icon = 'ui check icon',
+        icon = 'check icon',
         detail = 'Your solution has produced exactly right output.',
         regex = compile( '^Accepted$' )
     )
@@ -67,7 +67,7 @@ class Judge_result( Enum ):
         full = 'Compile Error',
         alias = 'CE',
         color = 'orange',
-        icon = 'ui exclamation icon',
+        icon = 'exclamation icon',
         detail = 'Your solution cannot be compiled into any program that executed by the system.',
         regex = compile( '^Compile Error$' )
     )
@@ -75,7 +75,7 @@ class Judge_result( Enum ):
         full = 'Wrong Answer',
         alias = 'WA',
         color = 'red',
-        icon = 'ui times icon',
+        icon = 'times icon',
         detail = 'Your solution has not produced the desired output for the input given by system.',
         regex = compile( '^Wrong Answer.*$' )
     )
@@ -83,7 +83,7 @@ class Judge_result( Enum ):
         full = 'Runtime Error',
         alias = 'RE',
         color = '#CC0033',
-        icon = 'ui times icon',
+        icon = 'times icon',
         detail = 'Your solution has caused an unhandled exception during execution.',
         regex = compile( '^Runtime Error.*$' )
     )
@@ -91,7 +91,7 @@ class Judge_result( Enum ):
         full = 'Time Limit Exceeded',
         alias = 'TLE',
         color = '#6666FF',
-        icon = 'ui times icon',
+        icon = 'clock outline icon',
         detail = 'Your solution has run for longer time than permitted time limit.',
         regex = compile( '^Time Limit Exceeded.*$' )
     )
@@ -99,7 +99,7 @@ class Judge_result( Enum ):
         full = 'Output Limit Exceeded',
         alias = 'OLE',
         color = '#FF0033',
-        icon = 'ui times icon',
+        icon = 'times icon',
         detail = 'Your solution has produced overmuch output.',
         regex = compile( '^Output Limit Exceeded.*$' )    
     )
@@ -107,7 +107,7 @@ class Judge_result( Enum ):
         full = 'Memory Limit Exceeded',
         alias = 'MLE',
         color = '#CC3333',
-        icon = 'ui times icon',
+        icon = 'times icon',
         detail = 'Your solution has consumed more memory than permitted memory limit.',
         regex = compile( '^Memory Limit Exceeded.*$' )    
     )
@@ -115,7 +115,7 @@ class Judge_result( Enum ):
         full = 'Judger Error',
         alias = 'JE',
         color = '#EE2C2C',
-        icon = 'ui exclamation circle icon',
+        icon = 'exclamation circle icon',
         detail = 'Some unexpected errors occur in judger.',
         regex = compile( '^Judger Error$' )  
     )

@@ -96,8 +96,8 @@
                         <tbody>
                             {% for it in sample %}
                                 <tr>
-                                    <td>{{it.input_content}}</td>
-                                    <td>{{it.output_content}}</td>
+                                    <td style = 'vertical-align:top;' >{{it.input_content | nl2br}}</td>
+                                    <td style = 'vertical-align:top;' >{{it.output_content | nl2br}}</td>
                                 </tr>
                             {% endfor%}
                         </tbody>

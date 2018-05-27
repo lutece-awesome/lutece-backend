@@ -2,11 +2,12 @@
     <div class="ui container" id="top-menu">
         <div class="header item">Lutece</div>
         <a class="item" href = {{ url('home') }} ><i class="home icon"></i>Home</a>
-        <a class="item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="university icon"></i>Problem</a>
+        <a class="item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="tasks icon"></i>Problem</a>
         <a class="item" href = {{ url('submission-status-list' , args = (1,) ) }}><i class="bar chart icon"></i>Status</a>
         <a class="item" ><i class="trophy icon"></i>Contest</a>
         <a class="item" ><i class="lab icon"></i>Lab</a>
-        <a class="item" href = {{ url('about') }} =  ><i class="compass icon"></i>About</a>        
+        <a class="item" href = {{ url('user-list' , args = (1 ,) ) }} =  ><i class="user icon"></i>Users</a>
+        <a class="item" href = {{ url('about') }} =  ><i class="compass icon"></i>About</a>
         <div class="right menu">
             {% if user.is_authenticated %}
                 <div class = 'item'>

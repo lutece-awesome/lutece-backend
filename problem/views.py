@@ -117,7 +117,10 @@ def problem_update_view( request , problem_id ):
         return HttpResponse(dumps(status), content_type='application/json')
 
 def search_view( request , til ):
-    ret = Problem.objects.filter(title__icontains=til)[:5]
+    _all = Problem.objects.all()
+    if not request.user.has_perm( 'problem.view_all' ):
+        _all = _all.filter( visible = True )
+    ret = _all.filter(title__contains=til)[:5]
     return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
 
 @permission_required( 'problem.add_problem' )

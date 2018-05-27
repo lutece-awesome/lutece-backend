@@ -4,6 +4,9 @@ PER_PAGINATOR_COUNT = 8
 # Set the number of problem/status one page should be shown
 PER_PAGE_COUNT = 20
 
+# User per page count
+USER_PER_PAGE_COUNT = 5
+
 # Set the source code max-length
 '''
     Warning:

@@ -11,6 +11,10 @@ from django.contrib.auth.decorators import login_required
 from .util import get_user_report , get_recently , build_detail_url
 from submission import judge_result
 from Lutece.config import RECENT_NUMBER
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from utils.paginator_menu import get_range as page_range
+import Lutece.config as config
+
 
 
 def user_login(request):
@@ -127,7 +131,7 @@ def user_infomodify( request ):
             oridisplay_name = User.objects.get( id = request.user.pk ).display_name
             if len( about ) > 256:
                 msg.append( 'About\'s length is too long' )
-            if len( school ) > 32:
+            if len( school ) > 64:
                 msg.append( 'Are u sure this is a valid school?' )
             if len( company ) > 32:
                 msg.append( 'Are u sure this is a valid company?' )
@@ -143,7 +147,6 @@ def user_infomodify( request ):
                     school = school,
                     company = company,
                     location = location)
-                print( 'gao here' )
                 User.objects.filter( id = request.user.pk ).update(
                     display_name = display_name) 
                 status['status'] = True
@@ -163,3 +166,13 @@ def user_detail( request , user_id ):
 def user_search( request , displayname ):
     ret = User.objects.filter(display_name__contains = displayname)[:5]
     return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
+
+def user_list( request , page ):
+    paginator = Paginator( Userinfo.objects.all().order_by( 'solved' ) , config.USER_PER_PAGE_COUNT )
+    page = min( max( 1 , page ) , paginator.num_pages )
+    userinfo_list = paginator.get_page( page )
+    return render( request , 'user/user_list.html' ,{
+        'userinfo_list' : userinfo_list,
+        'currentpage' : page,
+        'max_page': paginator.num_pages,
+        'page_list' : page_range( page , paginator.num_pages )} )
