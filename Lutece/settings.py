@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_gravatar',
     'gunicorn',
     # Lutece app
+    'contest',
     'problem',
     'user',
     'submission',
