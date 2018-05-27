@@ -49,37 +49,57 @@
                         <h5> Tell others how awesome you are </h5>
                     {% endif %}
 
-                    <br/>
 
-                    <div class = 'ui one column grid'>
+                    <div class = 'ui one column raised segment grid'>
 
-                        <div class = 'column'>
-                            <div class="label"><b>School</b></div>
-                            <div class="ui fluid input" id = 'school-info'>
-                                <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 64 >
-                            </div>
-                        </div>
-
-                        <div class = 'column'>
-                            <div class="label"><b>Company</b></div>
-                            <div class="ui fluid input" id = 'company-info'>
-                                <input type ="text" value= "{{ info.company }}" maxlength = 32 >
-                            </div>
-                        </div>
-
-                        <div class = 'column'>
-                            <div class="label"><b>Location</b></div>
-                            <div class="ui fluid input" id = 'location-info'>
-                                <input type ="text" value= "{{ info.location }}" maxlength = 32 >
-                            </div>
-                        </div>
-
-                        <div class = 'column'>
-                            <div class = "label"><b>Display name</b></div>
-                            <div class="ui  fluid input" id = 'display_name-info'>
+                        {% if user == target_user %}
+                            <div class = 'column'>
+                                <div class = "label"><b>Display name</b></div>
+                                <div class="ui  fluid input" id = 'display_name-info'>
                                 <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
+                                </div>
                             </div>
-                        </div>
+
+                            <div class = 'column'>
+                                <div class="label"><b>School</b></div>
+                                <div class="ui fluid input" id = 'school-info'>
+                                    <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 64 >
+                                </div>
+                            </div>
+
+                            <div class = 'column'>
+                                <div class="label"><b>Company</b></div>
+                                <div class="ui fluid input" id = 'company-info'>
+                                    <input type ="text" value= "{{ info.company }}" maxlength = 32 >
+                                </div>
+                            </div>
+
+                            <div class = 'column'>
+                                <div class="label"><b>Location</b></div>
+                                <div class="ui fluid input" id = 'location-info'>
+                                    <input type ="text" value= "{{ info.location }}" maxlength = 32 >
+                                </div>
+                            </div>
+                        {% else %}
+                        
+                            <div class = 'column'>
+                                <i class = 'user icon'> </i> {{ target_user.display_name }}
+                            </div>
+
+                            <div class = 'column'>
+                                <i class = 'university icon'></i> {{ info.school }}
+                            </div>
+
+                            <div class = 'column'>
+                                <i class = 'shopping bag icon'></i> {{ info.company }}
+                            </div>
+
+                            <div class = 'column'>
+                                <i class = 'map marker alternate icon'></i>{{ info.location }}
+                            </div>
+
+                        {% endif %}
+
 
                     </div>
 
