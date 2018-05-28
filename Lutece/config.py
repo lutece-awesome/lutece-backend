@@ -5,7 +5,7 @@ PER_PAGINATOR_COUNT = 8
 PER_PAGE_COUNT = 20
 
 # User per page count
-USER_PER_PAGE_COUNT = 5
+USER_PER_PAGE_COUNT = 10
 
 # Set the source code max-length
 '''

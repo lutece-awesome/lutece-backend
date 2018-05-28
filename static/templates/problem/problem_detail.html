@@ -23,26 +23,28 @@
 {% endblock title %}
 
 {% block content %}
-    <div class = 'problem detail' style='font-family:"UbuntuMono-R"'>
+    <div class = 'problem detail'>
 
         <div class = 'ui center aligned one wide grid'>
             <div class = 'row'>
                 <div class = 'column'>
-                    <h2> {{ prob.title }} </h2>
+                    <h1> {{ prob.title }} </h1>
                 </div>
             </div>
+
             <div>
                 <div class = 'row'>
-                    <div class = 'column' style='font-size:16px;'>
-                        <div class = 'text'>Timelimit: {{ prob.time_limit }} Milliseconds </div>
+                    <div class = 'column' style='font-size:14px;font-weight:600;border-bottom: 1px solid rgba(229,231,232,0.5);'>
+                        <div class = 'text'>Time Limit: {{ prob.time_limit }} Milliseconds </div>
                     </div>
                 </div>
                 <div class = 'row'>
-                    <div class = 'column' style='font-size:16px;'>
-                        <div class = 'text'>Memorylimit: {{ prob.memory_limit }} Megabytes </div>
+                    <div class = 'column' style='font-size:14px;font-weight:600;border-bottom: 1px solid rgba(229,231,232,0.5);'>
+                        <div class = 'text'>Memory Limit: {{ prob.memory_limit }} Megabytes </div>
                     </div>
                 </div>
             </div>
+
             <div class = 'row'>
                 <div class = 'column'>
                     <div class = 'menu'>
@@ -59,26 +61,27 @@
         <div class = 'ui one wide grid'>
             <div class = 'row'>
                 <div class = 'column'>
-                    <p class = "content" > {{ prob.content }} </p>
+                    <h2 class= 'ui header'>Content</h2>
+                    <p class = "ui segment content" > {{ prob.content }} </p>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <h2 class= 'ui header'>Standard Input</h2>
-                    <p class = 'content'>{{ prob.standard_input}}</p>
+                    <p class = 'ui segment content'>{{ prob.standard_input}}</p>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'column'>
                     <h2 class= 'ui header'>Standard Output</h2>
-                    <p class = 'content'>{{prob.standard_output}}</p>
+                    <p class = 'ui segment content'>{{prob.standard_output}}</p>
                 </div>
             </div>
             {% if prob.constraints | length > 0  %}
                 <div class = 'row'>
                     <div class = 'column'>
                         <h2 class='ui header'> Constraints </h2>
-                        <p class='content'>{{prob.constraints}}</p>
+                        <p class='ui segment content'>{{prob.constraints}}</p>
                     </div>
                 </div>
             {% endif%}
@@ -86,22 +89,25 @@
 
         <div class = 'ui two wide grid'>
             <div class = 'column'>
-                <table class="ui table" >
-                        <thead>
-                            <tr>
-                                <th> Input </th>
-                                <th> Output </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for it in sample %}
+                <h2 class= 'ui header'>Sample</h2>
+                <div class = 'ui segment'>
+                    <table class="ui table" >
+                            <thead>
                                 <tr>
-                                    <td style = 'vertical-align:top;' >{{it.input_content | nl2br}}</td>
-                                    <td style = 'vertical-align:top;' >{{it.output_content | nl2br}}</td>
+                                    <th> Input </th>
+                                    <th> Output </th>
                                 </tr>
-                            {% endfor%}
-                        </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                {% for it in sample %}
+                                    <tr>
+                                        <td style = 'vertical-align:top;' >{{it.input_content | nl2br}}</td>
+                                        <td style = 'vertical-align:top;' >{{it.output_content | nl2br}}</td>
+                                    </tr>
+                                {% endfor%}
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -110,7 +116,7 @@
                 <div class = 'row'>
                     <div class = 'column'>
                         <h2 class='ui header'>Note</h2>
-                        <p class='content'>{{prob.note}}</p>
+                        <p class='ui segment content'>{{prob.note}}</p>
                     </div>
                 </div>
             {% endif %}
@@ -119,37 +125,40 @@
                 <div class = 'row'>
                     <div class = 'column'>
                         <h2 class='ui header'>Resource</h2>
-                        <p class='content'>{{prob.resource}}</p>
+                        <p class='ui segment content'>{{prob.resource}}</p>
                     </div>
                 </div>
             {% endif %}
 
         </div>
 
-        <div style = 'margin-top:10px;'>
-            <div class = 'ui borderless menu'>
-                <div class = 'header item' style = 'font-size:16px;' >Current Buffer</div>
-                <div class="right menu">
-                    <div class = 'item'>
-                        <div id = "language-dropdown" class="ui selection dropdown">
-                            <i class="dropdown icon"></i>
-                            <input type="hidden" name="language">
-                            <div class="text">{{ support_lang.0.value.info }}</div>
-                            <div class="menu">
-                                {% for it in support_lang %}
-                                    <div class="item">{{it.value.info}}</div>
-                                {% endfor %}
-                            </div>
+        <h2 class='ui header'>Editor</h2>
+        <div class = 'ui grid segment' style = 'padding-top:10px;'>
+            <div class = 'row'>
+                <div class = 'four wide column'>
+                    <div id = "language-dropdown" class="ui floating labeled icon dropdown basic button">
+                        <span class="text">{{ support_lang[0].value.info }}</span>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            {% for it in support_lang %}
+                                <div class="item">{{it.value.info}}</div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class = 'ui segment'>
-                <textarea class="form-control" id="code" name="code" ></textarea>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <textarea class="form-control" id="code" name="code" ></textarea>
+                </div>
             </div>
 
-            <div id = 'solution-submit-button' class = 'ui primary button' style = 'display:grid;'> Submit </div>
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = 'solution-submit-button' class = 'ui primary button' style = 'display:grid;'> Submit </div>
+                </div>
+            </div>
 
         </div>
 
