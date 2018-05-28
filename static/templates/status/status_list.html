@@ -9,7 +9,7 @@
 
         <div class = 'ui grid'>
 
-            <div class = 'five wide column'>
+            <div class = 'six wide column'>
                 <div class="ui pagination menu">
                     <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) | append_query_parameters( querystring ) }} ><i class="angle double left icon"></i></a>
                     {% for it in page_list %}
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class='three wide column'>
+            <div class='two wide column'>
                 <div id = 'verdict-dropdown' class="ui fluid selection dropdown">
                     <input type="hidden" name="verdict" 
                         {% if 'verdict' in meta %}
@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div class='three wide column'>
+            <div class='two wide column'>
                 <div id = 'language-dropdown' class="ui fluid selection dropdown">
                     <input type="hidden" name="verdict" 
                         {% if 'lang' in meta %}
@@ -99,6 +99,7 @@
 
             <div class = 'one wide column'>
                 <div id = 'apply-button' class = 'ui secondary button'> Apply </div>
+            </div>
             </div>
 
 
