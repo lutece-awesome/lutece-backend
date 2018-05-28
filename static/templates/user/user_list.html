@@ -4,92 +4,90 @@
 
 <div class = 'user list'>
 
-    <div class = 'ui grid'>
-
-        <div class = 'row'>
-            <div class="ui twelve column centered grid">
-                <div class = 'five wide column'>
-                    <div class="ui pagination menu">
-                        <a class="icon item" href = {{ url('user-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
-                        {% for it in page_list %}
-                            {% if it == currentpage %}
-                                <a class="active item" href = {{ url('user-list' , args = (it,) ) }}  >{{it}}</a>
-                            {% else %}
-                                <a class="item" href = {{ url('user-list' , args = (it,) )  }}  >{{it}}</a>                    
-                            {% endif %}
-                        {% endfor %}
-                        <a class="icon item" href = {{ url('user-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
-                    </div>
-                </div>
-                <div class = 'column'>
-                    <div class="ui search">
-                        <div class="ui left icon input" >
-                            <input class="prompt" type="text" placeholder="User">
-                            <i class="search icon"></i>
-                        </div>
-                    </div>
+    <div class = 'ui secondary menu'>
+        <div class = 'item'>
+            <div class="ui pagination menu">
+                <a class="icon item" href = {{ url('user-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
+                {% for it in page_list %}
+                    {% if it == currentpage %}
+                        <a class="active item" href = {{ url('user-list' , args = (it,) ) }}  >{{it}}</a>
+                    {% else %}
+                        <a class="item" href = {{ url('user-list' , args = (it,) )  }}  >{{it}}</a>                    
+                    {% endif %}
+                {% endfor %}
+                <a class="icon item" href = {{ url('user-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+            </div>
+        </div>
+        <div class = 'item'>
+            <div class="ui search">
+                <div class="ui left icon input" >
+                    <input class="prompt" type="text" placeholder="User">
+                    <i class="search icon"></i>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class = 'row'>
-            <div class="ui grid container">
-                {% for each_user in userinfo_list %}
-                    <div class = 'row'>
-                        <div class = 'column'>
-                            <div class="ui render fluid container raised segment">
-                                <a class = "ui blue ribbon label" href = '{{ url( 'user-detail' , args = ( each_user.user.pk , ) ) }}' >Detail</a>
-                                <div class = 'ui grid'>
-                                    <div class = 'row'>
-                                        <div class = 'four wide column'>
-                                            <img class="ui bordered image" src= {{ gravatar_url( email = each_user.user.email , size = 150 ) }} />
-                                        </div>
-                                        <div class = 'six wide column'>
-                                            <div class = 'ui grid'>
-                                                <div class = 'row'>
-                                                    <div class = 'column'>
-                                                        <i class = 'user icon'> </i> {{ each_user.user.display_name }}
-                                                    </div>
-                                                </div>
-                                                <div class = 'row'>
-                                                    <div class = 'column'>
-                                                        <i class = 'university icon'></i>{{ each_user.school }}
-                                                    </div>
-                                                </div>
 
-                                                <div class = 'row'>
-                                                    <div class = 'column'>
-                                                        <i class = 'map marker alternate icon'></i>{{ each_user.location }}
-                                                    </div>
-                                                </div>
+    <div class="ui two column grid">
+        {% for each_user in userinfo_list %}
+            <div class = 'column'>
+                <a href = "javascript:myFunc()">
+                <div class="ui render fluid container raised segment">
+                    <div class = 'ui secondary menu'>
+                        <div class = 'item'>
+                            <img class="ui image" src= {{ gravatar_url( email = each_user.user.email , size = 150 ) }} />
+                        </div>
+                        <div class = 'item'>
+                            <div class = 'ui grid'>
 
-                                                <div class = 'row'>
-                                                    <div class = 'column'>
-                                                        <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved }}</span> / <span style = 'color:red;'> {{ each_user.tried }} </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class = 'six wide column'>
-                                            <div class="ui fluid container raised segment" style = 'width:100%;height:100px;min-height:100%;overflow: hidden;' > 
-                                                {{ each_user.about | nl2br }} 
-                                            </div>
-                                        </div>
+                                <div class = 'row'>
+                                    <div class = 'column'>
+                                        <i class = 'user icon'> </i> {{ each_user.user.display_name }}
                                     </div>
                                 </div>
+
+                                <div class = 'row'>
+                                    <div class = 'column'>
+                                        <i class = 'university icon'></i>{{ each_user.school }}
+                                    </div>
+                                </div>
+
+                                <div class = 'row'>
+                                    <div class = 'column'>
+                                        <i class = 'shopping bag icon'></i>{{ each_user.company }}
+                                    </div>
+                                </div>
+
+                                <div class = 'row'>
+                                    <div class = 'column'>
+                                        <i class = 'map marker alternate icon'></i>{{ each_user.location }}
+                                    </div>
+                                </div>
+
+                                <div class = 'row'>
+                                    <div class = 'column'>
+                                        <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved }}</span> / <span style = 'color:red;'> {{ each_user.tried }} </span>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
-
                     </div>
-                {% endfor %}
+                </div>
+                </a>
             </div>
-        </div>
-
+        {% endfor %}
     </div>
 
 </div>
 
 <script>
+    function myFunc(){
+        //alert( $(this) );
+    }
+
     $('.user.list .ui.search')
         .search({
             apiSettings: {
@@ -103,6 +101,7 @@
             minCharacters : 2
         })
     ;
+
 </script>
 
 {% endblock %}
