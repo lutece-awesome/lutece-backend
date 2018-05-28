@@ -32,51 +32,56 @@
     <div class="ui two column grid">
         {% for each_user in userinfo_list %}
             <div class = 'column'>
-                <a href = "javascript:myFunc()">
-                <div class="ui render fluid container raised segment">
-                    <div class = 'ui secondary menu'>
-                        <div class = 'item'>
-                            <img class="ui image" src= {{ gravatar_url( email = each_user.user.email , size = 150 ) }} />
+                <div class="ui fluid container raised segment card">
+                    <div class = 'ui one column grid'>
+                        <div class = 'column' style = 'padding-top:30px;'>
+                            <a href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}">
+                                <div class = 'ui secondary menu'>
+                                    <div class = 'item'>
+                                        <img class="ui image" src= {{ gravatar_url( email = each_user.user.email , size = 150 ) }} />
+                                    </div>
+                                    <div class = 'item'>
+                                        <div class = 'ui grid'>
+                                            <div class = 'row'>
+                                                <div class = 'column'>
+                                                    <i class = 'user icon'> </i> {{ each_user.user.display_name }}
+                                                </div>
+                                            </div>
+                                            <div class = 'row'>
+                                                <div class = 'column'>
+                                                    <i class = 'university icon'></i>{{ each_user.school }}
+                                                </div>
+                                            </div>
+                                            <div class = 'row'>
+                                                <div class = 'column'>
+                                                    <i class = 'shopping bag icon'></i>{{ each_user.company }}
+                                                </div>
+                                            </div>
+                                            <div class = 'row'>
+                                                <div class = 'column'>
+                                                    <i class = 'map marker alternate icon'></i>{{ each_user.location }}
+                                                </div>
+                                            </div>
+                                            <div class = 'row'>
+                                                <div class = 'column'>
+                                                    <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved }}</span> / <span style = 'color:red;'> {{ each_user.tried }} </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                        <div class = 'item'>
-                            <div class = 'ui grid'>
-
-                                <div class = 'row'>
-                                    <div class = 'column'>
-                                        <i class = 'user icon'> </i> {{ each_user.user.display_name }}
-                                    </div>
+                        <div class = 'column' style = 'margin-top:-30px;' >
+                            <div style = 'padding-top:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;height:128px;overflow: hidden;'>
+                                <div class = 'ui divider'></div>
+                                <div class = 'ui container'>
+                                    {{ each_user.about | nl2br }}
                                 </div>
-
-                                <div class = 'row'>
-                                    <div class = 'column'>
-                                        <i class = 'university icon'></i>{{ each_user.school }}
-                                    </div>
-                                </div>
-
-                                <div class = 'row'>
-                                    <div class = 'column'>
-                                        <i class = 'shopping bag icon'></i>{{ each_user.company }}
-                                    </div>
-                                </div>
-
-                                <div class = 'row'>
-                                    <div class = 'column'>
-                                        <i class = 'map marker alternate icon'></i>{{ each_user.location }}
-                                    </div>
-                                </div>
-
-                                <div class = 'row'>
-                                    <div class = 'column'>
-                                        <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved }}</span> / <span style = 'color:red;'> {{ each_user.tried }} </span>
-                                    </div>
-                                </div>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-                </a>
             </div>
         {% endfor %}
     </div>
@@ -84,9 +89,6 @@
 </div>
 
 <script>
-    function myFunc(){
-        //alert( $(this) );
-    }
 
     $('.user.list .ui.search')
         .search({
@@ -101,6 +103,9 @@
             minCharacters : 2
         })
     ;
+
+    $('.user.list .card').on( 'mouseenter' , function(){
+    });
 
 </script>
 
