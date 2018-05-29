@@ -7,8 +7,7 @@
 {% block content %}
     <div class = 'status list'>
 
-        <div>
-
+        <div style = "text-align:center;">
             <span class="ui pagination menu">
                 <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) | append_query_parameters( querystring ) }} ><i class="angle double left icon"></i></a>
                 {% for it in page_list %}
@@ -20,6 +19,9 @@
                 {% endfor %}
                 <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) | append_query_parameters( querystring ) }} ><i class="angle double right icon"></i></a>
             </span>
+        </div>
+
+        <div style = 'text-align:center;margin-top:15px;' >
             
             <span id = 'user-search' class="ui search" style = 'margin-left:15px;' >
                 <div class="ui left icon input" >
