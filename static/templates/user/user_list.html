@@ -4,28 +4,24 @@
 
 <div class = 'user list'>
 
-    <div class = 'ui secondary menu'>
-        <div class = 'item'>
-            <div class="ui pagination menu">
-                <a class="icon item" href = {{ url('user-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
-                {% for it in page_list %}
-                    {% if it == currentpage %}
-                        <a class="active item" href = {{ url('user-list' , args = (it,) ) }}  >{{it}}</a>
-                    {% else %}
-                        <a class="item" href = {{ url('user-list' , args = (it,) )  }}  >{{it}}</a>                    
-                    {% endif %}
-                {% endfor %}
-                <a class="icon item" href = {{ url('user-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+    <div style = 'margin-bottom:15px;' >
+        <span class="ui pagination menu">
+            <a class="icon item" href = {{ url('user-list' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
+            {% for it in page_list %}
+                {% if it == currentpage %}
+                    <a class="active item" href = {{ url('user-list' , args = (it,) ) }}  >{{it}}</a>
+                {% else %}
+                    <a class="item" href = {{ url('user-list' , args = (it,) )  }}  >{{it}}</a>                    
+                {% endif %}
+            {% endfor %}
+            <a class="icon item" href = {{ url('user-list', args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+        </span>
+        <span class="ui search" style = 'margin-left:15px;'>
+            <div class="ui left icon input" >
+                <input class="prompt" type="text" placeholder="User">
+                <i class="search icon"></i>
             </div>
-        </div>
-        <div class = 'item'>
-            <div class="ui search">
-                <div class="ui left icon input" >
-                    <input class="prompt" type="text" placeholder="User">
-                    <i class="search icon"></i>
-                </div>
-            </div>
-        </div>
+        </span>
     </div>
 
 

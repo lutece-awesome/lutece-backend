@@ -9,42 +9,35 @@
 
 <div class = 'problem list'>
 
-    <div class = 'ui secondary menu'>
+    <div>
 
-        <div class = 'item'>
+        <span class="ui pagination menu">
 
-            <div class="ui pagination menu">
-
-                <a class="icon item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
-                {% for it in page_list %}
-                    {% if it == currentpage %}
-                        <a class="active item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
-                    {% else %}
-                        <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
-                    {% endif %}
-                {% endfor %}
-                <a class="icon item" href = {{ url('problem-list-view' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
-
-            </div>
-        
-        </div>
-
-        <div class = 'right menu'>
-            <div class = 'item'>
-                <div class="ui search" style = 'float:right;'>
-                    <div class="ui left icon input" >
-                        <input class="prompt" type="text" placeholder="Problem">
-                        <i class="search icon"></i>
-                    </div>
-                </div>
-
-                {% if perms.problem.add_problem %}
-                    <div style = 'float:right' >
-                        <div id = 'new-button' class = 'ui primary edit button'><i class = 'add icon'></i><b>New</b></div>
-                    </div>
+            <a class="icon item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="angle double left icon"></i></a>
+            {% for it in page_list %}
+                {% if it == currentpage %}
+                    <a class="active item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
+                {% else %}
+                    <a class="item" href = {{ url('problem-list-view' , args = (it,) ) }}  >{{it}}</a>
                 {% endif %}
+            {% endfor %}
+            <a class="icon item" href = {{ url('problem-list-view' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
+
+        </span>
+
+
+        {% if perms.problem.add_problem %}
+            <span style = 'float:right;margin-left:15px;'>
+                <div id = 'new-button' class = 'ui primary edit button'><i class = 'add icon'></i><b>New</b></div>
+            </span>
+        {% endif %}
+
+        <span class="ui search" style = 'float:right;'>
+            <div class="ui left icon input" >
+                <input class="prompt" type="text" placeholder="Problem">
+                <i class="search icon"></i>
             </div>
-        </div>
+        </span>
 
     </div>
 
