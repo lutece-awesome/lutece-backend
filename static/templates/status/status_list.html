@@ -7,100 +7,88 @@
 {% block content %}
     <div class = 'status list'>
 
-        <div class = 'ui secondary menu'>
+        <div>
 
-            <div class = 'item'>
-                <div class="ui menu">
-                    <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) | append_query_parameters( querystring ) }} ><i class="angle double left icon"></i></a>
-                    {% for it in page_list %}
-                        {% if it == currentpage %}
-                            <a class="active item" href = {{ url('submission-status-list' , args = (it,) ) | append_query_parameters( querystring ) }}  >{{it }}</a>
-                        {% else %}
-                            <a class="item" href = {{ url('submission-status-list' , args = (it,) ) | append_query_parameters( querystring )  }}  >{{it }}</a>                    
+            <span class="ui pagination menu">
+                <a class="icon item" href = {{ url('submission-status-list' , args = (1,) ) | append_query_parameters( querystring ) }} ><i class="angle double left icon"></i></a>
+                {% for it in page_list %}
+                    {% if it == currentpage %}
+                        <a class="active item" href = {{ url('submission-status-list' , args = (it,) ) | append_query_parameters( querystring ) }}  >{{it }}</a>
+                    {% else %}
+                        <a class="item" href = {{ url('submission-status-list' , args = (it,) ) | append_query_parameters( querystring )  }}  >{{it }}</a>                    
+                    {% endif %}
+                {% endfor %}
+                <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) | append_query_parameters( querystring ) }} ><i class="angle double right icon"></i></a>
+            </span>
+            
+            <span id = 'user-search' class="ui search" style = 'margin-left:15px;' >
+                <div class="ui left icon input" >
+                    <input class="prompt" type="text" placeholder="User"
+                        {% if 'display_name' in meta %}
+                            value = "{{ meta.display_name }}"
                         {% endif %}
+                    >
+                    <i class="search icon"></i>
+                </div>
+            </span>
+
+
+            <span id = 'problem-search'  class="ui search" style = 'margin-left:15px;'>
+                <div class="ui left icon input" >
+                    <input class="prompt" type="text" placeholder="Problem"
+                        {% if 'title' in meta %}
+                            value = "{{ meta.title }}" 
+                        {% endif %}
+                    >
+                    <i class="search icon"></i>
+                </div>
+            </span>
+
+            <span id = 'verdict-dropdown' class="ui selection dropdown" style = 'margin-left:15px;'>
+                <input type="hidden" name="verdict" 
+                    {% if 'verdict' in meta %}
+                        value = "{{ meta.verdict }}"
+                    {% else %}
+                        value = "ALL" 
+                    {% endif %}
+                >
+                <i class="dropdown icon"></i>
+                <div class="text">All</div>
+                <div class="menu">
+                    <div class="item" data-value="ALL">
+                        All verdicts
+                    </div>
+                    {% for each in judge_result_list %}
+                        <div class = 'item' data-value = '{{ each.value.full }}'>
+                            {{ each.value.full }}
+                        </div>
                     {% endfor %}
-                    <a class="icon item" href = {{ url('submission-status-list', args = (max_page,) ) | append_query_parameters( querystring ) }} ><i class="angle double right icon"></i></a>
                 </div>
-            </div>
+            </span>
 
-            <div class ='ui item' >
-                <div id = 'user-search' class="ui search">
-                    <div class="ui left icon input" >
-                        <input class="prompt" type="text" placeholder="User"
-                            {% if 'display_name' in meta %}
-                                value = "{{ meta.display_name }}"
-                            {% endif %}
-                        >
-                        <i class="search icon"></i>
+            <span id = 'language-dropdown' class="ui selection dropdown" style = 'margin-left:15px;'>
+                <input type="hidden" name="verdict" 
+                    {% if 'lang' in meta %}
+                        value = "{{ meta.lang }}"
+                    {% else %}
+                        value = "ALL"
+                    {% endif %}
+                >
+                <i class="dropdown icon"></i>
+                <div class="text">All languages</div>
+                <div class="menu">
+                    <div class="item" data-value="ALL">
+                        All languages
                     </div>
-                </div>
-            </div>
-
-
-            <div class = 'ui item'>
-                <div id = 'problem-search'  class="ui search">
-                    <div class="ui left icon input" >
-                        <input class="prompt" type="text" placeholder="Problem"
-                            {% if 'title' in meta %}
-                                value = "{{ meta.title }}" 
-                            {% endif %}
-                        >
-                        <i class="search icon"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class = 'item'>
-                <div id = 'verdict-dropdown' class="ui selection dropdown">
-                    <input type="hidden" name="verdict" 
-                        {% if 'verdict' in meta %}
-                            value = "{{ meta.verdict }}"
-                        {% else %}
-                            value = "ALL" 
-                        {% endif %}
-                    >
-                    <i class="dropdown icon"></i>
-                    <div class="text">All</div>
-                    <div class="menu">
-                        <div class="item" data-value="ALL">
-                            All verdicts
+                    {% for each in language_list %}
+                        <div class = 'item' data-value = '{{ each.value.info }}'>
+                            {{ each.value.info }}
                         </div>
-                        {% for each in judge_result_list %}
-                            <div class = 'item' data-value = '{{ each.value.full }}'>
-                                {{ each.value.full }}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
-            </div>
+            </span>
 
-            <div class='item'>
-                <div id = 'language-dropdown' class="ui selection dropdown">
-                    <input type="hidden" name="verdict" 
-                        {% if 'lang' in meta %}
-                            value = "{{ meta.lang }}"
-                        {% else %}
-                            value = "ALL"
-                        {% endif %}
-                    >
-                    <i class="dropdown icon"></i>
-                    <div class="text">All languages</div>
-                    <div class="menu">
-                        <div class="item" data-value="ALL">
-                            All languages
-                        </div>
-                        {% for each in language_list %}
-                            <div class = 'item' data-value = '{{ each.value.info }}'>
-                                {{ each.value.info }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <div class = 'item'>
-                <div id = 'apply-button' class = 'ui secondary button'> Apply </div>
-            </div>
+            <span id = 'apply-button' class = 'ui secondary button' style = 'margin-left:15px;'> Apply </span>
 
         </div>
 
