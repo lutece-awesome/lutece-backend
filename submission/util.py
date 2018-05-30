@@ -1,6 +1,5 @@
 from .models import Submission, Judgeinfo
 
-
 def Modify_submission_status( ** report ):
     '''
         Update the status of target submission
@@ -9,7 +8,7 @@ def Modify_submission_status( ** report ):
     case = report[ 'case' ]
     result = report[ 'result' ]
     complete = report[ 'complete' ]
-    if result == 'Running' or 'Preparing':
+    if result == 'Running' or result == 'Preparing':
         Submission.objects.filter( submission_id = submission ).update( judge_status = result )
     else:
         sub = Submission.objects.get( submission_id = submission )
@@ -18,6 +17,8 @@ def Modify_submission_status( ** report ):
             ** get_update_dict( report )).save()
         if complete == True:
             Submission.objects.filter( submission_id = submission ).update( judge_status = result , completed = True )
+            from user.util import Modify_user_tried_solved
+            Modify_user_tried_solved( sub.user )
 
 def get_update_dict( dic ):
     '''

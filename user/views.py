@@ -168,7 +168,7 @@ def user_search( request , displayname ):
     return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
 
 def user_list( request , page ):
-    paginator = Paginator( Userinfo.objects.all().order_by( 'solved' ) , config.USER_PER_PAGE_COUNT )
+    paginator = Paginator( Userinfo.objects.all().order_by( '-solved' ) , config.USER_PER_PAGE_COUNT )
     page = min( max( 1 , page ) , paginator.num_pages )
     userinfo_list = paginator.get_page( page )
     return render( request , 'user/user_list.html' ,{

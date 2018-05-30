@@ -1,5 +1,6 @@
 from submission.models import Submission
 from submission.judge_result import get_judge_result, Judge_result, Query_field
+from .models import Userinfo
 
 def get_user_report( user ):
     _all = Submission.objects.filter( user = user )
@@ -28,6 +29,11 @@ def get_user_solved( user ):
 
 def get_user_tried( user ):
     return Submission.objects.filter( user = user ).values( 'problem' ).distinct().count()
+
+def Modify_user_tried_solved( user ):
+    Userinfo.objects.filter( user = user).update(
+        tried = get_user_tried( user ),
+        solved = get_user_solved( user ))
 
 def get_recently( user , number ):
     s = Submission.objects.filter( user = user )

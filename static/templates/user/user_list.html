@@ -62,7 +62,7 @@
                                             <i class = 'map marker alternate icon'></i>{{ each_user.location }}
                                         </div>
                                         <div class = 'column'>
-                                            <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.user | get_user_solved  }}</span> / <span style = 'color:red;'> {{ each_user.user | get_user_tried  }}</span>
+                                            <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved  }}</span> / <span style = 'color:red;'> {{ each_user.tried  }}</span>
                                         </div>
                                     </div>
                                 </div>

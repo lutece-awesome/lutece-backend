@@ -10,5 +10,4 @@ def Submission_task( submission ):
 
 @shared_task( name = 'Judger.result' )
 def Submission_result( report ):
-    print( report )
     Modify_submission_status( ** report )
