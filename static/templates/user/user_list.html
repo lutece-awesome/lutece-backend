@@ -28,51 +28,49 @@
     <div class="ui two column grid">
         {% for each_user in userinfo_list %}
             <div class = 'column'>
-                <div class="ui fluid container raised segment card">
-                    <div class = 'ui one column grid'>
-                        <div class = 'column' style = 'padding-top:30px;'>
-                            <a href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}">
-                                <div class = 'ui secondary menu'>
-                                    <div class = 'item'>
-                                        <img class="ui image" src= {{ gravatar_url( email = each_user.user.email , size = 150 ) }} />
+                <div class="ui fluid raised segment">
+                    {# <a class="ui red ribbon label">Vip Show Case</a> #}
+                    <div class = 'ui two column grid'>
+                        <div class = 'column'>
+                            <div class = 'ui card'>
+                                <img class = 'ui image' style = 'width:150px;height:150px;' src= {{ gravatar_url( email = each_user.user.email , size = 200 ) }} />
+                                <div class = 'content' >
+                                    <a class="header" href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" >{{ each_user.user.display_name }}</a>
+                                    <div class="meta">
+                                        <span class="date">Joined in {{each_user.user.date_joined.strftime('%m,%Y') }}</span>
                                     </div>
-                                    <div class = 'item'>
-                                        <div class = 'ui grid'>
-                                            <div class = 'row'>
-                                                <div class = 'column'>
-                                                    <i class = 'user icon'> </i> {{ each_user.user.display_name }}
-                                                </div>
-                                            </div>
-                                            <div class = 'row'>
-                                                <div class = 'column'>
-                                                    <i class = 'university icon'></i>{{ each_user.school }}
-                                                </div>
-                                            </div>
-                                            <div class = 'row'>
-                                                <div class = 'column'>
-                                                    <i class = 'shopping bag icon'></i>{{ each_user.company }}
-                                                </div>
-                                            </div>
-                                            <div class = 'row'>
-                                                <div class = 'column'>
-                                                    <i class = 'map marker alternate icon'></i>{{ each_user.location }}
-                                                </div>
-                                            </div>
-                                            <div class = 'row'>
-                                                <div class = 'column'>
-                                                    <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved }}</span> / <span style = 'color:red;'> {{ each_user.tried }} </span>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="extra content">
+                                    <span>
+                                        <i class="users icon"></i>0 Followers
+                                    </span>
+                                </div>
+                                <div class = 'ui blue bottom attached button' onclick = 'alert("fuck")' > Follow </div>
+                            </div>
+                        </div>
+                        <div class = 'column'>
+                            <div class = 'ui one column vertically divided grid '>
+                                <div class = 'column'>
+                                    <div class="ui one column grid" style = 'color:rgba(0,0,0,.87);'>
+                                        <div class = 'column'>
+                                            <i class = 'university icon'></i>{{ each_user.school }}
+                                        </div>
+                                        <div class = 'column'>
+                                            <i class = 'shopping bag icon'></i>{{ each_user.company }}
+                                        </div>
+                                        <div class = 'column'>
+                                            <i class = 'map marker alternate icon'></i>{{ each_user.location }}
+                                        </div>
+                                        <div class = 'column'>
+                                            <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.user | get_user_solved  }}</span> / <span style = 'color:red;'> {{ each_user.user | get_user_tried  }}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        <div class = 'column'>
-                            <div style = 'padding-bottom:20px;padding-left:20px;padding-right:20px;height:128px;overflow:hidden;'>
-                                <div class = 'ui divider'></div>
-                                <div class = 'ui container'>
-                                    {{ each_user.about | nl2br }}
+                                <div class = 'column'>
+                                    <div class = 'ui divider'></div>
+                                     <div class = 'ui container' style = 'overflow:hidden;height:60px;' >
+                                        {{ each_user.about | nl2br }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

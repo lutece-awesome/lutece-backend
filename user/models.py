@@ -34,7 +34,7 @@ class User(AbstractUser):
 
 class Userinfo(models.Model):
     user = models.OneToOneField( User , on_delete = models.CASCADE , primary_key = True )
-    school = models.CharField( max_length = 64 , blank = True )
+    school = models.CharField( max_length = 60 , blank = True )
     company = models.CharField( max_length = 32 , blank = True )
     location = models.CharField( max_length = 32 , blank = True )
     about = models.CharField( max_length = 256 , blank = True , default = '这个人很懒,什么都没有写' ) # tell others how awesome you are

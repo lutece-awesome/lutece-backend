@@ -9,7 +9,7 @@ def Modify_submission_status( ** report ):
     case = report[ 'case' ]
     result = report[ 'result' ]
     complete = report[ 'complete' ]
-    if result == 'Running' or result == 'Preparing' :
+    if result == 'Running' or 'Preparing':
         Submission.objects.filter( submission_id = submission ).update( judge_status = result )
     else:
         sub = Submission.objects.get( submission_id = submission )

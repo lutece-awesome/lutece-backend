@@ -35,34 +35,26 @@
             <div class = 'equal width row'>
 
                 <div class = 'column'>
-                    <div class="ui large label">TimeLimit</div>
                     <div class = 'ui right labeled input'>
+                        <label class="ui label">Time Limit</label>
                         <input id = 'timelimit-input' type="number"  maxlength = "5" value = {{ prob.time_limit }} >
                         <div class="ui basic label">Milliseconds</div>
                     </div>
                 </div>
 
                 <div class = 'column'>
-                    <div class="ui large label">MemoryLimit</div>
                     <div class = 'ui right labeled input'>
+                        <label class="ui label">Memory Limit</label>
                         <input id = 'memorylimit-input' type="number" maxlength = "4" value = {{ prob.memory_limit }} >
                         <div class="ui basic label">Megabytes</div>
                     </div>
                 </div>
 
                 <div class = 'column'>
-                    <div class="ui large label">CPUCoreLimit</div>
                     <div class = 'ui right labeled input'>
-                        <input id = 'memorylimit-input' type="number" maxlength = "4" value = 1 disabled = "" >
+                        <label class="ui label">CPUCore Limit</label>
+                        <input id = 'CPUCore-input' type="number" maxlength = "4" value = 1 disabled = "" >
                         <div class="ui basic label">Cores</div>
-                    </div>
-                </div>
-
-                <div class = 'column'>
-                    <div class="ui large label">OutputLimit</div>
-                    <div class = 'ui right labeled input'>
-                        <input id = 'memorylimit-input' type="number" maxlength = "4" value = 64  disabled = "" >
-                        <div class="ui basic label">Megabytes</div>
                     </div>
                 </div>
 
@@ -70,20 +62,20 @@
 
             <div class = 'row'>
 
-                <div class = 'four wide column'>
+                <div class = 'two wide column'>
                     <div class="ui large label">
                         Current Data:
                         <div id = 'case-number' class = 'detail'>{{ case_number }}</div>
                     </div>
                 </div>
 
-
-                <div class = 'four wide column'>
+                <div class = 'column'>
                     <div id = "visible-checkbox" class="ui toggle checkbox">
                         <input type="checkbox" tabindex="0" class="hidden">
                         <label> <b>Visible</b> </label>
                     </div>
                 </div>
+
             </div>
 
             <div class = 'row'>

@@ -90,24 +90,22 @@
         <div class = 'ui two wide grid'>
             <div class = 'column'>
                 <h2 class= 'ui header'>Sample</h2>
-                <div class = 'ui segment'>
-                    <table class="ui table" >
-                            <thead>
+                <table class="ui table" >
+                        <thead>
+                            <tr>
+                                <th> Input </th>
+                                <th> Output </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for it in sample %}
                                 <tr>
-                                    <th> Input </th>
-                                    <th> Output </th>
+                                    <td style = 'vertical-align:top;' >{{it.input_content | nl2br}}</td>
+                                    <td style = 'vertical-align:top;' >{{it.output_content | nl2br}}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for it in sample %}
-                                    <tr>
-                                        <td style = 'vertical-align:top;' >{{it.input_content | nl2br}}</td>
-                                        <td style = 'vertical-align:top;' >{{it.output_content | nl2br}}</td>
-                                    </tr>
-                                {% endfor%}
-                            </tbody>
-                    </table>
-                </div>
+                            {% endfor%}
+                        </tbody>
+                </table>
             </div>
         </div>
 

@@ -131,7 +131,7 @@ def user_infomodify( request ):
             oridisplay_name = User.objects.get( id = request.user.pk ).display_name
             if len( about ) > 256:
                 msg.append( 'About\'s length is too long' )
-            if len( school ) > 64:
+            if len( school ) > 60:
                 msg.append( 'Are u sure this is a valid school?' )
             if len( company ) > 32:
                 msg.append( 'Are u sure this is a valid company?' )

@@ -25,6 +25,11 @@ def register_judge_result( env ):
     env.filters['is_judger_error'] = is_judger_error
     env.filters['get_CE_JE_info'] = get_CE_JE_info
 
+def register_user( env ):
+    from user.util import get_user_solved, get_user_tried
+    env.filters['get_user_solved'] = get_user_solved
+    env.filters['get_user_tried'] = get_user_tried
+
 def register_language( env ):
     from utils.language import get_prism
     env.filters['get_prism'] = get_prism
@@ -37,6 +42,7 @@ def environment(**options):
     env.filters['nl2br'] = nl2br
     register_judge_result( env )
     register_language( env )
+    register_user( env )
     env.filters['append_query_parameters'] = append_query_parameters
     env.globals.update({
         'static': staticfiles_storage.url,
