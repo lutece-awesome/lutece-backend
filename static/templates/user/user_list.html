@@ -46,7 +46,7 @@
                                 </div>
                                 {% if user != each_user.user and user.is_authenticated == True %}
                                     <div class = 'ui blue bottom attached button' onclick = 'alert("fuck")' > Follow </div>
-                                {% else %}
+                                {% elif user.is_authenticated == True %}
                                     <div class = 'ui orange bottom attached button' onclick = 'alert("fuck")' > Yourself </div>
                                 {% endif %}
                             </div>
