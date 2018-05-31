@@ -113,5 +113,5 @@ def get_activity_json( request , user_pk ):
     import datetime, time
     now = datetime.datetime.now()
     start_date =  now - datetime.timedelta(days=366)
-    s = Submission.objects.filter( submit_time__date__gt = start_date )
+    s = Submission.objects.filter( user = user , submit_time__date__gt = start_date )
     return HttpResponse( dumps( { int(time.mktime(x.submit_time.timetuple())) : 1 for x in s } ) , content_type = 'application/json' )
