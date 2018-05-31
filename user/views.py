@@ -139,6 +139,8 @@ def user_infomodify( request ):
                 msg.append( 'Are u sure this is a valid location?' )
             if len( display_name ) > 16:
                 msg.append( 'Your display name too long' )
+            elif len( display_name ) == 0:
+                msg.append( 'Display name can not be empty' )
             if display_name != oridisplay_name and get_object_or_None( User , display_name = display_name ) is not None:
                 msg.append( 'Display name already exists.' )
             if len( msg ) == 0:
@@ -176,3 +178,16 @@ def user_list( request , page ):
         'currentpage' : page,
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages )} )
+
+
+@login_required
+def toggle_follow_realtion( request , user_id ):
+    status = {
+        'status' : False,
+    }
+    target = User.objects.get( pk = user_id )
+    try:
+        if request.user == target:
+            raise TypeError( 'Can not follow self' )
+    finally:
+        return HttpResponse( dumps( status ) , content_type = 'application/json' )
