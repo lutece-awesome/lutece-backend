@@ -26,91 +26,61 @@
         </div>
     </div>
 
-    <div class = 'ui login modal'>
-        <br/>
-        <div class="ui middle aligned center aligned grid">
-            <div class="column">
-                <div class="ui vertically divided grid">
-                    <div class="one column row">
-                        <div class="column header show">
-                            <b>LOG IN</b>
-                        </div>
+    <div class = 'ui login modal' style = 'min-height:300px;min-width:800px;'>
+        <div class = 'header' style = 'text-align:center;' > <i class = 'sign in alternate icon'></i> LOG IN </div>
+        <div class = 'content' style = 'padding-left:50px;'>
+            <div class="ui two column middle aligned very relaxed stackable grid">
+                <div class = 'column'>
+                    <div data-tooltip = "Username" data-position="top left" class="ui left icon fluid username input">
+                        <i class="user icon"></i>
+                        <input id = "usrinput_login" type="username" name="username" placeholder="Username">
                     </div>
-                </div>
-                <form class="ui large form">
-                    <div class="ui segment">
-                        <div class="field">
-                            <div class="ui left icon username input">
-                                <i class="user icon"></i>
-                                <input id = "usrinput_login" type="username" name="username" placeholder="Username">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui left icon password input">
-                                <i class="lock icon"></i>
-                                <input id = "pwdinput_login" type="password" name="password" placeholder="Password">
-                            </div>
-                        </div>
-                        <div id = 'button_login' class="ui fluid large primary login button">Login</div>
+                    <div data-tooltip = "Password" data-position="top left" class="ui left icon fluid password input" style = 'margin-top:20px;'>
+                        <i class="lock icon"></i>
+                        <input id = "pwdinput_login" type="password" name="password" placeholder="Password">
                     </div>
-                </form>
-                <div id = "error_msg_box_login" class="ui negative message transition hidden">
-                    <div class="header">
-                        Your username or password is incorrect.
-                    </div>
+                    <div id = 'button_login' style = 'margin-top:20px;' class="ui fluid large primary login button">Login</div>
                 </div>
-                <div class="ui message">
-                    No account?
-                    <div id = 'botton_signup' class="ui basic medium callsignup button"><b><i class="add user icon"></i></b> Sign Up</div>
+
+                <div class="divider-column" style = 'position: relative;padding: 0 !important;'>
+                    <div class="ui vertical divider"> OR </div>
                 </div>
+
+                <div class="center aligned column">
+                    <div class="ui big green labeled icon button" id = 'botton_signup' ><i class="signup icon"></i>SIGN UP</div>
+                </div>
+            </div>
+        </div>
+        <div id = "error_msg_box_login" class="ui negative message transition hidden" style = 'margin-top:20px;' >
+            <div class="header">
+                Your username or password is incorrect.
             </div>
         </div>
     </div>
 
 
-    <div class="ui signup modal">
-        <br/>
-        <div class="ui middle aligned center aligned grid">
-            <div class="column">
-                <div class="ui vertically divided grid">
-                    <div class="one column row">
-                        <div class="column header show">
-                            <b>SIGN UP</b>
-                        </div>
-                    </div>
-                </div>
-                <form class="ui large form">
-                    <div class="ui segment">
-                        <div class="field">
-                            <div class="ui left icon username input">
-                                <i class="user icon"></i>
-                                <input id="usrinput_signup" type="username" name="username" placeholder="Username">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui left icon password input">
-                                <i class="lock icon"></i>
-                                <input id="pwdinput_signup" type="password" name="password" placeholder="Password">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui left icon email input">
-                                <i class="mail outline icon"></i>
-                                <input id="emailinput_signup" type="email" name="email" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui left icon displayname input">
-                                <i class="css3 icon"></i>
-                                <input id="displaynameinput_signup" type="displayname" name="displayname" placeholder="Displayname">
-                            </div>
-                        </div>
-                        <div class="ui fluid large primary signup button">Register</div>
-                    </div>
-                </form>
-                <div id = "error_msg_box_signup" class="ui negative message transition hidden"></div>
+    <div class="ui signup modal" style = 'min-height:300px;min-width:500px;'>
+        <div class = 'header' style = 'text-align:center;' > <i class = 'signup icon'></i> SIGN UP </div>
+        <div class = 'content' style = 'padding-left:50px;padding-right:50px;padding-bottom:20px;'>
+            <div class="ui left icon username fluid input">
+                <i class="user icon"></i>
+                <input id="usrinput_signup" type="username" name="username" placeholder="Username">
             </div>
+            <div class="ui left icon password fluid input" style = 'margin-top:20px;'>
+                <i class="lock icon"></i>
+                <input id="pwdinput_signup" type="password" name="password" placeholder="Password">
+            </div>
+            <div class="ui left icon email fluid input" style = 'margin-top:20px;' >
+                <i class="mail outline icon"></i>
+                <input id="emailinput_signup" type="email" name="email" placeholder="Email">
+            </div>
+            <div class="ui left icon displayname fluid input" style = 'margin-top:20px;'>
+                <i class="css3 icon"></i>
+                <input id="displaynameinput_signup" type="displayname" name="displayname" placeholder="Displayname">
+            </div>
+            <div class = "ui fluid large positive signup button" style = 'margin-top:20px;' >Register</div>
         </div>
+        <div id = "error_msg_box_signup" class="ui negative message transition hidden"></div>
     </div>         
 
     <script>
@@ -125,13 +95,13 @@
         $(document).ready(function(){
 
             $('.signup.button').click(function () {
-                var username = $("#usrinput_signup")["0"].value;
-                var password = $("#pwdinput_signup")["0"].value;
-                var email = $("#emailinput_signup")["0"].value;
-                var displayname = $("#displaynameinput_signup")["0"].value;
+                var username = $("#usrinput_signup").val();
+                var password = $("#pwdinput_signup").val();
+                var email = $("#emailinput_signup").val();
+                var displayname = $("#displaynameinput_signup").val();
                 $(this)
                     .removeClass('red')
-                    .addClass( 'primary loading disabled' )
+                    .addClass( 'positive loading disabled' )
                 ;
                 $('#error_msg_box_signup').addClass('hidden');
                 $.ajaxSetup({
@@ -151,7 +121,7 @@
                             return;
                         }
                         $('.signup.button')
-                            .removeClass('loading disabled primary')
+                            .removeClass('loading disabled positive')
                             .addClass( 'red' )
                         ;
                         var report = get_error_msgText( data.error_msg );
@@ -165,8 +135,8 @@
             });
 
             $('#button_login').click(function(){
-                var username = $("#usrinput_login")["0"].value;
-                var password = $("#pwdinput_login")["0"].value;
+                var username = $("#usrinput_login").val();
+                var password = $("#pwdinput_login").val();
                 $('#error_msg_box_login').addClass('hidden');
                 $(this)
                     .removeClass( 'red' )
@@ -197,29 +167,33 @@
 
 
             var login_modal = $('.top.menu > .login.modal' )
+            $(login_modal).modal('setting', 'transition', 'fade down');
+
             $('#signin')
-            .click( function(){
-                $(login_modal).modal('show')
-            });
+                .click( function(){
+                    $(login_modal).modal('show')
+                });
 
             var signup_modal = $('.top.menu > .signup.modal' )
+            $(signup_modal).modal('setting' , 'transition' , 'horizontal flip' );
+
             $('#botton_signup')
-            .click( function(){
-                $(signup_modal).modal('show')
-            });
+                .click( function(){
+                    $(signup_modal).modal('show')
+                });
 
             $('#signout')
-            .click( function(){
-                $(this).addClass( 'loading disabled' );
-                $.get(
-                    "{{ url('user-logout') }}",
-                    '',
-                    function(data,status){
-                      $("this").removeClass('loading disabled');
-                      location.reload();
-                    }
-                );
-            });
+                .click( function(){
+                    $(this).addClass( 'loading disabled' );
+                    $.get(
+                        "{{ url('user-logout') }}",
+                        '',
+                        function(data,status){
+                        $("this").removeClass('loading disabled');
+                        location.reload();
+                        }
+                    );
+                });
 
         });
     </script>

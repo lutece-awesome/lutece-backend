@@ -71,7 +71,9 @@
 
                     <div class = ' ui raised segment' id = 'info-card' style = 'margin-top:30px;' >
                         <div ><i class = 'university icon'></i>{{ info.school }} </div>
-                        <div style = 'margin-top:10px;'><i class = 'shopping bag icon'></i>{{ info.company }} </div>
+                        {% if info.company | length > 0 %}
+                            <div style = 'margin-top:10px;'><i class = 'shopping bag icon'></i>{{ info.company }} </div>
+                        {% endif %}
                         <div style = 'margin-top:10px;'><i class = 'map marker alternate icon'></i>{{ info.location }}</div>
                         <div style = 'margin-top:10px;'><i class = 'tasks icon'></i><span style = 'color:green'> {{ info.solved  }}</span> / <span style = 'color:red;'> {{ info.tried  }}</span></div>
                         {% if user == target_user %}
