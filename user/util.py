@@ -22,7 +22,14 @@ def get_user_report( user ):
             analysis[result] += 1
         if result is Judge_result.AC:
             solved.add( prob )
-    return { 'analysis': analysis }
+    result = list()
+    for each in tried:
+        if each in solved:
+            result.append( ( each , True ) )
+        else:
+            result.append( ( each , False ) )
+    result.sort()
+    return { 'analysis': analysis , 'result' : result }
 
 def get_user_solved( user ):
     return Submission.objects.filter( user = user , judge_status = Judge_result.AC.value.full  ).values( 'problem' ).distinct().count()

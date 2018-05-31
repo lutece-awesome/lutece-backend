@@ -43,3 +43,7 @@ class Userinfo(models.Model):
 
     def __str__( self ):
         return self.user.username
+
+class Followrelation(models.Model):
+    target = models.OneToOneField( User , on_delete = models.CASCADE , primary_key = True , related_name = 'target' )
+    who = models.OneToOneField( User , on_delete = models.CASCADE , db_index = True , related_name = 'who' )

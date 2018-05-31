@@ -107,3 +107,11 @@ def get_status_detail_json( request , submission_id ):
         status['status'] = True
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
+
+def get_activity_json( request , user_pk ):
+    user = User.objects.get( pk = user_pk )
+    import datetime, time
+    now = datetime.datetime.now()
+    start_date =  now - datetime.timedelta(days=366)
+    s = Submission.objects.filter( submit_time__date__gt = start_date )
+    return HttpResponse( dumps( { int(time.mktime(x.submit_time.timetuple())) : 1 for x in s } ) , content_type = 'application/json' )

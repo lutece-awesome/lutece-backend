@@ -36,19 +36,18 @@
                                 <img class = 'ui image' style = 'width:150px;height:150px;' src= {{ gravatar_url( email = each_user.user.email , size = 200 ) }} />
                                 <div class = 'content' >
                                     <a class="header" href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" >{{ each_user.user.display_name }}</a>
-                                    <div class="meta">
-                                        <span class="date">Joined in {{each_user.user.date_joined.strftime('%m,%Y') }}</span>
+                                    <div class="meta" style = 'margin-top:5px;'>
+                                        <span>Last login {{each_user.user.last_login.strftime('%m,%d,%Y') }}</span>
                                     </div>
                                 </div>
                                 <div class="extra content">
-                                    <span>
-                                        <i class="users icon"></i>0 Followers
-                                    </span>
+                                    <div><i class = 'address book icon'></i>Joined in {{ each_user.user.date_joined.strftime( '%m,%Y' ) }} </div>
+                                    <div><i class="users icon"></i><b>0</b> Followers</div>
                                 </div>
                                 <div class = 'ui blue bottom attached button' onclick = 'alert("fuck")' > Follow </div>
                             </div>
                         </div>
-                        <div class = 'column'>
+                        <div class = 'column' style = 'margin-top:20px;'>
                             <div class = 'ui one column vertically divided grid '>
                                 <div class = 'column'>
                                     <div class="ui one column grid" style = 'color:rgba(0,0,0,.87);'>
@@ -66,7 +65,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class = 'column'>
+                                <div class = 'column' style = 'margin-top:-10px;'>
                                     <div class = 'ui divider'></div>
                                      <div class = 'ui container' style = 'overflow:hidden;height:60px;' >
                                         {{ each_user.about | nl2br }}

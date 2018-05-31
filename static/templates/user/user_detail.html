@@ -1,217 +1,152 @@
 {% extends "base/base.html" %}
 
 {% block extra_head %}
-    <link href="{{ static('css/user/user_detail.css') }}" rel="stylesheet" />
-    <script type="text/javascript" src="{{ static('echarts/echarts.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static('heatmap/dist/d3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static('heatmap/dist/cal-heatmap.min.js') }}"></script>
+    <link href="{{ static('heatmap/dist/cal-heatmap.css') }}" rel="stylesheet" />
 {% endblock extra_head %}
 
 {% block title %}
     <title> Lutece | {{ target_user.display_name }} </title>
 {% endblock title %}
 
+        {# <div style = 'margin-top:10px;'>
+            <div><i class = 'university icon'></i> {{ info.school }} </div>
+            <div><i class = 'shopping bag icon'></i>{{ info.company }} </div>
+            <div><i class = 'map marker alternate icon'></i>{{ info.location }}</div>
+            <div><i class="users icon"></i><b>12</b> Followers </div>
+            <div>Joined in {{ target_user.date_joined.strftime( '%m,%Y' ) }} </div>
+        </div> #}
+
 {% block content %}
     <div class = 'user detail'>
 
         <div class = 'ui grid'>
-
-            <div class = 'row'>
-
-                <div class = 'eight wide column'>
-
-                    <div class = 'ui header'>Personal Information</div> 
-
-                    {% if user == target_user %}
-                        <h5> Tell others how awesome you are </h5>
-                    {% else %}
-                        <h5> Basic info </h5>
-                    {% endif %}
-
-                    <div class="ui render fluid container raised segment">
-                        <div class = 'ui one column grid'>
-                            <div class = 'column'>
-                                <div class = 'ui secondary menu'>
-
-                                        <div class = 'item'>
-                                            <div class = 'ui one column grid'>
-                                                <div class = 'column'>
-                                                    <img class="ui image" src= {{ gravatar_url( email = target_user.email , size = 150 ) }} >
-                                                </div>
-                                                {% if user == target_user %}
-                                                    <div class ='column' style = 'margin-top:-15px;' >
-                                                        <a href = 'https://cn.gravatar.com/' ><i class = 'hand point right outline icon'></i>Want to change photo?</a>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-
-                                        {% if user == target_user %}
-
-                                            <div class = 'item'>
-
-                                                <div class = 'ui grid'>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <div data-tooltip = "Display name" data-position="top left" class="ui fluid left icon input" id = 'display_name-info'>
-                                                                <i class = 'user icon'> </i>
-                                                                <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <div data-tooltip = "School" data-position="top left" class="ui fluid left icon input" id = 'school-info'>
-                                                                <i class = 'university icon'></i>
-                                                                <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 60 >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <div data-tooltip = "Company" data-position="top left" class="ui fluid left icon input" id = 'company-info'>
-                                                                <i class = 'shopping bag icon'></i>
-                                                                <input type ="text" value= "{{ info.company }}" maxlength = 32 >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <div data-tooltip = "Location" data-position="top left" class="ui fluid left icon input" id = 'location-info'>
-                                                                <i class = 'map marker alternate icon'></i>
-                                                                <input type ="text" value= "{{ info.location }}" maxlength = 32 >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                        {% else %}
-
-                                            <div class = 'item'>
-                                                <div class = 'ui grid'>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <i class = 'user icon'> </i> {{ target_user.display_name }}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <i class = 'university icon'></i> {{ info.school }}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <i class = 'shopping bag icon'></i> {{ info.company }}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class = 'row'>
-                                                        <div class = 'column'>
-                                                            <i class = 'map marker alternate icon'></i>{{ info.location }}
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-
-                                        {% endif %}
-
-                                </div>
+            <div class = 'four wide column'>
+                <div style = 'width:90%;'　>
+                    <div class = 'ui header'>Card </div>
+                    <div class = 'ui card' style = 'width:auto;'>
+                        <img class = 'ui image' style = 'width:200px;height:200px;' src= {{ gravatar_url( email = target_user.email , size = 200 ) }} />
+                        <div class = 'content' >
+                            <a class="header">{{ target_user.display_name }}</a>
+                            <div class="meta" style = 'margin-top:5px;'>
+                                <span>Last Seen {{target_user.last_login.strftime('%m,%d,%Y') }}</span>
                             </div>
-                            
-                            <div class = 'column' style = 'margin-top:-30px;' >
-                                {% if user == target_user %}
-                                    <div class = 'ui divider' style = 'padding-top:20px;padding-left:20px;padding-right:20px;height:150px;'>
-                                        <textarea class="ui fluid container segment" style = 'width:100%;height:150px;' id = 'about-info'>{{ info.about }}</textarea>
-                                    </div>
-                                {% else %}
-                                    <div style = 'padding-top:20px;padding-bottom:20px;padding-left:20px;padding-right:20px;height:128px;overflow: hidden;'>
-                                        <div class = 'ui divider'></div>
-                                        <div class = 'ui container'>
-                                            {{ info.about | nl2br }}
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </div>
-
                         </div>
+                        <div class="extra content">
+                            <div><i class = 'address book icon'></i>Joined in {{ target_user.date_joined.strftime( '%m,%Y' ) }} </div>
+                            <div><i class="users icon"></i><b>0</b> Followers</div>
+                        </div>
+                        <div class = 'ui blue bottom attached button' onclick = 'alert("fuck")' > Follow </div>
                     </div>
 
-                </div>
-
-
-                <div class = 'eight wide column'>
-                    <div id="solve-analysis" style="width: 430px;height:410px;"></div>
-                </div>
-
-            </div>
-        
-        </div>
-
-        <div class = 'ui two column grid'>
-
-            <div class = 'column'>
-                <div class = "label"><b>Detail</b></div>
-                <div style = "margin-top:auto;">
-                    {% for x in result %}
-                        {% if x.1 == True %}
-                            <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
-                        {% else %}
-                            <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
-                        {% endif %}
-                    {% endfor %}
+                    <div class = ' ui raised segment' id = 'info-card' style = 'margin-top:30px;' >
+                        <div ><i class = 'university icon'></i>{{ info.school }} </div>
+                        <div style = 'margin-top:10px;'><i class = 'shopping bag icon'></i>{{ info.company }} </div>
+                        <div style = 'margin-top:10px;'><i class = 'map marker alternate icon'></i>{{ info.location }}</div>
+                        <div style = 'margin-top:10px;'><i class = 'tasks icon'></i><span style = 'color:green'> {{ info.solved  }}</span> / <span style = 'color:red;'> {{ info.tried  }}</span></div>
+                    </div>
                 </div>
             </div>
 
-            <div class = 'column'>
-                <div class = "label"><b>Recently</b></div>
-                <table class = "ui basic fixed selectable padded table bordered" >
-                    <thread>
-                        <div class = 'status list menu'>
-                            <tr>
-                                <th>ID</th>
-                                <th>When</th>
-                                <th>Problem</th>
-                                <th>Verdict</th>
-                            </tr>
+            <div class = 'twelve wide column'>
+                <div class = 'ui header'>Activity </div>
+                <div class = 'ui raised segment' id = 'cal-heatmap' style = 'position:relative' ></div>
+                <div class = 'ui header'>Recently </div>
+                <div class = 'one column grid'>
+                    <div class="ui raised segment">
+                        <div class = 'column'>
+                            <table class = "ui basic fixed selectable padded table bordered" style = 'text-align:center;' >
+                                <thread>
+                                    <div class = 'status list menu'>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>When</th>
+                                            <th>Problem</th>
+                                            <th>Verdict</th>
+                                            <th>Language</th>                                    
+                                        </tr>
+                                    </div>
+                                </thread>
+                                <tbody>
+                                    {% for x in recently %}
+                                        <tr>
+                                            <td><a href = {{ url('submission-status-detail' , args = (x.pk,) ) }}> {{ x.pk }}</a></td>
+                                            <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
+                                            <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
+                                            <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
+                                            <td>{{ x.language }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div id = "user-detail-error" class="ui negative message transition hidden"></div>
                         </div>
-                    </thread>
-                    <tbody>
-                        {% for x in recently %}
-                            <tr>
-                                <td><a href = {{ url('submission-status-detail' , args = (x.pk,) ) }}> {{ x.pk }}</a></td>
-                                <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
-                                <td><a href = {{ url('problem-detail-view' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
-                                <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <div id = "user-detail-error" class="ui negative message transition hidden"></div>
+                    </div>
+                </div>
+
+                <div class = 'ui header'>Detail</div>
+                <div class = 'one column grid'>
+                    <div class = 'column'>
+                        <div class = 'ui raised segment' >
+                            {% for x in result %}
+                                {% if x.1 == True %}
+                                    <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny green button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
+                                {% else %}
+                                    <a href = {{ url('problem-detail-view' , args = (x.0,) )}} ><div class = 'ui tiny red button aligned center' tabindex="0" style = "width:60px;height:30px;margin-top:10px;" >{{x.0}}</div></a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-        
-        {% if user == target_user %}
-            <div id = 'user-detail-button' class = 'ui primary button' style = "display:grid; margin-top:18px;" > Submit </div>
-        {% endif %}
+
     
     </div>
 
     <script>
 
+        function getVirtulData(year) {
+            var date = +echarts.number.parseDate(year + '-01-01');
+            var end = +echarts.number.parseDate((+year + 1) + '-01-01');
+            var dayTime = 3600 * 24 * 1000;
+            var data = [];
+            for (var time = date; time < end; time += dayTime) {
+                data.push([
+                    echarts.format.formatTime('yyyy-MM-dd', time),
+                    Math.floor(Math.random()*10)
+                ]);
+            }
+            return data;
+        }
+
+        var cal = new CalHeatMap();
+        var previous_one_year = new Date();
+        previous_one_year.setFullYear(previous_one_year.getFullYear() - 1);
+        previous_one_year.setDate(previous_one_year.getDate()+1);
+	    cal.init({
+            domain: "month",
+            subDomain: "day",
+            tooltip: true,
+            cellRadius : 3,
+            domainGutter : 10,
+            cellSize: 10,
+            rowLimit: 7,
+            label:{
+                position : 'top',
+                align: 'center',
+            },
+            legendHorizontalPosition: "right",
+            start: previous_one_year,
+            itemName: ['submission' , 'submissions'],
+            data: "{{ url( 'submission-get-activity' , args = ( target_user.pk, ) ) }}"
+        });
+
+
         $(document).ready(function(){
-            var myChart = echarts.init(document.getElementById('solve-analysis'));
+            {# var myChart = echarts.init(document.getElementById('solve-analysis'));
             var option = {
                 aria: {
                     show: true
@@ -227,15 +162,15 @@
                 series : [
                     {
                         type: 'pie',
-                        radius: '70%',
+                        radius: '65%',
                         selectedMode: 'single',
                         rosetype: 'angle',
                         label: {
                             normal: {
-                                show: false
+                                show: true
                             },
                             emphasis: {
-                                show: false
+                                show: true
                             }
                         },
                         data:[
@@ -252,7 +187,7 @@
                     }
                 ]
             };
-            myChart.setOption(option);
+            myChart.setOption(option); #}
         });
         
         {% if user == target_user %}
