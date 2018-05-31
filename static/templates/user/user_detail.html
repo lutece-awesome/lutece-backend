@@ -11,6 +11,43 @@
 {% endblock title %}
 
 {% block content %}
+    <div class = 'ui edit modal' style = 'min-height:400px;min-width:300px;'>
+        <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'edit icon'></i> Edit </div>
+        <div class="image content">
+            <div class="ui medium image">
+                <img src = {{ gravatar_url( email = target_user.email , size = 200 ) }} >
+                <div style = 'margin-top:10px'><a href = 'https://cn.gravatar.com/'><i class = 'hand point right outline icon'></i> Want to change photot?</a></div>
+            </div>
+            <div class="description" style = 'width:50%;'>
+                <div data-tooltip = "Display name" data-position="top left" class="ui fluid left icon input" id = 'display_name-info'>
+                    <i class = 'user icon'> </i>
+                    <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
+                </div>
+                <div data-tooltip = "School" data-position="top left" class="ui fluid left icon input" id = 'school-info' style = 'margin-top:15px;' >
+                    <i class = 'university icon'></i>
+                    <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 60 >
+                </div>
+                <div data-tooltip = "Company" data-position="top left" class="ui fluid left icon input" id = 'company-info' style = 'margin-top:15px;'>
+                    <i class = 'shopping bag icon'></i>
+                    <input type ="text" value= "{{ info.company }}" maxlength = 32 >
+                </div>
+                <div data-tooltip = "Location" data-position="top left" class="ui fluid left icon input" id = 'location-info' style = 'margin-top:15px;'>
+                    <i class = 'map marker alternate icon'></i>
+                    <input type ="text" value= "{{ info.location }}" maxlength = 32 >
+                </div>
+            </div>
+        </div>
+        <div class = 'ui divider'></div>
+        <textarea class="ui fluid container segment" id = 'about-info' style = 'min-height:100px;'>{{ info.about }}</textarea>
+        <div class="actions">
+            <div class="ui positive right labeled icon button" id = 'edit-submit-button'>
+                Submit
+                <i class="chevron right icon"></i>
+            </div>
+        </div>
+        <div id = "user-edit-error" class="ui negative message transition hidden" style = 'margin-top:10px;'></div>
+    </div>
+
     <div class = 'user detail'>
 
         <div class = 'ui grid'>
@@ -20,7 +57,7 @@
                     <div class = 'ui card' style = 'width:auto;'>
                         <img class = 'ui image' style = 'width:200px;height:200px;' src= {{ gravatar_url( email = target_user.email , size = 200 ) }} />
                         <div class = 'content' >
-                            <a class="header">{{ target_user.display_name }}</a>
+                            <div class="header">{{ target_user.display_name }}</div>
                             <div class="meta" style = 'margin-top:5px;'>
                                 <span>Last Seen {{target_user.last_login.strftime('%m,%d,%Y') }}</span>
                             </div>
@@ -29,7 +66,10 @@
                             <div><i class = 'address book icon'></i>Joined in {{ target_user.date_joined.strftime( '%m,%Y' ) }} </div>
                             <div><i class="users icon"></i><b>0</b> Followers</div>
                         </div>
-                        <div class = 'ui blue bottom attached button' onclick = 'alert("fuck")' > Follow </div>
+
+                        {% if user != target_user %}
+                            <div><i class="users icon"></i><b>0</b> Followers</div>
+                        {% endif %}
                     </div>
 
                     <div class = ' ui raised segment' id = 'info-card' style = 'margin-top:30px;' >
@@ -37,6 +77,11 @@
                         <div style = 'margin-top:10px;'><i class = 'shopping bag icon'></i>{{ info.company }} </div>
                         <div style = 'margin-top:10px;'><i class = 'map marker alternate icon'></i>{{ info.location }}</div>
                         <div style = 'margin-top:10px;'><i class = 'tasks icon'></i><span style = 'color:green'> {{ info.solved  }}</span> / <span style = 'color:red;'> {{ info.tried  }}</span></div>
+                        {% if user == target_user %}
+                            <div style = 'margin-top:10px;' class="ui blue labeled icon bottom attached button" id = 'edit-button'>
+                                <span><i class="edit icon"></i>Edit</span>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -72,7 +117,6 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <div id = "user-detail-error" class="ui negative message transition hidden"></div>
                         </div>
                     </div>
                 </div>
@@ -100,19 +144,17 @@
 
     <script>
 
-        function getVirtulData(year) {
-            var date = +echarts.number.parseDate(year + '-01-01');
-            var end = +echarts.number.parseDate((+year + 1) + '-01-01');
-            var dayTime = 3600 * 24 * 1000;
-            var data = [];
-            for (var time = date; time < end; time += dayTime) {
-                data.push([
-                    echarts.format.formatTime('yyyy-MM-dd', time),
-                    Math.floor(Math.random()*10)
-                ]);
-            }
-            return data;
-        }
+        $('#edit-button').click(function(){
+            $('.ui.edit.modal').modal({
+                onApprove : function() {
+                    return false;
+                }
+            });
+            $('.ui.edit.modal')
+                .modal('setting', 'transition', 'vertical flip')
+                .modal('show')
+            ;
+        })
 
         var cal = new CalHeatMap();
         var previous_one_year = new Date();
@@ -135,60 +177,15 @@
             itemName: ['submission' , 'submissions'],
             data: "{{ url( 'submission-get-activity' , args = ( target_user.pk, ) ) }}"
         });
-
-
-        $(document).ready(function(){
-            {# var myChart = echarts.init(document.getElementById('solve-analysis'));
-            var option = {
-                aria: {
-                    show: true
-                },
-                title: {
-                    text: 'Summary',
-                    x: 'center'
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{b} : {c} ({d}%)"
-                },
-                series : [
-                    {
-                        type: 'pie',
-                        radius: '65%',
-                        selectedMode: 'single',
-                        rosetype: 'angle',
-                        label: {
-                            normal: {
-                                show: true
-                            },
-                            emphasis: {
-                                show: true
-                            }
-                        },
-                        data:[
-                            {% for each in analysis %}
-                                {
-                                    value: {{ analysis[each] }},
-                                    name: '{{ each.value.full }}',
-                                    itemStyle:{
-                                        color: '{{ each.value.color }}',
-                                    },
-                                },
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            };
-            myChart.setOption(option); #}
-        });
         
         {% if user == target_user %}
-            $('#user-detail-button').click(function(){
+            $('#edit-submit-button').click(function(){
                 var about = $('#about-info').val();
                 var school = $('#school-info > input').val();
                 var company = $('#company-info > input').val();
                 var _location = $('#location-info > input').val();
                 var display_name = $('#display_name-info > input').val();
+
                 $(this).addClass( 'disabled loading' );
                 $.ajaxSetup({
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
@@ -206,11 +203,11 @@
                         if( status == 'success'  && data.status == true ){
                             location.reload();
                         }else{
-                            $('#user-detail-button')
-                                .removeClass( 'loading disabled primary' )
+                            $('#edit-submit-button')
+                                .removeClass( 'loading disabled positive' )
                                 .addClass('red')
                             ;
-                            $('#user-detail-error')
+                            $('#user-edit-error')
                                 .empty()
                                 .removeClass( 'hidden' )
                                 .append(get_error_msgText( data.error_msg ))
