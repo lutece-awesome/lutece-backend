@@ -19,7 +19,7 @@
                 <div style = 'margin-top:10px'><a href = 'https://cn.gravatar.com/'><i class = 'hand point right outline icon'></i> Want to change photot?</a></div>
             </div>
             <div class="description" style = 'width:50%;'>
-                <div data-tooltip = "Display name" data-position="top left" class="ui fluid left icon input" id = 'display_name-info'>
+                <div data-tooltip = "Display name" data-position="top left" class="ui fluid left icon input" id = 'display_name-info' style = 'margin-top:20px;'>
                     <i class = 'user icon'> </i>
                     <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
                 </div>
@@ -54,8 +54,8 @@
             <div class = 'four wide column'>
                 <div style = 'width:90%;'　>
                     <div class = 'ui header'>Card </div>
+                    <img class = 'ui centered image' style = 'width:250px;height:250px;' src= {{ gravatar_url( email = target_user.email , size = 250 ) }} />
                     <div class = 'ui card' style = 'width:auto;'>
-                        <img class = 'ui image' style = 'width:200px;height:200px;' src= {{ gravatar_url( email = target_user.email , size = 200 ) }} />
                         <div class = 'content' >
                             <div class="header">{{ target_user.display_name }}</div>
                             <div class="meta" style = 'margin-top:5px;'>
@@ -67,9 +67,6 @@
                             <div><i class="users icon"></i><b>0</b> Followers</div>
                         </div>
 
-                        {% if user != target_user %}
-                            <div><i class="users icon"></i><b>0</b> Followers</div>
-                        {% endif %}
                     </div>
 
                     <div class = ' ui raised segment' id = 'info-card' style = 'margin-top:30px;' >
