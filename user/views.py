@@ -189,5 +189,6 @@ def toggle_follow_realtion( request , user_id ):
     try:
         if request.user == target:
             raise TypeError( 'Can not follow self' )
+        
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
