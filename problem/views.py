@@ -134,13 +134,12 @@ def problem_create_check_view( request ):
         check_title( title , err )
         if get_object_or_None( Problem , title = title ) is not None:
             err.append( 'Title should be unique' )
+            raise TypeError( 'Title Field should unique' )
         s = Problem( title = title )
         s.save()
         status['problem_id'] = s.pk
         make_data_folder( s.pk )
         if len( err ) == 0:
             status['status'] = True
-    except Exception as e:
-        print( str( e ) )
     finally:
         return HttpResponse(dumps(status), content_type='application/json')

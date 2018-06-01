@@ -25,4 +25,20 @@ def get_contest_list( request , page ):
 
 @permission_required( 'contest.add_contest' )
 def create_contest( request ):
-    pass
+    status = {
+        'status' : False,
+        'error_list': []}
+    err = status['error_list']
+    try:
+        title = request.POST.get( 'title' ).strip()
+        check_title( title , err )
+        if get_object_or_None( Contest , title = title ) is not None:
+            err.append( 'Title should be unique' )
+            raise TypeError( 'Title Field should unique' )
+        s = Contest( title = title )
+        s.save()
+        status['contest_id'] = s.pk
+        if len( err ) == 0:
+            status['status'] = True
+    finally:
+        return HttpResponse(dumps(status), content_type='application/json')

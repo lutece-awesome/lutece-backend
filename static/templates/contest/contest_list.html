@@ -1,7 +1,56 @@
 {% extends "base/base.html" %}
 
+{% if perms.contest.add_contest %}
+    {% block extra_head %}
+        <link href="{{ static('semantic/dist/calendar/calendar.min.css') }}" rel="stylesheet" />
+        <script type="text/javascript" src="{{ static('semantic/dist/calendar/calendar.min.js') }}"></script>
+    {% endblock extra_head %}
+{% endif %}
 
 {% block content %}
+
+    {% if perms.contest.add_contest %}
+        <div class = 'ui contest create modal' style = 'min-height:200px;min-width:300px;'>
+            <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'edit icon'></i> Create Contest </div>
+            <div class = 'content'>
+
+                <div data-tooltip = "Title" data-position="top left" class="ui fluid left icon input">
+                    <i class = 'bookmark icon'> </i>
+                    <input type ="text" id = 'title-info' maxlength = 32 >
+                </div>
+
+                <div data-tooltip = "Start Time" data-position="top left" class="ui calendar" style = 'margin-top:15px;' id = 'start-time' >
+                    <div class="ui fluid input left icon">
+                        <i class = 'calendar icon'> </i>
+                        <input type="text">
+                    </div>
+                </div>
+
+                <div data-tooltip = "End Time" data-position="top left" class="ui calendar" style = 'margin-top:15px;' id = 'end-time' >
+                    <div class="ui fluid input left icon">
+                        <i class = 'calendar icon'> </i>
+                        <input type="text">
+                    </div>
+                </div>
+
+                <div data-tooltip = "ContestType" data-position="top left" class="ui fluid left icon input" style = 'margin-top:15px;'>
+                    <i class = 'time icon'> </i>
+                    <input type = "hidden" name="verdict">
+                </div>
+
+            </div>
+            
+            <div class="actions">
+                <div class="ui positive right labeled icon button" id = 'create-contest-button'>
+                    Submit
+                    <i class="chevron right icon"></i>
+                </div>
+            </div>
+
+            <div id = "form-error-msg" class="ui negative message transition hidden"  ></div>
+        </div>
+    {% endif %}
+
     <div class = 'contest list'>
 
         <div>
@@ -24,7 +73,7 @@
 
             <span class="ui search" style = 'float:right;'>
                 <div class="ui left icon input" >
-                    <input class="prompt" type="text" placeholder="Problem">
+                    <input class="prompt" type="text" placeholder="Contest">
                     <i class="search icon"></i>
                 </div>
             </span>
@@ -32,7 +81,7 @@
         </div>
 
 
-        <table class = "ui basic fixed selectable padded table bordered" >
+        <table class = "ui basic fixed selectable padded table bordered" style = 'text-align:center;' >
             <thread>
                 <tr>
                     <th>ID</th>
@@ -42,31 +91,73 @@
                 </tr>
             </thread>
             <tbody>
-                    {# {% for it in problist %}
-                    <tr>
-                        <td>{{it.problem_id}} </td>
-                        <td><a href = {{ url('problem-detail-view' , args = (it.problem_id,) ) }} >{{it.title}}</td>
-                        {% if user.is_authenticated == True %}
+                    {% for it in contestlist %}
+                        <tr>
+                            <td>{{it.pk}} </td>
                             <td>
-                                {% if user_analysis[ loop.index0 ] == 2 %}
-                                    <i class="green checkmark icon"></i>
-                                {% elif user_analysis[ loop.index0 ] == 1 %}
-                                    <i class = 'red times icon'> </i>
-                                {% endif %}
+                                {# <a href = {{ url('problem-detail-view' , args = (it.problem_id,) ) }} > #}
+                                    {{it.title}} 
+                                {# </a>  #}
                             </td>
-                        {% endif %}
-                        <td>{{ problem_analysis[ loop.index0 ].0 }} / {{ problem_analysis[ loop.index0 ].1 }} </td>
-                        {% if problem_analysis[ loop.index0 ].1 == 0 %}
-                            <td> 0.00% </td>
-                        {% else %}
-                            <td> {{ "%.2f" | format( problem_analysis[ loop.index0 ].0 / problem_analysis[ loop.index0 ].1 * 100 ) }} %</td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %} #}
+                            <td>{{ it.start_time }} </td>
+                            {# {% if problem_analysis[ loop.index0 ].1 == 0 %}
+                                <td> 0.00% </td>
+                            {% else %}
+                                <td> {{ "%.2f" | format( problem_analysis[ loop.index0 ].0 / problem_analysis[ loop.index0 ].1 * 100 ) }} %</td>
+                            {% endif %} #}
+                        </tr>
+                    {% endfor %}
             </tbody>
         </table>
-
-
     </div>
 
-{% endblock %}
+    <script>
+        {% if perms.contest.add_contest %}
+
+            $('#new-button').click(function(){
+                $('.ui.contest.create.modal').modal({
+                    onApprove : function() {
+                        return false;
+                    }
+                });
+                $('.ui.contest.create.modal')
+                    .modal('setting', 'transition', 'vertical flip')
+                    .modal('show')
+                ;
+                $('#start-time,#end-time').calendar();
+            })
+
+            $('#create-contest-button').click(function(){
+                var title = $('#title-info').val();
+                $(this)
+                    .addClass( 'loading disabled' )
+                ;
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{{ url("contest-create") }}',
+                    {
+                        'title' : title,
+                    },
+                    function(data,status){
+                        if( status == 'success'  && data.status == true ){
+                            //window.location = '/contest/edit/' + String( data.contest_id );
+                        }else{
+                            $('#create-contest-button')
+                                .removeClass( 'loading disabled positive' )
+                                .addClass('red')
+                            ;
+                            $('#form-error-msg')
+                                .empty()
+                                .removeClass( 'hidden' )
+                                .append(get_error_msgText( data.error_list ))
+                            ;
+                        }
+                    }
+                )
+            })
+        {% endif %}
+    </script>
+
+{% endblock content %}
