@@ -157,8 +157,7 @@
 
         var cal = new CalHeatMap();
         var previous_one_year = new Date();
-        previous_one_year.setFullYear(previous_one_year.getFullYear() - 1);
-        previous_one_year.setDate(previous_one_year.getDate()+1);
+        previous_one_year.setMonth(previous_one_year.getMonth() - 11);        
 	    cal.init({
             domain: "month",
             subDomain: "day",
