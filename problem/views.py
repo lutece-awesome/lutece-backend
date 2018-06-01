@@ -124,10 +124,6 @@ def search_view( request , til ):
     return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
 
 @permission_required( 'problem.add_problem' )
-def problem_create_view( request ):
-    return render( request , 'problem/problem_create.html' )
-
-@permission_required( 'problem.add_problem' )
 def problem_create_check_view( request ):
     status = {
         'status' : False,

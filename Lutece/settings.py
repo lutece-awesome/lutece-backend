@@ -138,6 +138,9 @@ USE_L10N = True
 
 USE_TZ = False
 
+# LOGIN Session: 12 hour
+SESSION_COOKIE_AGE = 12 * 60 * 60
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/

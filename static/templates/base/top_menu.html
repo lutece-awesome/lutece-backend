@@ -5,7 +5,7 @@
         <a class="item" href = {{ url('home') }} ><i class="home icon"></i>Home</a>
         <a class="item" href = {{ url('problem-list-view' , args = (1,) ) }} ><i class="tasks icon"></i>Problem</a>
         <a class="item" href = {{ url('submission-status-list' , args = (1,) ) }}><i class="bar chart icon"></i>Status</a>
-        <a class="item" ><i class="trophy icon"></i>Contest</a>
+        <a class="item" href = {{ url('contest-list' , args = (1,) ) }} ><i class="trophy icon"></i>Contest</a>
         <a class="item" ><i class="lab icon"></i>Lab</a>
         <a class="item" href = {{ url('user-list' , args = (1 ,) ) }} =  ><i class="user icon"></i>User</a>
         <a class="item" href = {{ url('about') }} =  ><i class="compass icon"></i>About</a>
@@ -72,7 +72,7 @@
                 <i class="lock icon"></i>
                 <input id="pwdinput_signup" type="password" name="password" placeholder="Password">
             </div>
-            <div data-tooltip = "Email" data-position="top left" class="ui left icon email fluid input" style = 'margin-top:20px;' >
+            <div data-tooltip = "Email(used in gravatar)" data-position="top left" class="ui left icon email fluid input" style = 'margin-top:20px;' >
                 <i class="mail outline icon"></i>
                 <input id="emailinput_signup" type="email" name="email" placeholder="Email">
             </div>
@@ -86,13 +86,6 @@
     </div>         
 
     <script>
-        function get_error_msgText( errlist ){
-            errlist = eval( errlist );
-            var ret = '';
-            for(var i = 0 ; i < errlist.length ; ++ i)
-                ret = ret + '<li>' + errlist[i] + '</li>';
-            return '<ul class=\"list\">' + ret + '</ul>';
-        }
 
         $(document).ready(function(){
 

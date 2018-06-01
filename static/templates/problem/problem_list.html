@@ -9,6 +9,25 @@
 
 <div class = 'problem list'>
 
+    {% if perms.problem.add_problem %}
+        <div class = 'ui problem create modal' style = 'min-height:200px;min-width:300px;'>
+            <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'edit icon'></i> Create Problem </div>
+            <div class = 'content' style = 'margin-bottom:20px;'>
+                <div data-tooltip = "Title" data-position="top left" class="ui fluid left icon input" style = 'margin-top:20px;'>
+                    <i class = 'bookmark icon'> </i>
+                    <input type ="text" id = 'title-info' maxlength = 64 >
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui positive right labeled icon button" id = 'create-problem-button'>
+                    Submit
+                    <i class="chevron right icon"></i>
+                </div>
+            </div>
+            <div id = "form-error-msg" class="ui negative message transition hidden"  ></div>
+        </div>
+    {% endif %}
+
     <div>
 
         <span class="ui pagination menu">
@@ -81,6 +100,52 @@
 </div>
 
 <script>
+
+    {% if perms.problem.add_problem %}
+        $('#new-button').click(function(){
+            $('.ui.problem.create.modal').modal({
+                onApprove : function() {
+                    return false;
+                }
+            });
+            $('.ui.problem.create.modal')
+                .modal('setting', 'transition', 'vertical flip')
+                .modal('show')
+            ;
+        })
+
+        $('#create-problem-button').click(function(){
+            var title = $('#title-info').val();
+            $(this)
+                .addClass( 'loading disabled' )
+            ;
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+            $.post(
+                '{{ url("problem-create-check-view") }}',
+                {
+                    'title' : title,
+                },
+                function(data,status){
+                    if( status == 'success'  && data.status == true ){
+                        window.location = '/problem/edit/' + String( data.problem_id );
+                    }else{
+                        $('#create-problem-button')
+                            .removeClass( 'loading disabled positive' )
+                            .addClass('red')
+                        ;
+                        $('#form-error-msg')
+                            .empty()
+                            .removeClass( 'hidden' )
+                            .append(get_error_msgText( data.error_list ))
+                        ;
+                    }
+                }
+            )
+        })
+    {% endif %}
+
     $('.problem.list .ui.search')
         .search({
             apiSettings: {
@@ -94,11 +159,5 @@
             minCharacters : 2
         })
     ;
-
-    {% if perms.problem.add_problem %}
-        $('#new-button').click(function(){
-            window.location = "{{url( 'problem-create-view' )}}";
-        })
-    {% endif %}
 </script>
 {% endblock %}

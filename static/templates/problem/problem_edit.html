@@ -32,57 +32,70 @@
                 </div>
             </div>
             
-            <div class = 'equal width row'>
-
+            <div class = 'row'>
                 <div class = 'column'>
+                    <div>
+                        <label class="ui large label">Time Limit</label>
+                    </div>
                     <div class = 'ui right labeled input'>
-                        <label class="ui label">Time Limit</label>
                         <input id = 'timelimit-input' type="number"  maxlength = "5" value = {{ prob.time_limit }} >
                         <div class="ui basic label">Milliseconds</div>
                     </div>
                 </div>
+            </div>
 
+            <div class = 'row'>
                 <div class = 'column'>
+                    <div>
+                        <label class="ui large label">Memory Limit</label>
+                    </div>                
                     <div class = 'ui right labeled input'>
-                        <label class="ui label">Memory Limit</label>
                         <input id = 'memorylimit-input' type="number" maxlength = "4" value = {{ prob.memory_limit }} >
                         <div class="ui basic label">Megabytes</div>
                     </div>
                 </div>
+            </div>
 
+            <div class = 'row'>
                 <div class = 'column'>
+                    <div>
+                        <label class="ui large label">CPUCore Limit</label>
+                    </div>  
                     <div class = 'ui right labeled input'>
-                        <label class="ui label">CPUCore Limit</label>
                         <input id = 'CPUCore-input' type="number" maxlength = "4" value = 1 disabled = "" >
                         <div class="ui basic label">Cores</div>
                     </div>
                 </div>
-
             </div>
 
             <div class = 'row'>
-
-                <div class = 'two wide column'>
-                    <div class="ui large label">
-                        Current Data:
-                        <div id = 'case-number' class = 'detail'>{{ case_number }}</div>
-                    </div>
-                </div>
-
                 <div class = 'column'>
                     <div id = "visible-checkbox" class="ui toggle checkbox">
                         <input type="checkbox" tabindex="0" class="hidden">
                         <label> <b>Visible</b> </label>
                     </div>
                 </div>
-
             </div>
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <form>
+                    <div>
+                        <label class="ui large label">TestCase</label>
+                    </div>
+                    <div class = 'ui right labeled input'>
+                        <input id = 'case-number' type="number" maxlength = "4" value = {{ case_number }} disabled = "" >
+                        <div class="ui basic label">Cases</div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class = 'row'>
+                <div class = 'column'>
+                    <form >
                         <input type = "file" name = 'data' id = "__upload" style = 'display:none'>
-                        <div id = 'upload-data-button' class = 'ui primary button' ><i class = 'upload icon'></i>Upload Data</div>
+                        <div data-tooltip = "目前测试数据仅支持['.tar','.zip']压缩包,里面测试数据必须是每组'.in'对应每组'.out',不要有任何多余的文件." data-position="top left" id = 'upload-data-button' class = 'ui primary button' ><i class = 'upload icon'></i>Upload Data</div>
                     </form>
                 </div>
             </div>
@@ -284,23 +297,6 @@
 
     <script>
 
-        function Pewview( content , render ){
-            $('#' + content )[0].addEventListener('input' , function(){
-               $('#' + render )[0].innerHTML = marked($(this).val());
-                renderMathInElement(
-                document.getElementById( render ),
-                {
-                    delimiters : [
-                        {left: "$$", right: "$$", display: true},
-                        {left: "$", right: "$", display: false},                    
-                        {left: "\\[", right: "\\]", display: true},
-                        {left: "\\(", right: "\\)", display: false}
-                    ]
-                });
-            });
-            $('#' + render )[0].innerHTML = marked( $('#' + content).val() );
-        }
-
         $(document).ready(function(){
 
             $('#visible-checkbox').checkbox();
@@ -327,14 +323,6 @@
                     ]
             });
 
-            function get_error_msgText( errlist ){
-                errlist = eval( errlist );
-                var ret = '';
-                for(var i = 0 ; i < errlist.length ; ++ i)
-                    ret = ret + '<li>' + errlist[i] + '</li>';
-                return '<ul class=\"list\">' + ret + '</ul>';
-            }
-
             $('#upload-data-button').click(function(){
                 $('#__upload').click();
             });
@@ -348,7 +336,7 @@
             function upload_success(e){
                 $("#upload-data-button").removeClass( 'disabled loading');
                 if( e.status == false ){
-                    alert( e.status );
+                    $('#upload-progress').progress( 'set error' );
                     $("#upload-data-button").removeClass( 'primary' );
                     $("#upload-data-button").addClass( 'red' );
                     $('#upload-error-div').css( 'display' , 'block' );
@@ -358,7 +346,7 @@
                         .append(get_error_msgText( e.error_list ))
                     ;
                 }else
-                    $('#case-number')[0].innerText = e.case_number;
+                    $('#case-number').val( e.case_number );
             }
 
             function upload_error(e){

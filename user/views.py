@@ -161,9 +161,9 @@ def user_detail( request , user_id ):
     target_user = get_object_or_404( User , pk = user_id )
     return render( request , 'user/user_detail.html' , {
         'target_user' : target_user,
-        'info' : Userinfo.objects.get( user = target_user ),
-        ** get_user_report( target_user ),
-        'recently' : get_recently( target_user , RECENT_NUMBER ) })
+        'info' : Userinfo.objects.get( user = target_user),
+        ** get_user_report( user = target_user , has_perm = request.user.has_perm( 'problem.view_all' ) ),
+        'recently' : get_recently( user = target_user , number = RECENT_NUMBER , has_perm = request.user.has_perm( 'problem.view_all' ) ) })
 
 def user_search( request , displayname ):
     ret = User.objects.filter(display_name__contains = displayname)[:5]
