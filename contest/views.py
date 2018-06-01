@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Contest
 from Lutece import config
 from utils.paginator_menu import get_range as page_range
+from .contest_type import get_contest_type_list
 
 # Create your views here.
 
@@ -20,6 +21,7 @@ def get_contest_list( request , page ):
         'contestlist': contests,
         'currentpage' : page,
         'max_page': paginator.num_pages,
+        'contesttypelist' : get_contest_type_list(),
         'page_list' : page_range( page , paginator.num_pages ) })
 
 

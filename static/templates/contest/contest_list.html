@@ -19,6 +19,20 @@
                     <input type ="text" id = 'title-info' maxlength = 32 >
                 </div>
 
+                <div data-tooltip = "ContestType" data-position="top left" class="ui fluid selection dropdown" style = 'margin-top:15px;'id = 'contest-type'>
+                    <input type = "hidden" value = '{{ contesttypelist.0.value.full }}'>
+                    <i class="dropdown icon"></i>
+                    <i class = 'university icon'></i>
+                    <div class="text">{{ contesttypelist.0.value.full }}</div>
+                    <div class="menu">
+                        {% for each in contesttypelist %}
+                            <div class = 'item' >
+                                {{ each.value.full }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
                 <div data-tooltip = "Start Time" data-position="top left" class="ui calendar" style = 'margin-top:15px;' id = 'start-time' >
                     <div class="ui fluid input left icon">
                         <i class = 'calendar icon'> </i>
@@ -33,10 +47,6 @@
                     </div>
                 </div>
 
-                <div data-tooltip = "ContestType" data-position="top left" class="ui fluid left icon input" style = 'margin-top:15px;'>
-                    <i class = 'time icon'> </i>
-                    <input type = "hidden" name="verdict">
-                </div>
 
             </div>
             
@@ -67,7 +77,7 @@
             </span>
             {% if perms.problem.add_problem %}
                 <span style = 'float:right;margin-left:15px;'>
-                    <div id = 'new-button' class = 'ui primary edit button'><i class = 'add icon'></i><b>New</b></div>
+                    <div id = 'new-button' class = 'ui primary button'><b>New</b></div>
                 </span>
             {% endif %}
 
@@ -113,6 +123,7 @@
 
     <script>
         {% if perms.contest.add_contest %}
+            $('.contest.create .ui.dropdown').dropdown();
 
             $('#new-button').click(function(){
                 $('.ui.contest.create.modal').modal({
@@ -129,6 +140,10 @@
 
             $('#create-contest-button').click(function(){
                 var title = $('#title-info').val();
+                var start_time = $('#start-time').calendar( 'get date' );
+                var end_time = $('#end-time').calendar( 'get date' );
+                var type = $('#contest-type')[0].innerText;
+                alert( type );
                 $(this)
                     .addClass( 'loading disabled' )
                 ;

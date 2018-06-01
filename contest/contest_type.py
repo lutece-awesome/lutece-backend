@@ -26,9 +26,13 @@ class _meta:
 class ContestType( Enum ):
     ICPC = _meta(
         full = 'ACM-ICPC',
-        detail = 'ACM-ICPC'
+        detail = 'ACM-ICPC Style'
     )
     OI = _meta(
-        full = 'OI',
-        detail = 'OI Subtask'
+        full = 'OI( Subtask )',
+        detail = 'OI Subtask Style'
     )
+
+
+def get_contest_type_list():
+    return list( ContestType )
