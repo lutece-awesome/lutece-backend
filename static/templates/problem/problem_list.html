@@ -68,8 +68,8 @@
                 {% if user.is_authenticated == True %}
                     <th>Status</th>
                 {% endif %}
-                <th>Solve / Try</th>
-                <th>AC Ratio</th>
+                <th>Submit / Accept</th>
+                <th>Ratio</th>
             </tr>
         </thread>
         <tbody>
@@ -86,11 +86,11 @@
                             {% endif %}
                         </td>
                     {% endif %}
-                    <td>{{ problem_analysis[ loop.index0 ].0 }} / {{ problem_analysis[ loop.index0 ].1 }} </td>
-                    {% if problem_analysis[ loop.index0 ].1 == 0 %}
+                    <td>{{ it.accept }} / {{ it.submit }} </td>
+                    {% if it.submit == 0 %}
                         <td> 0.00% </td>
                     {% else %}
-                        <td> {{ "%.2f" | format( problem_analysis[ loop.index0 ].0 / problem_analysis[ loop.index0 ].1 * 100 ) }} %</td>
+                        <td> {{ "%.2f" | format( it.accept / it.submit * 100 ) }} %</td>
                     {% endif %}
                 </tr>
                 {% endfor %}

@@ -48,8 +48,8 @@
             <div class = 'row'>
                 <div class = 'column'>
                     <div class = 'menu'>
-                        <div id = 'status-button' class = 'ui basic secondary button'><i class = 'signal icon'></i>Status</div>
                         <div id = 'summary-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
+                        <div id = 'discussion-button' class = 'ui basic secondary button'><i class = 'comments icon'></i>Discussion</div>
                         {% if perms.problem.change_problem %}
                             <div id = 'edit-button' class = 'ui basic orange button'><i class = 'edit icon'></i><b>Edit</b></div>
                         {% endif %}
@@ -158,6 +158,11 @@
                 </div>
             </div>
 
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "form-error-msg" class="ui negative message transition hidden"></div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -206,8 +211,8 @@
                 }
             });
 
-            $('#status-button').click(function(){
-                window.location = '{{ url("submission-status-list" , args = (1,) ) }}?title={{prob.title}}' ;
+            $('#discussion-button').click(function(){
+                alert( 'Coming soon' );
             });
 
             $('#summary-button').click(function(){
@@ -236,9 +241,19 @@
                             'language' : lang,
                         },
                         function(data,status){
-                            if( status == 'success' ){
-                                let urltemp = get_prefix_url('{{ url("submission-status-detail" , args = (1,) ) }}' , 1 ) + '/' + String( data.submission_id );
+                            if( status == 'success' && data.status == true ){
+                                let urltemp = get_prefix_url('{{ url("submission-status-detail" , args = (1,) ) }}' , 1 ) + '/' + String( data.pk );
                                 window.location = urltemp;
+                            }else{
+                                $('#solution-submit-button')
+                                    .removeClass( 'loading disabled primary' )
+                                    .addClass('red')
+                                ;
+                                $('#form-error-msg')
+                                    .empty()
+                                    .removeClass( 'hidden' )
+                                    .append(get_error_msgText( data.errlist ))
+                                ;
                             }
                         }
                     )
@@ -247,5 +262,6 @@
                 {% endif %}
             });
         });
+        
     </script>
 {% endblock content %}

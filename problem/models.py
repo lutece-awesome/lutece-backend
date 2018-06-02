@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
     title = models.CharField(
@@ -14,11 +13,12 @@ class Problem(models.Model):
     time_limit = models.PositiveIntegerField(default=2000)
     memory_limit = models.PositiveIntegerField(default=128)
     checker = models.CharField( max_length = 256 , default = 'wcmp' )
-    visible = models.BooleanField(default = False )
+    visible = models.BooleanField( default = False )
+    submit = models.IntegerField( default = 0 )
+    accept = models.IntegerField( default = 0 )
 
     def __str__(self):
         return self.title
-
     class Meta:
         ordering = ['problem_id']
         permissions = (
@@ -26,6 +26,9 @@ class Problem(models.Model):
             ('download_problem_data' , 'Can download test data' ),
         )
 
+
+class ContestProblem( models.Model ):
+    problem = models.ForeignKey( Problem , on_delete = models.CASCADE , db_index = True )
 
 class Sample(models.Model):
     sample_id = models.AutoField(primary_key=True, db_index=True)

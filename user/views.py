@@ -8,7 +8,7 @@ from .user_signup.email_checker import get_email_report
 from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
-from .util import get_recently
+from .util import get_recently, get_user_report
 from submission import judge_result
 from Lutece.config import RECENT_NUMBER
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

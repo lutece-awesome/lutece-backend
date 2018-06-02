@@ -39,7 +39,6 @@ def problem_list(request, page):
         'problist': problems,
         'currentpage' : page,
         'user_analysis' : user_analysis,
-        'problem_analysis' : [ get_problem_analysis( x ) for x in problems ],
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages ) })
 

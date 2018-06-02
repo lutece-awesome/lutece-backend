@@ -1,5 +1,4 @@
 from django.db import models
-from problem.models import Problem
 
 import django.utils.timezone as timezone
 from user.models import User
@@ -21,10 +20,6 @@ class Contest( models.Model ):
         permissions = (
             ('view_all' , 'Can view all contest' ),
         )
-
-
-class ContestProblem( models.Model ):
-    problem = models.ForeignKey( Problem , on_delete = models.CASCADE , db_index = True )
 
 class ContestAdmin( models.Model ):
     admin = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )

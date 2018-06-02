@@ -11,7 +11,8 @@ function get_error_msgText( errlist ){
 }
 
 /*
-    content to markdown + katex
+    content rend to markdown + katex
+    only admin can use this
 */
 
 function Pewview( content , render ){

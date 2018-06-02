@@ -11,8 +11,8 @@ from problem.models import Problem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from utils.paginator_menu import get_range as page_range
 from data_server.util import get_case_number
-from .judge_result import get_judge_result_list
-from problem.util import check_visible_permission_or_404
+from .judge_result import get_judge_result_list, Judge_result
+from problem.util import check_visible_permission_or_404, InsSubmittimes
 from utils.language import get_language, get_language_list
 from .tasks import Submission_task
 # Create your views here.
@@ -20,39 +20,38 @@ from .tasks import Submission_task
 @login_required_ajax
 def submit_solution(request):
     status = {
-        'submission_id' : -1}
+        'status' : False,
+        'errlist' : []}
+    err = status['errlist']
     try:
         if request.method == 'POST':
             problemid = request.POST.get( 'problemid' )
             code = request.POST.get( 'code' )
             lang = request.POST.get( 'language' )
             problem = Problem.objects.get( pk = problemid )
-            if problemid == None or code == None or lang == None:
-                raise ValueError( "Some solution info missed." )
-            if get_language( lang ) is None:
-                raise ValueError( 'Unknown language' )
             if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
                 raise ValueError( "Permission Denied" )
             if len( code ) > config.MAX_SOURCECORE_LENGTH:
+                err.append( 'The length of source code is too long, limit is ' + str( config.MAX_SOURCECORE_LENGTH ) )
                 raise ValueError( "Length of source code is too long." )
             s = Submission(
                 language = lang,
                 user = request.user,
                 problem = problem,
                 case_number = get_case_number( problemid ),
-                judge_status = 'Waiting',
+                judge_status = Judge_result.WT.value.full,
                 code = code)
             s.save()
             Submission_task.apply_async( args = (s.get_push_dict() ,) , queue = settings.TASK_QUEUE )
-            status[ 'submission_id' ] = s.submission_id
-    except Exception as e:
-        print( 'error happen on submit submission' + str( e ) )
+            InsSubmittimes( int(problemid) ) # would not be injection
+            status[ 'pk' ] = s.pk
+            status['status'] = True
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
 
 def get_status_list(request , page):
-    statuslist = Submission.objects.all()
+    statuslist = Submission.objects.filter( contest = None )
     display_name = request.GET.get( 'display_name' )
     title = request.GET.get( 'title' )
     verdict = request.GET.get( 'verdict' )

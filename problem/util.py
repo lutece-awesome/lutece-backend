@@ -1,11 +1,13 @@
 from submission.models import Submission
+from problem.models import Problem
 from django.http import Http404
+from django.db import connection
 
 
 def get_user_problem_analysis( user , problem ):
-    if len( Submission.objects.filter( user = user , problem = problem , judge_status = 'Accepted' ) ) > 0:
+    if Submission.objects.filter( user = user , problem = problem , judge_status = 'Accepted' ).count() > 0:
         return 2
-    elif len( Submission.objects.filter( user = user , problem = problem ) ) > 0:
+    elif Submission.objects.filter( user = user , problem = problem ).count() > 0:
         return 1
     return 0
 
@@ -24,3 +26,15 @@ def get_problem_analysis( problem ):
 def check_visible_permission_or_404( user , problem ):
     if not user.has_perm( 'problem.view_all' ) and problem.visible is False:
         raise Http404( 'Permission Denied' )
+
+def InsSubmittimes( pk ):
+    if not isinstance( pk , int ):
+        return
+    with connection.cursor() as cursor:
+        cursor.execute( 'UPDATE problem_Problem SET submit = submit + 1 where problem_id = {pk}'.format( pk = pk ) )
+
+def InsAccepttimes( pk ):
+    if not isinstance( pk , int ):
+        return
+    with connection.cursor() as cursor:
+        cursor.execute( 'UPDATE problem_Problem SET accept = accept + 1 where problem_id = {pk}'.format( pk = pk ) )
