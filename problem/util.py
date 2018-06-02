@@ -34,7 +34,6 @@ def InsSubmittimes( pk ):
         cursor.execute( 'UPDATE problem_Problem SET submit = submit + 1 where problem_id = {pk}'.format( pk = pk ) )
 
 def InsAccepttimes( pk ):
-    print( 'ready to update' )
     if not isinstance( pk , int ):
         return
     with connection.cursor() as cursor:

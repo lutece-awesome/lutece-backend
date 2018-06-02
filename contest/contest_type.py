@@ -33,6 +33,11 @@ class ContestType( Enum ):
         detail = 'OI Subtask Style'
     )
 
+def get_contest_type( result ):
+    for x in ContestType:
+        if x.value.full == result:
+            return x
+    return None
 
 def get_contest_type_list():
     return list( ContestType )

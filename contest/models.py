@@ -7,13 +7,13 @@ from user.models import User
 
 class Contest( models.Model ):
     contest_id = models.AutoField( primary_key = True , db_index = True )
-    title = models.CharField( max_length = 32 , blank = True , unique = True )
+    title = models.CharField( max_length = 64 , blank = True , unique = True )
     contest_type = models.CharField( max_length = 32 , blank = True )
     password = models.CharField( max_length = 32 , blank = True )
     note = models.TextField( blank = True )
     visible = models.BooleanField(default = False )
     start_time = models.DateTimeField( null = False , default = timezone.now  )
-    end_time = models.DateField( null = False , default = timezone.now )
+    end_time = models.DateTimeField( null = False , default = timezone.now )
 
     class Meta:
         ordering = ['-contest_id']

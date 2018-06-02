@@ -32,12 +32,31 @@ def register_language( env ):
 def append_query_parameters( url , query ):
     return url + '?' + query if len( query ) else url
 
+
+def timedeltaformat( s ):
+    days = s.days
+    seconds = s.seconds
+    hours = seconds // 3600
+    seconds = seconds % 3600
+    mins = seconds // 60
+    seconds = seconds % 60
+    last = '{hours}:{mins}:{seconds}'.format(
+        hours = hours,
+        mins = mins,
+        seconds = seconds)
+    if days > 0:
+        last = '{days} days '.format(
+            days = days
+        ) + last
+    return last
+
 def environment(**options):
     env = Environment(**options)
     env.filters['nl2br'] = nl2br
     register_judge_result( env )
     register_language( env )
     env.filters['append_query_parameters'] = append_query_parameters
+    env.filters['timedeltaformat'] = timedeltaformat
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,

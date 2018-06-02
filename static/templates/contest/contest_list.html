@@ -16,7 +16,7 @@
 
                 <div data-tooltip = "Title" data-position="top left" class="ui fluid left icon input">
                     <i class = 'bookmark icon'> </i>
-                    <input type ="text" id = 'title-info' maxlength = 32 >
+                    <input type ="text" id = 'title-info' maxlength = 64 placeholder="Title" >
                 </div>
 
                 <div data-tooltip = "ContestType" data-position="top left" class="ui fluid selection dropdown" style = 'margin-top:15px;'id = 'contest-type'>
@@ -26,9 +26,7 @@
                     <div class="text">{{ contesttypelist.0.value.full }}</div>
                     <div class="menu">
                         {% for each in contesttypelist %}
-                            <div class = 'item' >
-                                {{ each.value.full }}
-                            </div>
+                            <div class = 'item' >{{ each.value.full }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -36,15 +34,20 @@
                 <div data-tooltip = "Start Time" data-position="top left" class="ui calendar" style = 'margin-top:15px;' id = 'start-time' >
                     <div class="ui fluid input left icon">
                         <i class = 'calendar icon'> </i>
-                        <input type="text">
+                        <input type="text" placeholder='Start time' >
                     </div>
                 </div>
 
                 <div data-tooltip = "End Time" data-position="top left" class="ui calendar" style = 'margin-top:15px;' id = 'end-time' >
                     <div class="ui fluid input left icon">
                         <i class = 'calendar icon'> </i>
-                        <input type="text">
+                        <input type="text" placeholder='End time' >
                     </div>
+                </div>
+
+                <div data-tooltip = "Live blank will make the contest public" data-position="top left" class="ui left icon fluid password input" style = 'margin-top:15px;'>
+                    <i class="lock icon"></i>
+                    <input id = "contest-pwd" type="password" name="password" placeholder="Password" maxlength = 32 >
                 </div>
 
 
@@ -91,13 +94,15 @@
         </div>
 
 
-        <table class = "ui basic fixed selectable padded table bordered" style = 'text-align:center;' >
+        <table class = "ui basic fixed selectable padded table bordered" style='text-align:center;'>
             <thread>
                 <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Starttime</th>
-                    <th>Length</th>
+                    <th style = 'width:25%;'>ID</th>
+                    <th style = 'width:35%;'>Title</th>
+                    <th style = 'width:10%;'>Starttime</th>
+                    <th style = 'width:10%;'>Length</th>
+                    <th style = 'width:10%;'>Status</th>
+                    <th style = 'width:10%;'>Type</th>
                 </tr>
             </thread>
             <tbody>
@@ -106,15 +111,21 @@
                             <td>{{it.pk}} </td>
                             <td>
                                 {# <a href = {{ url('problem-detail' , args = (it.problem_id,) ) }} > #}
-                                    {{it.title}} 
+                                    <b>{{it.title}}</b>
                                 {# </a>  #}
                             </td>
                             <td>{{ it.start_time }} </td>
-                            {# {% if problem_analysis[ loop.index0 ].1 == 0 %}
-                                <td> 0.00% </td>
-                            {% else %}
-                                <td> {{ "%.2f" | format( problem_analysis[ loop.index0 ].0 / problem_analysis[ loop.index0 ].1 * 100 ) }} %</td>
-                            {% endif %} #}
+                            <td> {{ (it.end_time - it.start_time) | timedeltaformat }} </td>
+                            <td>
+                                <i class = '{{ conteststatus[loop.index0].value.icon }}'></i> <span style = 'color:{{ conteststatus[loop.index0].value.color }};'><b>{{ conteststatus[loop.index0].value.full }}</b></span>
+                            </td>
+                            <td> 
+                                {% if it.password | length == 0 %}
+                                    <span style = 'color:green;' ><b>Public</b></span>
+                                {% else %}
+                                    <span style = 'color:red;'><b>Private</b></span>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
             </tbody>
@@ -139,11 +150,28 @@
             })
 
             $('#create-contest-button').click(function(){
+                function transfor( date ){
+                    let year = date.getFullYear();
+                    let moth = date.getMonth() + 1;
+                    let day = date.getDate();
+                    let hour = date.getHours();
+                    let min = date.getMinutes();
+                    let sr = year + '-' + moth + '-' + day + '-' + hour + '-' + min;
+                    return sr;
+                }
+
                 var title = $('#title-info').val();
                 var start_time = $('#start-time').calendar( 'get date' );
                 var end_time = $('#end-time').calendar( 'get date' );
                 var type = $('#contest-type')[0].innerText;
-                alert( type );
+                var pwd = $('#contest-pwd').val();
+                if( start_time == null ){
+                    alert( 'Please Select start time' );
+                    return;
+                }else if( end_time == null ){
+                    alert( 'Please Select end time' );
+                    return;
+                }
                 $(this)
                     .addClass( 'loading disabled' )
                 ;
@@ -154,9 +182,13 @@
                     '{{ url("contest-create") }}',
                     {
                         'title' : title,
+                        'start_time' : transfor( start_time ),
+                        'end_time' : transfor( end_time ),
+                        'type' : type,
+                        'password' : pwd
                     },
                     function(data,status){
-                        if( status == 'success'  && data.status == true ){
+                        if( status == 'success' && data.status == true ){
                             //window.location = '/contest/edit/' + String( data.contest_id );
                         }else{
                             $('#create-contest-button')
