@@ -345,8 +345,10 @@
                         .removeClass( 'hidden' )
                         .append(get_error_msgText( e.error_list ))
                     ;
-                }else
+                }else{
+                    $('#upload-progress').progress( 'set success' );
                     $('#case-number').val( e.case_number );
+                }
             }
 
             function upload_error(e){
@@ -360,7 +362,7 @@
                 var formData = new FormData();
                 formData.append( 'data' , file );
                 $.ajax({
-                    url : '{{ url("problem-upload-data-view" , args = (prob.problem_id , ) ) }}',
+                    url : '{{ url("problem-upload-data" , args = (prob.problem_id , ) ) }}',
                     async: true,
                     xhr: function() {  // custom xhr
                         $("#upload-data-button").removeClass( 'red' );
@@ -419,7 +421,7 @@
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
                 });
                 $.post(
-                    '{{ url("problem-update-view" , args = (prob.problem_id , ) ) }}',
+                    '{{ url("problem-update" , args = (prob.problem_id , ) ) }}',
                     {
                         'title' : title,
                         'timelimit' : timelimit,
@@ -436,7 +438,7 @@
                     },
                     function(data,status){
                         if( status == 'success'  && data.update_status == true ){
-                            window.location = '{{ url("problem-detail-view" , args = ( prob.problem_id , ) )  }} ';
+                            window.location = '{{ url("problem-detail" , args = ( prob.problem_id , ) )  }} ';
                         }else{
                             $('#submit-form')
                                 .removeClass( 'loading disabled primary' )

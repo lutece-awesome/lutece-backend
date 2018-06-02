@@ -47,9 +47,3 @@ def get_recently( user , number , has_perm ):
     if not has_perm:
         s = s.filter( problem__visible = True )
     return list( s[:number] )
-
-def get_search_url():
-    return '/user/search'
-
-def build_detail_url( user_pk ):
-    return '/user/detail/' + str( user_pk )

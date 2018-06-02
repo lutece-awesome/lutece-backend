@@ -30,3 +30,21 @@ function Pewview( content , render ){
     });
     $('#' + render )[0].innerHTML = marked( $('#' + content).val() );
 }
+
+/*
+    return the empty string of string array s
+*/
+function RemoveEmptyElement( s ){
+    let ret = new Array();
+    for(let i = 0 ; i < s.length ; ++ i)
+        if( s[i].length > 0 )
+            ret.push( s[i] );
+    return ret;
+}
+
+/*
+    return the prefix_url of s
+*/
+function get_prefix_url( s , argumentsnumber ){
+    return '/' + RemoveEmptyElement( s.split( '/' ) ).slice( 0 , -argumentsnumber ).join( '/' );
+}

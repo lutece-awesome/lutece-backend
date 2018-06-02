@@ -48,10 +48,10 @@
             <div class = 'row'>
                 <div class = 'column'>
                     <div class = 'menu'>
-                        <div id = 'status-view-button' class = 'ui basic secondary button'><i class = 'signal icon'></i>Status</div>
-                        <div id = 'summary-view-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
+                        <div id = 'status-button' class = 'ui basic secondary button'><i class = 'signal icon'></i>Status</div>
+                        <div id = 'summary-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
                         {% if perms.problem.change_problem %}
-                            <div id = 'edit-view-button' class = 'ui basic orange button'><i class = 'edit icon'></i><b>Edit</b></div>
+                            <div id = 'edit-button' class = 'ui basic orange button'><i class = 'edit icon'></i><b>Edit</b></div>
                         {% endif %}
                     </div>
                 </div>
@@ -206,18 +206,18 @@
                 }
             });
 
-            $('#status-view-button').click(function(){
+            $('#status-button').click(function(){
                 window.location = '{{ url("submission-status-list" , args = (1,) ) }}?title={{prob.title}}' ;
             });
 
-            $('#summary-view-button').click(function(){
+            $('#summary-button').click(function(){
                 alert( 'Coming soon' );
                 // to do
             });
 
             {% if perms.problem.change_problem %}
-                $('#edit-view-button').click(function(){
-                    window.location = '{{ url("problem-edit-view" , args = (prob.problem_id,) ) }} ';
+                $('#edit-button').click(function(){
+                    window.location = '{{ url("problem-edit" , args = (prob.problem_id,) ) }} ';
                 });
             {% endif %}
 
@@ -237,7 +237,8 @@
                         },
                         function(data,status){
                             if( status == 'success' ){
-                                window.location = '/submission/status/detail/' + String( data.submission_id );
+                                let urltemp = get_prefix_url('{{ url("submission-status-detail" , args = (1,) ) }}' , 1 ) + '/' + String( data.submission_id );
+                                window.location = urltemp;
                             }
                         }
                     )
@@ -245,7 +246,6 @@
                     $('.login.modal' ).modal( 'show' );
                 {% endif %}
             });
-
         });
     </script>
 {% endblock content %}

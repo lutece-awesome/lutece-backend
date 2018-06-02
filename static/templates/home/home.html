@@ -18,7 +18,7 @@
 
         $('#start-button').click(function(){
             {% if user.is_authenticated == True %}
-                window.location = '{{ url("problem-list-view" , args = (1,) ) }} ';
+                window.location = '{{ url("problem-list" , args = (1,) ) }} ';
             {% else %}
                 $('.login.modal' ).modal( 'show' );
             {% endif %}

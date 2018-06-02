@@ -8,13 +8,13 @@ from .user_signup.email_checker import get_email_report
 from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
-from .util import get_user_report , get_recently , build_detail_url
+from .util import get_recently
 from submission import judge_result
 from Lutece.config import RECENT_NUMBER
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from utils.paginator_menu import get_range as page_range
 import Lutece.config as config
-
+from django.urls import reverse
 
 
 def user_login(request):
@@ -167,7 +167,7 @@ def user_detail( request , user_id ):
 
 def user_search( request , displayname ):
     ret = User.objects.filter(display_name__contains = displayname)[:5]
-    return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
+    return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : reverse( 'user-search' , args = ( x.pk, ) ) } for x in ret ] } ), content_type='application/json')
 
 def user_list( request , page ):
     paginator = Paginator( Userinfo.objects.all().order_by( '-solved' ) , config.USER_PER_PAGE_COUNT )

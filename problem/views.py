@@ -7,7 +7,7 @@ import Lutece.config as config
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import permission_required
 from .validator import check_title, check_timelimit, check_memorylimit
-from .util import get_problem_analysis , get_user_problem_analysis, get_search_url, build_detail_url, check_visible_permission_or_404
+from .util import get_problem_analysis , get_user_problem_analysis, check_visible_permission_or_404
 from utils.paginator_menu import get_range as page_range
 from utils.language import get_language_list
 from json import dumps, loads
@@ -15,8 +15,9 @@ from data_server.util import get_case_number, make_data_folder
 from django.views.decorators.csrf import csrf_exempt
 from data_server.util import upload_data
 from annoying.functions import get_object_or_None
+from django.urls import reverse
 
-def problem_detail_view(request, problem_id):
+def problem_detail(request, problem_id):
     prob = get_object_or_404(Problem, problem_id=problem_id)
     check_visible_permission_or_404( user = request.user , problem = prob )
     return render(request, 'problem/problem_detail.html', {
@@ -24,7 +25,7 @@ def problem_detail_view(request, problem_id):
         'support_lang': get_language_list(),
         'sample': prob.sample_set.all()})
 
-def problem_list_view(request, page):
+def problem_list(request, page):
     problem_list = Problem.objects.all()
     if not request.user.has_perm( 'problem.view_all' ):
         problem_list = problem_list.filter( visible = True )
@@ -36,7 +37,6 @@ def problem_list_view(request, page):
         user_analysis = [ get_user_problem_analysis( user = request.user , problem = x ) for x in problems ]
     return render(request, 'problem/problem_list.html', {
         'problist': problems,
-        'searchurl' : get_search_url(),
         'currentpage' : page,
         'user_analysis' : user_analysis,
         'problem_analysis' : [ get_problem_analysis( x ) for x in problems ],
@@ -44,7 +44,7 @@ def problem_list_view(request, page):
         'page_list' : page_range( page , paginator.num_pages ) })
 
 @permission_required( 'problem.change_problem' )
-def problem_edit_view( request , problem_id ):
+def problem_edit( request , problem_id ):
     prob = get_object_or_404(Problem, problem_id=problem_id)
     return render( request , 'problem/problem_edit.html',{
         'prob' : prob,
@@ -54,7 +54,7 @@ def problem_edit_view( request , problem_id ):
 
 @permission_required( 'problem.change_problem')
 @csrf_exempt
-def problem_upload_data_view( request , problem_id ):
+def problem_upload_data( request , problem_id ):
     status = {'error_list': []}
     data = request.FILES['data']
     status['status'] = upload_data( 
@@ -66,7 +66,7 @@ def problem_upload_data_view( request , problem_id ):
     return HttpResponse(dumps(status), content_type='application/json')
 
 @permission_required( 'problem.change_problem' )
-def problem_update_view( request , problem_id ):
+def problem_update( request , problem_id ):
     status = {
         'update_status' : False,
         'error_list': []}
@@ -116,15 +116,15 @@ def problem_update_view( request , problem_id ):
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
-def search_view( request , til ):
+def search( request , til ):
     _all = Problem.objects.all()
     if not request.user.has_perm( 'problem.view_all' ):
         _all = _all.filter( visible = True )
     ret = _all.filter(title__contains=til)[:5]
-    return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'html_url' : build_detail_url( x.pk ) } for x in ret ] } ), content_type='application/json')
+    return HttpResponse(dumps( { 'items' : [ { 'title': x.title , 'html_url' : reverse( 'problem-detail' , args = (x.pk ,) ) } for x in ret ] } ), content_type='application/json')
 
 @permission_required( 'problem.add_problem' )
-def problem_create_check_view( request ):
+def problem_create_check( request ):
     status = {
         'status' : False,
         'error_list': []}

@@ -12,8 +12,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from utils.paginator_menu import get_range as page_range
 from data_server.util import get_case_number
 from .judge_result import get_judge_result_list
-from problem.util import get_search_url as problem_search_url
-from user.util import get_search_url as user_search_url
 from problem.util import check_visible_permission_or_404
 from utils.language import get_language, get_language_list
 from .tasks import Submission_task
@@ -82,8 +80,6 @@ def get_status_list(request , page):
         'currentpage' : page,
         'judge_result_list' : get_judge_result_list(),
         'language_list' : get_language_list(),
-        'user_search_url' : user_search_url(),
-        'problem_search_url' : problem_search_url(),
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages )})
 
