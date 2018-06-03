@@ -43,12 +43,12 @@ class Submission(models.Model):
     @property
     def get_time_cost( self ):
         s = Judgeinfo.objects.filter( submission = self )
-        return max( [ x.time_cost for x in s ] )
+        return max( [ int(x.time_cost) for x in s ] )
 
     @property
     def get_memory_cost( self ):
         s = Judgeinfo.objects.filter( submission = self )
-        return max( [ x.memory_cost for x in s ] )
+        return max( [ int(x.memory_cost) for x in s ] )
         
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index = True )

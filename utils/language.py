@@ -64,9 +64,9 @@ class Language( Enum ):
     )
     GO = _meta(
         full = 'Go',
-        version = '1.9.2',
+        version = '1.10.2',
         prism = 'language-go',
-        info = 'Go 1.9.2',
+        info = 'Go 1.10.2',
         codemirror = 'text/x-go'
     )
     RUBY = _meta(
@@ -78,9 +78,9 @@ class Language( Enum ):
     )
     RUST = _meta(
         full = 'Rust',
-        version = '1.25.0',
+        version = '1.26.1',
         prism = 'language-rust',
-        info = 'Rust 1.25.0',
+        info = 'Rust 1.26.1',
         codemirror = 'text/x-rustsrc'
     )
 
