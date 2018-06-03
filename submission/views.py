@@ -39,7 +39,7 @@ def submit_solution(request):
                 user = request.user,
                 problem = problem,
                 case_number = get_case_number( problemid ),
-                judge_status = Judge_result.WT.value.full,
+                judge_status = Judge_result.PD.value.full,
                 code = code)
             s.save()
             Submission_task.apply_async( args = (s.get_push_dict() ,) , queue = settings.TASK_QUEUE )

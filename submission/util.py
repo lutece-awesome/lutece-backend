@@ -6,19 +6,19 @@ def Modify_submission_status( ** report ):
     '''
         Update the status of target submission
     '''
-    submission = report[ 'submission' ]
-    case = report[ 'case' ]
     result = report[ 'result' ]
-    complete = report[ 'complete' ]
+    submission = report[ 'submission' ]
     if result == 'Running' or result == 'Preparing':
-        Submission.objects.filter( submission_id = submission ).update( judge_status = result )
+        Submission.objects.filter( pk = submission ).update( judge_status = result )
     else:
-        sub = Submission.objects.get( submission_id = submission )
+        case = report[ 'case' ]
+        complete = report[ 'complete' ]
+        sub = Submission.objects.get( pk = submission )
         Judgeinfo(
             submission = sub,
             ** get_update_dict( report )).save()
         if complete == True:
-            Submission.objects.filter( submission_id = submission ).update( judge_status = result , completed = True )
+            Submission.objects.filter( pk = submission ).update( judge_status = result , completed = True )
             if get_judge_result( result ) is Judge_result.AC:
                 InsAccepttimes( sub.problem.pk )
             from user.util import Modify_user_tried_solved

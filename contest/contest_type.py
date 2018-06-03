@@ -10,7 +10,7 @@ class _meta:
     def __init__( self , ** kw ):
         for _ in kw:
             self.__setattr__( _ , kw[_] )
-        self._field = kw
+        self._field = [x for x in kw]
 
     def __str__(self):
         return self.full
@@ -20,7 +20,7 @@ class _meta:
     
     @property
     def attribute(self):
-        return self._field
+        return { x : getattr( self , x ) for x in self._field }
 
 
 class ContestType( Enum ):

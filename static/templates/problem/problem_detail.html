@@ -134,12 +134,12 @@
         <div class = 'ui grid segment' style = 'padding-top:10px;'>
             <div class = 'row'>
                 <div class = 'four wide column'>
-                    <div id = "language-dropdown" class="ui floating labeled icon dropdown basic button">
+                    <div id = "language-dropdown" class="ui floating labeled icon dropdown basic button" data-value = '{{ support_lang[0].value.full }}' >
                         <span class="text">{{ support_lang[0].value.info }}</span>
                         <i class="dropdown icon"></i>
                         <div class="menu">
                             {% for it in support_lang %}
-                                <div class="item">{{it.value.info}}</div>
+                                <div class="item" data-value = '{{ it.value.full }}' >{{it.value.info}}</div>
                             {% endfor %}
                         </div>
                     </div>
@@ -229,7 +229,7 @@
             $('#solution-submit-button').click(function () {
                 {% if user.is_authenticated == True %}
                     var code = editor.getValue();
-                    var lang = $('#language-dropdown')[0].innerText;                    
+                    var lang = $('#language-dropdown').data( 'value' );
                     $(this).addClass( 'loading disabled' );
                     var problemid = {{prob.problem_id}};
                     $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' },});

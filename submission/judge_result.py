@@ -17,7 +17,7 @@ class _meta:
     def __init__( self , ** kw ):
         for _ in kw:
             self.__setattr__( _ , kw[_] )
-        self._field = kw
+        self._field = [x for x in kw]
 
     def __str__(self):
         return self.full
@@ -27,17 +27,17 @@ class _meta:
     
     @property
     def attribute(self):
-        return self._field
+        return { x : getattr( self , x ) for x in self._field }
 
 @unique
 class Judge_result( Enum ):
-    WT = _meta(
-        full = 'Waiting',
-        alias = 'WT',
+    PD = _meta(
+        full = 'Pending',
+        alias = 'PD',
         color = 'grey',
         detail = 'Judger is too busy to judge your solution. Just be kindly patient to waiting a moment.',
         icon = 'coffee icon',
-        regex = compile( '^Waiting$' )
+        regex = compile( '^Pending$' )
     )
     PR = _meta(
         full = 'Preparing',
@@ -122,7 +122,7 @@ class Judge_result( Enum ):
 
 @unique
 class Query_field( Enum ):
-    all_fields = ( Judge_result.WT , Judge_result.PR , Judge_result.AC , Judge_result.RN , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE , Judge_result.JE )
+    all_fields = ( Judge_result.PD , Judge_result.PR , Judge_result.AC , Judge_result.RN , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE , Judge_result.JE )
     basic_field = ( Judge_result.AC , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
     listshow_field = ( Judge_result.AC , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
 
