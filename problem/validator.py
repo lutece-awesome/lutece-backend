@@ -3,8 +3,11 @@ from re import compile
 def check_title( title , err ):
     if len( title ) == 0:
         err.append( 'Title can not be empty' )
+        return False
     elif len( title ) > 32:
         err.append( 'Title\'s length can not longer than 32' )
+        return False
+    return True
 
 
 def check_timelimit( timelimit , err ):

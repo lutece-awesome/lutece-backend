@@ -130,10 +130,11 @@ def problem_create_check( request ):
     err = status['error_list']
     try:
         title = request.POST.get( 'title' ).strip()
-        check_title( title , err )
+        if not check_title( title , err ):
+            return
         if get_object_or_None( Problem , title = title ) is not None:
             err.append( 'Title should be unique' )
-            raise TypeError( 'Title Field should unique' )
+            return
         s = Problem( title = title )
         s.save()
         status['problem_id'] = s.pk
