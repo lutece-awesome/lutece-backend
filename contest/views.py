@@ -69,6 +69,12 @@ def create_contest( request ):
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
-
 def get_contest_detail( request , pk ):
     pass
+
+
+@permission_required( 'contest.change_contest' )
+def edit_contest( request , pk ):
+    return render( request , 'contest/contest_edit.html' , {
+        'contest' : get_object_or_None( Contest , pk = pk ),
+        'contesttypelist' : get_contest_type_list() })
