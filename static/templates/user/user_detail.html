@@ -59,7 +59,7 @@
                         <div class = 'content' >
                             <div class="header">{{ target_user.display_name }}</div>
                             <div class="meta" style = 'margin-top:5px;'>
-                                <span>Last Seen {{each_user.last_login.strftime('%m,%d,%Y') if each_user.last_login else 'long long ago' }}</span>
+                                <span>Last Seen {{target_user.last_login.strftime('%m,%d,%Y') if target_user.last_login else 'long long ago' }}</span>
                             </div>
                         </div>
                         <div class="extra content">
