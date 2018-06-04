@@ -12,6 +12,7 @@ class Contest( models.Model ):
     password = models.CharField( max_length = 32 , blank = True )
     note = models.TextField( blank = True )
     visible = models.BooleanField(default = False )
+    invite = models.BooleanField( default = False )
     start_time = models.DateTimeField( null = False , default = timezone.now  )
     end_time = models.DateTimeField( null = False , default = timezone.now )
 
@@ -20,6 +21,8 @@ class Contest( models.Model ):
         permissions = (
             ('view_all' , 'Can view all contest' ),
         )
-
 class ContestAdmin( models.Model ):
     admin = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )
+
+class ContestInvitedUser( models.Model ):
+    user = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )

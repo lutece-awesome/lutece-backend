@@ -68,3 +68,7 @@ def create_contest( request ):
         err.append( str( e ) )
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
+
+
+def get_contest_detail( request , pk ):
+    pass
