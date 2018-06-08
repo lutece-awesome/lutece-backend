@@ -29,11 +29,13 @@
             <div class = 'column'>
                 <div class="ui top attached tabular menu">
                     <a class="item active" data-tab="overview" id = 'overview' >Overview</a>
+                    <a class='item' data-tab='problem'>Problem</a>
                     <a class="item" data-tab="clarification">Clarification</a>
                     <a class="item" data-tab="submission">Submission</a>
                     <a class="item" data-tab="rank">Rank</a>
                 </div>
                 <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-content' ></div>
+                <div class="ui bottom attached tab segment" data-tab="problem"></div>
                 <div class="ui bottom attached tab segment" data-tab="clarification"></div>
                 <div class="ui bottom attached tab segment" data-tab="submission"></div>
                 <div class="ui bottom attached tab segment" data-tab="rank"></div>
@@ -78,12 +80,13 @@
                 setTimeout( "UpdateTimer()" , 1000 );
         }
         UpdateTimer();
-        $('.menu .item').tab({
+        $('.contest.detail .menu .item').tab({
             cache: true,
             apiSettings: {
                 mockResponseAsync: function(settings,callback) {
                     var response = {
                         overview  : '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
+                        problem : 'test',
                         clarification : 'AJAX Tab Two',
                         submission  : 'AJAX Tab Three',
                         rank : 'Ajax tab four'
@@ -98,5 +101,6 @@
             auto : true,
             path    : '/'
         });
+        $('.contest.detail .menu .active.item').trigger( 'click' );
     </script>
 {% endblock content %}

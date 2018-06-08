@@ -40,10 +40,7 @@ def timedeltaformat( s ):
     seconds = seconds % 3600
     mins = seconds // 60
     seconds = seconds % 60
-    last = '{hours}:{mins}:{seconds}'.format(
-        hours = hours,
-        mins = mins,
-        seconds = seconds)
+    last = '%.2d:%.2d:%.2d' % ( hours, mins, seconds )
     if days > 0:
         last = '{days} days '.format(
             days = days

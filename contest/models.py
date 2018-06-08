@@ -12,7 +12,7 @@ class Contest( models.Model ):
     password = models.CharField( max_length = 32 , blank = True )
     note = models.TextField( blank = True )
     visible = models.BooleanField(default = False )
-    invite = models.BooleanField( default = False )
+    register = models.BooleanField( default = False )
     start_time = models.DateTimeField( null = False , default = timezone.now  )
     end_time = models.DateTimeField( null = False , default = timezone.now )
 

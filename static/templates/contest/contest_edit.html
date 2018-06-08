@@ -95,9 +95,9 @@
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div id = "invite-checkbox" class="ui toggle checkbox">
+                    <div id = "register-checkbox" class="ui toggle checkbox">
                         <input type="checkbox" tabindex="0" class="hidden">
-                        <label> <b>Invite</b> </label>
+                        <label> <b>Register</b> </label>
                     </div>
                 </div>
             </div>
@@ -135,12 +135,12 @@
     <script>
         Pewview( 'note-textarea' , 'note-textarea-render' );
         $('#visible-checkbox').checkbox();
-        $('#invite-checkbox').checkbox();
+        $('#register-checkbox').checkbox();
         {%  if contest.visible == True %}
             $('#visible-checkbox').checkbox( 'set checked' );
         {% endif %}
-        {%  if contest.invite == True %}
-            $('#invite-checkbox').checkbox( 'set checked' );
+        {%  if contest.register == True %}
+            $('#register-checkbox').checkbox( 'set checked' );
         {% endif %}
         $('#contest-type').dropdown();
         $('#start-time,#end-time').calendar();
@@ -164,7 +164,7 @@
             let end_time = $('#end-time').calendar( 'get date' );
             let password = $('#contest-pwd').val();
             let visible = $('#visible-checkbox').hasClass('checked');
-            let invite = $('#invite-checkbox').hasClass( 'checked' );
+            let register = $('#register-checkbox').hasClass( 'checked' );
             let note = $('#note-textarea').val();
             if( start_time == null ){
                 alert( 'Please Select start time' );
@@ -188,7 +188,7 @@
                     'type' : type,
                     'password' : password,
                     'visible' : visible,
-                    'invite' : invite,
+                    'register' : register,
                     'note' : note
                 },
                 function(data,status){

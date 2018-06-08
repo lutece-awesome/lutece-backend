@@ -101,7 +101,7 @@ def update_contest( request , pk ):
         password = request.POST.get( 'password' )
         note = request.POST.get( 'note' )
         visible = request.POST.get( 'visible' )
-        invite = request.POST.get( 'invite' )
+        register = request.POST.get( 'register' )
         if len( title ) == 0:
             err.append( 'Title can not be empty' )
         if end_time <= start_time:
@@ -119,7 +119,7 @@ def update_contest( request , pk ):
             password = password,
             contest_type = contest_type,
             visible = True if visible == 'true' else False,
-            invite = True if invite == 'true' else False,
+            register = True if register == 'true' else False,
             note = note)
         status['status'] = True
     except Exception as e:
@@ -129,4 +129,8 @@ def update_contest( request , pk ):
 
 
 def overview_contest( request , pk ):
-    return HttpResponse( 'Yes' );
+    contest = get_object_or_None( Contest , pk = pk )
+    return render( request , 'contest/contest_overview.html' ,{
+        'contest' : contest,
+        'contesttype' : get_contest_type( contest.contest_type ),
+})

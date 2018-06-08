@@ -1,0 +1,59 @@
+<div class = 'contest overview'>
+    <table class = "ui basic fixed padded table bordered raised segment" style='text-align:center;'>
+        <thread>
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Length</th>
+                <th>Type</th>
+                {% if contest.register == True %}
+                    <th>Register</th>
+                {% endif %}
+            </tr>
+        </thread>
+        <tbody>
+            <tr>
+                <td>{{ contest.start_time }} </td>
+                <td>{{ contest.end_time }} </td>
+                <td>{{ (contest.end_time - contest.start_time) | timedeltaformat }} </td>
+                <td>{{ contesttype.value.full }}</td>
+                {% if contest.register == True %}
+                    <td><div class = 'ui primary button'>Check</div></td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+
+    {% if contest.note | length > 0 %}
+        <div style = 'margin-top:20px;'>
+            <div class="ui attached message">
+                <div class="header">
+                    Note
+                </div>
+            </div>
+            <div class="ui attached fluid segment" id = 'note'>{{ contest.note | nl2br }}</div>
+        </div>
+    {% endif %}
+
+    <script>
+        $('#note').html( marked( $('#note').text() ) );
+    </script>
+
+    {# <table class = "ui basic fixed selectable padded table bordered" style='text-align:center;margin-top:40px;margin-bottom:20px;'>
+        <thread>
+            <tr>
+                <th>Accpeted / Rejected</th>
+                <th> Problem </th>
+                <th> Status </th>
+            </tr>
+        </thread>
+        <tbody>
+            <tr>
+                <td> 0 / 0 </td>
+                <td>{{ contest.end_time }} </td>
+                <td>{{ (contest.end_time - contest.start_time) | timedeltaformat }} </td>
+            </tr>
+        </tbody>
+    </table> #}
+
+</div>
