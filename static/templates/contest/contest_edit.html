@@ -12,39 +12,6 @@
 
 {% block content %}
 
-    <div class = 'ui modal' id = 'admin-add-modal' style = 'min-height:100px;width:600px;'>
-        <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'user secret icon'></i> Edit Contest Admin </div>
-        <div class = 'content'>
-            <div class = 'admin'>
-                <div class="ui medium image label">
-                    <img src= {{ gravatar_url( email = user.email , size = 200 ) }} />
-                    Adrienne
-                    <i class="delete icon"></i>
-                </div>
-            </div>
-
-            <div class = 'ui divider'></div>
-
-            <div>
-                <span id = 'user-search' class="ui category search" >
-                    <div class="ui left icon input" >
-                        <input class="prompt" type="text" placeholder="User">
-                        <i class="search icon"></i>
-                    </div>
-                </span>
-                <span class = 'ui medium secondary button'> Apply </span>
-            </div>
-        </div>
-
-
-        <div class="actions">
-            <div class="ui positive right labeled icon button" id = 'create-contest-button'>
-                Confirm
-                <i class="chevron right icon"></i>
-            </div>
-        </div>
-    </div>
-
     <div class = 'contest edit'>
         <div class = 'ui grid'>
 
@@ -69,10 +36,10 @@
                         <label class="ui large label">ContestType</label>
                     </div>
                     <div class="ui fluid selection dropdown" id = 'contest-type'>
-                        <input type = "hidden" value = '{{ contesttypelist.0.value.full }}'>
+                        <input type = "hidden" value = '{{ contest.contest_type }}'>
                         <i class="dropdown icon"></i>
                         <i class = 'university icon'></i>
-                        <div class="text">{{ contesttypelist.0.value.full }}</div>
+                        <div class="text">{{ contest.contest_type }}</div>
                         <div class="menu">
                             {% for each in contesttypelist %}
                                 <div class = 'item' >{{ each.value.full }}</div>
@@ -136,16 +103,6 @@
             </div>
 
             <div class = 'row'>
-                <div class = 'column'>
-                    <div id = 'add-admin-button' class = 'ui positive right labeled icon button'>
-                        EditContestAdmin
-                        <i class="chevron right icon"></i>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class = 'row'>
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
                         <div class="ui large label">Note</div>
@@ -164,7 +121,15 @@
                 </div>
             </div>
 
+            <div class = 'row'>
+                <div class = 'column'>
+                    <div id = "form-error-msg" class="ui negative message transition hidden"  ></div>
+                </div>
+            </div>
+
+
         </div>
+
     </div>
 
     <script>
@@ -182,8 +147,67 @@
         let base_start_time = new Date('{{ contest.start_time }}');
         let base_end_time = new Date( '{{ contest.end_time}}');
         $('#start-time').calendar( 'set date' , base_start_time );
-        $('#end-time').calendar( 'set date' , base_end_time );
-        $('#add-admin-button').click(function(){
-            $('#admin-add-modal').modal( 'show' );})
+        $('#end-time').calendar( 'set date' , base_end_time );        
+        $('#submit-form').click(function(){
+            function transfor( date ){
+                let year = date.getFullYear();
+                let moth = date.getMonth() + 1;
+                let day = date.getDate();
+                let hour = date.getHours();
+                let min = date.getMinutes();
+                let sr = year + '-' + moth + '-' + day + '-' + hour + '-' + min;
+                return sr;
+            }
+            let title = $('#title-input').val();
+            let type = $('#contest-type')[0].innerText;
+            let start_time = $('#start-time').calendar( 'get date' );
+            let end_time = $('#end-time').calendar( 'get date' );
+            let password = $('#contest-pwd').val();
+            let visible = $('#visible-checkbox').hasClass('checked');
+            let invite = $('#invite-checkbox').hasClass( 'checked' );
+            let note = $('#note-textarea').val();
+            if( start_time == null ){
+                alert( 'Please Select start time' );
+                return;
+            }else if( end_time == null ){
+                alert( 'Please Select end time' );
+                return;
+            }
+            $(this)
+                .addClass( 'loading disabled' )
+            ;
+            $.ajaxSetup({
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+            $.post(
+                '{{ url("contest-update" , args = (contest.pk, ) ) }}',
+                {
+                    'title' : title,
+                    'start_time' : transfor( start_time ),
+                    'end_time' : transfor( end_time ),
+                    'type' : type,
+                    'password' : password,
+                    'visible' : visible,
+                    'invite' : invite,
+                    'note' : note
+                },
+                function(data,status){
+                    if( status == 'success' && data.status == true ){
+                        location.reload();
+                        //window.location = '/contest/edit/' + String( data.contest_id );
+                    }else{
+                        $('#submit-form')
+                            .removeClass( 'loading disabled positive' )
+                            .addClass('red')
+                        ;
+                        $('#form-error-msg')
+                            .empty()
+                            .removeClass( 'hidden' )
+                            .append(get_error_msgText( data.error_list ))
+                        ;
+                    }
+                }
+            )
+        })
     </script>
 {% endblock content %}

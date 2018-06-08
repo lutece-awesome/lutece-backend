@@ -21,8 +21,5 @@ class Contest( models.Model ):
         permissions = (
             ('view_all' , 'Can view all contest' ),
         )
-class ContestAdmin( models.Model ):
-    admin = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )
-
 class ContestInvitedUser( models.Model ):
     user = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )

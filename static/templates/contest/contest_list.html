@@ -189,7 +189,7 @@
                     },
                     function(data,status){
                         if( status == 'success' && data.status == true ){
-                            //window.location = '/contest/edit/' + String( data.contest_id );
+                            window.location = window.location = get_prefix_url('{{ url("contest-edit" , args = (1,) ) }}' , 1 ) + '/' + String( data.contest_id );
                         }else{
                             $('#create-contest-button')
                                 .removeClass( 'loading disabled positive' )

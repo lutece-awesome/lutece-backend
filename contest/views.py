@@ -69,6 +69,7 @@ def create_contest( request ):
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
+
 def get_contest_detail( request , pk ):
     pass
 
@@ -78,3 +79,45 @@ def edit_contest( request , pk ):
     return render( request , 'contest/contest_edit.html' , {
         'contest' : get_object_or_None( Contest , pk = pk ),
         'contesttypelist' : get_contest_type_list() })
+
+
+@permission_required( 'contest.change_contest' )
+def update_contest( request , pk ):
+    status = {
+        'status' : False,
+        'error_list': []}
+    err = status['error_list']
+    try:
+        title = request.POST.get( 'title' ).strip()
+        from datetime import datetime, timedelta
+        start_time = datetime.strptime( request.POST.get( 'start_time' ) , "%Y-%m-%d-%H-%M" )
+        end_time = datetime.strptime( request.POST.get( 'end_time' ) , "%Y-%m-%d-%H-%M" )
+        contest_type = request.POST.get( 'type' ).strip()
+        password = request.POST.get( 'password' )
+        note = request.POST.get( 'note' )
+        visible = request.POST.get( 'visible' )
+        invite = request.POST.get( 'invite' )
+        if len( title ) == 0:
+            err.append( 'Title can not be empty' )
+        if end_time <= start_time:
+            err.append( 'Endtime should earlier than starttime')
+        if end_time - timedelta( days = 30 ) >= start_time:
+            err.append( 'The length of contest should no more than 30 days.' )
+        if get_contest_type( contest_type ) is None:
+            err.append( 'Unknown contesttype' )
+        if len( err ) > 0:
+            return
+        Contest.objects.filter( pk = pk ).update(
+            title = title,
+            start_time = start_time,
+            end_time = end_time,
+            password = password,
+            contest_type = contest_type,
+            visible = True if visible == 'true' else False,
+            invite = True if invite == 'true' else False,
+            note = note)
+        status['status'] = True
+    except Exception as e:
+        err.append( str( e ) )
+    finally:
+        return HttpResponse(dumps(status), content_type='application/json')
