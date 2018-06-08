@@ -37,7 +37,7 @@
                                 <div class = 'content' >
                                     <a class="header" href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" style = 'height:24px;' >{{ each_user.user.display_name }}</a>
                                     <div class="meta" style = 'margin-top:5px;'>
-                                        <span>Last Seen {{each_user.last_login.strftime('%m,%d,%Y') if each_user.last_login else 'long long ago' }}</span>
+                                        <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).strftime('%m,%d,%Y') }}</span>
                                     </div>
                                 </div>
                                 <div class="extra content">
