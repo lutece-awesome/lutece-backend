@@ -38,7 +38,7 @@
         var end_time = new Date('{{ contest.end_time}}' );
 
         function get_progress_text(){
-            let c = $('#runtime-progress').progress( 'get value' );
+            let c = Math.abs(cur);
             let hour =  Math.floor(c / 3600); c %= 3600;
             let min = Math.floor(c / 60); c %= 60;
             let smin = String( min );
@@ -49,19 +49,24 @@
         }
         var total = parseInt({{ (contest.end_time - contest.start_time).total_seconds() }});
         var cur = parseInt({{ (now - contest.start_time).total_seconds() }});
+        var base = cur;
         $('#runtime-progress').progress({
             total : total,
             onSuccess: function(){
-                if( cur < total )
+                if( base < total )
                     location.reload();
             },
         });
         function UpdateTimer(){
             $('#runtime-progress').progress( 'set progress' , cur ++ );
-            if( cur == 0 ) location.reload();
-            setTimeout( "UpdateTimer()" , 1000 );
-            if( cur >  0 )
-                $('#time-show').text( get_progress_text() );
+            cur = Math.min( cur , total );
+            if( cur == 0 ){
+                location.reload();
+                return;
+            }
+            $('#time-show').text( get_progress_text() );
+            if( cur < total )
+                setTimeout( "UpdateTimer()" , 1000 );
         }
         UpdateTimer();
     </script>
