@@ -1,0 +1,47 @@
+{% extends "base/base.html" %}
+
+{% block extra_head %}
+    <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
+    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>    
+{% endblock extra_head %}
+
+{% block content %}
+    <div class = 'contest detail'>
+        <div class = 'ui one column grid'>
+            <div class = 'column'>
+                <h1 style = 'text-align:center'> {{ contest.title }} </h1>
+            </div>
+
+            <div class = 'column'>
+                <div class = "ui indicating progress" id = 'runtime-progress' >
+                    <div class = "bar">
+                        <div class="progress"></div>
+                    </div>
+                    <div class = "label" style = 'font-size:16px;' >
+                        <i class = '{{ conteststatus.value.icon }}' style = 'color:{{ conteststatus.value.color }};' ></i> <span style = 'color:{{ conteststatus.value.color }};'><b>{{ conteststatus.value.full }}</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class = 'column'>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        {% if conteststatus.value.full == 'Running' %}
+            $('#runtime-progress').progress({
+                'set total' : parseInt({{ (contest.end_time - contest.start_time).total_seconds() }}),
+            });
+        {% elif conteststatus.value.full = 'Completed' %}
+            $('#runtime-progress').progress({
+                'set total' : parseInt({{ (contest.end_time - contest.start_time).total_seconds() }}),
+            });
+        {% endif %}
+    </script>
+{% endblock content %}

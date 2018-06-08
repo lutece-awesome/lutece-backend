@@ -37,7 +37,7 @@ class ContestStatus( Enum ):
     )
     COMPLETE = _meta(
         full = 'Completed',
-        icon = '',
+        icon = 'check icon',
         color = 'green'
     )
 

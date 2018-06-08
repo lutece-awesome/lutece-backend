@@ -110,14 +110,14 @@
                         <tr>
                             <td>{{it.pk}} </td>
                             <td>
-                                {# <a href = {{ url('problem-detail' , args = (it.problem_id,) ) }} > #}
+                                <a href = {{ url('contest-detail' , args = (it.pk,) ) }} >
                                     <b>{{it.title}}</b>
-                                {# </a>  #}
+                                </a> 
                             </td>
                             <td>{{ it.start_time }} </td>
                             <td> {{ (it.end_time - it.start_time) | timedeltaformat }} </td>
                             <td>
-                                <i class = '{{ conteststatus[loop.index0].value.icon }}'></i> <span style = 'color:{{ conteststatus[loop.index0].value.color }};'><b>{{ conteststatus[loop.index0].value.full }}</b></span>
+                                <i class = '{{ conteststatus[loop.index0].value.icon }}' style = 'color:{{ conteststatus[loop.index0].value.color }};'></i> <span style = 'color:{{ conteststatus[loop.index0].value.color }};'><b>{{ conteststatus[loop.index0].value.full }}</b></span>
                             </td>
                             <td> 
                                 {% if it.password | length == 0 %}

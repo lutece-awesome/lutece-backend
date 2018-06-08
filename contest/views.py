@@ -71,8 +71,11 @@ def create_contest( request ):
 
 
 def get_contest_detail( request , pk ):
-    pass
-
+    from .contest_status import get_contest_status
+    contest = get_object_or_None( Contest , pk = pk )
+    return render( request , 'contest/contest_detail.html' , {
+        'contest' : contest,
+        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ) })
 
 @permission_required( 'contest.change_contest' )
 def edit_contest( request , pk ):

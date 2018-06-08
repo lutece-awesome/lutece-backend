@@ -10,9 +10,6 @@
     <div class = "status detail">
         <div class="ui segment">
             <div class="ui one column grid">
-                {# 
-                    View detail code permisison
-                #}
                 {% if user == status.user or perms.problem.view_all %}
                     <div class = 'column'>
                         <div class="label" ><b>Code</b></div>
@@ -43,12 +40,12 @@
                 {% if status.judge_status | is_compile_error and ( status.user == user or perms.problem.view_all ) %}
                     <div class ='column'>
                         <div class="label" ><b>Additional Info</b></div>
-                        <div class = "ui fluid container segment" > {{ status | get_CE_JE_info | replace("\n", "<br/>") | safe }} </div>
+                        <div class = "ui fluid container segment" > {{ status | get_CE_JE_info | nl2br }} </div>
                     </div>
                 {% elif  status.judge_status | is_judger_error and perms.problem.view_all %}
                     <div class ='column'>
                         <div class="label" ><b>Judger Info</b></div>
-                        <div class = "ui fluid container segment"> {{ status | get_CE_JE_info | replace("\n", "<br/>") | safe }} </div>
+                        <div class = "ui fluid container segment"> {{ status | get_CE_JE_info | nl2br }} </div>
                     </div>
                 {% endif %}
 
@@ -68,7 +65,7 @@
                     if( status == 'success' && data.status == true ){
                         $('#progress-detail')
                             .progress( 'set progress' , data.detail.length )
-                            .progress( 'set label' , String( data.detail.length ) + ' de {{ status.case_number }}'  )
+                            .progress( 'set label' , String( data.detail.length ) + ' of {{ status.case_number }} done'  )
                         ;
                         var ob = $('#case-detail');
                         var len = data.detail.length;

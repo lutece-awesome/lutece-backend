@@ -167,7 +167,7 @@ def user_detail( request , user_id ):
 
 def user_search( request , displayname ):
     ret = User.objects.filter(display_name__contains = displayname)[:5]
-    return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : reverse( 'user-search' , args = ( x.pk, ) ) } for x in ret ] } ), content_type='application/json')
+    return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : reverse( 'user-detail' , args = ( x.pk, ) ) } for x in ret ] } ), content_type='application/json')
 
 def user_list( request , page ):
     paginator = Paginator( Userinfo.objects.all().order_by( '-solved' ) , config.USER_PER_PAGE_COUNT )
