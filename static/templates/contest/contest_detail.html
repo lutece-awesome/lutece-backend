@@ -21,7 +21,7 @@
                         <div class="progress"></div>
                     </div>
                     <div class = "label" style = 'font-size:16px;' >
-                        <i class = '{{ conteststatus.value.icon }}' style = 'color:{{ conteststatus.value.color }};' ></i> <span style = 'color:{{ conteststatus.value.color }};'><b>{{ conteststatus.value.full }}</b></span>
+                        <i class = '{{ conteststatus.value.icon }}' style = 'color:{{ conteststatus.value.color }};' ></i> <span style = 'color:{{ conteststatus.value.color }};'><b>{{ conteststatus.value.full }}</b><span id = 'time-show' ></span></span>
                     </div>
                 </div>
             </div>
@@ -36,32 +36,33 @@
     <script>
         var start_time = new Date('{{ contest.start_time }}');
         var end_time = new Date('{{ contest.end_time}}' );
+
+        function get_progress_text(){
+            let c = $('#runtime-progress').progress( 'get value' );
+            let hour =  Math.floor(c / 3600); c %= 3600;
+            let min = Math.floor(c / 60); c %= 60;
+            let smin = String( min );
+            let sc = String( c );
+            if( smin.length < 2 ) smin = "0" + smin;
+            if( sc.length < 2 ) sc = "0" + sc;
+            return " ( " + String( hour ) + ":" + smin + ":" + sc + " )";
+        }
         var total = parseInt({{ (contest.end_time - contest.start_time).total_seconds() }});
-        var cur = Math.min( total , parseInt({{ (now - contest.start_time).total_seconds() }}) );
-        $('#runtime-progress').progress( 'set total' , total );
-        {% if conteststatus.value.full != 'Pending' %}
-            $('#runtime-progress')
-                .progress({
-                    label: 'ratio',
-                    text: {
-                        ratio: '{value}'
-                    }
-                })
-            ;
-            function UpdateTimer(){
-                $('#runtime-progress').progress( 'set progress' , cur );
-                return;
-                if( $('#runtime-progress').progress( 'is success' ) ){
-                     {% if conteststatus.value.full == 'Running' %}
-                        alert( gtmd );
-                        //location.reload();
-                    {% endif %}
-                }else{
-                    cur = cur + 1;
-                    setTimeout( "UpdateTimer()" , 1000 );
-                }
-            }
-            UpdateTimer();
-        {% endif %}
+        var cur = parseInt({{ (now - contest.start_time).total_seconds() }});
+        $('#runtime-progress').progress({
+            total : total,
+            onSuccess: function(){
+                if( cur < total )
+                    location.reload();
+            },
+        });
+        function UpdateTimer(){
+            $('#runtime-progress').progress( 'set progress' , cur ++ );
+            if( cur == 0 ) location.reload();
+            setTimeout( "UpdateTimer()" , 1000 );
+            if( cur >  0 )
+                $('#time-show').text( get_progress_text() );
+        }
+        UpdateTimer();
     </script>
 {% endblock content %}
