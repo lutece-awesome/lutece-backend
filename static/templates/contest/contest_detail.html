@@ -10,6 +10,7 @@
 {% block content %}
     <div class = 'contest detail'>
         <div class = 'ui one column grid'>
+
             <div class = 'column'>
                 <h1 style = 'text-align:center'> {{ contest.title }} </h1>
             </div>
@@ -29,19 +30,38 @@
 
             </div>
 
-
         </div>
     </div>
 
     <script>
-        {% if conteststatus.value.full == 'Running' %}
-            $('#runtime-progress').progress({
-                'set total' : parseInt({{ (contest.end_time - contest.start_time).total_seconds() }}),
-            });
-        {% elif conteststatus.value.full = 'Completed' %}
-            $('#runtime-progress').progress({
-                'set total' : parseInt({{ (contest.end_time - contest.start_time).total_seconds() }}),
-            });
+        var start_time = new Date('{{ contest.start_time }}');
+        var end_time = new Date('{{ contest.end_time}}' );
+        var total = parseInt({{ (contest.end_time - contest.start_time).total_seconds() }});
+        var cur = Math.min( total , parseInt({{ (now - contest.start_time).total_seconds() }}) );
+        $('#runtime-progress').progress( 'set total' , total );
+        {% if conteststatus.value.full != 'Pending' %}
+            $('#runtime-progress')
+                .progress({
+                    label: 'ratio',
+                    text: {
+                        ratio: '{value}'
+                    }
+                })
+            ;
+            function UpdateTimer(){
+                $('#runtime-progress').progress( 'set progress' , cur );
+                return;
+                if( $('#runtime-progress').progress( 'is success' ) ){
+                     {% if conteststatus.value.full == 'Running' %}
+                        alert( gtmd );
+                        //location.reload();
+                    {% endif %}
+                }else{
+                    cur = cur + 1;
+                    setTimeout( "UpdateTimer()" , 1000 );
+                }
+            }
+            UpdateTimer();
         {% endif %}
     </script>
 {% endblock content %}
