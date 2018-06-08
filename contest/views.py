@@ -126,3 +126,7 @@ def update_contest( request , pk ):
         err.append( str( e ) )
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
+
+
+def overview_contest( request , pk ):
+    return HttpResponse( 'Yes' );

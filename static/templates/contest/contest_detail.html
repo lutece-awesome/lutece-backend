@@ -20,16 +20,25 @@
                     <div class = "bar">
                         <div class="progress"></div>
                     </div>
-                    <div class = "label" style = 'font-size:16px;' >
+                    <div class = "label" style = 'font-size:16px;margin-top:10px;' >
                         <i class = '{{ conteststatus.value.icon }}' style = 'color:{{ conteststatus.value.color }};' ></i> <span style = 'color:{{ conteststatus.value.color }};'><b>{{ conteststatus.value.full }}</b><span id = 'time-show' ></span></span>
                     </div>
                 </div>
             </div>
 
             <div class = 'column'>
-
+                <div class="ui top attached tabular menu">
+                    <a class="item active" data-tab="overview" id = 'ovwerview-tab' >Overview</a>
+                    <a class="item" data-tab="clarification">Clarification</a>
+                    <a class="item" data-tab="submission">Submission</a>
+                    <a class="item" data-tab="rank">Rank</a>
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-tab-content' ></div>
+                <div class="ui bottom attached tab segment" data-tab="clarification"></div>
+                <div class="ui bottom attached tab segment" data-tab="submission"></div>
+                <div class="ui bottom attached tab segment" data-tab="rank"></div>
             </div>
-
+            
         </div>
     </div>
 
@@ -69,5 +78,30 @@
                 setTimeout( "UpdateTimer()" , 1000 );
         }
         UpdateTimer();
+        $('.menu .item').tab({
+            cache: true,
+            apiSettings: {
+                interruptRequests: true,
+                mockResponse : function(settings) {
+                    var response = {
+                        overview  : '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
+                        clarification : 'AJAX Tab Two',
+                        submission  : 'AJAX Tab Three',
+                        rank : 'Ajax tab four'
+                    };
+                    var s = $(this);
+                    s.addClass( 'loading' );
+                    $.get(
+                        response[settings.urlData.tab],
+                        function(result){
+                            s.html(result);
+                        }
+                    );
+                },
+            },
+            context : 'parent',
+            auto : true,
+            path    : '/'
+        });
     </script>
 {% endblock content %}
