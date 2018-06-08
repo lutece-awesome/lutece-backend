@@ -28,12 +28,12 @@
 
             <div class = 'column'>
                 <div class="ui top attached tabular menu">
-                    <a class="item active" data-tab="overview" id = 'ovwerview-tab' >Overview</a>
+                    <a class="item active" data-tab="overview" id = 'overview' >Overview</a>
                     <a class="item" data-tab="clarification">Clarification</a>
                     <a class="item" data-tab="submission">Submission</a>
                     <a class="item" data-tab="rank">Rank</a>
                 </div>
-                <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-tab-content' ></div>
+                <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-content' ></div>
                 <div class="ui bottom attached tab segment" data-tab="clarification"></div>
                 <div class="ui bottom attached tab segment" data-tab="submission"></div>
                 <div class="ui bottom attached tab segment" data-tab="rank"></div>
@@ -81,21 +81,16 @@
         $('.menu .item').tab({
             cache: true,
             apiSettings: {
-                interruptRequests: true,
-                mockResponse : function(settings) {
+                mockResponseAsync: function(settings,callback) {
                     var response = {
                         overview  : '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
                         clarification : 'AJAX Tab Two',
                         submission  : 'AJAX Tab Three',
                         rank : 'Ajax tab four'
                     };
-                    var s = $(this);
-                    s.addClass( 'loading' );
                     $.get(
                         response[settings.urlData.tab],
-                        function(result){
-                            s.html(result);
-                        }
+                        function(result){ callback( result ); }
                     );
                 },
             },
