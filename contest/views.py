@@ -6,7 +6,7 @@ from Lutece import config
 from utils.paginator_menu import get_range as page_range
 from .contest_type import get_contest_type_list, get_contest_type
 from django.http import HttpResponse
-from json import dumps
+from json import dumps, loads
 from annoying.functions import get_object_or_None
 
 # Create your views here.
@@ -81,8 +81,11 @@ def get_contest_detail( request , pk ):
 
 @permission_required( 'contest.change_contest' )
 def edit_contest( request , pk ):
+    from problem.models import Problem
+    contest = get_object_or_None( Contest , pk = pk )
     return render( request , 'contest/contest_edit.html' , {
-        'contest' : get_object_or_None( Contest , pk = pk ),
+        'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
+        'contest' : contest,
         'contesttypelist' : get_contest_type_list() })
 
 
@@ -95,6 +98,8 @@ def update_contest( request , pk ):
     try:
         title = request.POST.get( 'title' ).strip()
         from datetime import datetime, timedelta
+        from problem.models import Problem
+        from contest.models import ContestProblem
         start_time = datetime.strptime( request.POST.get( 'start_time' ) , "%Y-%m-%d-%H-%M" )
         end_time = datetime.strptime( request.POST.get( 'end_time' ) , "%Y-%m-%d-%H-%M" )
         contest_type = request.POST.get( 'type' ).strip()
@@ -102,6 +107,14 @@ def update_contest( request , pk ):
         note = request.POST.get( 'note' )
         visible = request.POST.get( 'visible' )
         register = request.POST.get( 'register' )
+        prob = loads( request.POST.get( 'prob') )
+        if len( prob ) > 26:
+            err.append( 'The number of contest problem should no more than 26' )
+        for each in prob:
+            if len( each ) == 0:
+                err.append( 'Problem id can not be empty' )
+            elif get_object_or_None( Problem , pk = int(each) ) is None:
+                err.append( 'Unknown problem id: ' + each )
         if len( title ) == 0:
             err.append( 'Title can not be empty' )
         if end_time <= start_time:
@@ -112,6 +125,13 @@ def update_contest( request , pk ):
             err.append( 'Unknown contesttype' )
         if len( err ) > 0:
             return
+        contest = Contest.objects.get( pk = pk )
+        contest.contestproblem_set.all().delete()
+        for each in prob:
+            ContestProblem(
+                contest = contest,
+                problem = int( each )
+            ).save()
         Contest.objects.filter( pk = pk ).update(
             title = title,
             start_time = start_time,

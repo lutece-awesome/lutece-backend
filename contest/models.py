@@ -23,3 +23,7 @@ class Contest( models.Model ):
         )
 class ContestInvitedUser( models.Model ):
     user = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )
+
+class ContestProblem( models.Model ):
+    contest = models.ForeignKey( Contest , on_delete = models.CASCADE , db_index = True )
+    problem = models.IntegerField( blank = False )

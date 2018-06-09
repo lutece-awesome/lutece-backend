@@ -102,6 +102,52 @@
                 </div>
             </div>
 
+            <h4 class="ui horizontal divider header"> <i class="tag icon"></i> Contest Problem </h4>
+                <div class = 'row'>
+                    <div class = 'column'>
+                        <table class = "ui basic fixed padded table bordered raised segment">
+                            <thread>
+                                <tr>
+                                    <th style = 'width:5%;'>
+                                        <a href = "javascript:void(0);" onclick="AddProblem()" >
+                                            <i class = 'add icon'></i>
+                                        </a>
+                                    </th>
+                                    <th style = 'width:15%;' >ID </th>
+                                    <th style = 'width:80%' >Title</th>
+                                </tr>
+                            </thread>
+                            <tbody>
+                                {% for each in prob %}
+                                    <tr>
+                                        <td>
+                                            <a href = 'javascript:void(0)' onclick='$(this).parent().parent().remove()' ><i class = 'delete icon' ></i></a>
+                                        </td>
+                                        <td>
+                                            <div class = 'ui input'>
+                                                <input class = 'contest problem input' oninput = 'UpdateTitle(this)' type="number" value = '{{ each.pk }}' >
+                                            </div>
+                                        </td>
+                                        <td>{{ each.title }}</td>
+                                    </tr>     
+                                {% endfor %}
+                                <tr style = 'display:none;' id = 'problem-table-template' >
+                                    <td>
+                                        <a href = 'javascript:void(0)' onclick='$(this).parent().parent().remove()' ><i class = 'delete icon' ></i></a>
+                                    </td>
+                                    <td>
+                                        <div class = 'ui input'>
+                                            <input class = 'contest problem input' oninput = 'UpdateTitle(this)' type="number">
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <div class="ui divider"></div>
+
             <div class = 'row'>
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
@@ -133,6 +179,34 @@
     </div>
 
     <script>
+
+        function AddProblem(){
+            let s = $('#problem-table-template').clone( false );
+            s.removeAttr( 'id' );
+            s.css( 'display' , 'table-row' );
+            $('#problem-table-template').before( s );
+        }
+
+        function UpdateTitle( ele ){
+            let v = $(ele).val();
+            let c = $($(($(ele).parent().parent())[0]).next()[0]);
+            if( v.length == 0 ){
+                c.text("");
+                return;
+            }
+            c.html( '<i class ="notched circle loading icon"></i>' );
+            let f = c.text();
+            $.get(
+                get_prefix_url('{{ url("problem-query-title" , args = (1,) ) }}' , 1 ) + "/" + String( v ),
+                function(data,status){
+                    if( status == 'success' && data.status == true ){
+                        c.html( data.title );
+                    }else
+                        c.html( 'No such problem' );
+                }
+            )
+        }
+
         Pewview( 'note-textarea' , 'note-textarea-render' );
         $('#visible-checkbox').checkbox();
         $('#register-checkbox').checkbox();
@@ -166,6 +240,12 @@
             let visible = $('#visible-checkbox').hasClass('checked');
             let register = $('#register-checkbox').hasClass( 'checked' );
             let note = $('#note-textarea').val();
+            let prob = $('.contest.edit .contest.problem.input:visible');
+            let prob_li = new Array();
+            for( let i = 0 ; i < prob.length ; ++ i){
+                let obj = $(prob[i]);
+                prob_li.push( obj.val() );
+            }
             if( start_time == null ){
                 alert( 'Please Select start time' );
                 return;
@@ -189,12 +269,12 @@
                     'password' : password,
                     'visible' : visible,
                     'register' : register,
-                    'note' : note
+                    'note' : note,
+                    'prob' : JSON.stringify(prob_li)
                 },
                 function(data,status){
                     if( status == 'success' && data.status == true ){
                         window.location = '{{ url( "contest-detail" , args = (contest.pk,) ) }} '
-                        //window.location = '/contest/edit/' + String( data.contest_id );
                     }else{
                         $('#submit-form')
                             .removeClass( 'loading disabled positive' )

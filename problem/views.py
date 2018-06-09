@@ -143,3 +143,13 @@ def problem_create_check( request ):
             status['status'] = True
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
+
+
+def query_title( request , pk ):
+    status = {
+        'status' : False,}
+    s = get_object_or_None( Problem , pk = pk )
+    if s is not None:
+        status['status'] = True
+        status['title'] = s.title
+    return HttpResponse(dumps(status), content_type='application/json')    

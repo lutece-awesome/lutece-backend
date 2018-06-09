@@ -387,6 +387,7 @@
 
             $('#add-sample').click(function(){
                 var ns = $('#sample_template').clone( true );
+                ns.removeAttr( 'id' );
                 ns.css( 'display' , 'flex' );
                 $('#AppendLastDOM').before( ns );
             });
