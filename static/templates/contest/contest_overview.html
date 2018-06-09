@@ -1,7 +1,7 @@
 {% extends 'contest/contest_template.html' %}
 
 {% block tab_page %}
-    <div class="ui bottom attached tab segment" data-tab="overview">
+    <div class="ui bottom attached active tab segment" data-tab="overview">
         {% if perms.contest.change_contest %}
             <a href = '{{ url( "contest-edit" , args = ( contest.pk , ) ) }}' class="ui blue ribbon label">Edit</a>
         {% endif %}
@@ -53,9 +53,7 @@
                         {left: "\\(", right: "\\)", display: false}
                     ]
             });
-            $(document).ready(function(){
-                $('#tab-overview').trigger( 'click' );
-            })
+            $('#tab-overview').addClass( 'active' );
         </script>
 
     </div>

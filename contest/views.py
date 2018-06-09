@@ -150,12 +150,18 @@ def overview_contest( request , pk ):
     })
 
 
-def get_contest_problem( request , pk ):
+def get_contest_problem( request , pk , index ):
     from problem.models import Problem
-    contest = get_object_or_None( Contest , pk = pk )
+    from utils.language import get_language_list
+    contest = get_object_or_None( Contest, pk = pk )
+    prob = get_object_or_None( Problem , pk = contest.contestproblem_set.all()[index].problem )
     return render( request , 'contest/contest_problem.html' ,{
-        'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
+        'prob' : prob,
+        'support_lang': get_language_list(),
+        'sample': prob.sample_set.all(),
         'contest' : contest,
+        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
+        'now' : datetime.now(),
     })
 
 def get_problem_list( request , pk ):
@@ -167,21 +173,3 @@ def get_problem_list( request , pk ):
         'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
     })
-    # from problem.models import Problem
-    # from utils.language import get_language_list
-    # contest_id = int(request.GET.get( 'contest_id' ))
-    # problem_id = int(request.GET.get( 'problem_id' ))
-    # contest = get_object_or_None( Contest, pk = contest_id )
-    # all_contest_problem = contest.contestproblem_set.all()
-    # flag = False
-    # for each in all_contest_problem:
-    #     if problem_id != each.problem:
-    #         flag = True
-    # if flag == False:
-    #     raise Http404()
-    # prob = get_object_or_None( Problem , pk = problem_id )
-    # return render( request , 'contest/contest_problem_content.html' ,{
-    #     'prob' : prob,
-    #     'support_lang': get_language_list(),
-    #     'sample': prob.sample_set.all()
-    # })

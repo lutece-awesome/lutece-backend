@@ -6,7 +6,7 @@ urlpatterns = [
     path( 'create/contest/' , create_contest , name = 'contest-create' ),
     path( 'edit/<int:pk>/' , edit_contest , name = 'contest-edit'  ),
     path( 'update/<int:pk>/' , update_contest , name = 'contest-update' ),
-    path( 'problem/<int:pk>/' , get_contest_problem , name = 'contest-problem' ),
+    path( 'problem/<int:pk>/<int:index>/' , get_contest_problem , name = 'contest-problem' ),
     path( 'overview/<int:pk>/' , overview_contest , name = 'contest-overview' ),
     path( 'problem/list/<int:pk>/' , get_problem_list , name = 'contest-problem-list' )
 ]

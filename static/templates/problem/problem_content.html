@@ -26,12 +26,12 @@
 
         <div>
             <div class = 'row'>
-                <div class = 'column' style='font-size:14px;font-weight:600;border-bottom: 1px solid rgba(229,231,232,0.5);'>
+                <div class = 'column' style='font-size:14px;font-weight:600;'>
                     <div class = 'text'>Time Limit: {{ prob.time_limit }} Milliseconds </div>
                 </div>
             </div>
             <div class = 'row'>
-                <div class = 'column' style='font-size:14px;font-weight:600;border-bottom: 1px solid rgba(229,231,232,0.5);'>
+                <div class = 'column' style='font-size:14px;font-weight:600;'>
                     <div class = 'text'>Memory Limit: {{ prob.memory_limit }} Megabytes </div>
                 </div>
             </div>
@@ -231,6 +231,8 @@
                         'problemid' : problemid,
                         'code' : code,
                         'language' : lang,
+                        {% block post_field %}
+                        {% endblock %}
                     },
                     function(data,status){
                         if( status == 'success' && data.status == true ){

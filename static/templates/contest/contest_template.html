@@ -28,23 +28,18 @@
 
             <div class = 'column'>
                 <div class="ui top attached tabular menu">
-                    <a class="item" data-tab="overview" id = 'tab-overview' >Overview</a>
-                    <a class='item' data-tab='problem' id = 'tab-problem' onclick = "window.location = '{{ url( "contest-problem-list" , args = ( contest.pk , ) ) }}' " >Problem</a>
+                    <a class="item" data-tab="overview" id = 'tab-overview' onclick = "window.location='{{ url( "contest-overview" , args = ( contest.pk , ) ) }}'"  >Overview</a>
+                    <a class='item' data-tab='problem' id = 'tab-problem' onclick = "window.location='{{ url( "contest-problem-list" , args = ( contest.pk , ) ) }}'" >Problem</a>
                     <a class="item" data-tab="clarification" id ='tab-clarification' >Clarification</a>
                     <a class="item" data-tab="submission" id = 'tab-submission' >Submission</a>
                     <a class="item" data-tab="rank" id = 'tab-rank' >Rank</a>
+                    {% block extra_item %}
+                    {% endblock %}
                 </div>
 
                 {% block tab_page %}
 
                 {% endblock %}
-
-
-                {# <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-content' ></div>
-                <div class="ui bottom attached tab segment" data-tab="problem"></div>
-                <div class="ui bottom attached tab segment" data-tab="clarification"></div>
-                <div class="ui bottom attached tab segment" data-tab="submission"></div>
-                <div class="ui bottom attached tab segment" data-tab="rank"></div> #}
             </div>
             
         </div>
@@ -86,6 +81,6 @@
                 setTimeout( "UpdateTimer()" , 1000 );
         }
         UpdateTimer();
-        $('.menu .item').tab();
+        $('.contest.detail .menu .item').tab();
     </script>
 {% endblock content %}

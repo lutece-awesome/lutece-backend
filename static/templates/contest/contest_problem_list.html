@@ -1,19 +1,29 @@
 {% extends 'contest/contest_template.html' %}
 
 {% block tab_page %}
-    <div class = 'contest problem'>
-        <table class = "ui basic fixed padded table bordered" >
+    <div class="ui bottom attached active tab segment" data-tab="problem">
+        <table class = "ui basic fixed padded table bordered" style = 'text-align:center;' >
             <thread>
                 <tr>
+                    <th> ID </th>
                     <th> Title </th>
                     <th> Accepted / Rejected </th>
+                    <th> Ratio </th>
+                    <th> Status </th>
                 </tr>
             </thread>
             <tbody>
                 {% for each in prob %}
                     <tr>
-                        <td> {{ each.title }} </td>
+                        <td> {{ loop.index0 | I2S }} </td>
+                        <td>
+                            <a href = '{{ url( "contest-problem" , args = ( contest.pk , loop.index0 ) ) }}'>
+                                {{ each.title }} 
+                            </a>
+                        </td>
                         <td> 0 / 0 </td>
+                        <td> 0.00% </td>
+                        <td> <i class = 'check icon'></i> </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -21,8 +31,6 @@
     </div>
 
     <script>
-        $(document).ready(function(){
-            $('#tab-problem').trigger( 'click' );
-        })
+        $('#tab-problem').addClass( 'active' );
     </script>
 {% endblock  %}
