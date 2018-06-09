@@ -1,12 +1,7 @@
-{% extends 'contest/contest_template.html' %}
+<div 'margin-top:5px;'>
+    {% include 'contest/contest_problem_content.html' %}
+</div>
 
-{% block extra_item %}
-    <a class="active item" data-tab="detail" id = 'tab-detail' >Detail</a>    
-{% endblock %}
-
-{% block tab_page %}
-    <div class="ui bottom attached active tab segment" data-tab = 'detail' style = 'margin-top:20px;'>
-        {% include 'contest/contest_problem_content.html' %}
-    </div>
-
-{% endblock %}
+<script>
+    
+</script>

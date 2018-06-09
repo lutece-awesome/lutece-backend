@@ -144,8 +144,6 @@ def overview_contest( request , pk ):
     contest = get_object_or_None( Contest , pk = pk )
     return render( request , 'contest/contest_overview.html' ,{
         'contest' : contest,
-        'now' : datetime.now(),
-        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
         'contesttype' : get_contest_type( contest.contest_type ),
     })
 
@@ -168,9 +166,6 @@ def get_problem_list( request , pk ):
     from problem.models import Problem
     contest = get_object_or_None( Contest , pk = pk )
     return render( request , 'contest/contest_problem_list.html' , {
-        'contest' : contest,
-        'now' : datetime.now(),
-        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
     })
 
@@ -189,3 +184,13 @@ def get_contest_submission( request , pk , page ):
         'currentpage' : page,
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages ) })
+
+def get_contest_detail( request , pk ):
+    from .contest_status import get_contest_status
+    from datetime import datetime
+    contest = get_object_or_None( Contest , pk = pk )
+    return render( request , 'contest/contest_detail.html' , {
+        'contest' : contest,
+        'problem_num' : range( len(contest.contestproblem_set.all()) ),
+        'now' : datetime.now(),
+        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ) })
