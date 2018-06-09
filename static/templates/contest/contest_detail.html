@@ -86,7 +86,7 @@
                 mockResponseAsync: function(settings,callback) {
                     var response = {
                         overview  : '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
-                        problem : 'test',
+                        problem : '{{ url( "contest-problem" , args = ( contest.pk , ) ) }}',
                         clarification : 'AJAX Tab Two',
                         submission  : 'AJAX Tab Three',
                         rank : 'Ajax tab four'

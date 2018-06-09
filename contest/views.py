@@ -133,4 +133,11 @@ def overview_contest( request , pk ):
     return render( request , 'contest/contest_overview.html' ,{
         'contest' : contest,
         'contesttype' : get_contest_type( contest.contest_type ),
-})
+    })
+
+
+def get_contest_problem( request , pk ):
+    contest = get_object_or_None( Contest , pk = pk )    
+    return render( request , 'contest/contest_problem.html' ,{
+        'contest' : contest,
+    })

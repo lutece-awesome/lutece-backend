@@ -1,0 +1,241 @@
+<div class = 'problem detail'>
+
+    <div class = 'ui center aligned one wide grid'>
+        <div class = 'row'>
+            <div class = 'column'>
+                <h1> {{ prob.title }} </h1>
+            </div>
+        </div>
+
+        <div>
+            <div class = 'row'>
+                <div class = 'column' style='font-size:14px;font-weight:600;border-bottom: 1px solid rgba(229,231,232,0.5);'>
+                    <div class = 'text'>Time Limit: {{ prob.time_limit }} Milliseconds </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'column' style='font-size:14px;font-weight:600;border-bottom: 1px solid rgba(229,231,232,0.5);'>
+                    <div class = 'text'>Memory Limit: {{ prob.memory_limit }} Megabytes </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <div class = 'menu'>
+                    <div id = 'summary-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
+                    <div id = 'discussion-button' class = 'ui basic secondary button'><i class = 'comments icon'></i>Discussion</div>
+                    {% if perms.problem.change_problem %}
+                        <div id = 'edit-button' class = 'ui basic orange button'><i class = 'edit icon'></i><b>Edit</b></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = 'ui one wide grid'>
+        <div class = 'row'>
+            <div class = 'column'>
+                <h2 class= 'ui header'>Content</h2>
+                <p class = "ui segment content" > {{ prob.content }} </p>
+            </div>
+        </div>
+        <div class = 'row'>
+            <div class = 'column'>
+                <h2 class= 'ui header'>Standard Input</h2>
+                <p class = 'ui segment content'>{{ prob.standard_input}}</p>
+            </div>
+        </div>
+        <div class = 'row'>
+            <div class = 'column'>
+                <h2 class= 'ui header'>Standard Output</h2>
+                <p class = 'ui segment content'>{{prob.standard_output}}</p>
+            </div>
+        </div>
+        {% if prob.constraints | length > 0  %}
+            <div class = 'row'>
+                <div class = 'column'>
+                    <h2 class='ui header'> Constraints </h2>
+                    <p class='ui segment content'>{{prob.constraints}}</p>
+                </div>
+            </div>
+        {% endif%}
+    </div>
+
+    <div class = 'ui two wide grid'>
+        <div class = 'column'>
+            <h2 class= 'ui header'>Sample</h2>
+            <table class="ui table" >
+                    <thead>
+                        <tr>
+                            <th> Input </th>
+                            <th> Output </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for it in sample %}
+                            <tr>
+                                <td style = 'vertical-align:top;' >{{it.input_content | nl2br}}</td>
+                                <td style = 'vertical-align:top;' >{{it.output_content | nl2br}}</td>
+                            </tr>
+                        {% endfor%}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class = 'ui one wide grid'>
+        {% if  prob.note | length > 0  %}
+            <div class = 'row'>
+                <div class = 'column'>
+                    <h2 class='ui header'>Note</h2>
+                    <p class='ui segment content'>{{prob.note}}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if  prob.resource | length > 0  %}
+            <div class = 'row'>
+                <div class = 'column'>
+                    <h2 class='ui header'>Resource</h2>
+                    <p class='ui segment content'>{{prob.resource}}</p>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <h2 class='ui header'>Editor</h2>
+    <div class = 'ui grid segment' style = 'padding-top:10px;'>
+        <div class = 'row'>
+            <div class = 'four wide column'>
+                <div id = "language-dropdown" class="ui floating labeled icon dropdown basic button" data-value = '{{ support_lang[0].value.full }}' >
+                    <span class="text">{{ support_lang[0].value.info }}</span>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        {% for it in support_lang %}
+                            <div class="item" data-value = '{{ it.value.full }}' >{{it.value.info}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <textarea class="form-control" id="code" name="code" ></textarea>
+            </div>
+        </div>
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <div id = 'solution-submit-button' class = 'ui primary button' style = 'display:grid;'> Submit </div>
+            </div>
+        </div>
+
+        <div class = 'row'>
+            <div class = 'column'>
+                <div id = "form-error-msg" class="ui negative message transition hidden"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    function get_codemirror( s ){
+        {% for x in support_lang %}
+            if( s == '{{x.value.info}}' )
+                return '{{x.value.codemirror}}';
+        {% endfor %}
+    }
+
+    $(document).ready(function(){
+
+        var sel = $('.problem.detail .content');
+        for(let i = 0 ; i < sel.length ; ++ i){
+            let obj = sel[i];
+            obj.innerHTML = marked( $(obj).text() );
+        }
+
+        renderMathInElement(
+            document.body,
+            {
+                delimiters : [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},                    
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+            });
+
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "{{ support_lang.0.value.codemirror }}",
+            indentUnit : 4,
+            lineNumbers: true,
+            foldGutter: true,
+            keyMap: 'sublime',
+            tabindex : '0',
+            matchBrackets: true,
+        });
+
+        $('#language-dropdown').dropdown({
+            onChange:function( text , value ){
+                editor.setOption( 'mode' , get_codemirror( value ) );
+            }
+        });
+
+        $('#discussion-button').click(function(){
+            alert( 'Coming soon' );
+        });
+
+        $('#summary-button').click(function(){
+            alert( 'Coming soon' );
+            // to do
+        });
+
+        {% if perms.problem.change_problem %}
+            $('#edit-button').click(function(){
+                window.location = '{{ url("problem-edit" , args = (prob.problem_id,) ) }} ';
+            });
+        {% endif %}
+
+        $('#solution-submit-button').click(function () {
+            {% if user.is_authenticated == True %}
+                var code = editor.getValue();
+                var lang = $('#language-dropdown').data( 'value' );
+                $(this).addClass( 'loading disabled' );
+                var problemid = {{prob.problem_id}};
+                $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' },});
+                $.post(
+                    '{{ url("submission-submit-solution") }}',
+                    {
+                        'problemid' : problemid,
+                        'code' : code,
+                        'language' : lang,
+                    },
+                    function(data,status){
+                        if( status == 'success' && data.status == true ){
+                            let urltemp = get_prefix_url('{{ url("submission-status-detail" , args = (1,) ) }}' , 1 ) + '/' + String( data.pk );
+                            window.location = urltemp;
+                        }else{
+                            $('#solution-submit-button')
+                                .removeClass( 'loading disabled primary' )
+                                .addClass('red')
+                            ;
+                            $('#form-error-msg')
+                                .empty()
+                                .removeClass( 'hidden' )
+                                .append(get_error_msgText( data.errlist ))
+                            ;
+                        }
+                    }
+                )
+            {% else %}
+                $('.login.modal' ).modal( 'show' );
+            {% endif %}
+        });
+    });
+    
+</script>

@@ -193,7 +193,7 @@
                 },
                 function(data,status){
                     if( status == 'success' && data.status == true ){
-                        location.reload();
+                        window.location = '{{ url( "contest-detail" , args = (contest.pk,) ) }} '
                         //window.location = '/contest/edit/' + String( data.contest_id );
                     }else{
                         $('#submit-form')

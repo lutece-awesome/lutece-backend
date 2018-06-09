@@ -78,7 +78,7 @@
                 {% endfor %}
                 <a class="icon item" href = {{ url('contest-list' , args = (max_page,) ) }} ><i class="angle double right icon"></i></a>
             </span>
-            {% if perms.problem.add_problem %}
+            {% if perms.contest.add_contest %}
                 <span style = 'float:right;margin-left:15px;'>
                     <div id = 'new-button' class = 'ui primary button'><b>New</b></div>
                 </span>
