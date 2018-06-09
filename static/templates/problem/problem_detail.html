@@ -1,21 +1,5 @@
 {% extends "base/base.html" %}
 
-{% block extra_head %}
-    <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>    
-    <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
-    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/lib/codemirror.js') }}"></script>
-    <link rel="stylesheet" href="{{ static('/codemirror-5.37.0/dist/lib/codemirror.css') }}"/>
-    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/clike/clike.js') }}"></script>
-    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/go/go.js') }}"></script>
-    {# <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/rust/rust.js') }}"></script> #}
-    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/ruby/ruby.js') }}"></script>
-    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/mode/python/python.js') }}"></script>
-    <script type="text/javascript" src="{{ static('/codemirror-5.37.0/dist/keymap/sublime.js') }}"></script>
-    <link href="{{ static('css/problem/problem_detail.css') }}" rel="stylesheet" />
-    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>
-{% endblock extra_head %}
-
 {% block title %}
     <title> Lutece | {{prob.title}} </title>
 {% endblock title %}

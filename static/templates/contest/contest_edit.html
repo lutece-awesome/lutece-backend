@@ -208,6 +208,16 @@
         }
 
         Pewview( 'note-textarea' , 'note-textarea-render' );
+        renderMathInElement(
+            document.body,
+            {
+                delimiters : [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},                    
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+        });
         $('#visible-checkbox').checkbox();
         $('#register-checkbox').checkbox();
         {%  if contest.visible == True %}
@@ -274,7 +284,7 @@
                 },
                 function(data,status){
                     if( status == 'success' && data.status == true ){
-                        window.location = '{{ url( "contest-detail" , args = (contest.pk,) ) }} '
+                        window.location = '{{ url( "contest-overview" , args = (contest.pk,) ) }} '
                     }else{
                         $('#submit-form')
                             .removeClass( 'loading disabled positive' )

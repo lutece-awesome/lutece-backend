@@ -47,6 +47,10 @@ def timedeltaformat( s ):
         ) + last
     return last
 
+def I2S( it ):
+    return chr( it + ord('A') )
+
+
 def environment(**options):
     env = Environment(**options)
     env.filters['nl2br'] = nl2br
@@ -54,6 +58,7 @@ def environment(**options):
     register_language( env )
     env.filters['append_query_parameters'] = append_query_parameters
     env.filters['timedeltaformat'] = timedeltaformat
+    env.filters['I2S'] = I2S
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,

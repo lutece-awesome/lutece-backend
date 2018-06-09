@@ -1,0 +1,28 @@
+{% extends 'contest/contest_template.html' %}
+
+{% block tab_page %}
+    <div class = 'contest problem'>
+        <table class = "ui basic fixed padded table bordered" >
+            <thread>
+                <tr>
+                    <th> Title </th>
+                    <th> Accepted / Rejected </th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for each in prob %}
+                    <tr>
+                        <td> {{ each.title }} </td>
+                        <td> 0 / 0 </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#tab-problem').trigger( 'click' );
+        })
+    </script>
+{% endblock  %}
