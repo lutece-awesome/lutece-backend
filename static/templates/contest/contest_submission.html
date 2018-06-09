@@ -17,6 +17,49 @@
                 <a class="icon item" href = {{ url('contest-submission' , args = ( contest.pk ,max_page) ) }} ><i class="angle double right icon"></i></a>
             </span>
         </div>
+        
+        <table class = "ui selectable very padded padded table" style = 'text-align:center;' >
+            <thread>
+                    <div class = 'status list menu'>
+                        <tr>
+                            <th>ID</th>
+                            <th>When</th>
+                            <th>Problem</th>
+                            <th>Verdict</th>
+                            <th>Time</th>
+                            <th>Memory</th>
+                            <th>Language</th>
+                        </tr>
+                    </div>
+            </thread>
+                <tbody>
+                    {% for it in statuslist %}
+                        <tr>
+                            <td><a href = {{ url('submission-status-detail' , args = (it.submission_id,) ) }}> {{it.submission_id}} </a></td>
+                            <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
+                            <td><a href = {{ url('problem-detail' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
+                            <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = '{{ it.judge_status | get_judge_result_icon }}'></i><b>{{ it.judge_status }}</b></td>
+                            {% if it.completed %}
+                                <td>
+                                    {% if it.judge_status | check_judge_result_in_listshow_field %}
+                                        <b>{{ it.get_time_cost }} ms</b>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if it.judge_status | check_judge_result_in_listshow_field == True %}
+                                        <b>{{ it.get_memory_cost }} KiB</b>
+                                    {% endif %}
+                                </td>
+                            {% else %}
+                                <td><i class = 'ui help icon'></i></td>
+                                <td><i class = 'ui help icon'></i></td>
+                            {% endif %}
+                            <td>{{it.language}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+
 
 
         <script>

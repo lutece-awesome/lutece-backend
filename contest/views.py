@@ -179,12 +179,13 @@ def get_contest_submission( request , pk , page ):
     contest = get_object_or_None( Contest , pk = pk )
     sub_all = Submission.objects.filter( contest = contest )
     paginator = Paginator(sub_all, config.PER_PAGE_COUNT)
-    submission_li = paginator.get_page(page)
+    statuslist = paginator.get_page(page)
     page = min( max( 1 , page ) , paginator.num_pages )
     return render(request, 'contest/contest_submission.html', {
         'contest' : contest,
         'now' : datetime.now(),
         'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
+        'statuslist' : statuslist,
         'currentpage' : page,
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages ) })

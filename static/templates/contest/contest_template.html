@@ -69,6 +69,7 @@
                     location.reload();
             },
         });
+        $('#runtime-progress').progress( 'set duration' , '0ms' );
         function UpdateTimer(){
             $('#runtime-progress').progress( 'set progress' , cur ++ );
             cur = Math.min( cur , total );
