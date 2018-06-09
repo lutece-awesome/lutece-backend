@@ -30,8 +30,8 @@
                 <div class="ui top attached tabular menu">
                     <a class="item" data-tab="overview" id = 'tab-overview' onclick = "window.location='{{ url( "contest-overview" , args = ( contest.pk , ) ) }}'"  >Overview</a>
                     <a class='item' data-tab='problem' id = 'tab-problem' onclick = "window.location='{{ url( "contest-problem-list" , args = ( contest.pk , ) ) }}'" >Problem</a>
-                    <a class="item" data-tab="clarification" id ='tab-clarification' >Clarification</a>
-                    <a class="item" data-tab="submission" id = 'tab-submission' >Submission</a>
+                    <a class="item" data-tab="clarification" id ='tab-clarification'>Clarification</a>
+                    <a class="item" data-tab="submission" id = 'tab-submission' onclick = "window.location='{{ url( "contest-submission" , args = ( contest.pk , 1 ) ) }}'" >Submission</a>
                     <a class="item" data-tab="rank" id = 'tab-rank' >Rank</a>
                     {% block extra_item %}
                     {% endblock %}
