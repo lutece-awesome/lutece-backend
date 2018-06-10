@@ -107,6 +107,8 @@ def update_contest( request , pk ):
                 err.append( 'Problem id can not be empty' )
             elif get_object_or_None( Problem , pk = int(each) ) is None:
                 err.append( 'Unknown problem id: ' + each )
+        if len( prob ) != len( set( prob ) ):
+            err.append( 'Problems should unique' )
         if len( title ) == 0:
             err.append( 'Title can not be empty' )
         if end_time <= start_time:

@@ -31,8 +31,8 @@
                     <a class="active item" data-tab="overview" id = 'tab-overview'　>Overview</a>
                     <a class='item' data-tab='problem' id = 'tab-problem'>Problem</a>
                     <a class='item' data-tab='detail' id = 'tab-detail'>Detail</a>
+                    <a class="item" data-tab="submission" onclick='transfer_submission(1)' id = 'tab-submission' >Submission</a>
                     <a class="item" data-tab="clarification" id ='tab-clarification'>Clarification</a>
-                    <a class="item" data-tab="submission" id = 'tab-submission' >Submission</a>
                     <a class="item" data-tab="rank" id = 'tab-rank' >Rank</a>
                 </div>
 
@@ -40,15 +40,15 @@
                 <div class="ui bottom attached tab segment" data-tab="problem" id = 'problem-content' ></div>
 
                 <div class="ui bottom attached tab segment" data-tab="detail" id = 'detail-content' >
-                    <div style = 'margin-top:20px;'>
+                    <div style = 'margin-top:10px;'>
                         {% for x in problem_num %}
                             <div class = 'ui tab' style = 'display:none;min-height:200px;' data-url=" {{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }} " id = 'problem-detail-content-{{ loop.index0 }}' ></div>
                         {% endfor %}
                     </div>
                 </div>
 
+                <div class="ui bottom attached tab segment" data-tab="submission" id = 'submission-content' ></div>
                 <div class="ui bottom attached tab segment" data-tab="clarification"></div>
-                <div class="ui bottom attached tab segment" data-tab="submission"></div>
                 <div class="ui bottom attached tab segment" data-tab="rank"></div>
                 
             </div>
@@ -92,22 +92,38 @@
                 setTimeout( "UpdateTimer()" , 1000 );
         }
         UpdateTimer();
-        $('#tab-overview,#tab-problem,#tab-clarification,#tab-submission,#tab-rank').tab({
+
+        function transfer_submission( page ){
+            let s = get_prefix_url( "{{ url('contest-submission' , args = ( contest.pk , 1 )) }}" , 1 ) + '/' + String( page );
+            $('#tab-submission').tab({
+                cache: false,
+                apiSettings: {
+                    mockResponseAsync: function(settings,callback) {
+                        $.get(
+                            s,
+                            function(result){ callback( result ); }
+                        );
+                    },
+                },
+                context : 'parent',
+                auto : true,
+            })
+            $('#tab-submission').tab( 'change tab' , 'submission' );
+        }
+
+        $('#tab-overview,#tab-problem,#tab-clarification,#tab-rank').tab({
             cache: true,
             apiSettings: {
                 mockResponseAsync: function(settings,callback) {
-                    let response = {
+                    let router = {
                         overview  : '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
                         problem : '{{ url( "contest-problem-list" , args = ( contest.pk , ) )}}',
                         clarification : 'AJAX Tab Two',
-                        submission  : '{{ url( "contest-submission" , args = ( contest.pk , 1 ) ) }}',
                         rank : 'Ajax tab four',
                     };
                     $.get(
-                        response[settings.urlData.tab],
-                        function(result){ 
-                            callback( result );
-                        }
+                        router[settings.urlData.tab],
+                        function(result){ callback( result ); }
                     );
                 },
             },
@@ -186,5 +202,7 @@
         };
         Problem_Detail.init();
         $('#tab-overview').tab('change tab' , 'overview' );
+
+
     </script>
 {% endblock content %}

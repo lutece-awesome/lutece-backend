@@ -14,7 +14,7 @@
                 <tr>
                     <td> {{ loop.index0 | I2S }} </td>
                     <td>
-                        <a onclick = "Problem_Detail.click( {{ loop.index0 }} )" data-url = '{{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }}' >
+                        <a href = "javascript:Problem_Detail.click( {{ loop.index0 }} )" data-url = '{{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }}' >
                             {{ each.title }} 
                         </a>
                     </td>
