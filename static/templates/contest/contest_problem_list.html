@@ -1,28 +1,28 @@
-{% extends 'contest/contest_template.html' %}
-
-{% block tab_page %}
-    <div class = 'contest problem'>
-        <table class = "ui basic fixed padded table bordered" >
-            <thread>
+<div style = 'margin-top:5px;' >
+    <table class = "ui basic fixed padded table bordered" style = 'text-align:center;' >
+        <thread>
+            <tr>
+                <th> ID </th>
+                <th> Title </th>
+                <th> Accepted / Rejected </th>
+                <th> Ratio </th>
+                <th> Status </th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for each in prob %}
                 <tr>
-                    <th> Title </th>
-                    <th> Accepted / Rejected </th>
+                    <td> {{ loop.index0 | I2S }} </td>
+                    <td>
+                        <a onclick = "Problem_Detail.click( {{ loop.index0 }} )" data-url = '{{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }}' >
+                            {{ each.title }} 
+                        </a>
+                    </td>
+                    <td> 0 / 0 </td>
+                    <td> 0.00% </td>
+                    <td> <i class = 'check icon'></i> </td>
                 </tr>
-            </thread>
-            <tbody>
-                {% for each in prob %}
-                    <tr>
-                        <td> {{ each.title }} </td>
-                        <td> 0 / 0 </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <script>
-        $(document).ready(function(){
-            $('#tab-problem').trigger( 'click' );
-        })
-    </script>
-{% endblock  %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

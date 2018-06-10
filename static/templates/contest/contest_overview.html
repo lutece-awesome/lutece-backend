@@ -1,62 +1,57 @@
-{% extends 'contest/contest_template.html' %}
 
-{% block tab_page %}
-    <div class="ui bottom attached tab segment" data-tab="overview">
-        {% if perms.contest.change_contest %}
-            <a href = '{{ url( "contest-edit" , args = ( contest.pk , ) ) }}' class="ui blue ribbon label">Edit</a>
-        {% endif %}
-        <table class = "ui basic fixed padded table bordered raised segment" style='text-align:center;'>
-            <thread>
-                <tr>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Length</th>
-                    <th>Type</th>
-                    {% if contest.register == True %}
-                        <th>Register</th>
-                    {% endif %}
-                </tr>
-            </thread>
-            <tbody>
-                <tr>
-                    <td>{{ contest.start_time }} </td>
-                    <td>{{ contest.end_time }} </td>
-                    <td>{{ (contest.end_time - contest.start_time) | timedeltaformat }} </td>
-                    <td>{{ contesttype.value.full }}</td>
-                    {% if contest.register == True %}
-                        <td><div class = 'ui primary button'>Check</div></td>
-                    {% endif %}
-                </tr>
-            </tbody>
-        </table>
+<div style = 'margin-top:5px;' >
+    {% if perms.contest.change_contest %}
+        <a href = '{{ url( "contest-edit" , args = ( contest.pk , ) ) }}' class="ui blue ribbon label">Edit</a>
+    {% endif %}
+    <table class = "ui basic fixed padded table bordered raised segment" style='text-align:center;'>
+        <thread>
+            <tr>
+                <th>Start</th>
+                <th>End</th>
+                <th>Length</th>
+                <th>Type</th>
+                {% if contest.register == True %}
+                    <th>Register</th>
+                {% endif %}
+            </tr>
+        </thread>
+        <tbody>
+            <tr>
+                <td>{{ contest.start_time }} </td>
+                <td>{{ contest.end_time }} </td>
+                <td>{{ (contest.end_time - contest.start_time) | timedeltaformat }} </td>
+                <td>{{ contesttype.value.full }}</td>
+                {% if contest.register == True %}
+                    <td><div class = 'ui primary button'>Check</div></td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
 
-        {% if contest.note | length > 0 %}
-            <div style = 'margin-top:20px;'>
-                <div class="ui attached message">
-                    <div class="header">
-                        Note
-                    </div>
+    {% if contest.note | length > 0 %}
+        <div style = 'margin-top:20px;'>
+            <div class="ui attached message">
+                <div class="header">
+                    Note
                 </div>
-                <div class="ui attached segment" id = 'note'>{{ contest.note | nl2br }}</div>
             </div>
-        {% endif %}
+            <div class="ui attached segment" id = 'note'>{{ contest.note | nl2br }}</div>
+        </div>
+    {% endif %}
 
-        <script>
-            $('#note').html( marked( $('#note').text() ) );
-            renderMathInElement(
-                document.body,
-                {
-                    delimiters : [
-                        {left: "$$", right: "$$", display: true},
-                        {left: "$", right: "$", display: false},                    
-                        {left: "\\[", right: "\\]", display: true},
-                        {left: "\\(", right: "\\)", display: false}
-                    ]
-            });
-            $(document).ready(function(){
-                $('#tab-overview').trigger( 'click' );
-            })
-        </script>
+    <script>
+        $('#note').html( marked( $('#note').text() ) );
+        renderMathInElement(
+            document.body,
+            {
+                delimiters : [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},                    
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+        });
+        $('#tab-overview').addClass( 'active' );
+    </script>
 
-    </div>
-{% endblock  %}
+</div>

@@ -25,9 +25,12 @@ def submit_solution(request):
     err = status['errlist']
     try:
         if request.method == 'POST':
+            print( 'enter' )
+            from contest.models import Contest
             problemid = request.POST.get( 'problemid' )
             code = request.POST.get( 'code' )
             lang = request.POST.get( 'language' )
+            contest = get_object_or_None( Contest , pk = request.POST.get( 'contest' ) )
             problem = Problem.objects.get( pk = problemid )
             if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
                 raise ValueError( "Permission Denied" )
@@ -40,6 +43,7 @@ def submit_solution(request):
                 problem = problem,
                 case_number = get_case_number( problemid ),
                 judge_status = Judge_result.PD.value.full,
+                contest = contest,
                 code = code)
             s.save()
             Submission_task.apply_async( args = (s.get_push_dict() ,) , queue = settings.TASK_QUEUE )
@@ -48,7 +52,6 @@ def submit_solution(request):
             status['status'] = True
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
-
 
 def get_status_list(request , page):
     statuslist = Submission.objects.filter( contest = None )

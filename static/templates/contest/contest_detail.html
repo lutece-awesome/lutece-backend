@@ -1,0 +1,190 @@
+{% extends "base/base.html" %}
+
+{% block extra_head %}
+    <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
+    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>    
+{% endblock extra_head %}
+
+{% block content %}
+    <div class = 'contest detail'>
+        <div class = 'ui one column grid'>
+
+            <div class = 'column'>
+                <h1 style = 'text-align:center'> {{ contest.title }} </h1>
+            </div>
+
+            <div class = 'column'>
+                <div class = "ui indicating progress" id = 'runtime-progress' >
+                    <div class = "bar">
+                        <div class="progress"></div>
+                    </div>
+                    <div class = "label" style = 'font-size:16px;margin-top:10px;' >
+                        <i class = '{{ conteststatus.value.icon }}' style = 'color:{{ conteststatus.value.color }};' ></i> <span style = 'color:{{ conteststatus.value.color }};'><b>{{ conteststatus.value.full }}</b><span id = 'time-show' ></span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class = 'column'>
+                <div class="ui top attached tabular menu">
+                    <a class="active item" data-tab="overview" id = 'tab-overview'　>Overview</a>
+                    <a class='item' data-tab='problem' id = 'tab-problem'>Problem</a>
+                    <a class='item' data-tab='detail' id = 'tab-detail'>Detail</a>
+                    <a class="item" data-tab="clarification" id ='tab-clarification'>Clarification</a>
+                    <a class="item" data-tab="submission" id = 'tab-submission' >Submission</a>
+                    <a class="item" data-tab="rank" id = 'tab-rank' >Rank</a>
+                </div>
+
+                <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-content' ></div>
+                <div class="ui bottom attached tab segment" data-tab="problem" id = 'problem-content' ></div>
+
+                <div class="ui bottom attached tab segment" data-tab="detail" id = 'detail-content' >
+                    <div style = 'margin-top:20px;'>
+                        {% for x in problem_num %}
+                            <div class = 'ui tab' style = 'display:none;min-height:200px;' data-url=" {{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }} " id = 'problem-detail-content-{{ loop.index0 }}' ></div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="ui bottom attached tab segment" data-tab="clarification"></div>
+                <div class="ui bottom attached tab segment" data-tab="submission"></div>
+                <div class="ui bottom attached tab segment" data-tab="rank"></div>
+                
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        var start_time = new Date('{{ contest.start_time }}');
+        var end_time = new Date('{{ contest.end_time}}' );
+
+        function get_progress_text(){
+            let c = Math.abs(cur);
+            let hour =  Math.floor(c / 3600); c %= 3600;
+            let min = Math.floor(c / 60); c %= 60;
+            let smin = String( min );
+            let sc = String( c );
+            if( smin.length < 2 ) smin = "0" + smin;
+            if( sc.length < 2 ) sc = "0" + sc;
+            return " ( " + String( hour ) + ":" + smin + ":" + sc + " )";
+        }
+        var total = parseInt({{ (contest.end_time - contest.start_time).total_seconds() }});
+        var cur = parseInt({{ (now - contest.start_time).total_seconds() }});
+        var base = cur;
+        $('#runtime-progress').progress({
+            total : total,
+            onSuccess: function(){
+                if( base < total )
+                    location.reload();
+            },
+        });
+        function UpdateTimer(){
+            $('#runtime-progress').progress( 'update progress' , cur ++ );
+            cur = Math.min( cur , total );
+            if( cur == 0 ){
+                location.reload();
+                return;
+            }
+            $('#time-show').text( get_progress_text() );
+            if( cur < total )
+                setTimeout( "UpdateTimer()" , 1000 );
+        }
+        UpdateTimer();
+        $('#tab-overview,#tab-problem,#tab-clarification,#tab-submission,#tab-rank').tab({
+            cache: true,
+            apiSettings: {
+                mockResponseAsync: function(settings,callback) {
+                    let response = {
+                        overview  : '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
+                        problem : '{{ url( "contest-problem-list" , args = ( contest.pk , ) )}}',
+                        clarification : 'AJAX Tab Two',
+                        submission  : '{{ url( "contest-submission" , args = ( contest.pk , 1 ) ) }}',
+                        rank : 'Ajax tab four',
+                    };
+                    $.get(
+                        response[settings.urlData.tab],
+                        function(result){ 
+                            callback( result );
+                        }
+                    );
+                },
+            },
+            context : 'parent',
+            auto : true,
+        });
+        $('#tab-detail').tab();
+        var Problem_Detail = {
+
+            _content: null,
+            _cache : null,
+            _running : null,
+            _cur : null,
+
+            init : function(){
+                this._content = new Array();
+                this._cache = new Array();
+                this._running = new Array();
+                for(let i = 0 ; i < {{ problem_num | length }} ; ++ i ){
+                    this._content.push( $('#problem-detail-content-'+ String( i )) );
+                    this._cache.push( '' );
+                    this._running.push( false );
+                }
+            },
+
+            display: function( index ){
+                this._content[index].css( 'display' , 'block' );
+                if( this._cache[index].length > 0 )
+                    this._content[index].html( this._cache[index] );
+            },
+
+            hide: function( index ){
+                this._content[index].css( 'display' , 'none' );
+                this._content[index].html('');
+            },
+
+            hide_all: function(){
+                for( let i = 0 ; i < this._content.length ; ++ i)
+                    this.hide( i );
+            },
+
+            get_show_index: function(){
+                for( let i = 0 ; i < this._content.length ; ++ i)
+                    if( this._content[i].css( 'display' ) != 'none' )
+                        return i;
+                return -1;
+            },
+
+
+            show: function( index ){
+                if( this.get_show_index() == this._cur && this._content[index].html().length > 0 ) return;
+                if( this._cur == index ){
+                    this.hide_all();
+                    this.display( index );
+                }
+            },
+
+            click: function( index ){
+                $('#tab-detail').tab('change tab' , 'detail' );                
+                this._cur = index;
+                this.show( index );
+                if( this._running[index] == true || this._cache[index].length > 0 ) return;
+                this._running[index] = true;
+                this._content[index].addClass( 'loading' );
+                let id = index;
+                let obj = this;
+                $.get(
+                    this._content[index].data( 'url' ),
+                    function( result ){
+                        obj._content[id].removeClass( 'loading' );
+                        obj._cache[id] = result;
+                        obj.show( id );
+                    }
+                )
+            }
+        };
+        Problem_Detail.init();
+        $('#tab-overview').tab('change tab' , 'overview' );
+    </script>
+{% endblock content %}
