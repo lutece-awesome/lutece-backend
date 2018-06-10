@@ -1,3 +1,5 @@
 from django.shortcuts import render
+from .models import Discussion
 
-# Create your views here.
+def show_discussions(request, pk):
+    return render(request, "discussion/discussion.html", {'discussions': Discussion.objects.all()})

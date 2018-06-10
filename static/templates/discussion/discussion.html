@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<ul>
+  {% for node in discussions %}
+    {% if node.parent == None %}
+    <li>
+      {{ node }}
+      <ul>
+      {% for node in node.get_children() recursive %}
+          {% set children = node.get_children() %}
+          <li>
+            {{ node }}
+            
+            {% if children %}
+              <ul>{{ loop(children) }}</ul>
+            {% endif %}
+          </li>
+      {% endfor %}
+      </ul>
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% endblock content %}

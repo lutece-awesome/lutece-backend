@@ -39,13 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_gravatar',
     'gunicorn',
+    'mptt',
     # Lutece app
     'contest',
     'problem',
     'user',
     'submission',
     'data_server',
-    'utils'
+    'utils',
+    'discussion'
 ]
 
 MIDDLEWARE = [
