@@ -158,8 +158,6 @@ def get_contest_problem( request , pk , index ):
         'support_lang': get_language_list(),
         'sample': prob.sample_set.all(),
         'contest' : contest,
-        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
-        'now' : datetime.now(),
     })
 
 def get_problem_list( request , pk ):
@@ -167,6 +165,7 @@ def get_problem_list( request , pk ):
     contest = get_object_or_None( Contest , pk = pk )
     return render( request , 'contest/contest_problem_list.html' , {
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
+        'contest' : contest,
     })
 
 def get_contest_submission( request , pk , page ):
@@ -178,8 +177,6 @@ def get_contest_submission( request , pk , page ):
     page = min( max( 1 , page ) , paginator.num_pages )
     return render(request, 'contest/contest_submission.html', {
         'contest' : contest,
-        'now' : datetime.now(),
-        'conteststatus' : get_contest_status( contest.start_time , contest.end_time ),
         'statuslist' : statuslist,
         'currentpage' : page,
         'max_page': paginator.num_pages,

@@ -14,7 +14,7 @@
                 <tr>
                     <td> {{ loop.index0 | I2S }} </td>
                     <td>
-                        <a onclick = "transfor( {{ loop.index0 }} )">
+                        <a onclick = "Problem_Detail.click( {{ loop.index0 }} )" data-url = '{{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }}' >
                             {{ each.title }} 
                         </a>
                     </td>
@@ -26,20 +26,3 @@
         </tbody>
     </table>
 </div>
-
-<script>
-
-    function transfor( id ){
-        $('#problem-content').addClass( 'loading' );
-        $.get(
-            '{{ url( "contest-problem" , args = ( 1 , 0 ) ) }}',
-            function( result ){
-                $("#problem-content")
-                    .html( result )
-                    .removeClass( 'loading' );
-            }
-        )
-    }
-    
-</script>
-
