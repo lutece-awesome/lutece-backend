@@ -193,9 +193,9 @@
                 $.get(
                     this._content[index].data( 'url' ),
                     function( result ){
-                        obj._content[id].removeClass( 'loading' );
                         obj._cache[id] = result;
                         obj.show( id );
+                        obj._content[id].removeClass( 'loading' );
                     }
                 )
             }

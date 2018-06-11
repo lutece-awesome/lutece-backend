@@ -173,12 +173,18 @@ def get_problem_list( request , pk ):
 def get_contest_submission( request , pk , page ):
     from submission.models import Submission
     contest = get_object_or_None( Contest , pk = pk )
-    sub_all = Submission.objects.filter( contest = contest )
-    paginator = Paginator(sub_all, config.PER_PAGE_COUNT)
+    pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
+    sub_all = Submission.objects.filter( contest = contest , user = request.user )
+    _real_sub = list()
+    for each in sub_all:
+        if each.problem.pk in pos_hashtable:
+            _real_sub.append( each )
+    paginator = Paginator(_real_sub, config.PER_PAGE_COUNT)
     statuslist = paginator.get_page(page)
     page = min( max( 1 , page ) , paginator.num_pages )
     return render(request, 'contest/contest_submission.html', {
         'contest' : contest,
+        'pos_hashtable' : pos_hashtable,
         'statuslist' : statuslist,
         'currentpage' : page,
         'max_page': paginator.num_pages,
