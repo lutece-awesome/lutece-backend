@@ -32,8 +32,8 @@
                     {# <a class="ui red ribbon label">黄金会员</a> #}
                     <div class = 'ui two column grid'>
                         <div class = 'column'>
-                            <div class = 'ui card' style = 'max-width:250px;' >
-                                <img class = 'ui centered image' style = 'width:250px;height:250px;' src= {{ gravatar_url( email = each_user.user.email , size = 200 ) }} />
+                            <div class = 'ui card' style = 'width:250px;height:420px;' >
+                                <img src= {{ gravatar_url( email = each_user.user.email , size = 250 ) }} />
                                 <div class = 'content' >
                                     <a class="header" href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" style = 'height:24px;' >{{ each_user.user.display_name }}</a>
                                     <div class="meta" style = 'margin-top:5px;'>
@@ -45,9 +45,9 @@
                                     <div><i class="users icon"></i><b>0</b> Followers</div>                                        
                                 </div>
                                 {% if user != each_user.user and user.is_authenticated == True %}
-                                    <div class = 'ui blue bottom attached button' onclick = 'alert("fuck")' > Follow </div>
+                                    <div class = 'ui blue bottom attached button' onclick = 'alert("Coming soon")' > Follow </div>
                                 {% elif user.is_authenticated == True %}
-                                    <div class = 'ui orange bottom attached button' onclick = 'alert("fuck")' > Yourself </div>
+                                    <div class = 'ui orange bottom attached button' onclick = 'alert("Coming soon")' > Yourself </div>
                                 {% endif %}
                             </div>
                         </div>

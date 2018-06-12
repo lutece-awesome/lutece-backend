@@ -1,0 +1,110 @@
+<div class = 'ui edit modal' style = 'min-height:400px;min-width:300px;'>
+    <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'edit icon'></i> Edit </div>
+    <div class="image content">
+        <div class="ui medium image">
+            <img src = {{ gravatar_url( email = target_user.email , size = 200 ) }} >
+            <div style = 'margin-top:10px'><a href = 'https://cn.gravatar.com/'><i class = 'hand point right outline icon'></i> Want to change photot?</a></div>
+        </div>
+        <div class="description" style = 'width:50%;'>
+            <div data-tooltip = "Display name" data-position="top left" class="ui fluid left icon input" id = 'display_name-info' style = 'margin-top:20px;'>
+                <i class = 'user icon'> </i>
+                <input type ="text" value= "{{ target_user.display_name }}" maxlength = 16 >
+            </div>
+            <div data-tooltip = "School" data-position="top left" class="ui fluid left icon input" id = 'school-info' style = 'margin-top:15px;' >
+                <i class = 'university icon'></i>
+                <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 60 >
+            </div>
+            <div data-tooltip = "Company" data-position="top left" class="ui fluid left icon input" id = 'company-info' style = 'margin-top:15px;'>
+                <i class = 'shopping bag icon'></i>
+                <input type ="text" value= "{{ info.company }}" maxlength = 32 >
+            </div>
+            <div data-tooltip = "Location" data-position="top left" class="ui fluid left icon input" id = 'location-info' style = 'margin-top:15px;'>
+                <i class = 'map marker alternate icon'></i>
+                <input type ="text" value= "{{ info.location }}" maxlength = 32 >
+            </div>
+        </div>
+    </div>
+    <div class = 'ui divider'></div>
+    <textarea class="ui fluid container segment" id = 'about-info' style = 'min-height:100px;'>{{ info.about }}</textarea>
+    <div class="actions">
+        <div class="ui positive right labeled icon button" id = 'edit-submit-button'>
+            Submit
+            <i class="chevron right icon"></i>
+        </div>
+    </div>
+    <div id = "user-edit-error" class="ui negative message transition hidden" style = 'margin-top:10px;'></div>
+    <script>
+        $('#edit-button').click(function(){
+            $('.ui.edit.modal').modal({
+                onApprove : function() {
+                    return false;
+                }
+            });
+            $('.ui.edit.modal')
+                .modal('setting', 'transition', 'vertical flip')
+                .modal('show')
+            ;
+        })
+
+        var cal = new CalHeatMap();
+        var previous_one_year = new Date();
+        previous_one_year.setMonth(previous_one_year.getMonth() - 11);        
+        cal.init({
+            domain: "month",
+            subDomain: "day",
+            tooltip: true,
+            cellRadius : 3,
+            domainGutter : 10,
+            cellSize: 10,
+            rowLimit: 7,
+            label:{
+                position : 'top',
+                align: 'center',
+            },
+            legendHorizontalPosition: "right",
+            start: previous_one_year,
+            itemName: ['submission' , 'submissions'],
+            data: "{{ url( 'submission-get-activity' , args = ( target_user.pk, ) ) }}"
+        });
+        
+        {% if user == target_user %}
+            $('#edit-submit-button').click(function(){
+                var about = $('#about-info').val();
+                var school = $('#school-info > input').val();
+                var company = $('#company-info > input').val();
+                var _location = $('#location-info > input').val();
+                var display_name = $('#display_name-info > input').val();
+
+                $(this).addClass( 'disabled loading' );
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                $.post(
+                    '{{ url("user-infomodify") }}',
+                    {
+                        'about' : about,
+                        'school' : school,
+                        'company' : company,
+                        'location' : _location,
+                        'display_name' : display_name
+                    },
+                    function(data,status){
+                        if( status == 'success'  && data.status == true ){
+                            location.reload();
+                        }else{
+                            $('#edit-submit-button')
+                                .removeClass( 'loading disabled positive' )
+                                .addClass('red')
+                            ;
+                            $('#user-edit-error')
+                                .empty()
+                                .removeClass( 'hidden' )
+                                .append(get_error_msgText( data.error_msg ))
+                            ;
+                        }
+                    }
+                )
+            });
+        {% endif %}
+    </script>
+</div>

@@ -174,7 +174,10 @@ def get_contest_submission( request , pk , page ):
     from submission.models import Submission
     contest = get_object_or_None( Contest , pk = pk )
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
-    sub_all = Submission.objects.filter( contest = contest , user = request.user )
+    if request.user.is_authenticated:
+        sub_all = Submission.objects.filter( contest = contest , user = request.user )
+    else:
+        sub_all = list()
     _real_sub = list()
     for each in sub_all:
         if each.problem.pk in pos_hashtable:
