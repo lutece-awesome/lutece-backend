@@ -46,26 +46,6 @@
             ;
         })
 
-        var cal = new CalHeatMap();
-        var previous_one_year = new Date();
-        previous_one_year.setMonth(previous_one_year.getMonth() - 11);        
-        cal.init({
-            domain: "month",
-            subDomain: "day",
-            tooltip: true,
-            cellRadius : 3,
-            domainGutter : 10,
-            cellSize: 10,
-            rowLimit: 7,
-            label:{
-                position : 'top',
-                align: 'center',
-            },
-            legendHorizontalPosition: "right",
-            start: previous_one_year,
-            itemName: ['submission' , 'submissions'],
-            data: "{{ url( 'submission-get-activity' , args = ( target_user.pk, ) ) }}"
-        });
         
         {% if user == target_user %}
             $('#edit-submit-button').click(function(){

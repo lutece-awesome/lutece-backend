@@ -20,6 +20,7 @@ class Submission(models.Model):
     completed = models.BooleanField( default = False )
     case_number = models.IntegerField( default = 0 )
     contest = models.ForeignKey( Contest , on_delete = models.CASCADE , null = True , db_index = True )
+    errmsg = models.CharField( max_length = 512 , default = '' )
     class Meta:
         ordering = ['-submission_id']
         permissions = (

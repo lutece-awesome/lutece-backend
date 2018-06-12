@@ -50,6 +50,7 @@
 
             <div class = 'twelve wide column'>
                 <div class = 'ui header'>Activity </div>
+                <div id = 'total-submisison'></div>
                 <div class = 'ui raised segment' id = 'cal-heatmap' style = 'position:relative' ></div>
                 <div class = 'ui header'>Recently </div>
                 <div class = 'one column grid'>
@@ -103,6 +104,35 @@
 
     
     </div>
+
+    <script>
+        var cal = new CalHeatMap();
+        var previous_one_year = new Date();
+        previous_one_year.setMonth(previous_one_year.getMonth() - 11);        
+        cal.init({
+            domain: "month",
+            subDomain: "day",
+            tooltip: true,
+            cellRadius : 3,
+            domainGutter : 10,
+            cellSize: 10,
+            rowLimit: 7,
+            label:{
+                position : 'top',
+                align: 'center',
+            },
+            legendHorizontalPosition: "right",
+            start: previous_one_year,
+            itemName: ['submission' , 'submissions'],
+            data: "{{ url( 'submission-get-activity' , args = ( target_user.pk, ) ) }}",
+            afterLoadData: function(data){
+                let length = 0 ;
+                for( each in data ) ++ length;
+                $('#total-submisison').html( '<b>' + String(length) + '</b> submissions during the last year.' );
+                return data;
+            }
+        });
+    </script>
 
     {% include 'user/user_edit.html' %}
 

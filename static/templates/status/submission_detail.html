@@ -1,13 +1,43 @@
 <div class = 'submission detail'>
-    <div class = 'ui modal' stlye = 'min-height:600px;min-width:600px;'>
-        
+    <head>
+        <link href="{{ static('prism/dist/prism.css') }}" rel="stylesheet" />
+        <link href="{{ static('css/submission/status_detail.css') }}" rel="stylesheet" />
+        <script type="text/javascript" src="{{ static('prism/dist/prism.js') }}"></script>
+    </head>
+
+    <div class = 'ui modal' style = 'width:800px;'>
+        <div class = 'header' style = 'text-align:center;color:orange;' > <i class = 'paper plane outline icon'></i> Submission </div>
+        <div class = 'scrolling content'>
+            <div class ='ui header'> Code </div>
+            <pre><code></code></pre>
+        </div>
+        <div class = 'extra content'>
+            <div class = 'ui header'> Detail </div>
+        </div>
     </div>
 
     <script>
         var Submission_Detail_View = {
             _xhr : null,
             _cur : null,
-            
+            _modal : null,
+
+            init: function(){
+                this._modal = $('.submission.detail > .ui.modal' );
+            },
+
+            request: function( obj ){
+                this._modal.modal( 'show' );
+                if( this._xhr != null )
+                    this._xhr.abort();
+                this._xhr = $.get(
+                    obj.data( 'url' ),
+                    function( data , status ){
+                    }
+                )
+            }
+
         }
+        Submission_Detail_View.init();
     </script>
 </div>

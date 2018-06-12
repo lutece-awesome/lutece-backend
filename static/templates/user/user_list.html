@@ -32,24 +32,26 @@
                     {# <a class="ui red ribbon label">黄金会员</a> #}
                     <div class = 'ui two column grid'>
                         <div class = 'column'>
-                            <div class = 'ui card' style = 'width:250px;height:420px;' >
-                                <img src= {{ gravatar_url( email = each_user.user.email , size = 250 ) }} />
-                                <div class = 'content' >
-                                    <a class="header" href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" style = 'height:24px;' >{{ each_user.user.display_name }}</a>
-                                    <div class="meta" style = 'margin-top:5px;'>
-                                        <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).strftime('%m,%d,%Y') }}</span>
+                            <div class="ui link cards">
+                                <a class = 'ui card' style = 'width:250px;height:380px;' href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" >
+                                    <img src= {{ gravatar_url( email = each_user.user.email , size = 250 ) }} />
+                                    <div class = 'content' >
+                                        <div class="header" style = 'height:24px;' >{{ each_user.user.display_name }}</div>
+                                        <div class="meta" style = 'margin-top:5px;'>
+                                            <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).strftime('%m,%d,%Y') }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="extra content">
-                                    <div><i class = 'address book icon'></i>Joined in {{ each_user.user.date_joined.strftime( '%m,%Y' ) }} </div>
-                                    <div><i class="users icon"></i><b>0</b> Followers</div>                                        
-                                </div>
-                                {% if user != each_user.user and user.is_authenticated == True %}
-                                    <div class = 'ui blue bottom attached button' onclick = 'alert("Coming soon")' > Follow </div>
-                                {% elif user.is_authenticated == True %}
-                                    <div class = 'ui orange bottom attached button' onclick = 'alert("Coming soon")' > Yourself </div>
-                                {% endif %}
+                                    <div class="extra content">
+                                        <div><i class = 'address book icon'></i>Joined in {{ each_user.user.date_joined.strftime( '%m,%Y' ) }} </div>
+                                        <div><i class="users icon"></i><b>0</b> Followers</div>                                        
+                                    </div>
+                                </a>
                             </div>
+                            {% if user != each_user.user and user.is_authenticated == True %}
+                                <div class = 'ui blue attached bottom button' style = 'width:250px;' onclick = 'alert("Coming soon")' > Follow </div>
+                            {% elif user.is_authenticated == True %}
+                                <div class = 'ui orange attached bottom button' style = 'width:250px;' onclick = 'alert("Coming soon")' > Yourself </div>
+                            {% endif %}
                         </div>
                         <div class = 'column' style = 'margin-top:20px;'>
                             <div class = 'ui one column vertically divided grid '>
