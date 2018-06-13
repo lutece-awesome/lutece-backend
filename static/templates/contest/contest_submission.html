@@ -2,15 +2,15 @@
 
     <div>
         <span class="ui pagination menu">
-            <a class="icon item" href = 'javascript:transfer_submission({{1}})' ><i class="angle double left icon"></i></a>
+            <a class="icon item" href = 'javascript:void(0)' onclick = 'Submission_List.request({{1}})' ><i class="angle double left icon"></i></a>
             {% for it in page_list %}
                 {% if it == currentpage %}
-                    <a class="active item" href = 'javascript:transfer_submission({{it}})'  >{{it}}</a>
+                    <a class="active item" href = 'javascript:void(0)' onclick = 'Submission_List.request({{it}})'  >{{it}}</a>
                 {% else %}
-                    <a class="item" href = 'javascript:transfer_submission({{it}})'  >{{it}}</a>
+                    <a class="item" href = 'javascript:void(0)' onclick = 'Submission_List.request({{it}})'  >{{it}}</a>
                 {% endif %}
             {% endfor %}
-            <a class="icon item" href = 'javascript:transfer_submission({{max_page}})' ><i class="angle double right icon"></i></a>
+            <a class="icon item" href = 'javascript:void(0)' onclick = 'Submission_List.request({{max_page}})' ><i class="angle double right icon"></i></a>
         </span>
     </div>
 
@@ -32,9 +32,9 @@
             <tbody>
                 {% for it in statuslist %}
                     <tr>
-                        <td><a href = '{{ url('submission-status-detail' , args = (it.submission_id,) ) }}'> {{it.submission_id}} </a></td>
+                        <td><a> {{it.submission_id}} </a></td>
                         <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
-                        <td><a href = 'javascript:Problem_Detail.click( {{ pos_hashtable[it.problem.pk] }} )' >{{it.problem.title}}</a></td>
+                        <td><a href = 'javascript:void(0)' onclick = 'Problem_Detail.request( {{ pos_hashtable[it.problem.pk] }} )' >{{it.problem.title}}</a></td>
                         <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = '{{ it.judge_status | get_judge_result_icon }}'></i><b>{{ it.judge_status }}</b></td>
                         {% if it.completed %}
                             <td>
