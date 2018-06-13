@@ -1,9 +1,20 @@
-{% extends 'contest/contest_template.html' %}
+<div class = 'contest rank'>
+    <div class = 'ui primary refresh button' ><i class = 'sync icon'></i> Refresh </div>
+    <table class="ui celled padded striped table" style = 'width:auto'>
+        <thread>
+            <tr style = 'text-align:center;'>
+                <th style = 'width:128px;'>Rank</th>
+                <th style = 'width:256px;' >Who</th>
+                <th style = 'width:128px;' >Solved</th>
+                <th style = 'wdith:128px;' >Penalty</th>
+                {% for each in problem_num %}
+                    <th style = 'width:128px' >{{ loop.index0 | I2S }}</th>
+                {% endfor %}
+            </tr>
+        </thread>
+        <tbody>
+            
+        </tbody>
+    </table>
 
-{% block tab_page %}
-    
-
-    <script>
-        $('#tab-submission').addClass( 'active' );
-    </script>
-{% endblock %}
+</div>

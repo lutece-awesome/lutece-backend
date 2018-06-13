@@ -33,7 +33,7 @@
                     <a class='item' data-tab='detail' id = 'tab-detail'>Detail</a>
                     <a class="item" data-tab="submission" onclick='Submission_List.request(1)' id = 'tab-submission' >Submission</a>
                     <a class="item" data-tab="clarification" onclick = 'alert( "coming soon" )'  id ='tab-clarification'>Clarification</a>
-                    <a class="item" data-tab="rank" id = 'tab-rank' >Rank</a>
+                    <a class="item" data-tab="rank" onclick = 'Rank_List.request()' id = 'tab-rank' >Rank</a>
                 </div>
 
                 <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-content' ></div>
@@ -49,7 +49,7 @@
 
                 <div class="ui bottom attached tab segment" data-tab="submission" id = 'submission-content' ></div>
                 <div class="ui bottom attached tab segment" data-tab="clarification"></div>
-                <div class="ui bottom attached tab segment" data-tab="rank"></div>
+                <div class="ui bottom attached tab segment" data-tab="rank" id = 'rank-content' ></div>
                 
             </div>
             
@@ -281,6 +281,48 @@
             }
         };
         Submission_List.init();
+    </script>
+
+    {#
+        Clarification script
+    #}
+    <script>
+    </script>
+
+
+    {#
+        Rank List script
+    #}
+    <script>
+        var Rank_List = {
+            _content : null,
+            _running : null,
+            _cache : null,
+
+            init : function(){
+                this._content = $('#rank-content' );
+                this._running = false;
+                this._cache = '';
+            },
+
+            request: function( page , force = false ){
+                $('#tab-submission').tab('change tab' , 'submission' );
+                if( this._running == true || this._cache.length > 0 ) return;
+                this._running = true;
+                this._content.addClass( 'loading' );
+                let obj = this;
+                $.get(
+                    "{{ url('contest-rank' , args = ( contest.pk , )) }}",
+                    function( data ){
+                        obj._cache = data;
+                        obj._content.html( data );
+                        obj._content.removeClass( 'loading' );
+                        obj._running = false;
+                    }
+                )
+            }
+        };
+        Rank_List.init();
     </script>
 
 {% endblock content %}

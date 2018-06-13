@@ -202,3 +202,11 @@ def get_contest_detail( request , pk ):
         'problem_num' : range( len(contest.contestproblem_set.all()) ),
         'now' : datetime.now(),
         'conteststatus' : get_contest_status( contest.start_time , contest.end_time ) })
+
+
+def get_contest_rank( request , pk ):
+    contest = get_object_or_None( Contest , pk = pk )
+    return render( request , 'contest/contest_rank.html' , {
+        'contest' : contest,
+        'problem_num' : range( len(contest.contestproblem_set.all()) ),
+    })
