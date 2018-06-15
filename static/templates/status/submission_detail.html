@@ -5,12 +5,14 @@
         <script type="text/javascript" src="{{ static('prism/dist/prism.js') }}"></script>
     </head>
 
-    <div class = 'ui modal' style = 'width:800px;'>
-        <div class = 'header' style = 'text-align:center;color:orange;' > <i class = 'paper plane outline icon'></i> Submission </div>
+    <div class = 'ui modal' style = 'width:1000px;'>
+        <div class = 'header' style = 'text-align:center;color:orange;' > <i class = 'globe icon'></i> Submission </div>
         <div class = 'scrolling content'>
             <div class ='ui header'> Code </div>
-            <pre><code></code></pre>
+            <div class = 'ui text disabled loader' ></div>
+            <pre style = 'min-height:50px;' ><code id = 'submission-detail-codearea' class = 'language-cpp'></code></pre>
         </div>
+        <div class = 'ui divider'></div>
         <div class = 'extra content'>
             <div class = 'ui header'> Detail </div>
         </div>
@@ -18,25 +20,104 @@
 
     <script>
         var Submission_Detail_View = {
-            _xhr : null,
-            _cur : null,
             _modal : null,
+            _cur : null,
+            _loading : null,
+            _content : null,
 
-            init: function(){   
+            _code :{
+                _content : {},
+                _running : {},
+                _highlight : {},
+
+                isrunning: function( url ){
+                    return this._running[url] == true ? true : false;
+                },
+
+                cached : function( url ){
+                    return this._content[url] != undefined ? true : false;
+                },
+
+                get_content: function( url ){
+                    return this._content[url];
+                },
+
+                get_highlight: function( url ){
+                    return this._highlight[url];
+                },
+
+                register_cache: function( url , content , highlight ){
+                    this._content[url] = content;
+                    this._highlight[url] = highlight;
+                },
+
+                set_running: function( url ){
+                    this._running[url] = true;
+                },
+
+                stop_running: function( url ){
+                    this._running[url] = false;
+                }
+            },
+
+            init: function(){
                 this._modal = $('.submission.detail > .ui.modal' );
+                this._loading = $('.submission.detail .ui.text.loader');
+                this._content = $('#submission-detail-codearea');
+                this._cur = null;
+                this._modal.modal({
+                    onHidden: function(){
+                        Submission_Detail_View._content.html( ' ' );
+                        Submission_Detail_View._loading.addClass( 'disabled' );
+                        Submission_Detail_View._content.removeClass();
+                        Submission_Detail_View._cur = null;
+                    }
+                });
+            },
+
+            remove_content_allclass: function(){
+                this._content.removeClass();
+            },
+
+            show: function( url ){
+                if( url == this._cur ){
+                    this.remove_content_allclass();
+                    this._content.text( this._code.get_content( url ) );
+                    this._content.addClass( this._code.get_highlight( url ) );
+                    Prism.highlightElement( this._content[0] );
+                }
+            },
+
+            coderequest: function( url ){
+                this._cur = url;
+                if( this._code.cached( url ) ){
+                    this.show( url );
+                    return;
+                }
+                else if( this._code.isrunning( url ) ){
+                    this._loading.removeClass( 'disabled');
+                    return;
+                }
+                this._code.set_running( url );
+                this._loading.removeClass( 'disabled');
+                let obj = this;
+                let re = url;
+                $.get(
+                    url,
+                    function( data ){
+                        obj._code.register_cache( re , data.code , data.prism );
+                        if( obj._cur == re ){
+                            obj._loading.addClass( 'disabled' );
+                            obj.show( re );
+                        }
+                    }
+                )
             },
 
             request: function( obj ){
                 this._modal.modal( 'show' );
-                if( this._xhr != null )
-                    this._xhr.abort();
-                this._xhr = $.get(
-                    obj.data( 'url' ),
-                    function( data , status ){
-                    }
-                )
+                this.coderequest( obj.data( 'code' ) );
             }
-
         }
         Submission_Detail_View.init();
     </script>

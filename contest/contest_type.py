@@ -28,10 +28,10 @@ class ContestType( Enum ):
         full = 'ACM-ICPC',
         detail = 'ACM-ICPC Style'
     )
-    OI = _meta(
-        full = 'OI( Subtask )',
-        detail = 'OI Subtask Style'
-    )
+    # OI = _meta(
+    #     full = 'OI( Subtask )',
+    #     detail = 'OI Subtask Style'
+    # )
 
 def get_contest_type( result ):
     for x in ContestType:

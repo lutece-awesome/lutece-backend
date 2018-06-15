@@ -94,7 +94,7 @@ def get_status_detail(request , submission_id):
     check_visible_permission_or_404( user = request.user , problem = target.problem )
     return render( request , 'status/status_detail.html' , {
         'status' : target })
-
+        
 def get_status_detail_json( request , submission_id ):
     try:
         status = {
@@ -116,3 +116,21 @@ def get_activity_json( request , user_pk ):
     start_date =  now - datetime.timedelta(days=366)
     s = Submission.objects.filter( user = user , submit_time__date__gt = start_date )
     return HttpResponse( dumps( { int(time.mktime(x.submit_time.timetuple())) : 1 for x in s } ) , content_type = 'application/json' )
+
+
+def get_submission_code( request , pk ):
+    status = {
+        'status' : False,
+        'prism' : '',
+        'code' : ''}
+    from utils.language import get_prism
+    try:
+        sub = Submission.objects.get( pk = pk )
+        if sub.user == request.user or request.user.has_perm( 'submission.view_all' ):
+            status['code'] = sub.code
+            status['status'] = True
+            status['prism'] = get_prism( sub.language )
+        else:
+            code = 'Permission Denied'
+    finally:
+        return HttpResponse( dumps( status ) , content_type = 'application/json' )

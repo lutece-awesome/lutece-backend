@@ -18,7 +18,7 @@
                     <td> {{ loop.index }} </td>
                     <td> {{ each.user.display_name }} </td>
                     <td> {{ each.solvednumber }} </td>
-                    <td> {{ each.penalty | timedeltaformatcontest }} </td>
+                    <td> {{ each.penalty }} </td>
                     {% set problem_set = each.analysis %}
                     {% for each_problem in problem_set %}
                         <td>
@@ -26,12 +26,19 @@
                                 {% set tr = each_problem.try_times %}
                                 {% if each_problem.solved == true %}
                                     {% set tr = tr - 1 %}
-                                    <i class = 'check icon' style = 'color:#21ba45;' ></i>
+                                    {% if each_problem.firstblood == true %}
+                                        <i class = 'thumbs up outline icon' style = 'color:#21ba45;' ></i>
+                                    {% else %}
+                                        <i class = 'check icon' style = 'color:#21ba45;' ></i>
+                                    {% endif %}
                                 {% else %}
                                     <i class = 'times icon' style = 'color:red'></i>
                                 {% endif %}
                                 {% if tr > 0 %}
-                                    ( -{{ tr }} )
+                                    <span>( -{{ tr }} )</span>
+                                {% endif %}
+                                {% if each_problem.solved == true %}
+                                    <div> {{ each_problem.first_solve_timedelta }} </div>
                                 {% endif %}
                             {% endif %}
                         </td>

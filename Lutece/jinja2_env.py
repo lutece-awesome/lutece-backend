@@ -47,15 +47,6 @@ def timedeltaformat( s ):
         ) + last
     return last
 
-def timedeltaformatcontest( s ):
-    seconds = s.seconds
-    hours = seconds // 3600 + s.days * 24
-    seconds = seconds % 3600
-    mins = seconds // 60
-    seconds = seconds % 60
-    last = '%.2d:%.2d:%.2d' % ( hours, mins, seconds )
-    return last
-
 def I2S( it ):
     return chr( it + ord('A') )
 
@@ -67,7 +58,6 @@ def environment(**options):
     register_language( env )
     env.filters['append_query_parameters'] = append_query_parameters
     env.filters['timedeltaformat'] = timedeltaformat
-    env.filters['timedeltaformatcontest'] = timedeltaformatcontest
     env.filters['I2S'] = I2S
     env.globals.update({
         'static': staticfiles_storage.url,

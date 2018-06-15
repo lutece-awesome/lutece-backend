@@ -11,6 +11,7 @@ class ContestProblemAnalysis:
         'try_times',
         'penalty',
         'firstblood',
+        'first_solve_timedelta',
         '_field'
     )
 
@@ -28,3 +29,21 @@ class ContestProblemAnalysis:
     @property
     def attribute(self):
         return { x : getattr( self , x ) for x in self._field }
+    
+def time_format_hms( s ):
+    seconds = s.seconds
+    hours = seconds // 3600 + s.days * 24
+    seconds = seconds % 3600
+    mins = seconds // 60
+    seconds = seconds % 60
+    last = '%.2d:%.2d:%.2d' % ( hours, mins, seconds )
+    return last
+
+def time_format_hm( s ):
+    seconds = s.seconds
+    hours = seconds // 3600 + s.days * 24
+    seconds = seconds % 3600
+    mins = seconds // 60
+    seconds = seconds % 60
+    last = '%.2d:%.2d' % ( hours, mins )
+    return last

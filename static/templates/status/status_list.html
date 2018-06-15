@@ -112,7 +112,7 @@
                 <tbody>
                     {% for it in statuslist %}
                         <tr>
-                            <td><a data-url = "{{ url('submission-status-detail' , args = (it.submission_id,) ) }}" href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{it.submission_id}} </a></td>
+                            <td><a data-code = '{{ url( "submission-code" , args = ( it.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{it.submission_id}} </a></td>
                             <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
                             <td><a href = {{ url('user-detail' , args = (it.user.pk,) ) }}>{{it.user.display_name}}</a></td>                
                             <td><a href = {{ url('problem-detail' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>

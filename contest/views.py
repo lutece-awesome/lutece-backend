@@ -205,7 +205,7 @@ def get_contest_detail( request , pk ):
 
 def get_contest_rank( request , pk ):
     from submission.models import Submission
-    from .util import ContestProblemAnalysis
+    from .util import ContestProblemAnalysis, time_format_hm , time_format_hms
     from datetime import timedelta
     from submission.judge_result import Judge_result, get_judge_result, Query_field
     from user.models import Userinfo
@@ -219,6 +219,7 @@ def get_contest_rank( request , pk ):
         solved = False,
         try_times = 0,
         penalty = timedelta(),
+        first_solve_timedelta = timedelta(),
         firstblood = False
     ) for i , x in enumerate( range( len( pos_hashtable ) ) ) ]
     first_blood_set = set()
@@ -239,6 +240,7 @@ def get_contest_rank( request , pk ):
             ts[_id].try_times += 1
             if se is Judge_result.AC:
                 ts[_id].penalty += each.submit_time - start_time
+                ts[_id].first_solve_timedelta = time_format_hm(each.submit_time - start_time)
                 ts[_id].penalty += timedelta( minutes = 20 * ( ts[_id].try_times - 1 ) )
                 ts[_id].solved = True
                 if _id not in first_blood_set:
@@ -257,7 +259,7 @@ def get_contest_rank( request , pk ):
             'user' : each_user,
             'analysis' : ts,
             'solvednumber' : solvenum,
-            'penalty' : all_penalty,
+            'penalty' : time_format_hms( all_penalty ),
             'display_name' : each_user.display_name
         })
     rank.sort( key = lambda x : ( - x['solvednumber'] , x['penalty'] , x['display_name'] ) )
