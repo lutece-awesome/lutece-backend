@@ -263,6 +263,10 @@
                 this._running = false;
             },
 
+            refresh: function( page ){
+                this.request( page , true );
+            },
+
             request: function( page , force = false ){
                 $('#tab-submission').tab('change tab' , 'submission' );
                 if( this._running == true || ( page == this._cur && force == false ) ) return;
