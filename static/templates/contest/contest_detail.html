@@ -103,7 +103,7 @@
     </script>
 
     {# 
-        Overview Aysnc script
+        Overview script
     #}
     <script>
         var Overview = {
@@ -139,7 +139,7 @@
     </script>
 
     {# 
-        Problem_List Aysnc script
+        Problem_List script
     #}
     <script>
         var Problem_List = {
@@ -298,6 +298,7 @@
             _content : null,
             _running : null,
             _cache : null,
+            _refresh : null,
 
             init : function(){
                 this._content = $('#rank-content' );
@@ -305,8 +306,14 @@
                 this._cache = '';
             },
 
-            request: function( page , force = false ){
-                $('#tab-submission').tab('change tab' , 'submission' );
+            refresh: function(){
+                if( this._running == true ) return;
+                this._cache = '';
+                this.request();
+            },
+
+            request: function(){
+                $('#tab-rank').tab('change tab' , 'rank' );
                 if( this._running == true || this._cache.length > 0 ) return;
                 this._running = true;
                 this._content.addClass( 'loading' );

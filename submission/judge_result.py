@@ -120,11 +120,12 @@ class Judge_result( Enum ):
         regex = compile( '^Judger Error$' )  
     )
 
-@unique
+
 class Query_field( Enum ):
     all_fields = ( Judge_result.PD , Judge_result.PR , Judge_result.AC , Judge_result.RN , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE , Judge_result.JE )
     basic_field = ( Judge_result.AC , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
     listshow_field = ( Judge_result.AC , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
+    contest_field = ( Judge_result.AC , Judge_result.WA , Judge_result.RE, Judge_result.TLE , Judge_result.OLE, Judge_result.MLE )
 
 
 def get_judge_result( result ):

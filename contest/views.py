@@ -14,7 +14,6 @@ from datetime import datetime
 # Create your views here.
 
 
-
 def get_contest_list( request , page ):
     contest_list = Contest.objects.all()
     if not request.user.has_perm( 'contest.view_all' ):
@@ -205,8 +204,65 @@ def get_contest_detail( request , pk ):
 
 
 def get_contest_rank( request , pk ):
+    from submission.models import Submission
+    from .util import ContestProblemAnalysis
+    from datetime import timedelta
+    from submission.judge_result import Judge_result, get_judge_result, Query_field
+    from user.models import Userinfo
+    from copy import deepcopy
+
     contest = get_object_or_None( Contest , pk = pk )
+    start_time = contest.start_time
+    pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
+    sub_all = Submission.objects.filter( contest = contest ).order_by( 'pk' )
+    base = [ ContestProblemAnalysis(
+        solved = False,
+        try_times = 0,
+        penalty = timedelta(),
+        firstblood = False
+    ) for i , x in enumerate( range( len( pos_hashtable ) ) ) ]
+    first_blood_set = set()
+    analy = dict()
+    for each in sub_all:
+        _id = each.problem.pk
+        if _id in pos_hashtable:
+            se = get_judge_result( each.judge_status )
+            if se not in Query_field.contest_field.value:
+                continue
+            user = each.user
+            if user not in analy:
+                analy[user] = deepcopy( base )
+            ts = analy[user]
+            _id = pos_hashtable[_id]
+            if ts[_id].solved:
+                continue
+            ts[_id].try_times += 1
+            if se is Judge_result.AC:
+                ts[_id].penalty += each.submit_time - start_time
+                ts[_id].penalty += timedelta( minutes = 20 * ( ts[_id].try_times - 1 ) )
+                ts[_id].solved = True
+                if _id not in first_blood_set:
+                    ts[_id].firstblood = True
+                    first_blood_set.add( _id )
+    rank = list()
+    for each_user in analy:
+        solvenum = 0
+        ts = analy[each_user]
+        all_penalty = timedelta()
+        for x in ts:
+            if x.solved:
+                solvenum += 1
+                all_penalty += x.penalty
+        rank.append({
+            'user' : each_user,
+            'analysis' : ts,
+            'solvednumber' : solvenum,
+            'penalty' : all_penalty,
+            'display_name' : each_user.display_name
+        })
+    rank.sort( key = lambda x : ( - x['solvednumber'] , x['penalty'] , x['display_name'] ) )
     return render( request , 'contest/contest_rank.html' , {
         'contest' : contest,
-        'problem_num' : range( len(contest.contestproblem_set.all()) ),
+        'problem_num' : range( len( pos_hashtable ) ),
+        'rank' : rank,
     })

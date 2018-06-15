@@ -1,19 +1,43 @@
 <div class = 'contest rank'>
-    <div class = 'ui primary refresh button' ><i class = 'sync icon'></i> Refresh </div>
+    <div class = 'ui small primary button' onclick = 'Rank_List.refresh()'  ><i class = 'sync icon'></i> Refresh </div>
     <table class="ui celled padded striped table" style = 'width:auto'>
         <thread>
             <tr style = 'text-align:center;'>
-                <th style = 'width:128px;'>Rank</th>
-                <th style = 'width:256px;' >Who</th>
-                <th style = 'width:128px;' >Solved</th>
-                <th style = 'wdith:128px;' >Penalty</th>
+                <th style = 'width:150px;'>Rank</th>
+                <th style = 'width:300px;' >Who</th>
+                <th style = 'width:150px;' >Solved</th>
+                <th style = 'wdith:150px;' >Penalty</th>
                 {% for each in problem_num %}
-                    <th style = 'width:128px' >{{ loop.index0 | I2S }}</th>
+                    <th style = 'width:150px' >{{ loop.index0 | I2S }}</th>
                 {% endfor %}
             </tr>
         </thread>
         <tbody>
-            
+            {% for each in rank %}
+                <tr style = 'text-align:center' >
+                    <td> {{ loop.index }} </td>
+                    <td> {{ each.user.display_name }} </td>
+                    <td> {{ each.solvednumber }} </td>
+                    <td> {{ each.penalty | timedeltaformatcontest }} </td>
+                    {% set problem_set = each.analysis %}
+                    {% for each_problem in problem_set %}
+                        <td>
+                            {% if each_problem.try_times > 0 %}
+                                {% set tr = each_problem.try_times %}
+                                {% if each_problem.solved == true %}
+                                    {% set tr = tr - 1 %}
+                                    <i class = 'check icon' style = 'color:#21ba45;' ></i>
+                                {% else %}
+                                    <i class = 'times icon' style = 'color:red'></i>
+                                {% endif %}
+                                {% if tr > 0 %}
+                                    ( -{{ tr }} )
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

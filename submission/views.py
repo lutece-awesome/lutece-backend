@@ -25,15 +25,18 @@ def submit_solution(request):
     err = status['errlist']
     try:
         if request.method == 'POST':
-            print( 'enter' )
             from contest.models import Contest
             problemid = request.POST.get( 'problemid' )
             code = request.POST.get( 'code' )
             lang = request.POST.get( 'language' )
             contest = get_object_or_None( Contest , pk = request.POST.get( 'contest' ) )
             problem = Problem.objects.get( pk = problemid )
-            if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
-                raise ValueError( "Permission Denied" )
+            if contest is None:
+                if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
+                    raise ValueError( "Permission Denied" )
+            else:
+                # to do , contest submission auth
+                pass
             if len( code ) > config.MAX_SOURCECORE_LENGTH:
                 err.append( 'The length of source code is too long, limit is ' + str( config.MAX_SOURCECORE_LENGTH ) )
                 raise ValueError( "Length of source code is too long." )
