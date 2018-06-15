@@ -106,6 +106,7 @@
                     url,
                     function( data ){
                         obj._code.register_cache( re , data.code , data.prism );
+                        obj._code.stop_running( re );
                         if( obj._cur == re ){
                             obj._loading.addClass( 'disabled' );
                             obj.show( re );

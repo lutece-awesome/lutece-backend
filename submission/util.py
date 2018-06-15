@@ -10,6 +10,10 @@ def Modify_submission_status( ** report ):
     submission = report[ 'submission' ]
     if result == 'Running' or result == 'Preparing':
         Submission.objects.filter( pk = submission ).update( judge_status = result )
+    elif 'judgererror_msg' in report:
+        Submission.objects.filter( pk = submission ).update( completed = True , judgererror_msg = report[ 'judgererror_msg' ] , judge_status = result )
+    elif 'compileerror_msg' in report:
+        Submission.objects.filter( pk = submission ).update( completed = True , compileerror_msg = report[ 'compileerror_msg' ] , judge_status = result )
     else:
         case = report[ 'case' ]
         complete = report[ 'complete' ]
