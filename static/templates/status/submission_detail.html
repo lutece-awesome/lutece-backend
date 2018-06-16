@@ -7,25 +7,38 @@
 
     <div class = 'ui modal' style = 'width:1000px;'>
         <div class = 'header' style = 'text-align:center;color:orange;' > <i class = 'globe icon'></i> Submission </div>
-        <div class = 'scrolling content'>
+        <div class = 'scrolling content' style = 'max-height:600px;' >
             <div class ='ui header'> Code </div>
-            <div class = 'ui text disabled loader' ></div>
-            <pre style = 'min-height:50px;' ><code id = 'submission-detail-codearea' class = 'language-cpp'></code></pre>
+            <div class = 'ui active loading tab' style = 'height:auto;' id = 'submission-detail-code-loading' >
+                <pre><code id = 'submission-detail-codearea' class = 'language-cpp' ></code></pre>
+            </div>
         </div>
         <div class = 'ui divider'></div>
         <div class = 'extra content'>
             <div class = 'ui header'> Detail </div>
+            <div id = 'submission-detail-position' >
+            </div>
+            <div class = 'ui tiny detail button' id = 'submission-detail-accepeted-template' data-position ='top left' data-tooltip = '' style = 'display:none;width:60px;height:30px;margin-top:10px;'></div>
+        </div>
+        <div class = 'ui divider'></div>
+        <div class = 'extra content'>
+            <div class = 'ui header'> Progress </div>
+            <div class = "ui indicating progress" id = 'submission-detail-progress' style = 'margin-top:32px;' >
+                <div class="bar">
+                    <div class="progress"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         var Submission_Detail_View = {
             _modal : null,
-            _cur : null,
             _loading : null,
             _content : null,
 
             _code :{
+                _cur : null,
                 _content : {},
                 _running : {},
                 _highlight : {},
@@ -60,18 +73,100 @@
                 }
             },
 
+            _detail : {
+                _cur : null,
+                _cache : {},
+                _running : {},
+                _query_period : 1000,
+                _template_grid : $('#submission-detail-accepeted-template'),
+                _compileerror_msg : {},
+                _judgererror_msg: {},
+                _judge_status: {},
+                _complete: {},
+                _case_all: {},
+
+                isrunning: function( url ){
+                    return this._running[url] == true ? true : false;
+                },
+
+                set_running: function( url ){
+                    this._running[url] = true;
+                },
+
+                stop_running: function( url ){
+                    this._running[url] = false;
+                },
+
+                iscompleted: function( url ){
+                    return this._complete[url] == true ? true : false;
+                },
+
+                get_case : function( url ){
+                    if( this._cache[url] == undefined ) this._cache[url] = new Array();
+                    return this._cache[url].length;
+                },
+
+                build : function( _case , result , time , memory ){
+                    let z = this._template_grid.clone();
+                    z.css( 'display' , '' );
+                    if( result == 'Accepted' ) z.addClass( 'green' );
+                    else z.addClass( 'red' );
+                    z.attr( 'data-tooltip' , String(time) + 'ms / ' + String( memory ) + 'Kib' );
+                    z.text( String( _case ) );
+                    return z;
+                },
+
+                remove: function(){
+                    $('#submission-detail-position').empty();
+                },
+
+                get_case_number : function(){
+                    return $('.detail.button:visible').length;
+                },
+
+                show : function( url ){
+                    $('#submission-detail-progress')
+                        .progress( 'set total' , this._case_all[url] )
+                        .progress( 'set progress' , this._cache[url].length )
+                        .progress( 'set label' , String( this._cache[url].length ) + ' of ' + String( this._case_all[url] ) + ' done'  )
+                    ;
+                    for(let i = this.get_case_number() ; i < this._cache[url].length ; ++ i){
+                        let result = this._cache[url][i][0];
+                        let time = this._cache[url][i][1];
+                        let memory = this._cache[url][i][2];
+                        let new_grid = this.build( i + 1 , result , time , memory );
+                        $('#submission-detail-position').append( new_grid );
+                    }
+                },
+
+                update: function( url , data ){
+                    let compileerror_msg = data.compileerror_msg;
+                    let judgererror_msg = data.judgererror_msg;
+                    if( compileerror_msg != undefined ) this.compileerror_msg = compileerror_msg;
+                    if( judgererror_msg != undefined ) this.judgererror_msg = judgererror_msg;
+                    this._judge_status[url] = data.status;
+                    this._complete[url] = data.complete
+                    this._case_all[url] = data.case_all
+                    for(let i = 0 ; i < data.detail.length ; ++ i)
+                        this._cache[url].push( new Array( data.detail[i][0] , data.detail[i][1] , data.detail[i][2] ) );
+                },
+
+            },
+
             init: function(){
                 this._modal = $('.submission.detail > .ui.modal' );
-                this._loading = $('.submission.detail .ui.text.loader');
+                this._loading = $('#submission-detail-code-loading');
                 this._content = $('#submission-detail-codearea');
                 this._cur = null;
                 this._modal.modal({
                     onHidden: function(){
-                        Submission_Detail_View._content.html( ' ' );
-                        Submission_Detail_View._loading.addClass( 'disabled' );
-                        Submission_Detail_View._content.removeClass();
-                        Submission_Detail_View._cur = null;
-                    }
+                        Submission_Detail_View._loading.addClass( 'loading' );
+                        Submission_Detail_View._code._cur = null;
+                        Submission_Detail_View._detail._cur = null;
+                        $('#submission-detail-progress').progress( 'set progress' , 0 );
+                        Submission_Detail_View._detail.remove();
+                    },
+                    duration : 256,
                 });
             },
 
@@ -80,26 +175,23 @@
             },
 
             show: function( url ){
-                if( url == this._cur ){
+                if( url == this._code._cur ){
                     this.remove_content_allclass();
                     this._content.text( this._code.get_content( url ) );
                     this._content.addClass( this._code.get_highlight( url ) );
                     Prism.highlightElement( this._content[0] );
+                    this._loading.removeClass( 'loading' );
                 }
             },
 
             coderequest: function( url ){
-                this._cur = url;
+                this._code._cur = url;
                 if( this._code.cached( url ) ){
                     this.show( url );
                     return;
                 }
-                else if( this._code.isrunning( url ) ){
-                    this._loading.removeClass( 'disabled');
-                    return;
-                }
+                else if( this._code.isrunning( url ) ) return;
                 this._code.set_running( url );
-                this._loading.removeClass( 'disabled');
                 let obj = this;
                 let re = url;
                 $.get(
@@ -107,9 +199,44 @@
                     function( data ){
                         obj._code.register_cache( re , data.code , data.prism );
                         obj._code.stop_running( re );
-                        if( obj._cur == re ){
-                            obj._loading.addClass( 'disabled' );
+                        if( obj._code._cur == re )
                             obj.show( re );
+                    }
+                )
+            },
+
+            detailrequest: function( url , force = false ){
+                if( this._detail.iscompleted( url ) ){
+                    if( this._cur == url )
+                        this._detail.show( url );
+                    return;
+                };
+                if( this._detail.isrunning( url ) && force == false ) return;
+                this._detail.set_running( url );
+                let _detail_obj = this._detail;
+                if( force == false )
+                    _detail_obj._cur = url;
+                let re = url;
+                $.ajaxSetup({
+                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+                });
+                let pf = this;
+                $.post(
+                    url,
+                    {
+                        case : this._detail.get_case( url )
+                    },
+                    function( data ){
+                        _detail_obj.update( re , data );
+                        _detail_obj.stop_running( url );
+                        if( _detail_obj._cur == re ){
+                            _detail_obj.show( re );
+                            if( pf._detail.iscompleted( re ) == false ){
+                                pf._detail.set_running( re );
+                                window.setTimeout(() => {
+                                    pf.detailrequest( re , true );
+                                },  _detail_obj._query_period);
+                            }
                         }
                     }
                 )
@@ -118,6 +245,7 @@
             request: function( obj ){
                 this._modal.modal( 'show' );
                 this.coderequest( obj.data( 'code' ) );
+                this.detailrequest( obj.data( 'detail' ) );
             }
         }
         Submission_Detail_View.init();

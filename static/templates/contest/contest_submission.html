@@ -12,8 +12,8 @@
             {% endfor %}
             <a class="icon item" href = 'javascript:void(0)' onclick = 'Submission_List.request({{max_page}})' ><i class="angle double right icon"></i></a>
         </span>
-
         <div class = 'ui primary button' style = 'float:right' onclick = 'Submission_List.refresh( {{ currentpage }} )' ><i class = 'sync icon'></i> Refresh </div>
+        
     </div>
     
     <table class = "ui padded table" style = 'text-align:center;' >
@@ -40,12 +40,12 @@
                         {% if it.completed %}
                             <td>
                                 {% if it.judge_status | check_judge_result_in_listshow_field %}
-                                    <b>{{ it.get_time_cost }} ms</b>
+                                    {{ it.get_time_cost }} ms
                                 {% endif %}
                             </td>
                             <td>
                                 {% if it.judge_status | check_judge_result_in_listshow_field == True %}
-                                    <b>{{ it.get_memory_cost }} KiB</b>
+                                    {{ it.get_memory_cost }} KiB
                                 {% endif %}
                             </td>
                         {% else %}

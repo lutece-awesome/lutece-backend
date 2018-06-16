@@ -112,7 +112,7 @@
                 <tbody>
                     {% for it in statuslist %}
                         <tr>
-                            <td><a data-code = '{{ url( "submission-code" , args = ( it.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{it.submission_id}} </a></td>
+                            <td><a data-code = '{{ url( "submission-code" , args = ( it.pk , ) ) }}' data-detail = '{{ url( "submission-detail" , args = ( it.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{it.submission_id}} </a></td>
                             <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
                             <td><a href = {{ url('user-detail' , args = (it.user.pk,) ) }}>{{it.user.display_name}}</a></td>                
                             <td><a href = {{ url('problem-detail' , args = (it.problem.problem_id,) ) }} >{{it.problem.title}}</a></td>
@@ -120,12 +120,12 @@
                             {% if it.completed %}
                                 <td>
                                     {% if it.judge_status | check_judge_result_in_listshow_field %}
-                                        <b>{{ it.get_time_cost }} ms</b>
+                                        {{ it.get_time_cost }} ms
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% if it.judge_status | check_judge_result_in_listshow_field == True %}
-                                        <b>{{ it.get_memory_cost }} KiB</b>
+                                        {{ it.get_memory_cost }} KiB
                                     {% endif %}
                                 </td>
                             {% else %}

@@ -8,6 +8,7 @@
         <a class="item" href = {{ url('contest-list' , args = (1,) ) }} ><i class="trophy icon"></i>Contest</a>
         <a class="item" ><i class="lab icon"></i>Lab</a>
         <a class="item" href = {{ url('user-list' , args = (1 ,) ) }} =  ><i class="user icon"></i>User</a>
+        <a class="item" href = {{ url('start') }} ><i class="flag icon"></i>Start</a>
         <a class="item" href = {{ url('about') }} =  ><i class="compass icon"></i>About</a>
         <div class="right menu">
             {% if user.is_authenticated %}

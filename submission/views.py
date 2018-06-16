@@ -118,6 +118,25 @@ def get_activity_json( request , user_pk ):
     return HttpResponse( dumps( { int(time.mktime(x.submit_time.timetuple())) : 1 for x in s } ) , content_type = 'application/json' )
 
 
+def get_submission_detail( request , pk ):
+    status = {
+        'complete' : False,
+        'status' : '',
+        'case_all' : '',
+        'detail' : [],}
+    sub = Submission.objects.get( pk = pk )
+    case = int(request.POST.get( 'case' ))
+    s = Judgeinfo.objects.filter( submission = sub , case__gt = case  ).order_by( 'case' )
+    status['detail'] = [ ( ( x.result ,  x.time_cost , x.memory_cost ) ) for x in s ]
+    status['status'] = sub.judge_status
+    status['complete'] = sub.completed
+    status['case_all'] = sub.case_number
+    if len( sub.judgererror_msg ) > 0 and request.user.has_perm( 'submission.view_all' ):
+        status['judgererror_msg'] = sub.judgererror_msg
+    if len( sub.compileerror_msg ) > 0:
+        status['compileerror_msg'] = sub.compileerror_msg
+    return HttpResponse( dumps( status ) , content_type = 'application/json' )
+
 def get_submission_code( request , pk ):
     status = {
         'status' : False,
@@ -131,6 +150,6 @@ def get_submission_code( request , pk ):
             status['status'] = True
             status['prism'] = get_prism( sub.language )
         else:
-            code = 'Permission Denied'
+            status['code'] = 'Permission Denied'
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )

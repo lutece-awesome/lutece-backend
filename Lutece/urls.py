@@ -20,6 +20,7 @@ from markdownx import urls as markdownx
 
 urlpatterns = [
     path( '' , TemplateView.as_view(template_name='home/home.html') , name = 'home' ),
+    path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
     path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
     path( 'admin/', admin.site.urls),
     path( 'contest/' , include( 'contest.urls' ) ),
