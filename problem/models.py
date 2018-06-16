@@ -3,12 +3,12 @@ from django.db import models
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
     title = models.CharField(
-        max_length=256, db_index=True, default='Default Title', unique = True )
+        max_length=250, db_index=True, default='Default Title', unique = True )
     content = models.TextField( blank = True )
     standard_input = models.TextField( blank = True )
     standard_output = models.TextField( blank = True )
     constraints = models.TextField( blank = True )
-    resource = models.CharField(max_length=256, blank=True)
+    resource = models.CharField(max_length=250, blank=True)
     note = models.TextField( blank = True )
     time_limit = models.PositiveIntegerField(default=2000)
     memory_limit = models.PositiveIntegerField(default=128)
