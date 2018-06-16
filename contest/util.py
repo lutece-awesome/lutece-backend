@@ -47,3 +47,21 @@ def time_format_hm( s ):
     seconds = seconds % 60
     last = '%.2d:%.2d' % ( hours, mins )
     return last
+
+
+def check_contest_started_or_has_perms( contest , user ):
+    from datetime import datetime
+    from django.http import Http404
+    if datetime.now() < contest.start_time and not user.has_perm( 'contest.view_all'):
+        return False
+    print( 'run 1' )
+    if datetime.now() >= contest.start_time and contest.visible is False and not user.has_perm( 'contest.view_all' ):
+        return False
+    return True
+
+def check_contest_submit_code( contest , user , err ):
+    from datetime import datetime
+    if datetime.now() < contest.start_time and not user.has_perm( 'contest.view_all'):
+        err.append( 'Contest has not yet started' )
+    elif datetime.now() > contest.end_time and not user.has_perm( 'contest.view_all'):
+        err.append( 'Contest has ended' )

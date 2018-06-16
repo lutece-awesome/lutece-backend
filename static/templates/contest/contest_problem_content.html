@@ -2,3 +2,7 @@
 {% block post_field %}
     'contest': {{ contest.pk }},
 {% endblock %}
+{% block after_submit_transfer %}
+    Submission_List.request( 1 );
+    
+{% endblock %}

@@ -101,7 +101,6 @@
                     <th style = 'width:10%;'>Starttime</th>
                     <th style = 'width:10%;'>Length</th>
                     <th style = 'width:10%;'>Status</th>
-                    <th style = 'width:10%;'>Type</th>
                 </tr>
             </thread>
             <tbody>
@@ -117,13 +116,6 @@
                             <td> {{ (it.end_time - it.start_time) | timedeltaformat }} </td>
                             <td>
                                 <i class = '{{ conteststatus[loop.index0].value.icon }}' style = 'color:{{ conteststatus[loop.index0].value.color }};'></i> <span style = 'color:{{ conteststatus[loop.index0].value.color }};'><b>{{ conteststatus[loop.index0].value.full }}</b></span>
-                            </td>
-                            <td> 
-                                {% if it.password | length == 0 %}
-                                    <span style = 'color:green;' ><b>Public</b></span>
-                                {% else %}
-                                    <span style = 'color:red;'><b>Private</b></span>
-                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

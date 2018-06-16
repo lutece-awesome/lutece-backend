@@ -35,11 +35,16 @@ def submit_solution(request):
                 if not problem.visible and not request.user.has_perm( 'problem.view_all' ):
                     raise ValueError( "Permission Denied" )
             else:
-                # to do , contest submission auth
-                pass
+                from contest.util import check_contest_started_or_has_perms, check_contest_submit_code
+                if not check_contest_started_or_has_perms( contest , request.user ):
+                    err.append( 'Contest has not yet started' )
+                    raise RuntimeError( 'Permission Denied' )
+                check_contest_submit_code( contest , request.user , err )
             if len( code ) > config.MAX_SOURCECORE_LENGTH:
                 err.append( 'The length of source code is too long, limit is ' + str( config.MAX_SOURCECORE_LENGTH ) )
                 raise ValueError( "Length of source code is too long." )
+            if len( err ) > 0:
+                raise RuntimeError( 'Permission Denied' )
             s = Submission(
                 language = lang,
                 user = request.user,

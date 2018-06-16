@@ -20,6 +20,7 @@ class Contest( models.Model ):
         ordering = ['-contest_id']
         permissions = (
             ('view_all' , 'Can view all contest' ),
+            ('hide_submission' , 'Hide the submission in rankboard' ),
         )
 class ContestInvitedUser( models.Model ):
     user = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )

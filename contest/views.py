@@ -10,6 +10,7 @@ from json import dumps, loads
 from annoying.functions import get_object_or_None
 from .contest_status import get_contest_status
 from datetime import datetime
+from .util import check_contest_started_or_has_perms
 
 # Create your views here.
 
@@ -153,6 +154,8 @@ def get_contest_problem( request , pk , index ):
     from problem.models import Problem
     from utils.language import get_language_list
     contest = get_object_or_None( Contest, pk = pk )
+    if not check_contest_started_or_has_perms( contest , request.user ):
+        return HttpResponse( 'Contest has not yet started' )
     prob = get_object_or_None( Problem , pk = contest.contestproblem_set.all()[index].problem )
     return render( request , 'contest/contest_problem.html' ,{
         'prob' : prob,
@@ -164,6 +167,8 @@ def get_contest_problem( request , pk , index ):
 def get_problem_list( request , pk ):
     from problem.models import Problem
     contest = get_object_or_None( Contest , pk = pk )
+    if not check_contest_started_or_has_perms( contest , request.user ):
+        return HttpResponse( 'Contest has not yet started' )
     return render( request , 'contest/contest_problem_list.html' , {
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
         'contest' : contest,
@@ -172,6 +177,8 @@ def get_problem_list( request , pk ):
 def get_contest_submission( request , pk , page ):
     from submission.models import Submission
     contest = get_object_or_None( Contest , pk = pk )
+    if not check_contest_started_or_has_perms( contest , request.user ):
+        return HttpResponse( 'Contest has not yet started' )
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
     if request.user.is_authenticated:
         sub_all = Submission.objects.filter( contest = contest , user = request.user )
@@ -196,6 +203,8 @@ def get_contest_detail( request , pk ):
     from .contest_status import get_contest_status
     from datetime import datetime
     contest = get_object_or_None( Contest , pk = pk )
+    if not check_contest_started_or_has_perms( contest , request.user ):
+        raise Http404( 'Permission Denied' )
     return render( request , 'contest/contest_detail.html' , {
         'contest' : contest,
         'problem_num' : range( len(contest.contestproblem_set.all()) ),
@@ -212,6 +221,8 @@ def get_contest_rank( request , pk ):
     from copy import deepcopy
 
     contest = get_object_or_None( Contest , pk = pk )
+    if not check_contest_started_or_has_perms( contest , request.user ):
+        return HttpResponse( 'Contest has not yet started' )
     start_time = contest.start_time
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
     sub_all = Submission.objects.filter( contest = contest ).order_by( 'pk' )
@@ -231,6 +242,8 @@ def get_contest_rank( request , pk ):
             if se not in Query_field.contest_field.value:
                 continue
             user = each.user
+            if user.has_perm( 'contest.hide_submission' ):
+                continue
             if user not in analy:
                 analy[user] = deepcopy( base )
             ts = analy[user]
@@ -266,5 +279,4 @@ def get_contest_rank( request , pk ):
     return render( request , 'contest/contest_rank.html' , {
         'contest' : contest,
         'problem_num' : range( len( pos_hashtable ) ),
-        'rank' : rank,
-    })
+        'rank' : rank,})
