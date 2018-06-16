@@ -14,7 +14,7 @@ class Submission(models.Model):
     language = models.CharField( max_length = 64 )
     problem = models.ForeignKey( Problem,on_delete = models.CASCADE , null = True )
     judge_status = models.CharField( max_length = 64 , db_index = True )
-    code = models.CharField( max_length=65535 , blank = True )
+    code = models.TextField( blank = True )
     submit_time = models.DateTimeField( 'Submit time' , null = True , default = timezone.now )
     user = models.ForeignKey( User , on_delete = models.CASCADE , null = True , db_index = True )
     completed = models.BooleanField( default = False )
