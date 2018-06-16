@@ -206,8 +206,6 @@ def get_contest_detail( request , pk ):
     from .contest_status import get_contest_status
     from datetime import datetime
     contest = get_object_or_None( Contest , pk = pk )
-    if not check_contest_started_or_has_perms( contest , request.user ):
-        raise Http404( 'Permission Denied' )
     return render( request , 'contest/contest_detail.html' , {
         'contest' : contest,
         'problem_num' : range( len(contest.contestproblem_set.all()) ),
