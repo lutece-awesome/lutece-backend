@@ -161,18 +161,22 @@ def get_contest_problem( request , pk , index ):
         'prob' : prob,
         'support_lang': get_language_list(),
         'sample': prob.sample_set.all(),
-        'contest' : contest,
-    })
+        'contest' : contest,})
 
 def get_problem_list( request , pk ):
     from problem.models import Problem
+    from .util import get_contest_analysis, get_user_contest_problem_analysis
     contest = get_object_or_None( Contest , pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
         return HttpResponse( 'Contest has not yet started' )
+    if not request.user.is_authenticated:
+        return HttpResponse( 'Please login first' )
+    contest_problem_set = contest.contestproblem_set.all()
     return render( request , 'contest/contest_problem_list.html' , {
-        'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest.contestproblem_set.all() ],
-        'contest' : contest,
-    })
+        'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest_problem_set ],
+        'contest_analysis' : get_contest_analysis( contest ),
+        'user_problem_analysis' : [ get_user_contest_problem_analysis( user = request.user , problem = get_object_or_None( Problem , pk = x.problem ) )  for x in contest_problem_set ],
+        'contest' : contest,})
 
 def get_contest_submission( request , pk , page ):
     from submission.models import Submission
@@ -181,14 +185,13 @@ def get_contest_submission( request , pk , page ):
         return HttpResponse( 'Contest has not yet started' )
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
     if request.user.is_authenticated:
-        sub_all = Submission.objects.filter( contest = contest , user = request.user )
+        if request.user.has_perm( 'contest.view_all' ):
+            sub_all = Submission.objects.filter( contest = contest )
+        else:
+            sub_all = Submission.objects.filter( contest = contest , user = request.user )
     else:
         sub_all = list()
-    _real_sub = list()
-    for each in sub_all:
-        if each.problem.pk in pos_hashtable:
-            _real_sub.append( each )
-    paginator = Paginator(_real_sub, config.PER_PAGE_COUNT)
+    paginator = Paginator(sub_all, config.PER_PAGE_COUNT)
     statuslist = paginator.get_page(page)
     page = min( max( 1 , page ) , paginator.num_pages )
     return render(request, 'contest/contest_submission.html', {

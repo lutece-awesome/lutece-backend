@@ -15,6 +15,8 @@
         <div class = 'ui primary button' style = 'float:right' onclick = 'Submission_List.refresh( {{ currentpage }} )' ><i class = 'sync icon'></i> Refresh </div>
         
     </div>
+
+    {% set has_perm = user.has_perm( 'contest.view_all' ) %}
     
     <table class = "ui padded table" style = 'text-align:center;' >
         <thread>
@@ -22,6 +24,9 @@
                     <tr>
                         <th>ID</th>
                         <th>When</th>
+                        {% if has_perm %}
+                            <th>User</th>
+                        {% endif %}
                         <th>Problem</th>
                         <th>Verdict</th>
                         <th>Time</th>
@@ -34,7 +39,12 @@
                 {% for it in statuslist %}
                     <tr>
                         <td><a data-code = '{{ url( "submission-code" , args = ( it.pk , ) ) }}' data-detail = '{{ url( "submission-detail" , args = ( it.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{it.submission_id}} </a></td>
-                        <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
+                        <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td> 
+                        {% if has_perm %}
+                            <td>
+                                <a href = '{{ url('user-detail' , args = (it.user.pk,) ) }}' > {{it.user.display_name}} </a>
+                            </td>
+                        {% endif %}
                         <td><a href = 'javascript:void(0)' onclick = 'Problem_Detail.request( {{ pos_hashtable[it.problem.pk] }} )' >{{it.problem.title}}</a></td>
                         <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = '{{ it.judge_status | get_judge_result_icon }}'></i><b>{{ it.judge_status }}</b></td>
                         {% if it.completed %}

@@ -4,7 +4,7 @@
             <tr>
                 <th> ID </th>
                 <th> Title </th>
-                <th> Accepted / Rejected </th>
+                <th> Accepted / Submit </th>
                 <th> Ratio </th>
                 <th> Status </th>
             </tr>
@@ -18,9 +18,17 @@
                             {{ each.title }} 
                         </a>
                     </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
+                    <td> {{ contest_analysis[loop.index0][0] }} / {{ contest_analysis[loop.index0][1] }} </td>
+                    {% if contest_analysis[loop.index0][1] == 0 %}
+                        <td> 0.00% </td>
+                    {% else %}
+                        <td> {{ "%.2f" | format( contest_analysis[loop.index0][0] / contest_analysis[loop.index0][1] * 100 ) }} %</td>
+                    {% endif %}
+                    <td> 
+                        {% if user_problem_analysis[ loop.index0 ] %}
+                            <i class="green checkmark icon"></i>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

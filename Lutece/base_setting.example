@@ -9,6 +9,16 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',  # default as localhost
+        'PORT': '',  # default as 3306
+    }
+}
+
 DEBUG = False
 SECRET_KEY = ''# set the key
 #CSRF_COOKIE_SECURE = True
