@@ -33,7 +33,7 @@
             <tbody>
                 {% for it in statuslist %}
                     <tr>
-                        <td><a> {{it.submission_id}} </a></td>
+                        <td><a data-code = '{{ url( "submission-code" , args = ( it.pk , ) ) }}' data-detail = '{{ url( "submission-detail" , args = ( it.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{it.submission_id}} </a></td>
                         <td>{{it.submit_time.strftime('%Y-%m-%d %H:%M:%S')  }}</td>  
                         <td><a href = 'javascript:void(0)' onclick = 'Problem_Detail.request( {{ pos_hashtable[it.problem.pk] }} )' >{{it.problem.title}}</a></td>
                         <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = '{{ it.judge_status | get_judge_result_icon }}'></i><b>{{ it.judge_status }}</b></td>
@@ -57,5 +57,4 @@
                 {% endfor %}
             </tbody>
     </table>
-
 </div>

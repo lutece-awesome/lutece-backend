@@ -236,7 +236,7 @@
                     },
                     function(data,status){
                         if( status == 'success' && data.status == true ){
-                            
+                            window.location = '{{ url( "submission-status-list" , args = ( 1, ) ) }}' + '?display_name=' + String( '{{ user.display_name }}' );
                         }else{
                             $('#solution-submit-button')
                                 .removeClass( 'loading disabled primary' )

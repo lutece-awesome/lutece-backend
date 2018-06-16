@@ -1,8 +1,8 @@
 <div class = 'submission detail'>
     <head>
         <link href="{{ static('prism/dist/prism.css') }}" rel="stylesheet" />
-        <link href="{{ static('css/submission/status_detail.css') }}" rel="stylesheet" />
         <script type="text/javascript" src="{{ static('prism/dist/prism.js') }}"></script>
+        <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>
     </head>
 
     <div class = 'ui modal' style = 'width:1000px;'>
@@ -20,6 +20,13 @@
             </div>
             <div class = 'ui tiny detail button' id = 'submission-detail-accepeted-template' data-position ='top left' data-tooltip = '' style = 'display:none;width:60px;height:30px;margin-top:10px;'></div>
         </div>
+        
+        <div class = 'ui divider' style = 'display:none;' id = 'submission-detail-block-divider' ></div>
+        <div id = 'submission-detail-block' style = 'display:none;'  class = 'extra content'>
+            <div class = 'ui header' > ErrorMessage </div>
+            <pre id = 'submission-detail-errormsg' ></pre>
+        </div>
+
         <div class = 'ui divider'></div>
         <div class = 'extra content'>
             <div class = 'ui header'> Progress </div>
@@ -27,6 +34,7 @@
                 <div class="bar">
                     <div class="progress"></div>
                 </div>
+                <div class="label"></div>
             </div>
         </div>
     </div>
@@ -125,11 +133,25 @@
                 },
 
                 show : function( url ){
-                    $('#submission-detail-progress')
-                        .progress( 'set total' , this._case_all[url] )
-                        .progress( 'set progress' , this._cache[url].length )
-                        .progress( 'set label' , String( this._cache[url].length ) + ' of ' + String( this._case_all[url] ) + ' done'  )
-                    ;
+                    if( this._compileerror_msg[url] != undefined ){
+                        $('#submission-detail-progress').progress( 'set warning' );
+                        $('#submission-detail-block').css( 'display' , 'block' );
+                        $('#submission-detail-block-divider').css( 'display' , 'block' );
+                        $('#submission-detail-errormsg').text( this._compileerror_msg[url] );
+                    }else if ( this._judgererror_msg[url] != undefined ){
+                        $('#submission-detail-progress').progress( 'set error' );
+                        $('#submission-detail-block').css( 'display' , 'block' );
+                        $('#submission-detail-block-divider').css( 'display' , 'block' );
+                        $('#submission-detail-errormsg').text( this._judgererror_msg[url] );
+                    }else{
+                        $('#submission-detail-progress')
+                            .progress( 'set total' , this._case_all[url] )
+                            .progress( 'set progress' , this._cache[url].length )
+                            .progress( 'set label' , String( this._cache[url].length ) + ' of ' + String( this._case_all[url] ) + ' done'  )
+                        ;
+                    }
+                    if( this.iscompleted( url ) && this._judge_status[url] != 'Accepted' && this._compileerror_msg[url] == undefined )
+                        $('#submission-detail-progress').progress( 'set error' );
                     for(let i = this.get_case_number() ; i < this._cache[url].length ; ++ i){
                         let result = this._cache[url][i][0];
                         let time = this._cache[url][i][1];
@@ -142,8 +164,8 @@
                 update: function( url , data ){
                     let compileerror_msg = data.compileerror_msg;
                     let judgererror_msg = data.judgererror_msg;
-                    if( compileerror_msg != undefined ) this.compileerror_msg = compileerror_msg;
-                    if( judgererror_msg != undefined ) this.judgererror_msg = judgererror_msg;
+                    if( compileerror_msg != undefined ) this._compileerror_msg[url] = compileerror_msg;
+                    if( judgererror_msg != undefined ) this._judgererror_msg[url] = judgererror_msg;
                     this._judge_status[url] = data.status;
                     this._complete[url] = data.complete
                     this._case_all[url] = data.case_all
@@ -163,7 +185,13 @@
                         Submission_Detail_View._loading.addClass( 'loading' );
                         Submission_Detail_View._code._cur = null;
                         Submission_Detail_View._detail._cur = null;
-                        $('#submission-detail-progress').progress( 'set progress' , 0 );
+                        $('#submission-detail-block').css( 'display' , 'none' );
+                        $('#submission-detail-block-divider').css( 'display' , 'none' );
+                        $('#submission-detail-progress')
+                            .progress( 'set label' , ' ' )
+                            .progress( 'reset' )
+                            .progress( 'set active' )
+                        ;
                         Submission_Detail_View._detail.remove();
                     },
                     duration : 256,
@@ -206,16 +234,16 @@
             },
 
             detailrequest: function( url , force = false ){
+                if( force == false )
+                    this._detail._cur = url;
                 if( this._detail.iscompleted( url ) ){
-                    if( this._cur == url )
+                    if( this._detail._cur == url )
                         this._detail.show( url );
                     return;
                 };
                 if( this._detail.isrunning( url ) && force == false ) return;
                 this._detail.set_running( url );
                 let _detail_obj = this._detail;
-                if( force == false )
-                    _detail_obj._cur = url;
                 let re = url;
                 $.ajaxSetup({
                     data: { csrfmiddlewaretoken: '{{ csrf_token }}' },

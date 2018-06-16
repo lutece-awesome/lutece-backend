@@ -71,7 +71,7 @@
                                 <tbody>
                                     {% for x in recently %}
                                         <tr>
-                                            <td><a href = {{ url('submission-status-detail' , args = (x.pk,) ) }}> {{ x.pk }}</a></td>
+                                            <td><a data-code = '{{ url( "submission-code" , args = ( x.pk , ) ) }}' data-detail = '{{ url( "submission-detail" , args = ( x.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{x.submission_id}} </a></td>
                                             <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
                                             <td><a href = {{ url('problem-detail' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
                                             <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
@@ -104,6 +104,8 @@
 
     
     </div>
+
+    {% include 'status/submission_detail.html' %}
 
     <script>
         var cal = new CalHeatMap();
