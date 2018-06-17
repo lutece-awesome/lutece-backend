@@ -3,12 +3,12 @@
     <table class="ui celled padded striped table" style = 'width:auto'>
         <thread>
             <tr style = 'text-align:center;'>
-                <th style = 'width:150px;'>Rank</th>
-                <th style = 'width:300px;' >Who</th>
-                <th style = 'width:150px;' >Solved</th>
-                <th style = 'wdith:150px;' >Penalty</th>
+                <th style = 'width:4em;'>Rank</th>
+                <th style = 'width:12em;' >Who</th>
+                <th style = 'width:4em;' >Solved</th>
+                <th style = 'width:4em;' >Penalty</th>
                 {% for each in problem_num %}
-                    <th style = 'width:150px' >{{ loop.index0 | I2S }}</th>
+                    <th style = 'width:8em;' >{{ loop.index0 | I2S }}</th>
                 {% endfor %}
             </tr>
         </thread>

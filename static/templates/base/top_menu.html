@@ -100,12 +100,10 @@
                     .addClass( 'positive loading disabled' )
                 ;
                 $('#error_msg_box_signup').addClass('hidden');
-                $.ajaxSetup({
-                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-                });
                 $.post(
                     "{{ url('user-signup') }}",
                     {
+                        'csrfmiddlewaretoken' : '{{ csrf_token }}',
                         'username': username,
                         'password': password,
                         'email' : email,
@@ -138,12 +136,10 @@
                     .removeClass( 'red' )
                     .addClass( 'loading disabled primary' )
                 ;
-                $.ajaxSetup({
-                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-                });
                 $.post(
                     "{{ url('user-login') }}",
                     {
+                        'csrfmiddlewaretoken' : '{{ csrf_token }}',
                         'username': username,
                         'password': password
                     },

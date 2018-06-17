@@ -7,36 +7,29 @@
 
     <div class = 'ui modal' style = 'width:1000px;'>
         <div class = 'header' style = 'text-align:center;color:orange;' > <i class = 'globe icon'></i> Submission </div>
-        <div class = 'scrolling content' style = 'max-height:1000px;' >
-            <div class = 'extra content'>
-                <div class ='ui header'> Code </div>
-                <div class = 'ui active loading tab' style = 'height:auto;' id = 'submission-detail-code-loading' >
-                    <pre><code id = 'submission-detail-codearea' class = 'language-cpp' ></code></pre>
-                </div>
-            </div>
-            <div class = 'ui divider'></div>
-            <div class = 'extra content'>
-                <div class = 'ui header'> Detail </div>
-                <div id = 'submission-detail-position' >
-                </div>
-                <div class = 'ui tiny detail button' id = 'submission-detail-accepeted-template' data-position ='top left' data-tooltip = '' style = 'display:none;width:60px;height:30px;margin-top:10px;'></div>
-            </div>
-            
-            <div class = 'ui divider' style = 'display:none;' id = 'submission-detail-block-divider' ></div>
-            <div id = 'submission-detail-block' style = 'display:none;'  class = 'extra content'>
-                <div class = 'ui header' > ErrorMessage </div>
-                <pre id = 'submission-detail-errormsg' ></pre>
-            </div>
 
-            <div class = 'ui divider'></div>
-            <div class = 'extra content'>
-                <div class = 'ui header'> Progress </div>
-                <div class = "ui indicating progress" id = 'submission-detail-progress' style = 'margin-top:32px;' >
-                    <div class="bar">
-                        <div class="progress"></div>
-                    </div>
-                    <div class="label"></div>
+        <div class ='ui header'> Code </div>
+        <div class = 'scrolling content' style = 'max-height:300px;' >
+            <div class = 'ui active loading tab' style = 'height:auto;margin-bottom;' id = 'submission-detail-code-loading' >
+                <pre><code id = 'submission-detail-codearea' class = 'language-cpp' ></code></pre>
+            </div>
+        </div>
+
+        <div class = 'ui header'> Detail </div>
+        <div class = 'scrolling content' style = 'max-height:300px;min-height:100px;' >
+            <div id = 'submission-detail-position' ></div>
+            <div class = 'ui tiny detail button' id = 'submission-detail-accepeted-template' data-position ='bottom left' data-tooltip = '' style = 'display:none;width:60px;height:30px;margin-bottom:12px;'></div>
+            <pre id = 'submission-detail-errormsg' ></pre>
+        </div>
+
+        <div class = 'ui divider'></div>
+        <div class = 'extra content'>
+            <div class = 'ui header'> Progress </div>
+            <div class = "ui indicating progress" id = 'submission-detail-progress' style = 'margin-top:32px;' >
+                <div class="bar">
+                    <div class="progress"></div>
                 </div>
+                <div class="label"></div>
             </div>
         </div>
     </div>
@@ -137,14 +130,12 @@
                 show : function( url ){
                     if( this._compileerror_msg[url] != undefined ){
                         $('#submission-detail-progress').progress( 'set warning' );
-                        $('#submission-detail-block').css( 'display' , 'block' );
-                        $('#submission-detail-block-divider').css( 'display' , 'block' );
                         $('#submission-detail-errormsg').text( this._compileerror_msg[url] );
+                        $('#submission-detail-progress').progress( 'set label' , 'Compile Error'  );
                     }else if ( this._judgererror_msg[url] != undefined ){
                         $('#submission-detail-progress').progress( 'set error' );
-                        $('#submission-detail-block').css( 'display' , 'block' );
-                        $('#submission-detail-block-divider').css( 'display' , 'block' );
                         $('#submission-detail-errormsg').text( this._judgererror_msg[url] );
+                        $('#submission-detail-progress').progress( 'set label' , 'Judger Error'  );
                     }else{
                         $('#submission-detail-progress')
                             .progress( 'set total' , this._case_all[url] )
@@ -187,8 +178,6 @@
                         Submission_Detail_View._loading.addClass( 'loading' );
                         Submission_Detail_View._code._cur = null;
                         Submission_Detail_View._detail._cur = null;
-                        $('#submission-detail-block').css( 'display' , 'none' );
-                        $('#submission-detail-block-divider').css( 'display' , 'none' );
                         $('#submission-detail-progress')
                             .progress( 'set label' , ' ' )
                             .progress( 'reset' )

@@ -417,12 +417,10 @@
                 $(this)
                     .addClass( 'loading disabled' )
                 ;
-                $.ajaxSetup({
-                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-                });
                 $.post(
                     '{{ url("problem-update" , args = (prob.problem_id , ) ) }}',
                     {
+                        'csrfmiddlewaretoken' : '{{ csrf_token }}',
                         'title' : title,
                         'timelimit' : timelimit,
                         'memorylimit' : memorylimit,

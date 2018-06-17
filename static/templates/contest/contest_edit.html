@@ -266,12 +266,10 @@
             $(this)
                 .addClass( 'loading disabled' )
             ;
-            $.ajaxSetup({
-                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
             $.post(
                 '{{ url("contest-update" , args = (contest.pk, ) ) }}',
                 {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
                     'title' : title,
                     'start_time' : transfor( start_time ),
                     'end_time' : transfor( end_time ),

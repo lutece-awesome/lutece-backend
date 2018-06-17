@@ -56,12 +56,10 @@
                 var display_name = $('#display_name-info > input').val();
 
                 $(this).addClass( 'disabled loading' );
-                $.ajaxSetup({
-                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-                });
                 $.post(
                     '{{ url("user-infomodify") }}',
                     {
+                        'csrfmiddlewaretoken' : '{{ csrf_token }}',
                         'about' : about,
                         'school' : school,
                         'company' : company,

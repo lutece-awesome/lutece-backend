@@ -224,10 +224,10 @@
                 var lang = $('#language-dropdown').data( 'value' );
                 $(this).addClass( 'loading disabled' );
                 var problemid = {{prob.problem_id}};
-                $.ajaxSetup({ data: { csrfmiddlewaretoken: '{{ csrf_token }}' },});
                 $.post(
                     '{{ url("submission-submit-solution") }}',
                     {
+                        'csrfmiddlewaretoken' : '{{ csrf_token }}',
                         'problemid' : problemid,
                         'code' : code,
                         'language' : lang,

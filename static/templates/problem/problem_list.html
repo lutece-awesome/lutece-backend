@@ -119,12 +119,10 @@
             $(this)
                 .addClass( 'loading disabled' )
             ;
-            $.ajaxSetup({
-                data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-            });
             $.post(
                 '{{ url("problem-create-check") }}',
                 {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
                     'title' : title,
                 },
                 function(data,status){
