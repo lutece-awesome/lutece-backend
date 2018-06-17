@@ -152,4 +152,4 @@ def query_title( request , pk ):
     if s is not None:
         status['status'] = True
         status['title'] = s.title
-    return HttpResponse(dumps(status), content_type='application/json')    
+    return HttpResponse(dumps(status), content_type='application/json')

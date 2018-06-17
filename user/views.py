@@ -107,8 +107,8 @@ def user_signup(request):
                 )
                 new_user.set_password( password )
                 status['signup_status'] = True
-                new_user.set_group( Group.normal_user )
                 new_user.save()
+                new_user.set_group( Group.NORMAL_USER )
                 login(request,new_user)
     except Exception as e:
         print( 'Error on user_signup' , str( e ) )
@@ -189,6 +189,6 @@ def toggle_follow_realtion( request , user_id ):
     try:
         if request.user == target:
             raise TypeError( 'Can not follow self' )
-        
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
+

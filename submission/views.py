@@ -93,27 +93,6 @@ def get_status_list(request , page):
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages )})
 
-
-def get_status_detail(request , submission_id):
-    target = get_object_or_404( Submission , pk = submission_id )
-    check_visible_permission_or_404( user = request.user , problem = target.problem )
-    return render( request , 'status/status_detail.html' , {
-        'status' : target })
-        
-def get_status_detail_json( request , submission_id ):
-    try:
-        status = {
-            'status' : False,
-            'detail' : []}
-        sub = submission = Submission.objects.get( pk = submission_id )
-        s = Judgeinfo.objects.filter( submission = sub )
-        if not request.user.has_perm( 'problem.view_all' ) and not sub.problem.visible:
-            raise RuntimeError( 'Permission Denied' )
-        status['detail'] = [ ( ( x.case , x.result ,  x.time_cost , x.memory_cost ) ) for x in s ]
-        status['status'] = True
-    finally:
-        return HttpResponse( dumps( status ) , content_type = 'application/json' )
-
 def get_activity_json( request , user_pk ):
     user = User.objects.get( pk = user_pk )
     import datetime, time
@@ -121,7 +100,6 @@ def get_activity_json( request , user_pk ):
     start_date =  now - datetime.timedelta(days=366)
     s = Submission.objects.filter( user = user , submit_time__date__gt = start_date )
     return HttpResponse( dumps( { int(time.mktime(x.submit_time.timetuple())) : 1 for x in s } ) , content_type = 'application/json' )
-
 
 def get_submission_detail( request , pk ):
     status = {

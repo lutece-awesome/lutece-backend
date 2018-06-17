@@ -23,7 +23,7 @@ class Problem(models.Model):
         ordering = ['problem_id']
         permissions = (
             ('view_all' , 'Can view all problems'),
-            ('download_problem_data' , 'Can download test data' ),
+            ('download_data' , 'Can download test data' ),
         )
 
 
