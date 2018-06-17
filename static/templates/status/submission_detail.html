@@ -247,13 +247,11 @@
                 this._detail.set_running( url );
                 let _detail_obj = this._detail;
                 let re = url;
-                $.ajaxSetup({
-                    data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
-                });
                 let pf = this;
                 $.post(
                     url,
                     {
+                        csrfmiddlewaretoken : '{{ csrf_token }}',
                         case : this._detail.get_case( url )
                     },
                     function( data ){
