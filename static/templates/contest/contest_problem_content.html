@@ -4,5 +4,7 @@
 {% endblock %}
 {% block after_submit_transfer %}
     Submission_List.request( 1 );
-    
+    $('#solution-submit-button')
+        .removeClass( 'loading disabled' )
+    ;
 {% endblock %}

@@ -273,10 +273,12 @@ def get_contest_rank( request , pk ):
             'user' : each_user,
             'analysis' : ts,
             'solvednumber' : solvenum,
-            'penalty' : time_format_hms( all_penalty ),
+            'penalty' : all_penalty,
             'display_name' : each_user.display_name
         })
     rank.sort( key = lambda x : ( - x['solvednumber'] , x['penalty'] , x['display_name'] ) )
+    for each in rank:
+        each['penalty'] = time_format_hms( each['penalty'] )
     return render( request , 'contest/contest_rank.html' , {
         'contest' : contest,
         'problem_num' : range( len( pos_hashtable ) ),
