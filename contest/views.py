@@ -169,8 +169,6 @@ def get_problem_list( request , pk ):
     contest = get_object_or_None( Contest , pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
         return HttpResponse( 'Contest has not yet started' )
-    if not request.user.is_authenticated:
-        return HttpResponse( 'Please login first' )
     contest_problem_set = contest.contestproblem_set.all()
     return render( request , 'contest/contest_problem_list.html' , {
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest_problem_set ],

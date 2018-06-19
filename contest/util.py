@@ -68,24 +68,27 @@ def check_contest_submit_code( contest , user , err ):
 def get_contest_analysis( contest ):
     from submission.judge_result import Judge_result, get_judge_result
     from submission.models import Submission
+    from user.models import User
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
     analysis = [ [0 , 0] for x in range( len( pos_hashtable ) ) ]
     solved_user = [ set() for x in range( len( pos_hashtable ) ) ]
-    sub_all = Submission.objects.filter( contest = contest ).order_by( 'pk' )
+    sub_all = Submission.objects.raw( 'SELECT submission_id, judge_status, problem_id , user_id from submission_submission where contest_id = %d ORDER BY submission_id' % ( contest.pk ) )
+    user_list = { x.user_id for x in sub_all }
+    user_list = { x : User.objects.get( pk = x ) for x in user_list }
     for each in sub_all:
-        user = each.user
-        if user.has_perm( 'contest.view_all' ):
+        user = user_list[each.user_id]
+        if user.has_perm( 'contest.hide_submission' ):
             continue
-        _id = each.problem.pk
+        _id = each.problem_id
         if _id in pos_hashtable:
             _id = pos_hashtable[_id]
             se = get_judge_result( each.judge_status )
-            if se is Judge_result.AC and user in solved_user[_id]:
+            if se is Judge_result.AC and each.user_id in solved_user[_id]:
                 continue
             analysis[_id][1] += 1
             if se is Judge_result.AC:
                 analysis[_id][0] += 1
-                solved_user[_id].add( user )
+                solved_user[_id].add( each.user_id )
     return analysis
 
 def get_user_contest_problem_analysis( user , problem ):
