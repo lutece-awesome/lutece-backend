@@ -3,54 +3,7 @@ from django.contrib.auth.models import AbstractUser , Permission
 from json import dumps
 from django.http import HttpResponse
 from annoying.functions import get_object_or_None
-from enum import Enum, unique
-
-@unique
-class Group( Enum ):
-
-    class _meta:
-        __slots__ = (
-            'full',
-            'display',
-            'permission',
-            '_field'
-        )
-
-        def needdisplay( self ):
-            return hasattr( self , 'display' )
-
-        def __init__( self , ** kw ):
-            for _ in kw:
-                self.__setattr__( _ , kw[_] )
-            self._field = [x for x in kw]
-
-        def __str__(self):
-            return self.full
-
-        def __repr__(self):
-            return str( self.full )
-        
-        @property
-        def attribute(self):
-            return { x : getattr( self , x ) for x in self._field }
-
-    NORMAL_USER = _meta(
-        full = 'normal_user',
-        permission = []
-    )
-
-    NORMAL_ADMIN = _meta(
-        full = 'normal_admin',
-        display = 'Admin',
-        permission = ['add_problem' , 'change_problem' , 'view_all_problem' , 'download_data_problem' , 'view_all_submission' , 'view_all_contest' , 'hide_submission_contest']
-    )
-
-    SUPER_ADMIN = _meta(
-        full = 'super_admin',
-        display = 'Super Admin',
-        permission = ['add_problem' , 'change_problem' , 'view_all_problem' , 'download_data_problem' , 'view_all_submission' , 'add_contest' , 'change_contest' , 'view_all_contest' , 'hide_submission_contest' , 'set_normal_admin' ],
-    )
-
+from .group import Group
 
 
 

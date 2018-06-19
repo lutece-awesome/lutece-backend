@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import User, Group, Userinfo
+from .models import User, Userinfo
+from .group import Group
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
 from json import dumps
@@ -191,4 +192,3 @@ def toggle_follow_realtion( request , user_id ):
             raise TypeError( 'Can not follow self' )
     finally:
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
-

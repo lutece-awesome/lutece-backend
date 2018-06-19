@@ -121,6 +121,7 @@
 
             request: function(){
                 $('#tab-overview').tab('change tab' , 'overview' );
+                if( this._running == true ) this._content.addClass( 'loading' );
                 if( this._running == true || this._cache.length > 0 ) return;
                 this._running = true;
                 this._content.addClass( 'loading' );
@@ -157,6 +158,7 @@
 
             request: function(){
                 $('#tab-problem').tab('change tab' , 'problem' );
+                if( this._running == true ) this._content.addClass( 'loading' );
                 if( this._running == true || this._cache.length > 0 ) return;
                 this._running = true;
                 this._content.addClass( 'loading' );
@@ -232,6 +234,7 @@
                 $('#tab-detail').tab('change tab' , 'detail' );
                 this._cur = index;
                 this.show( index );
+                if( this._running[index] == true ) this._content[index].addClass( 'loading' );
                 if( this._running[index] == true || this._cache[index].length > 0 ) return;
                 this._running[index] = true;
                 this._content[index].addClass( 'loading' );
@@ -271,6 +274,7 @@
 
             request: function( page , force = false ){
                 $('#tab-submission').tab('change tab' , 'submission' );
+                if( this._running == true ) this._content.addClass( 'loading' );
                 if( this._running == true || ( page == this._cur && force == false ) ) return;
                 this._cur = page;
                 this._running = true;
