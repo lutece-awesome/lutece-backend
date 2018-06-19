@@ -1,5 +1,6 @@
 from enum import Enum, unique
 from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 @unique
 class _Permission( Enum ):
@@ -25,10 +26,55 @@ class _Permission( Enum ):
         @property
         def attribute(self):
             return { x : getattr( self , x ) for x in self._field }
+
+    CONTEST_ADD_CONTEST = _meta(
+        app_label = 'contest',
+        model = 'contest',
+        codename = 'add_contest')
+    CONTEST_CHANGE_CONTEST = _meta(
+        app_label = 'contest',
+        model = 'contest',
+        codename = 'change_contest')
+    CONTEST_VIEW_ALL = _meta(
+        app_label = 'contest',
+        model = 'contest',
+        codename = 'view_all')
+    CONTEST_HIDE_SUBMISSION = _meta(
+        app_label = 'contest',
+        model = 'contest',
+        codename = 'hide_submission')
+    PROBLEM_ADD_PPROBLEM = _meta(
+        app_label = 'problem',
+        model = 'problem',
+        codename = 'add_problem')
+    PROBLEM_CHANGE_PROBLEM = _meta(
+        app_label = 'problem',
+        model = 'problem',
+        codename = 'change_problem')
     PROBLEM_VIEW_ALL = _meta(
         app_label = 'problem',
         model = 'problem',
-        codename = 'view_all',)
+        codename = 'view_all')
+    PROBLEM_DOWNLOAD_DATA = _meta(
+        app_label = 'problem',
+        model = 'problem',
+        codename = 'download_data')
+    SUBMISSION_VIEW_ALL = _meta(
+        app_label = 'submission',
+        model = 'submission',
+        codename = 'view_all')
+    USER_SET_NORMAL_ADMIN = _meta(
+        app_label = 'user',
+        model = 'user',
+        codename = 'set_normal_admin')
+    USER_SET_SUPER_ADMIN = _meta(
+        app_label = 'user',
+        model = 'user',
+        codename = 'set_super_admin')
+    
+    def set_permission( self , user ):
+        content_type = ContentType.objects.get( app_label = self.value.app_label , model = self.value.model )
+        user.user_permissions.add( Permission.objects.get( content_type = content_type , codename = self.value.codename ) )
 
 @unique
 class Group( Enum ):
@@ -61,14 +107,23 @@ class Group( Enum ):
 
     NORMAL_USER = _meta(
         full = 'normal_user',
+        permission = []
     )
 
     NORMAL_ADMIN = _meta(
         full = 'normal_admin',
         display = 'Admin',
+        permission = ( _Permission.CONTEST_HIDE_SUBMISSION , _Permission.CONTEST_VIEW_ALL, _Permission.PROBLEM_ADD_PPROBLEM, _Permission.PROBLEM_CHANGE_PROBLEM , _Permission.PROBLEM_DOWNLOAD_DATA , _Permission.PROBLEM_VIEW_ALL , _Permission.SUBMISSION_VIEW_ALL )
     )
 
     SUPER_ADMIN = _meta(
         full = 'super_admin',
         display = 'Super Admin',
+        permission = NORMAL_ADMIN.permission + ( _Permission.CONTEST_ADD_CONTEST , _Permission.CONTEST_CHANGE_CONTEST , _Permission.USER_SET_NORMAL_ADMIN )
+    )
+
+    ROOT = _meta(
+        full = 'root',
+        display = 'Root',
+        permission = tuple( _Permission )
     )

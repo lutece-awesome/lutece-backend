@@ -324,6 +324,7 @@
 
             request: function(){
                 $('#tab-rank').tab('change tab' , 'rank' );
+                if( this._running == true ) this._content.addClass( 'loading' );
                 if( this._running == true || this._cache.length > 0 ) return;
                 this._running = true;
                 this._content.addClass( 'loading' );

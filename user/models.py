@@ -16,10 +16,9 @@ class User(AbstractUser):
         return self.username
         
     def set_group( self , group ):
-        pass
-        # self.user_permissions.clear()
-        # for _ in group.value.permission:
-        #     self.user_permissions.add( Permission.objects.get( codename = _ ) )
+        self.user_permissions.clear()
+        for _ in group.value.permission:
+            _.set_permission( self )
 
     def save( self , * args , ** kwargs ):
         super( User , self ).save()
