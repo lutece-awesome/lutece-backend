@@ -220,13 +220,16 @@ def get_contest_rank( request , pk ):
     from submission.judge_result import Judge_result, get_judge_result, Query_field
     from user.models import Userinfo
     from copy import deepcopy
+    from user.models import User
 
     contest = get_object_or_None( Contest , pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
         return HttpResponse( 'Contest has not yet started' )
     start_time = contest.start_time
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
-    sub_all = Submission.objects.filter( contest = contest ).order_by( 'pk' )
+    sub_all = Submission.objects.raw( 'SELECT submission_id, judge_status, submit_time, problem_id , user_id from submission_submission where contest_id = %d ORDER BY submission_id' % ( pk ) )
+    user_list = { x.user_id for x in sub_all }
+    user_list = { x : User.objects.get( pk = x ) for x in user_list }
     base = [ ContestProblemAnalysis(
         solved = False,
         try_times = 0,
@@ -237,7 +240,8 @@ def get_contest_rank( request , pk ):
     first_blood_set = set()
     analy = dict()
     for each in sub_all:
-        _id = each.problem.pk
+        each.user = user_list[each.user_id]
+        _id = each.problem_id
         if _id in pos_hashtable:
             se = get_judge_result( each.judge_status )
             if se not in Query_field.contest_field.value:
