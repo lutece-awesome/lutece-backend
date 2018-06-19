@@ -36,10 +36,10 @@
                     <a class="item" data-tab="rank" onclick = 'Rank_List.request()' id = 'tab-rank' >Rank</a>
                 </div>
 
-                <div class="ui bottom attached tab segment" data-tab="overview" id = 'overview-content' ></div>
-                <div class="ui bottom attached tab segment" data-tab="problem" id = 'problem-content' ></div>
+                <div class="ui tab" data-tab="overview" id = 'overview-content' ></div>
+                <div class="ui tab" data-tab="problem" id = 'problem-content' ></div>
 
-                <div class="ui bottom attached tab segment" data-tab="detail" id = 'detail-content' >
+                <div class="ui tab" data-tab="detail" id = 'detail-content' >
                     <div style = 'margin-top:10px;'>
                         {% for x in problem_num %}
                             <div class = 'ui tab' style = 'display:none;min-height:200px;' data-url=" {{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }} " id = 'problem-detail-content-{{ loop.index0 }}' ></div>
@@ -47,9 +47,9 @@
                     </div>
                 </div>
 
-                <div class="ui bottom attached tab segment" data-tab="submission" id = 'submission-content' ></div>
-                <div class="ui bottom attached tab segment" data-tab="clarification"></div>
-                <div class="ui bottom attached tab segment" data-tab="rank" id = 'rank-content' ></div>
+                <div class="ui tab" data-tab="submission" id = 'submission-content' ></div>
+                <div class="ui tab" data-tab="clarification"></div>
+                <div class="ui tab" data-tab="rank" id = 'rank-content' ></div>
                 
             </div>
             

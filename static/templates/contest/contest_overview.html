@@ -1,9 +1,9 @@
 
-<div style = 'margin-top:5px;' >
+<div style = 'margin-top:20px;' >
     {% if perms.contest.change_contest %}
         <a href = '{{ url( "contest-edit" , args = ( contest.pk , ) ) }}' class="ui blue ribbon label">Edit</a>
     {% endif %}
-    <table class = "ui basic fixed padded table bordered raised segment" style='text-align:center;'>
+    <table class = "ui basic fixed padded table bordered" style='text-align:center;'>
         <thread>
             <tr>
                 <th>Start</th>

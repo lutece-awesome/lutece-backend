@@ -36,7 +36,7 @@
                                 <a class = 'ui card' style = 'width:250px;min-height:380px;' href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" >
                                     <img src= {{ gravatar_url( email = each_user.user.email , size = 250 ) }} />
                                     <div class = 'content' >
-                                        <div class="header">{{ each_user.user.display_name }}</div>
+                                        <div class="header" style = 'min-height:24px;'>{{ each_user.user.display_name }}</div>
                                         <div class="meta" style = 'margin-top:5px;'>
                                             <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).strftime('%m,%d,%Y') }}</span>
                                         </div>
