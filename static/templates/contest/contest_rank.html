@@ -8,7 +8,9 @@
                 <th style = 'width:4em;' >Solved</th>
                 <th style = 'width:4em;' >Penalty</th>
                 {% for each in problem_num %}
-                    <th style = 'width:8em;' >{{ loop.index0 | I2S }}</th>
+                    <th style = 'width:8em;' >
+                        <a href = 'javascript:void(0);' onclick = 'Problem_Detail.request( {{ loop.index0 }} )' > {{ loop.index0 | I2S }} </a>
+                    </th>
                 {% endfor %}
             </tr>
         </thread>
@@ -16,7 +18,7 @@
             {% for each in rank %}
                 <tr style = 'text-align:center' >
                     <td> {{ loop.index }} </td>
-                    <td> {{ each.user.display_name }} </td>
+                    <td> <a href = "{{ url('user-detail' , args=( each.user.pk , ) ) }}"> {{ each.user.display_name }} </a> </td>
                     <td> {{ each.solvednumber }} </td>
                     <td> {{ each.penalty }} </td>
                     {% set problem_set = each.analysis %}
