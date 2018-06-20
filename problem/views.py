@@ -146,7 +146,6 @@ def problem_create_check( request ):
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
-
 def query_title( request , pk ):
     status = {
         'status' : False,}
