@@ -1,8 +1,6 @@
 from re import compile, search
 from enum import Enum, unique
 from .models import Judgeinfo
-
-
 class _meta:
     __slots__ = (
         'full',
@@ -31,6 +29,7 @@ class _meta:
 
 @unique
 class Judge_result( Enum ):
+
     PD = _meta(
         full = 'Pending',
         alias = 'PD',

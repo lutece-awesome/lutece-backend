@@ -23,8 +23,8 @@ class _meta:
     def attribute(self):
         return { x : getattr( self , x ) for x in self._field }
 
-
 class ContestStatus( Enum ):
+
     PENDING = _meta(
         full = 'Pending',
         icon = 'coffee icon',
