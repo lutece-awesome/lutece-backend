@@ -1,4 +1,5 @@
 from django.db import models
+from discussion.models import Discussion
 
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
@@ -16,6 +17,7 @@ class Problem(models.Model):
     visible = models.BooleanField( default = False )
     submit = models.IntegerField( default = 0 )
     accept = models.IntegerField( default = 0 )
+    discussion = models.OneToOneField(Discussion, on_delete=models.CASCADE, default=Discussion.get_new)
 
     def __str__(self):
         return self.title
