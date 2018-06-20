@@ -17,7 +17,7 @@ class Problem(models.Model):
     visible = models.BooleanField( default = False )
     submit = models.IntegerField( default = 0 )
     accept = models.IntegerField( default = 0 )
-    discussion = models.ForeignKey(Discussion, null=True, on_delete=models.SET_NULL)
+    discussion = models.ForeignKey(Discussion, null=True, blank=True , on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title

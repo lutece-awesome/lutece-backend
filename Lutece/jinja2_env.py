@@ -34,7 +34,9 @@ def append_query_parameters( url , query ):
     return url + '?' + query if len( query ) else url
 
 def get_user_group( user ):
-    from user.group import get_user_group
+    from user.group import get_user_group, Group
+    if not user.is_authenticated:
+        return Group.NORMAL_USER
     return get_user_group( user.group )
 
 def register_user(env):

@@ -115,7 +115,6 @@ def upload_data( data , problem , errlist ):
         system( 'mv ' + temp_dir + ' ' + target )
         return True
     except Exception as e:
-        print( str( e ) )
         errlist.append( str( e ) )
         return False
     finally:

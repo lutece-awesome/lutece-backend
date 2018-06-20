@@ -45,7 +45,7 @@
                                 <a href = '{{ url('user-detail' , args = (it.user.pk,) ) }}' > {{it.user.display_name}} </a>
                             </td>
                         {% endif %}
-                        <td><a href = 'javascript:void(0)' onclick = 'Problem_Detail.request( {{ pos_hashtable[it.problem.pk] }} )' >{{it.problem.title}}</a></td>
+                        <td><a href = 'javascript:void(0)' onclick = 'Problem_Detail.request( {{ pos_hashtable[it.problem.pk] }} )' >{{ pos_hashtable[it.problem.pk] | I2S }} - {{it.problem.title}}</a></td>
                         <td style = 'color:{{  it.judge_status | get_judge_result_color }};'><i class = '{{ it.judge_status | get_judge_result_icon }}'></i><b>{{ it.judge_status }}</b></td>
                         {% if it.completed %}
                             <td>

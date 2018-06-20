@@ -19,16 +19,18 @@ class User(AbstractUser):
         self.user_permissions.clear()
         for _ in group.value.permission:
             _.set_permission( self )
-        self.show = group.value.show
+        self.group = group.value.full
+        Userinfo.objects.filter( user = self ).update( show = group.value.show_in_userlist )
         self.save()
 
     def save( self , * args , ** kwargs ):
         super( User , self ).save()
         if get_object_or_None( Userinfo , user = self ) == None:
-            Userinfo( user = self ) .save()
+            Userinfo( user = self ).save()
 
     class Meta:
         permissions = (
+            ('set_normal_user' , 'Can set normal_user' ),
             ('set_normal_admin' , 'Can set normal_admin' ),
             ('set_super_admin' , 'Can set super_admin' ),
         )

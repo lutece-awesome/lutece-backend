@@ -80,7 +80,6 @@ def get_status_list(request , page):
         if lang is not None:
             statuslist = statuslist.filter( language = lang )
     except Exception as e:
-        print( str( e ) )
         statuslist = Submission.objects.none()
     paginator = Paginator(statuslist, config.PER_PAGE_COUNT)
     page = min( max( 1 , page ) , paginator.num_pages )

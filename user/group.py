@@ -6,8 +6,6 @@ class _permission_meta:
         'app_label',
         'model',
         'codename',
-        'url',
-        'full',
         '_field'
     )
 
@@ -28,7 +26,6 @@ class _permission_meta:
 
 @unique
 class _Permission( Enum ):
-
     CONTEST_ADD_CONTEST = _permission_meta(
         app_label = 'contest',
         model = 'contest',
@@ -65,18 +62,19 @@ class _Permission( Enum ):
         app_label = 'submission',
         model = 'submission',
         codename = 'view_all')
+    USER_SET_NORMAL_USER= _permission_meta(
+        app_label = 'user',
+        model = 'user',
+        codename = 'set_normal_user',)
     USER_SET_NORMAL_ADMIN = _permission_meta(
         app_label = 'user',
         model = 'user',
-        codename = 'set_normal_admin',
-        full = 'Apply Normal Admin',
-        url = 'user-set-normal-admin',)
+        codename = 'set_normal_admin',)
     USER_SET_SUPER_ADMIN = _permission_meta(
         app_label = 'user',
         model = 'user',
-        codename = 'set_super_admin',
-        full = 'Apply Super Admin',
-        url = 'user-set-super-admin',)
+        codename = 'set_super_admin',)
+
     def set_permission( self , user ):
         content_type = ContentType.objects.get( app_label = self.value.app_label , model = self.value.model )
         user.user_permissions.add( Permission.objects.get( content_type = content_type , codename = self.value.codename ) )
@@ -87,7 +85,9 @@ class _group_meta:
         'full',
         'display',
         'show',
+        'show_in_userlist',
         'css',
+        'url',
         'permission',
         '_field'
     )
@@ -116,34 +116,40 @@ class Group( Enum ):
     NORMAL_USER = _group_meta(
         full = 'normal_user',
         show = False,
-        permission = []
+        show_in_userlist = True,
+        display = 'Normal User',
+        url = 'user-set-normal-user',
+        permission = [],
     )
 
     NORMAL_ADMIN = _group_meta(
         full = 'normal_admin',
         show = True,
+        show_in_userlist = False,
         css = 'ui red ribbon label',
-        display = 'Admin',
+        display = 'Normal Admin',
+        url = 'user-set-normal-admin',
         permission = ( _Permission.CONTEST_HIDE_SUBMISSION , _Permission.CONTEST_VIEW_ALL, _Permission.PROBLEM_ADD_PPROBLEM, _Permission.PROBLEM_CHANGE_PROBLEM , _Permission.PROBLEM_DOWNLOAD_DATA , _Permission.PROBLEM_VIEW_ALL , _Permission.SUBMISSION_VIEW_ALL )
     )
 
     SUPER_ADMIN = _group_meta(
         full = 'super_admin',
         show = True,
+        show_in_userlist = False,
         css = 'ui green ribbon label',
         display = 'Super Admin',
-        permission = NORMAL_ADMIN.permission + ( _Permission.CONTEST_ADD_CONTEST , _Permission.CONTEST_CHANGE_CONTEST , _Permission.USER_SET_NORMAL_ADMIN )
+        url = 'user-set-super-admin',
+        permission = NORMAL_ADMIN.permission + ( _Permission.CONTEST_ADD_CONTEST , _Permission.CONTEST_CHANGE_CONTEST , _Permission.USER_SET_NORMAL_USER , _Permission.USER_SET_NORMAL_ADMIN )
     )
 
     ROOT = _group_meta(
         full = 'root',
         show = True,
+        show_in_userlist = False,
         css = 'ui orange ribbon label',
         display = 'Super Root',
         permission = tuple( _Permission )
     )
-
-USER_TYPE_PERMISSION = ( _Permission.USER_SET_NORMAL_ADMIN , _Permission.USER_SET_SUPER_ADMIN )
 
 def get_user_group( full ):
     for each in Group:
@@ -152,8 +158,14 @@ def get_user_group( full ):
     return None
 
 def get_user_control_permission( group ):
+    from django.urls import reverse
+    USER_TYPE_PERMISSION = {
+        _Permission.USER_SET_NORMAL_USER : Group.NORMAL_USER,
+        _Permission.USER_SET_NORMAL_ADMIN : Group.NORMAL_ADMIN,
+        _Permission.USER_SET_SUPER_ADMIN : Group.SUPER_ADMIN,
+    }
     ret = list()
     for each in group.value.permission:
         if each in USER_TYPE_PERMISSION:
-            ret.append( each )
+            ret.append( USER_TYPE_PERMISSION[each] )
     return ret

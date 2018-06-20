@@ -17,7 +17,7 @@
             <div class = 'four wide column'>
                 <div style = 'width:90%;'>
                     {% set user_group = target_user | get_user_group %}
-                    {% if user_group.value.show %}
+                    {% if  user_group.value.show %}
                         <div class = "{{ user_group.value.css }}" style = 'margin-bottom:10px;' > {{ user_group.value.display }} </div>
                     {% endif %}
                     <img class = 'ui centered image' style = 'width:250px;height:250px;' src= {{ gravatar_url( email = target_user.email , size = 250 ) }} />
@@ -42,17 +42,26 @@
                         {% endif %}
                         <div style = 'margin-top:10px;'><i class = 'map marker alternate icon'></i>{{ info.location }}</div>
                         <div style = 'margin-top:10px;'><i class = 'tasks icon'></i><span style = 'color:green'> {{ info.solved  }}</span> / <span style = 'color:red;'> {{ info.tried  }}</span></div>
-                        {% set user_control_permission_list = user_group | get_user_control_permission %}
                         {% if user == target_user %}
                             <div style = 'margin-top:10px;' class="ui blue labeled icon bottom attached button" id = 'edit-button'>
                                 <span><i class="edit icon"></i>Edit</span>
                             </div>
-                        {% else %}
-                            <div style = 'margin-top:10px;' class="ui orange labeled icon bottom attached button" id = 'permission-button'>
-                                <span><i class="edit icon"></i>Permission</span>
-                            </div>
                         {% endif %}
                     </div>
+
+                    {% set user_control_permission_list = user | get_user_group | get_user_control_permission %}
+                    {% if user_control_permission_list | length > 0 and user != target_user %}
+                        <select class="ui fluid selection dropdown" id="permission-dropdown">
+                            <i class="dropdown icon"></i>
+                            {% for each in user_control_permission_list %}
+                                <option value = "{{ url(each.value.url) }}" >{{ each.value.display }} </option>
+                            {% endfor %}
+                        </select>
+                        <div style = 'margin-top:6px;' class="ui teal labeled icon bottom attached button" id = 'permission-button'>
+                            Apply Permission
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
 
@@ -142,8 +151,30 @@
                 return data;
             }
         });
+
+        {% if user_control_permission_list | length > 0 and user != target_user %}
+            $('#permission-dropdown').dropdown();
+            $('#permission-dropdown').dropdown( 'set selected' , '{{ url(user_group.value.url) }}' )
+            $('#permission-button').click(function(){
+                $(this).addClass( 'loading disabled' );
+                let url = $('#permission-dropdown').dropdown( 'get value' );
+                $.post(
+                    url,
+                    {
+                        'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                        'user' : {{ target_user.pk }}
+                    },
+                    function( data ){
+                        location.reload();
+                    }
+                )
+            });
+        {% endif %}
     </script>
 
-    {% include 'user/user_edit.html' %}
+    {% if user == target_user %}
+        {% include 'user/user_edit.html' %}        
+    {% endif %}
+
 
 {% endblock content %}
