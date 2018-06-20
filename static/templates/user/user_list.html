@@ -38,11 +38,11 @@
                                     <div class = 'content' >
                                         <div class="header" style = 'min-height:24px;'>{{ each_user.user.display_name }}</div>
                                         <div class="meta" style = 'margin-top:5px;'>
-                                            <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).strftime('%m,%d,%Y') }}</span>
+                                            <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).date() }}</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        <div><i class = 'address book icon'></i>Joined in {{ each_user.user.date_joined.strftime( '%m,%Y' ) }} </div>
+                                        <div><i class = 'address book icon'></i>Joined in {{ each_user.user.date_joined.date() }} </div>
                                         <div><i class="users icon"></i><b>0</b> Followers</div>                                        
                                     </div>
                                 </a>
