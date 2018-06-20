@@ -69,13 +69,14 @@ class _Permission( Enum ):
         app_label = 'user',
         model = 'user',
         codename = 'set_normal_admin',
-
-    )
+        full = 'Apply Normal Admin',
+        url = 'user-set-normal-admin',)
     USER_SET_SUPER_ADMIN = _permission_meta(
         app_label = 'user',
         model = 'user',
-        codename = 'set_super_admin')
-    
+        codename = 'set_super_admin',
+        full = 'Apply Super Admin',
+        url = 'user-set-super-admin',)
     def set_permission( self , user ):
         content_type = ContentType.objects.get( app_label = self.value.app_label , model = self.value.model )
         user.user_permissions.add( Permission.objects.get( content_type = content_type , codename = self.value.codename ) )
@@ -150,6 +151,9 @@ def get_user_group( full ):
             return each
     return None
 
-
 def get_user_control_permission( group ):
-    pass
+    ret = list()
+    for each in group.value.permission:
+        if each in USER_TYPE_PERMISSION:
+            ret.append( each )
+    return ret

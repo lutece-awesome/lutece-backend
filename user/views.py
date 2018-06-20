@@ -182,9 +182,7 @@ def user_list( request , page ):
 
 @login_required
 def toggle_follow_realtion( request , user_id ):
-    status = {
-        'status' : False,
-    }
+    status = { 'status' : False, }
     target = User.objects.get( pk = user_id )
     try:
         if request.user == target:

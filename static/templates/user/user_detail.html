@@ -42,10 +42,15 @@
                         {% endif %}
                         <div style = 'margin-top:10px;'><i class = 'map marker alternate icon'></i>{{ info.location }}</div>
                         <div style = 'margin-top:10px;'><i class = 'tasks icon'></i><span style = 'color:green'> {{ info.solved  }}</span> / <span style = 'color:red;'> {{ info.tried  }}</span></div>
+                        {% set user_control_permission_list = user_group | get_user_control_permission %}
                         {% if user == target_user %}
                             <div style = 'margin-top:10px;' class="ui blue labeled icon bottom attached button" id = 'edit-button'>
                                 <span><i class="edit icon"></i>Edit</span>
-                            </div>                            
+                            </div>
+                        {% else %}
+                            <div style = 'margin-top:10px;' class="ui blue labeled icon bottom attached button" id = 'permission-button'>
+                                <span><i class="edit icon"></i>Permission</span>
+                            </div>
                         {% endif %}
                     </div>
                 </div>

@@ -12,7 +12,7 @@ def set_normal_admin( request ):
     return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
 @permission_required( 'user.set_super_admin')
-def set_super_admin( request )；
+def set_super_admin( request ):
     from .models import User
     from .group import Group
     ret = { 'status' : True, }
