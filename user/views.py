@@ -180,7 +180,6 @@ def user_list( request , page ):
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages )} )
 
-
 @login_required
 def toggle_follow_realtion( request , user_id ):
     status = {

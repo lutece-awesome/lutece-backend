@@ -24,16 +24,22 @@
                         <td> {{ each.penalty }} </td>
                         {% set problem_set = each.analysis %}
                         {% for each_problem in problem_set %}
-                            <td >
+                            <td>
                                 {% if each_problem.try_times > 0 %}
                                     {% set tr = each_problem.try_times %}
                                     {% if each_problem.solved == true %}
                                         {% set tr = tr - 1 %}
-                                        <div style = 'color:#21ba45;'>
+                                        <div 
+                                            {% if each_problem.firstblood == true %}
+                                                style = 'color:green;'
+                                            {% else %}
+                                                style = 'color:#21ba45;'
+                                            {% endif %}
+                                        >
                                             {% if each_problem.firstblood == true %}
                                                 <i class = 'thumbs up outline icon'></i>
                                             {% else %}
-                                                <i class = 'check icon' style = 'color:#21ba45;' ></i>
+                                                <i class = 'check icon'></i>
                                             {% endif %}
                                             {% if tr > 0 %}
                                                 <b>(-{{tr}})</b>
