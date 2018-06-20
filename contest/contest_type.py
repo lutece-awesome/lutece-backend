@@ -21,9 +21,8 @@ class _meta:
     @property
     def attribute(self):
         return { x : getattr( self , x ) for x in self._field }
-
-
 class ContestType( Enum ):
+    
     ICPC = _meta(
         full = 'ACM-ICPC',
         detail = 'ACM-ICPC Style'

@@ -141,6 +141,8 @@ def problem_create_check( request ):
         make_data_folder( s.pk )
         if len( err ) == 0:
             status['status'] = True
+    except Exception as Error:
+        err.append( str( Error ) )
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 

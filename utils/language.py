@@ -1,5 +1,4 @@
 from enum import Enum, unique
-
 class _meta:
     __slots__ = (
         'full',
@@ -24,9 +23,10 @@ class _meta:
     @property
     def attribute(self):
         return { x : getattr( self , x ) for x in self._field }
-
+        
 @unique
 class Language( Enum ):
+            
     GNUCPP = _meta(
         full = 'GNU G++',
         version = '7.3.0',

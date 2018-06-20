@@ -9,5 +9,5 @@ urlpatterns = [
     path('upload/data/<int:problem_id>' , problem_upload_data , name = 'problem-upload-data' ),
     path('search/<str:til>/' , search , name = 'problem-search' ),
     path('create/check/' , problem_create_check , name = 'problem-create-check' ),
-    path('query/<int:pk>/' , query_title , name = 'problem-query-title'  )
+    path('query/<int:pk>/' , query_title , name = 'problem-query-title'  ),
 ]
