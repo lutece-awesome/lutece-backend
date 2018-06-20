@@ -62,6 +62,7 @@ def submit_solution(request):
         return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
 def get_status_list(request , page):
+    from user.group import Group
     statuslist = Submission.objects.filter( contest = None )
     display_name = request.GET.get( 'display_name' )
     title = request.GET.get( 'title' )
@@ -69,7 +70,9 @@ def get_status_list(request , page):
     lang = request.GET.get( 'lang' )
     try:
         if not request.user.has_perm( 'problem.view_all' ):
-            statuslist = statuslist.filter( problem__visible = True , user__show = True )
+            statuslist = statuslist.filter( problem__visible = True )
+        if not request.user.has_perm( 'submission.view_all' ):
+            statuslist = statuslist.filter( user__group = Group.NORMAL_USER.value.full )
         if display_name is not None:
             statuslist = statuslist.filter( user = User.objects.get( display_name = display_name ) )
         if title is not None:
@@ -78,7 +81,8 @@ def get_status_list(request , page):
             statuslist = statuslist.filter( judge_status = verdict )
         if lang is not None:
             statuslist = statuslist.filter( language = lang )
-    except:
+    except Exception as e:
+        print( str( e ) )
         statuslist = Submission.objects.none()
     paginator = Paginator(statuslist, config.PER_PAGE_COUNT)
     page = min( max( 1 , page ) , paginator.num_pages )
