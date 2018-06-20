@@ -83,6 +83,8 @@ class Group( Enum ):
         __slots__ = (
             'full',
             'display',
+            'show',
+            'css',
             'permission',
             '_field'
         )
@@ -107,23 +109,37 @@ class Group( Enum ):
 
     NORMAL_USER = _meta(
         full = 'normal_user',
+        show = False,
         permission = []
     )
 
     NORMAL_ADMIN = _meta(
         full = 'normal_admin',
+        show = True,
+        css = 'ui red ribbon label',
         display = 'Admin',
         permission = ( _Permission.CONTEST_HIDE_SUBMISSION , _Permission.CONTEST_VIEW_ALL, _Permission.PROBLEM_ADD_PPROBLEM, _Permission.PROBLEM_CHANGE_PROBLEM , _Permission.PROBLEM_DOWNLOAD_DATA , _Permission.PROBLEM_VIEW_ALL , _Permission.SUBMISSION_VIEW_ALL )
     )
 
     SUPER_ADMIN = _meta(
         full = 'super_admin',
+        show = True,
+        css = 'ui green ribbon label',
         display = 'Super Admin',
         permission = NORMAL_ADMIN.permission + ( _Permission.CONTEST_ADD_CONTEST , _Permission.CONTEST_CHANGE_CONTEST , _Permission.USER_SET_NORMAL_ADMIN )
     )
 
     ROOT = _meta(
         full = 'root',
-        display = 'Root',
+        show = True,
+        css = 'ui orange ribbon label',
+        display = 'Super Root',
         permission = tuple( _Permission )
     )
+
+def get_user_group( full ):
+    for each in Group:
+        if each.value.full == full:
+            return each
+    return None
+

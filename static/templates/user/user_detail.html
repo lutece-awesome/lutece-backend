@@ -16,7 +16,10 @@
         <div class = 'ui grid'>
             <div class = 'four wide column'>
                 <div style = 'width:90%;'>
-                    <div class = 'ui header'>Card </div>
+                    {% set user_group = target_user | get_user_group %}
+                    {% if user_group.value.show %}
+                        <div class = "{{ user_group.value.css }}" style = 'margin-bottom:10px;' > {{ user_group.value.display }} </div>
+                    {% endif %}
                     <img class = 'ui centered image' style = 'width:250px;height:250px;' src= {{ gravatar_url( email = target_user.email , size = 250 ) }} />
                     <div class = 'ui card' style = 'width:auto;'>
                         <div class = 'content' >
@@ -43,6 +46,8 @@
                             <div style = 'margin-top:10px;' class="ui blue labeled icon bottom attached button" id = 'edit-button'>
                                 <span><i class="edit icon"></i>Edit</span>
                             </div>
+                        {% else %}
+                            
                         {% endif %}
                     </div>
                 </div>

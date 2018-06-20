@@ -71,8 +71,6 @@ def get_status_list(request , page):
     try:
         if not request.user.has_perm( 'problem.view_all' ):
             statuslist = statuslist.filter( problem__visible = True )
-        if not request.user.has_perm( 'submission.view_all' ):
-            statuslist = statuslist.filter( user__group = Group.NORMAL_USER.value.full )
         if display_name is not None:
             statuslist = statuslist.filter( user = User.objects.get( display_name = display_name ) )
         if title is not None:

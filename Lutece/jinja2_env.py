@@ -50,6 +50,9 @@ def timedeltaformat( s ):
 def I2S( it ):
     return chr( it + ord('A') )
 
+def get_user_group( user ):
+    from user.group import get_user_group
+    return get_user_group( user.group )
 
 def environment(**options):
     env = Environment(**options)
@@ -59,6 +62,7 @@ def environment(**options):
     env.filters['append_query_parameters'] = append_query_parameters
     env.filters['timedeltaformat'] = timedeltaformat
     env.filters['I2S'] = I2S
+    env.filters['get_user_group'] = get_user_group
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,
