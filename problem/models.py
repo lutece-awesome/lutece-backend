@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from discussion.models import Discussion
 
 class Problem(models.Model):
@@ -17,7 +17,7 @@ class Problem(models.Model):
     visible = models.BooleanField( default = False )
     submit = models.IntegerField( default = 0 )
     accept = models.IntegerField( default = 0 )
-    discussion = models.OneToOneField(Discussion, on_delete=models.CASCADE, default=Discussion.get_new)
+    discussion = models.ForeignKey(Discussion, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
@@ -27,6 +27,12 @@ class Problem(models.Model):
             ('view_all' , 'Can view all problems'),
             ('download_data' , 'Can download test data' ),
         )
+
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        if not self.discussion_id:
+            self.discussion = Discussion.objects.create()
+        super(Problem, self).save(*args, **kwargs)
 
 
 class ContestProblem( models.Model ):
