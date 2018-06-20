@@ -173,7 +173,7 @@ def get_problem_list( request , pk ):
     return render( request , 'contest/contest_problem_list.html' , {
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest_problem_set ],
         'contest_analysis' : get_contest_analysis( contest ),
-        'user_problem_analysis' : [ get_user_contest_problem_analysis( user = request.user , problem = get_object_or_None( Problem , pk = x.problem ) )  for x in contest_problem_set ],
+        'user_problem_analysis' : [ get_user_contest_problem_analysis( user = request.user , problem = get_object_or_None( Problem , pk = x.problem ) )  for x in contest_problem_set ] if request.user.is_authenticated else None,
         'contest' : contest,})
 
 def get_contest_submission( request , pk , page ):
