@@ -1,25 +1,42 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-<ul>
-  {% for node in discussions %}
-    {% if node.parent == None %}
-    <li>
-      {{ node }}
-      <ul>
-      {% for node in node.get_children() recursive %}
-          {% set children = node.get_children() %}
-          <li>
-            {{ node }}
-            
-            {% if children %}
-              <ul>{{ loop(children) }}</ul>
-            {% endif %}
-          </li>
-      {% endfor %}
-      </ul>
-    </li>
+<div class="ui comments">
+  <h3 class="ui dividing header">Comments</h3>
+  {% for node in discussion.get_children() recursive %}
+    {% if node.visibility %}
+    <div class="comment">
+      <a class="avatar">
+        <img src={{ gravatar_url(email=node.user.email, size=250) }} />
+      </a>
+      <div class="content">
+        <a class="author">{{ node.user }}</a>
+        <div class="metadata">
+          <span class="date">{{ node.submit_time }}</span>
+        </div>
+        <div class="text">
+          <p>{{ node.content }}</p>
+        </div>
+        <div class="actions">
+          <a class="reply">Reply</a>
+        </div>
+      </div>
+      {% set children = node.get_children() %}
+      {% if children %}
+        <div class="comments">
+            {{ loop(children) }}
+        </div>
+      {% endif %}
+    </div>
     {% endif %}
   {% endfor %}
-</ul>
+  <form class="ui reply form">
+    <div class="field">
+      <textarea></textarea>
+    </div>
+    <div class="ui blue labeled submit icon button">
+      <i class="icon edit"></i> Add Reply
+    </div>
+  </form>
+</div>
 {% endblock content %}
