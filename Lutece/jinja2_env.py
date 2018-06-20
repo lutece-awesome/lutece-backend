@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from jinja2 import Environment,evalcontextfilter, Markup, escape
 from django_gravatar.helpers import get_gravatar_url
+from django.contrib.humanize.templatetags.humanize import naturaltime
 import re
 
 
@@ -67,6 +68,7 @@ def environment(**options):
     env.filters['append_query_parameters'] = append_query_parameters
     env.filters['timedeltaformat'] = timedeltaformat
     env.filters['I2S'] = I2S
+    env.filters['naturaltime'] = naturaltime
     env.globals.update({
         'static': staticfiles_storage.url,
         'url': reverse,

@@ -12,7 +12,7 @@
       <div class="content">
         <a class="author">{{ node.user }}</a>
         <div class="metadata">
-          <span class="date">{{ node.submit_time }}</span>
+          <span class="date">{{ node.submit_time|naturaltime }}</span>
         </div>
         <div class="text">
           <p>{{ node.content }}</p>
