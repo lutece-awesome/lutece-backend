@@ -69,7 +69,7 @@ def get_status_list(request , page):
     lang = request.GET.get( 'lang' )
     try:
         if not request.user.has_perm( 'problem.view_all' ):
-            statuslist = statuslist.filter( problem__visible = True )
+            statuslist = statuslist.filter( problem__visible = True , user__show = True )
         if display_name is not None:
             statuslist = statuslist.filter( user = User.objects.get( display_name = display_name ) )
         if title is not None:

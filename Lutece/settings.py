@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'submission',
     'data_server',
     'utils',
-    'discussion'
+    'discussion',
 ]
 
 MIDDLEWARE = [

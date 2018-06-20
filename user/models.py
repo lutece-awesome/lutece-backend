@@ -37,7 +37,8 @@ class Userinfo(models.Model):
     location = models.CharField( max_length = 32 , blank = True )
     about = models.CharField( max_length = 256 , blank = True , default = '这个人很懒,什么都没有写' ) # tell others how awesome you are
     tried = models.IntegerField( default = 0 )
-    solved = models.IntegerField( default = 0 ) 
+    solved = models.IntegerField( default = 0 )
+    show = models.BooleanField( default = True )
 
     def __str__( self ):
         return self.user.username
