@@ -48,6 +48,10 @@ def time_format_hm( s ):
     last = '%.2d:%.2d' % ( hours, mins )
     return last
 
+def check_contest_has_perms( contest , user ):
+    if contest.visible is False and not user.has_perm( 'contest.view_all' ):
+        return False
+    return True
 
 def check_contest_started_or_has_perms( contest , user ):
     from datetime import datetime

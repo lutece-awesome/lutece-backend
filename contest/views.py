@@ -10,7 +10,7 @@ from json import dumps, loads
 from annoying.functions import get_object_or_None
 from .contest_status import get_contest_status
 from datetime import datetime
-from .util import check_contest_started_or_has_perms
+from .util import check_contest_started_or_has_perms, check_contest_has_perms
 
 # Create your views here.
 
@@ -168,7 +168,7 @@ def get_problem_list( request , pk ):
     from .util import get_contest_analysis, get_user_contest_problem_analysis
     contest = get_object_or_None( Contest , pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
-        return HttpResponse( 'Contest has not yet started' )
+        return render( request , 'contest/contest_not_started.html' )
     contest_problem_set = contest.contestproblem_set.all()
     return render( request , 'contest/contest_problem_list.html' , {
         'prob' : [ get_object_or_None( Problem , pk = x.problem ) for x in contest_problem_set ],
@@ -180,7 +180,7 @@ def get_contest_submission( request , pk , page ):
     from submission.models import Submission
     contest = get_object_or_None( Contest , pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
-        return HttpResponse( 'Contest has not yet started' )
+        return render( request , 'contest/contest_not_started.html' )
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
     if request.user.is_authenticated:
         if request.user.has_perm( 'contest.view_all' ):
@@ -204,6 +204,8 @@ def get_contest_detail( request , pk ):
     from .contest_status import get_contest_status
     from datetime import datetime
     contest = get_object_or_None( Contest , pk = pk )
+    if not check_contest_has_perms( contest , request.user ):
+        raise Http404( 'Page not found' )
     return render( request , 'contest/contest_detail.html' , {
         'contest' : contest,
         'problem_num' : range( len(contest.contestproblem_set.all()) ),
@@ -222,7 +224,7 @@ def get_contest_rank( request , pk ):
 
     contest = get_object_or_None( Contest , pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
-        return HttpResponse( 'Contest has not yet started' )
+        return render( request , 'contest/contest_not_started.html' )
     start_time = contest.start_time
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
     sub_all = Submission.objects.raw( 'SELECT submission_id, judge_status, submit_time, problem_id , user_id from submission_submission where contest_id = %d ORDER BY submission_id' % ( pk ) )
