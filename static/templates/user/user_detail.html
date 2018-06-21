@@ -71,33 +71,31 @@
                 <div class = 'ui raised segment' id = 'cal-heatmap' style = 'position:relative' ></div>
                 <div class = 'ui header'>Recently </div>
                 <div class = 'one column grid'>
-                    <div class="ui raised segment">
-                        <div class = 'column'>
-                            <table class = "ui basic fixed selectable padded table bordered" style = 'text-align:center;' >
-                                <thread>
-                                    <div class = 'status list menu'>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>When</th>
-                                            <th>Problem</th>
-                                            <th>Verdict</th>
-                                            <th>Language</th>                                    
-                                        </tr>
-                                    </div>
-                                </thread>
-                                <tbody>
-                                    {% for x in recently %}
-                                        <tr>
-                                            <td><a data-code = '{{ url( "submission-code" , args = ( x.pk , ) ) }}' data-detail = '{{ url( "submission-detail" , args = ( x.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{x.submission_id}} </a></td>
-                                            <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
-                                            <td><a href = {{ url('problem-detail' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
-                                            <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
-                                            <td>{{ x.language }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class = 'column'>
+                        <table class = "ui raised segment padded table" style = 'text-align:center;' >
+                            <thread>
+                                <div class = 'status list menu'>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>When</th>
+                                        <th>Problem</th>
+                                        <th>Verdict</th>
+                                        <th>Language</th>
+                                    </tr>
+                                </div>
+                            </thread>
+                            <tbody>
+                                {% for x in recently %}
+                                    <tr>
+                                        <td><a data-code = '{{ url( "submission-code" , args = ( x.pk , ) ) }}' data-detail = '{{ url( "submission-detail" , args = ( x.pk , ) ) }}'  href ='javascript:void(0)' onclick = 'Submission_Detail_View.request($(this))'  > {{x.submission_id}} </a></td>
+                                        <td>{{ x.submit_time.strftime('%Y-%m-%d %H:%M')  }}</td>
+                                        <td><a href = {{ url('problem-detail' , args = (x.problem.problem_id,) ) }} >{{x.problem.title}}</td>
+                                        <td style = 'color:{{  x.judge_status | get_judge_result_color }};'><i class = '{{ x.judge_status | get_judge_result_icon }} '></i>{{ x.judge_status }} </td>
+                                        <td>{{ x.language }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
