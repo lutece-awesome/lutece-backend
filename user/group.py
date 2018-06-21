@@ -157,7 +157,7 @@ def get_user_group( full ):
             return each
     return None
 
-def get_user_control_permission( group ):
+def get_user_control_permission( group , target_user ):
     from django.urls import reverse
     USER_TYPE_PERMISSION = {
         _Permission.USER_SET_NORMAL_USER : Group.NORMAL_USER,
@@ -168,4 +168,6 @@ def get_user_control_permission( group ):
     for each in group.value.permission:
         if each in USER_TYPE_PERMISSION:
             ret.append( USER_TYPE_PERMISSION[each] )
+    if get_user_group( target_user.group ) not in ret:
+        return list()
     return ret
