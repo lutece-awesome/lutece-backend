@@ -204,7 +204,7 @@
         });
 
         $('#discussion-button').click(function(){
-            window.location = '{{ url("show-discussions" , args = (prob.discussion.discussion_id,) ) }} ';
+            window.location = '{{ url("discussion-show" , args = (prob.discussion.discussion_id,) ) }} ';
         });
 
         $('#summary-button').click(function(){
