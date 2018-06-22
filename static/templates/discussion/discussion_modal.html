@@ -1,6 +1,6 @@
 <div class = 'ui discussion modal' style = 'width:720px;' id = 'disscussion-modal'>
     <div class = 'header' style = 'text-align:center;' > <i class = 'comments icon'></i> Discussion </div>
-    <div class = 'scrolling content' style = 'max-height:1000px;' >
+    <div class = 'scrolling content' style = 'max-height:900px;' >
         <div class = 'ui active loading tab' style = 'height:auto;margin-bottom;' id = 'discussion-detail' >
             <div id = 'discussion-content' style = margin-top:15px; ></div>
         </div>
@@ -29,10 +29,16 @@
                 }
             },
 
+            refresh: function( url ){
+                if( this._running == true ) return;
+                this._cache = '';
+                this.request( url );
+            },
+
             request: function( url ){
                 this._modal.modal( 'show' );
                 this._detail.addClass( 'loading' );
-                if( this._running == true || this._cache.length > 0 ){
+                if( this._cache.length > 0 ){
                     this.display();
                     return;
                 }
