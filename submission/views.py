@@ -118,7 +118,10 @@ def get_submission_detail( request , pk ):
     if len( sub.judgererror_msg ) > 0 and request.user.has_perm( 'submission.view_all' ):
         status['judgererror_msg'] = sub.judgererror_msg
     if len( sub.compileerror_msg ) > 0:
-        status['compileerror_msg'] = sub.compileerror_msg
+        if request.user == sub.user or request.user.has_perm( 'submission.view_all' ):
+            status['compileerror_msg'] = sub.compileerror_msg
+        else:
+            status['compileerror_msg'] = ''
     return HttpResponse( dumps( status ) , content_type = 'application/json' )
 
 def get_submission_code( request , pk ):
