@@ -45,12 +45,6 @@
                     </div>
                 </div>
 
-                <div data-tooltip = "Live blank will make the contest public" data-position="top left" class="ui left icon fluid password input" style = 'margin-top:15px;'>
-                    <i class="lock icon"></i>
-                    <input id = "contest-pwd" type="password" name="password" placeholder="Password" maxlength = 32 >
-                </div>
-
-
             </div>
             
             <div class="actions">
@@ -174,7 +168,6 @@
                         'start_time' : transfor( start_time ),
                         'end_time' : transfor( end_time ),
                         'type' : type,
-                        'password' : pwd
                     },
                     function(data,status){
                         if( status == 'success' && data.status == true ){

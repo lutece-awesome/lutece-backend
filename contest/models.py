@@ -13,6 +13,7 @@ class Contest( models.Model ):
     note = models.TextField( blank = True )
     visible = models.BooleanField(default = False )
     register = models.BooleanField( default = False )
+    confirm = models.BooleanField( default = False )
     start_time = models.DateTimeField( null = False , default = timezone.now  )
     end_time = models.DateTimeField( null = False , default = timezone.now )
 
@@ -22,8 +23,9 @@ class Contest( models.Model ):
             ('view_all' , 'Can view all contest' ),
             ('hide_submission' , 'Hide the submission in rankboard' ),
         )
-class ContestInvitedUser( models.Model ):
-    user = models.ForeignKey( User , on_delete = models.CASCADE , db_index = True )
+
+class ContestRegisterUser( models.Model ):
+    user = models.ForeignKey( User , on_delete = models.SET_NULL , null = True , blank = True , db_index = True )
 
 class ContestProblem( models.Model ):
     contest = models.ForeignKey( Contest , on_delete = models.CASCADE , db_index = True )

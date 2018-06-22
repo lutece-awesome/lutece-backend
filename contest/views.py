@@ -44,7 +44,6 @@ def create_contest( request ):
         start_time = datetime.strptime( request.POST.get( 'start_time' ) , "%Y-%m-%d-%H-%M" )
         end_time = datetime.strptime( request.POST.get( 'end_time' ) , "%Y-%m-%d-%H-%M" )
         contest_type = request.POST.get( 'type' ).strip()
-        password = request.POST.get( 'password' )
         if len( title ) == 0:
             err.append( 'Title can not be empty' )
         if get_object_or_None( Contest , title = title ) is not None:
@@ -57,11 +56,10 @@ def create_contest( request ):
             err.append( 'Unknown contesttype' )
         if len( err ) > 0:
             return
-        s = Contest( 
+        s = Contest(
             title = title,
             start_time = start_time,
             end_time = end_time,
-            password = password,
             contest_type = contest_type)
         s.save()
         status['contest_id'] = s.pk
