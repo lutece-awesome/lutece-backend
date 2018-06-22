@@ -26,24 +26,24 @@
 
 
     <div class="ui two column grid">
-        {% for each_user in userinfo_list %}
+        {% for each_user in user_list %}
             <div class = 'column'>
                 <div class="ui fluid raised segment">
                     {# <a class="ui red ribbon label">黄金会员</a> #}
                     <div class = 'ui two column grid'>
                         <div class = 'column'>
                             <div class="ui link cards">
-                                <a class = 'ui card' style = 'width:250px;min-height:380px;' href = "{{ url('user-detail' , args=( each_user.user.pk , ) ) }}" >
-                                    <img src= {{ gravatar_url( email = each_user.user.email , size = 250 ) }} />
+                                <a class = 'ui card' style = 'width:250px;min-height:380px;' href = "{{ url('user-detail' , args=( each_user.pk , ) ) }}" >
+                                    <img src= {{ gravatar_url( email = each_user.email , size = 250 ) }} />
                                     <div class = 'content' >
-                                        <div class="header" style = 'min-height:24px;'>{{ each_user.user.display_name }}</div>
+                                        <div class="header" style = 'min-height:24px;'>{{ each_user.display_name }}</div>
                                         <div class="meta" style = 'margin-top:5px;'>
-                                            <span>Last Seen {{(each_user.user.last_login or each_user.user.date_joined).date() }}</span>
+                                            <span>Last Seen {{(each_user.last_login or each_user.date_joined).date() }}</span>
                                         </div>
                                     </div>
                                     <div class="extra content">
-                                        <div><i class = 'address book icon'></i>Joined in {{ each_user.user.date_joined.date() }} </div>
-                                        <div><i class="users icon"></i><b>0</b> Followers</div>                                        
+                                        <div><i class = 'address book icon'></i>Joined in {{ each_user.date_joined.date() }} </div>
+                                        <div><i class="users icon"></i><b>0</b> Followers</div>
                                     </div>
                                 </a>
                             </div>

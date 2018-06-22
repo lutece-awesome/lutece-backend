@@ -12,20 +12,20 @@
             </div>
             <div data-tooltip = "School" data-position="top left" class="ui fluid left icon input" id = 'school-info' style = 'margin-top:15px;' >
                 <i class = 'university icon'></i>
-                <input class = 'disable' type ="text" value= "{{ info.school }}" maxlength = 60 >
+                <input class = 'disable' type ="text" value= "{{ user.school }}" maxlength = 60 >
             </div>
             <div data-tooltip = "Company" data-position="top left" class="ui fluid left icon input" id = 'company-info' style = 'margin-top:15px;'>
                 <i class = 'shopping bag icon'></i>
-                <input type ="text" value= "{{ info.company }}" maxlength = 32 >
+                <input type ="text" value= "{{ user.company }}" maxlength = 32 >
             </div>
             <div data-tooltip = "Location" data-position="top left" class="ui fluid left icon input" id = 'location-info' style = 'margin-top:15px;'>
                 <i class = 'map marker alternate icon'></i>
-                <input type ="text" value= "{{ info.location }}" maxlength = 32 >
+                <input type ="text" value= "{{ user.location }}" maxlength = 32 >
             </div>
         </div>
     </div>
     <div class = 'ui divider'></div>
-    <textarea class="ui fluid container segment" id = 'about-info' style = 'min-height:100px;'>{{ info.about }}</textarea>
+    <textarea class="ui fluid container segment" id = 'about-info' style = 'min-height:100px;'>{{ user.about }}</textarea>
     <div class="actions">
         <div class="ui positive right labeled icon button" id = 'edit-submit-button'>
             Submit

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import User, Userinfo
+from .models import User
 from .group import Group
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
@@ -145,13 +145,12 @@ def user_infomodify( request ):
             if display_name != oridisplay_name and get_object_or_None( User , display_name = display_name ) is not None:
                 msg.append( 'Display name already exists.' )
             if len( msg ) == 0:
-                Userinfo.objects.filter( user = request.user ).update(
-                    about = about,
-                    school = school,
-                    company = company,
-                    location = location)
-                User.objects.filter( id = request.user.pk ).update(
-                    display_name = display_name) 
+                request.user.about = about
+                request.user.school = school
+                request.user.company = company
+                request.user.location = location
+                request.user.display_name = display_name
+                request.user.save()
                 status['status'] = True
     except Exception as e:
         print( str( e ) )
@@ -162,7 +161,6 @@ def user_detail( request , user_id ):
     target_user = get_object_or_404( User , pk = user_id )
     return render( request , 'user/user_detail.html' , {
         'target_user' : target_user,
-        'info' : Userinfo.objects.get( user = target_user),
         ** get_user_report( user = target_user , has_perm = request.user.has_perm( 'problem.view_all' ) ),
         'recently' : get_recently( user = target_user , number = RECENT_NUMBER , has_perm = request.user.has_perm( 'problem.view_all' ) ) })
 
@@ -171,11 +169,11 @@ def user_search( request , displayname ):
     return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : reverse( 'user-detail' , args = ( x.pk, ) ) } for x in ret ] } ), content_type='application/json')
 
 def user_list( request , page ):
-    paginator = Paginator( Userinfo.objects.filter( show = True ).order_by( '-solved' ) , config.USER_PER_PAGE_COUNT )
+    paginator = Paginator( User.objects.filter( show = True ).order_by( '-solved' ) , config.USER_PER_PAGE_COUNT )
     page = min( max( 1 , page ) , paginator.num_pages )
-    userinfo_list = paginator.get_page( page )
+    user_list = paginator.get_page( page )
     return render( request , 'user/user_list.html' ,{
-        'userinfo_list' : userinfo_list,
+        'user_list' : user_list,
         'currentpage' : page,
         'max_page': paginator.num_pages,
         'page_list' : page_range( page , paginator.num_pages )} )

@@ -71,6 +71,8 @@ def get_status_list(request , page):
     try:
         if not request.user.has_perm( 'problem.view_all' ):
             statuslist = statuslist.filter( problem__visible = True )
+        if not request.user.has_perm( 'submission.view_all' ):
+            statuslist = statuslist.filter( user__show = True )        
         if display_name is not None:
             statuslist = statuslist.filter( user = User.objects.get( display_name = display_name ) )
         if title is not None:
@@ -109,6 +111,8 @@ def get_submission_detail( request , pk ):
         'case_all' : '',
         'detail' : [],}
     sub = Submission.objects.get( pk = pk )
+    if sub.user.show is False and not request.user.has_perm( 'submission.view_all' ):
+        raise RuntimeError( 'Permission Denied' )
     case = int(request.POST.get( 'case' ))
     s = Judgeinfo.objects.filter( submission = sub , case__gt = case  ).order_by( 'case' )
     status['detail'] = [ ( ( x.result ,  x.time_cost , x.memory_cost ) ) for x in s ]

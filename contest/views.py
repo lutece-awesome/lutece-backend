@@ -216,7 +216,6 @@ def get_contest_rank( request , pk ):
     from .util import ContestProblemAnalysis, time_format_hm , time_format_hms
     from datetime import timedelta
     from submission.judge_result import Judge_result, get_judge_result, Query_field
-    from user.models import Userinfo
     from copy import deepcopy
     from user.models import User
 
