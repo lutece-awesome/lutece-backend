@@ -77,6 +77,7 @@ def problem_update( request , problem_id ):
         checker = request.POST.get( 'checker' )
         visible = request.POST.get( 'visible' )
         content = request.POST.get('content')
+        discussion = request.POST.get( 'discussion' )
         note = request.POST.get( 'note' )
         standard_input = request.POST.get('standard_input')
         standard_output = request.POST.get('standard_output')
@@ -108,6 +109,8 @@ def problem_update( request , problem_id ):
             standard_output = standard_output,
             constraints = constraints,
             resource = resource)
+        prob.discussion.visibility = True if discussion == 'true' else False
+        prob.discussion.save()
         status['update_status'] = True
     except Exception as e:
         err.append( str( e ) )

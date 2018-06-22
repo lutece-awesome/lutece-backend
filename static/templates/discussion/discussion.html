@@ -51,11 +51,7 @@
     <div class="ui blue labeled submit icon button" id="reply-button">
       <i class="icon edit"></i> Add Reply
     </div>
-    <div class = 'row'>
-        <div class = 'column'>
-            <div id = "form-error-msg" class="ui negative message transition hidden"></div>
-        </div>
-    </div>
+    <div id = "reply-form-error-msg" class="ui negative message transition hidden"　style = 'margin-top:10px;'　></div>
   </form>
 </div>
 <script>
@@ -80,7 +76,7 @@
                               .removeClass('loading disabled primary')
                               .addClass('red')
                           ;
-                          $('#form-error-msg')
+                          $('#reply-form-error-msg')
                               .empty()
                               .removeClass( 'hidden' )
                               .append(get_error_msgText( data.errlist ))

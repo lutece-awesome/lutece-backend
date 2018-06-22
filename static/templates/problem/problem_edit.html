@@ -79,6 +79,17 @@
 
             <div class = 'row'>
                 <div class = 'column'>
+                    <div id = "discussion-checkbox" class="ui toggle checkbox">
+                        <input type="checkbox" tabindex="0" class="hidden">
+                        <label> <b>Discussion</b> </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class = 'row'>
+                <div class = 'column'>
                     <div>
                         <label class="ui large label">TestCase</label>
                     </div>
@@ -296,12 +307,17 @@
 
     <script>
 
+        {% set discussion = prob.discussion %}
+
         $(document).ready(function(){
 
             $('#visible-checkbox').checkbox();
 
             {%  if prob.visible == True %}
                 $('#visible-checkbox').checkbox( 'set checked' );
+            {% endif %}
+            {% if discussion.visibility == True %}
+                $('#discussion-checkbox').checkbox( 'set checked' );
             {% endif %}
 
             $('#checker-selection').dropdown();
@@ -398,6 +414,7 @@
                 var memorylimit = $('#memorylimit-input').val();
                 var checker = $("#checker-selection")[0].innerText.split(":")[0];
                 var visible = $('#visible-checkbox').hasClass('checked');
+                var discussion = $('#discussion-checkbox').hasClass('checked');
                 var content = $('#content-textarea').val();
                 var standard_input = $('#standard_input-textarea').val();
                 var standard_output = $('#standard_output-textarea').val();
@@ -431,6 +448,7 @@
                         'standard_input' : standard_input,
                         'standard_output' : standard_output,
                         'constraints' : constraints,
+                        'discussion' : discussion,
                         'resource' : resource,
                         'sample' : JSON.stringify(sample),
                     },

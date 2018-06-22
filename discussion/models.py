@@ -18,3 +18,9 @@ class Discussion(MPTTModel):
     @classmethod
     def get_new(cls):
         return cls.objects.create().discussion_id
+    
+    class Meta:
+        permissions = (
+            ('view_all' , 'Can view all discussion'),
+            ('change_visibility' , 'Can toggle discussion visibility status' ),
+        )
