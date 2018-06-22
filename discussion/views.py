@@ -13,7 +13,7 @@ def discussion_show(request, pk):
         discussion_id=pk)
     if not discussion.visibility and not view_all:
         raise Http404('Permission Denied')
-    return render(request, 'discussion/discussion.html', {
+    return render(request, 'discussion/discussion_content.html', {
         'discussion': discussion, 
         'view_all': view_all})
 

@@ -1,0 +1,55 @@
+<div class = 'ui discussion modal' style = 'width:720px;' id = 'disscussion-modal'>
+    <div class = 'header' style = 'text-align:center;' > <i class = 'comments icon'></i> Discussion </div>
+    <div class = 'scrolling content' style = 'max-height:1000px;' >
+        <div class = 'ui active loading tab' style = 'height:auto;margin-bottom;' id = 'discussion-detail' >
+            <div id = 'discussion-content' style = margin-top:15px; ></div>
+        </div>
+    </div>
+
+    <script>
+        var Problem_Discussion = {
+            _modal : null,
+            _detail : null,
+            _running : null,
+            _cache : null,
+            _content : null,
+
+            init : function(){
+                this._modal = $('#disscussion-modal');
+                this._detail = $('#discussion-detail');
+                this._content = $('#discussion-content');
+                this._running = false;
+                this._cache = '';
+            },
+
+            display: function(){
+                if( this._cache.length > 0 ){
+                    this._content.html( this._cache );
+                    this._detail.removeClass( 'loading' );
+                }
+            },
+
+            request: function( url ){
+                this._modal.modal( 'show' );
+                this._detail.addClass( 'loading' );
+                if( this._running == true || this._cache.length > 0 ){
+                    this.display();
+                    return;
+                }
+                this._running = true;
+                let obj = this;
+                $.get(
+                    url,
+                    function( data ){
+                        obj._running = false;
+                        obj._cache = data;
+                        obj.display();
+                    }
+                )
+            }
+
+
+        };
+        Problem_Discussion.init();
+    </script>
+</div>
