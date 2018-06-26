@@ -1,5 +1,8 @@
 {% extends "base/base.html" %}
 
+{% set active_page = 'Contest' %}
+
+
 {% block extra_head %}
     <link href="{{ static('css/contest/contest_edit.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>

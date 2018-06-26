@@ -1,5 +1,8 @@
 {% extends "base/base.html" %}
 
+{% set active_page = 'User' %}
+
+
 {% block extra_head %}
     <script type="text/javascript" src="{{ static('heatmap/dist/d3.min.js') }}"></script>
     <script type="text/javascript" src="{{ static('heatmap/dist/cal-heatmap.min.js') }}"></script>

@@ -2,14 +2,9 @@
 
     <div class="ui container" id="top-menu">
         <div class="header item">Lutece</div>
-        <a class="item" href = {{ url('home') }} ><i class="home icon"></i>Home</a>
-        <a class="item" href = {{ url('problem-list' , args = (1,) ) }} ><i class="tasks icon"></i>Problem</a>
-        <a class="item" href = {{ url('submission-status-list' , args = (1,) ) }}><i class="bar chart icon"></i>Status</a>
-        <a class="item" href = {{ url('contest-list' , args = (1,) ) }} ><i class="trophy icon"></i>Contest</a>
-        <a class="item" ><i class="lab icon"></i>Lab</a>
-        <a class="item" href = {{ url('user-list' , args = (1 ,) ) }} =  ><i class="user icon"></i>User</a>
-        <a class="item" href = {{ url('start') }} ><i class="flag icon"></i>Start</a>
-        <a class="item" href = {{ url('about') }} =  ><i class="compass icon"></i>About</a>
+        {% for url , icon , name in navigation_bar %}
+            <a class = "{% if name == active_page %} active {% endif %} item" href = "{{url}}" ><i class = "{{icon}}"></i>{{ name }}</a>
+        {% endfor %}
         <div class="right menu">
             {% if user.is_authenticated %}
                 <div class = 'item'>

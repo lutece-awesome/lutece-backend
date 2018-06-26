@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'data_server',
     'utils',
     'discussion',
+    'home',
 ]
 
 MIDDLEWARE = [

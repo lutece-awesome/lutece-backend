@@ -1,5 +1,8 @@
 {% extends "base/base.html" %}
 
+{% set active_page = 'Contest' %}
+
+
 {% if perms.contest.add_contest %}
     {% block extra_head %}
         <link href="{{ static('semantic/dist/calendar/calendar.min.css') }}" rel="stylesheet" />
