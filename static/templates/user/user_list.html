@@ -23,68 +23,64 @@
             </div>
         </span>
     </div>
-
-
-    <div class="ui two column grid">
+    <div class="ui link cards">
         {% for each_user in user_list %}
-            <div class = 'column'>
-                <div class="ui fluid raised segment">
-                    {# <a class="ui red ribbon label">黄金会员</a> #}
-                    <div class = 'ui two column grid'>
-                        <div class = 'column'>
-                            <div class="ui link cards">
-                                <a class = 'ui card' style = 'width:250px;min-height:380px;' href = "{{ url('user-detail' , args=( each_user.pk , ) ) }}" >
-                                    <img src= {{ gravatar_url( email = each_user.email , size = 250 ) }} />
-                                    <div class = 'content' >
-                                        <div class="header" style = 'min-height:24px;'>{{ each_user.display_name }}</div>
-                                        <div class="meta" style = 'margin-top:5px;'>
-                                            <span>Last Seen {{(each_user.last_login or each_user.date_joined).date() }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div><i class = 'address book icon'></i>Joined in {{ each_user.date_joined.date() }} </div>
-                                        <div><i class="users icon"></i><b>0</b> Followers</div>
-                                    </div>
-                                </a>
-                            </div>
-                            {% if user != each_user.user and user.is_authenticated == True %}
-                                <div class = 'ui blue attached bottom button' style = 'width:250px;' onclick = 'alert("Coming soon")' > Follow </div>
+        <a class="card" href = "{{ url('user-detail' , args=( each_user.pk , ) ) }}">
+            <div class="blurring dimmable image">
+                <div class="ui dimmer transition hidden">
+                    <div class="content">
+                        <div class="center">
+                            {% if user != each_user and user.is_authenticated == True %}
+                                <div class = 'ui blue inverted button' onclick = 'alert("Coming soon");return false' > Follow </div>
                             {% elif user.is_authenticated == True %}
-                                <div class = 'ui orange attached bottom button' style = 'width:250px;' onclick = 'alert("Coming soon")' > Yourself </div>
+                                <div class = 'ui orange inverted button' onclick = 'alert("Coming soon");return false' > Yourself </div>
                             {% endif %}
-                        </div>
-                        <div class = 'column' style = 'margin-top:20px;'>
-                            <div class = 'ui one column vertically divided grid '>
-                                <div class = 'column'>
-                                    <div class="ui one column grid" style = 'color:rgba(0,0,0,.87);'>
-                                        <div class = 'column'>
-                                            <i class = 'university icon'></i>{{ each_user.school }}
-                                        </div>
-                                        <div class = 'column'>
-                                            <i class = 'shopping bag icon'></i>{{ each_user.company }}
-                                        </div>
-                                        <div class = 'column'>
-                                            <i class = 'map marker alternate icon'></i>{{ each_user.location }}
-                                        </div>
-                                        <div class = 'column'>
-                                            <i class = 'tasks icon'></i><span style = 'color:green'> {{ each_user.solved  }}</span> / <span style = 'color:red;'> {{ each_user.tried  }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class = 'column' style = 'margin-top:-10px;'>
-                                    <div class = 'ui divider'></div>
-                                     <div class = 'ui container' style = 'overflow:hidden;height:195px;' >
-                                        {{ each_user.about | nl2br }}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <img src= {{ gravatar_url( email = each_user.email , size = 250 ) }} />
             </div>
+            <div class="content">
+                <div class="right floated meta">
+                    <span style = 'color:green'>{{ each_user.solved }}</span><span style = 'color:black;'>/</span><span style = 'color:red;'>{{ each_user.tried }}</span>
+                </div>
+                <div class="header">
+                    {{ each_user.display_name }}
+                </div>
+                <div class="meta">
+                    <span>Last Seen {{(each_user.last_login or each_user.date_joined)|naturalday}}</span>
+                </div>
+                {% if each_user.school %}
+                <div class="meta">
+                    <i class = 'university icon'></i><span>{{ each_user.school }}</span>
+                </div>
+                {% endif %}
+                {% if each_user.company %}
+                <div class="meta">
+                    <i class = 'shopping bag icon'></i><span>{{ each_user.company }}</span>
+                </div>
+                {% endif %}
+                {% if each_user.location %}
+                <div class="meta">
+                    <i class = 'map marker alternate icon'></i><span>{{ each_user.location }}</span>
+                </div>
+                {% endif %}
+                <div class="description">
+                    {{ each_user.about|nl2br }}
+                </div>
+            </div>
+            <div class="extra content">
+                <span class="right floated">
+                    Joined in {{ each_user.date_joined|naturalday }}
+                </span>
+                <span>
+                    <i class="user icon"></i>
+                    0 Followers
+                </span>
+            </div>
+        </a>
         {% endfor %}
     </div>
-
 </div>
 
 <script>
@@ -104,6 +100,10 @@
     ;
 
     $('.user.list .card').on( 'mouseenter' , function(){
+    });
+
+    $('.cards .image').dimmer({
+        on: 'hover'
     });
 
 </script>
