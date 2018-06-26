@@ -23,7 +23,7 @@
             </div>
         </span>
     </div>
-    <div class="ui link cards">
+    <div class="ui link cards centered">
         {% for each_user in user_list %}
         <a class="card" href = "{{ url('user-detail' , args=( each_user.pk , ) ) }}">
             <div class="blurring dimmable image">
