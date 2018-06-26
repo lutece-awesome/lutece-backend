@@ -1,55 +1,55 @@
 <div class="ui comments">
-  <h3 class="ui dividing header">Comments
-  {% if not discussion.visibility %}
-    (hidden)
-  {% endif %}
-  </h3>
-  {% for node in discussion.get_children() recursive %}
-    {% if node.visibility or view_all %}
-    <div class="comment">
-      <a class="avatar">
-        <img src={{ gravatar_url(email=node.user.email, size=250) }} />
-      </a>
-      <div class="content">
-        <a class="author">{{ node.user }}</a>
-        <div class="metadata">
-          <span class="date">{{ node.submit_time|naturaltime }}</span>
-        </div>
-        {% if not node.visibility %}
-        <a>(hidden)</a>
-        {% endif %}
-        <div class="text">
-          <p>{{ node.content }}</p>
-        </div>
-        <div class="actions">
-          <!-- <a class="reply">Reply</a> -->
-          {% if view_all %}
-            {% if not node.visibility %}
-            <a class="toggle-visibility show" discussion-id={{ node.discussion_id }}>Show</a>
-            {% else %}
-            <a class="toggle-visibility hide" discussion-id={{ node.discussion_id }}>Hide</a>
-            {% endif %}
-          {% endif %}
-        </div>
-      </div>
-      {% set children = node.get_children() %}
-      {% if children %}
-        <div class="comments">
-            {{ loop(children) }}
-        </div>
-      {% endif %}
-    </div>
+    <h3 class="ui dividing header">Comments
+    {% if not discussion.visibility %}
+        (hidden)
     {% endif %}
-  {% endfor %}
-  <form class="ui reply form">
-    <div class="field">
-      <textarea id="content"></textarea>
-    </div>
-    <div class="ui blue labeled submit icon button" id="reply-button">
-      <i class="icon edit"></i> Add Reply
-    </div>
-    <div id = "reply-form-error-msg" class="ui negative message transition hidden"　style = 'margin-top:10px;'　></div>
-  </form>
+    </h3>
+    {% for node in discussion.get_children() recursive %}
+        {% if node.visibility or view_all %}
+        <div class="comment">
+        <a class="avatar">
+            <img src={{ gravatar_url(email=node.user.email, size=250) }} />
+        </a>
+        <div class="content">
+            <a class="author">{{ node.user }}</a>
+            <div class="metadata">
+            <span class="date">{{ node.submit_time|naturaltime }}</span>
+            </div>
+            {% if not node.visibility %}
+            <a>(hidden)</a>
+            {% endif %}
+            <div class="text">
+            <p>{{ node.content }}</p>
+            </div>
+            <div class="actions">
+            <!-- <a class="reply">Reply</a> -->
+            {% if view_all %}
+                {% if not node.visibility %}
+                <a class="toggle-visibility show" discussion-id={{ node.discussion_id }}>Show</a>
+                {% else %}
+                <a class="toggle-visibility hide" discussion-id={{ node.discussion_id }}>Hide</a>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+        {% set children = node.get_children() %}
+        {% if children %}
+            <div class="comments">
+                {{ loop(children) }}
+            </div>
+        {% endif %}
+        </div>
+        {% endif %}
+    {% endfor %}
+    <form class="ui reply form">
+        <div class="field">
+        <textarea id="content"></textarea>
+        </div>
+        <div class="ui blue labeled submit icon button" id="reply-button">
+        <i class="icon edit"></i> Add Reply
+        </div>
+        <div id = "reply-form-error-msg" class="ui negative message transition hidden"　style = 'margin-top:10px;'　></div>
+    </form>
 </div>
 <script>
     $('#reply-button').click(function () {
@@ -66,7 +66,7 @@
                 },
                 function(data,status){
                     if (status == 'success' && data.status == true) {
-                        window.location = '{{ url("discussion-show", args=(discussion.discussion_id, )) }}';
+                        Problem_Discussion.refresh();
                     } else {
                         $('#reply-button')
                             .removeClass('loading disabled primary')
@@ -97,7 +97,7 @@
             },
             function(data,status){
                 if (status == 'success' && data.status == true) {
-                    window.location = '{{ url("discussion-show", args=(discussion.discussion_id, )) }}';
+                    Problem_Discussion.refresh();
                 } else {
                     alert('Network error')
                 }

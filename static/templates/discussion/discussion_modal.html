@@ -13,13 +13,15 @@
             _running : null,
             _cache : null,
             _content : null,
+            _url : null,
 
-            init : function(){
+            init : function(url){
                 this._modal = $('#disscussion-modal');
                 this._detail = $('#discussion-detail');
                 this._content = $('#discussion-content');
                 this._running = false;
                 this._cache = '';
+                this._url = url;
             },
 
             display: function(){
@@ -29,13 +31,13 @@
                 }
             },
 
-            refresh: function( url ){
+            refresh: function(){
                 if( this._running == true ) return;
                 this._cache = '';
-                this.request( url );
+                this.request( this._url );
             },
 
-            request: function( url ){
+            request: function(){
                 this._modal.modal( 'show' );
                 this._detail.addClass( 'loading' );
                 if( this._cache.length > 0 ){
@@ -45,7 +47,7 @@
                 this._running = true;
                 let obj = this;
                 $.get(
-                    url,
+                    this._url,
                     function( data ){
                         obj._running = false;
                         obj._cache = data;
@@ -56,6 +58,5 @@
 
 
         };
-        Problem_Discussion.init();
     </script>
 </div>

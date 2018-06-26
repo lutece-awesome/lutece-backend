@@ -42,7 +42,7 @@
                 <div class = 'menu'>
                     <div id = 'summary-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
                     {% if prob.discussion.visibility == True or perms.discussion.view_all %}
-                        <div id = 'discussion-button' class = 'ui basic secondary button' data-url = '{{ url("discussion-show" , args = (prob.discussion.discussion_id,) ) }}' ><i class = 'comments icon'></i>Discussion</div>
+                        <div id = 'discussion-button' class = 'ui basic secondary button'><i class = 'comments icon'></i>Discussion</div>
                     {% endif %}
                     {% if perms.problem.change_problem %}
                         <div id = 'edit-button' class = 'ui basic orange button'><i class = 'edit icon'></i><b>Edit</b></div>
@@ -206,9 +206,9 @@
                 editor.setOption( 'mode' , get_codemirror( value ) );
             }
         });
-
+        Problem_Discussion.init('{{ url("discussion-show" , args = (prob.discussion.discussion_id,) ) }}');
         $('#discussion-button').click(function(){
-            Problem_Discussion.request( $(this).data( 'url' ) );
+            Problem_Discussion.request();
         });
 
         $('#summary-button').click(function(){
