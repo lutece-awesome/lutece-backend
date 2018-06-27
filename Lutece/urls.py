@@ -29,5 +29,6 @@ urlpatterns = [
     path( 'submission/', include( 'submission.urls' ) ),
     path( 'data_server/' , include ('data_server.urls') ),
     path( 'discussion/' , include ('discussion.urls') ),
-    path( 'markdownx/' , include( markdownx ) )
+    path( 'blog/' , include( 'blog.urls' ) ),
+    path( 'markdownx/' , include( markdownx ) ),
 ]

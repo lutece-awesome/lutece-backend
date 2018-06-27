@@ -20,6 +20,7 @@ class Discussion(MPTTModel):
         return cls.objects.create().discussion_id
     
     class Meta:
+        ordering = ['-discussion_id']
         permissions = (
             ('view_all' , 'Can view all discussion'),
             ('change_visibility' , 'Can toggle discussion visibility status' ),

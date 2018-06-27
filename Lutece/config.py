@@ -8,11 +8,7 @@ PER_PAGE_COUNT = 20
 USER_PER_PAGE_COUNT = 10
 
 # Set the source code max-length
-'''
-    Warning:
-        + The change of MAX_SOURCECORE_LENGTH may need to change the submission.model, CharField's MaxLength is 64mb.
-'''
-MAX_SOURCECORE_LENGTH = 60000
+MAX_SOURCECORE_LENGTH = 65535
 
 # basic checker from testlib.h
 CHECKER_LIST = {

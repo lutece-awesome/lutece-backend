@@ -161,7 +161,7 @@
 
 </div>
 
-{% include 'discussion/discussion_modal.html' %}
+{% include 'discussion/problem_discussion_modal.html' %}
 
 <script>
 
@@ -206,7 +206,7 @@
                 editor.setOption( 'mode' , get_codemirror( value ) );
             }
         });
-        Problem_Discussion.init('{{ url("discussion-show" , args = (prob.discussion.discussion_id,) ) }}');
+        Problem_Discussion.init('{{ url("discussion-problem-show" , args = (prob.pk,) ) }}');
         $('#discussion-button').click(function(){
             Problem_Discussion.request();
         });

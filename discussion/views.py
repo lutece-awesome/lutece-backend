@@ -7,14 +7,14 @@ from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import permission_required
 
 
-def discussion_show(request, pk):
+def problem_discussion_show(request, pk):
+    from problem.models import Problem
     view_all = request.user and request.user.has_perm('discussion.view_all')
-    discussion = Discussion.objects.get(
-        discussion_id=pk)
-    if not discussion.visibility and not view_all:
-        raise Http404('Permission Denied')
-    return render(request, 'discussion/discussion_content.html', {
-        'discussion': discussion, 
+    problem = Problem.objects.get( pk = pk )
+    discussion = problem.problemdiscussion_set.all()
+    return render(request, 'discussion/problem_discussion_content.html', {
+        'discussion':  discussion,
+        'problem' : problem,
         'view_all': view_all})
 
 

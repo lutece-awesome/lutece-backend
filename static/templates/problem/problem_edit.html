@@ -308,8 +308,6 @@
 
     <script>
 
-        {% set discussion = prob.discussion %}
-
         $(document).ready(function(){
 
             $('#visible-checkbox').checkbox();
@@ -319,7 +317,7 @@
             {%  if prob.visible == True %}
                 $('#visible-checkbox').checkbox( 'set checked' );
             {% endif %}
-            {% if discussion.visibility == True %}
+            {% if prob.discussion == True %}
                 $('#discussion-checkbox').checkbox( 'set checked' );
             {% endif %}
 
