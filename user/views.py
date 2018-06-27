@@ -4,9 +4,6 @@ from .group import Group
 from django.http import HttpResponse, QueryDict
 from django.contrib.auth import authenticate, login, logout
 from json import dumps
-from .user_signup.password_checker import get_password_strength
-from .user_signup.email_checker import get_email_report
-from .user_signup.username_checker import get_username_strength
 from annoying.functions import get_object_or_None
 from django.contrib.auth.decorators import login_required
 from .util import get_recently, get_user_report
