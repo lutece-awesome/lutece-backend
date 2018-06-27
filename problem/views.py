@@ -103,7 +103,7 @@ def problem_update( request , problem_id ):
             memory_limit = int( memorylimit ),
             checker = checker,
             visible = True if visible == 'true' else False,
-            discussion = True if discussion == 'true' else False,
+            discussionvisible = True if discussion == 'true' else False,
             content = content,
             note = note,
             standard_input = standard_input,
