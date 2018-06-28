@@ -11,7 +11,7 @@
 <div class = 'problem list'>
 
     {% if perms.problem.add_problem %}
-        <div class = 'ui problem create modal' style = 'min-height:200px;min-width:300px;'>
+        <form class = 'ui problem create modal' style = 'min-height:200px;min-width:300px;'>
             <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'edit icon'></i> Create Problem </div>
             <div class = 'content'>
                 <div data-tooltip = "Title" data-position="top left" class="ui fluid left icon input">
@@ -20,13 +20,13 @@
                 </div>
             </div>
             <div class="actions">
-                <div class="ui positive right labeled icon button" id = 'create-problem-button'>
+                <button type="submit" class="ui positive right labeled icon button" id = 'create-problem-button'>
                     Submit
                     <i class="chevron right icon"></i>
-                </div>
+                </button>
             </div>
             <div id = "form-error-msg" class="ui negative message transition hidden" ></div>
-        </div>
+        </form>
     {% endif %}
 
     <div>
@@ -141,7 +141,8 @@
                         ;
                     }
                 }
-            )
+            );
+            return false;
         })
     {% endif %}
 
