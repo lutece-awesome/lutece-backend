@@ -1,14 +1,3 @@
-
-/* @font-face {
-    font-family: 'UbuntuMono-R';
-    src: url('/static/font/UbuntuMono-R.ttf');
-    font-weight: normal;    
-    font-style: normal;
-} */
-
-.content{
-}
-
 .CodeMirror {
     border: 1px solid #eee;
     height: 600px;
