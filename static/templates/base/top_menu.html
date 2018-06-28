@@ -36,8 +36,8 @@
                                 <i class="lock icon"></i>
                                 <input id = "pwdinput_login" type="password" name="password" placeholder="Password">
                             </div>
+                            <button type="submit" id = 'button_login' style = 'margin-top:20px;' class="ui fluid large primary login button">Login</button>
                         </form>
-                        <div id = 'button_login' style = 'margin-top:20px;' class="ui fluid large primary login button">Login</div>
                     </div>
 
                     <div class="divider-column" style = 'position: relative;padding: 0 !important;'>
@@ -148,6 +148,7 @@
                             ;
                         }
                     );
+                    return false;
                 });
 
 
