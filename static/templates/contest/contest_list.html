@@ -13,7 +13,7 @@
 {% block content %}
 
     {% if perms.contest.add_contest %}
-        <div class = 'ui contest create modal' style = 'min-height:200px;min-width:300px;'>
+        <form class = 'ui contest create modal' style = 'min-height:200px;min-width:300px;'>
             <div class = 'header' style = 'text-align:center;color:#2185d0;' > <i class = 'edit icon'></i> Create Contest </div>
             <div class = 'content'>
 
@@ -51,14 +51,14 @@
             </div>
             
             <div class="actions">
-                <div class="ui positive right labeled icon button" id = 'create-contest-button'>
+                <button type="submit" class="ui positive right labeled icon button" id = 'create-contest-button'>
                     Submit
                     <i class="chevron right icon"></i>
-                </div>
+                </button>
             </div>
 
             <div id = "form-error-msg" class="ui negative message transition hidden"  ></div>
-        </div>
+        </form>
     {% endif %}
 
     <div class = 'contest list'>
@@ -155,10 +155,10 @@
                 var pwd = $('#contest-pwd').val();
                 if( start_time == null ){
                     alert( 'Please Select start time' );
-                    return;
+                    return false;
                 }else if( end_time == null ){
                     alert( 'Please Select end time' );
-                    return;
+                    return false;
                 }
                 $(this)
                     .addClass( 'loading disabled' )
@@ -187,7 +187,8 @@
                             ;
                         }
                     }
-                )
+                );
+                return false;
             })
         {% endif %}
     </script>
