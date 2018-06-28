@@ -21,7 +21,7 @@ def user_login( request ):
     username = request.POST.get('username')
     password = request.POST.get('password')
     login_user = get_object_or_None( User , username = username )
-    if login_user.check_password( password ):
+    if login_user and login_user.check_password( password ):
         login(request, login_user)
         status['login_status'] = True
     return HttpResponse(dumps(status), content_type='application/json')
