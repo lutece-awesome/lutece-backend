@@ -103,14 +103,13 @@ def problem_update( request , problem_id ):
             memory_limit = int( memorylimit ),
             checker = checker,
             visible = True if visible == 'true' else False,
+            discussionvisible = True if discussion == 'true' else False,
             content = content,
             note = note,
             standard_input = standard_input,
             standard_output = standard_output,
             constraints = constraints,
             resource = resource)
-        prob.discussion.visibility = True if discussion == 'true' else False
-        prob.discussion.save()
         status['update_status'] = True
     except Exception as e:
         err.append( str( e ) )

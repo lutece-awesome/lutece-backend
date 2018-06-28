@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 from markdownx import urls as markdownx
 
 urlpatterns = [
-    path( '' , TemplateView.as_view(template_name='home/home.html') , name = 'home' ),
+    path( '' , include( 'home.urls' ) ),
     path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
     path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
     path( 'admin/', admin.site.urls),
@@ -29,5 +29,6 @@ urlpatterns = [
     path( 'submission/', include( 'submission.urls' ) ),
     path( 'data_server/' , include ('data_server.urls') ),
     path( 'discussion/' , include ('discussion.urls') ),
-    path( 'markdownx/' , include( markdownx ) )
+    path( 'blog/' , include( 'blog.urls' ) ),
+    path( 'markdownx/' , include( markdownx ) ),
 ]

@@ -1,8 +1,11 @@
 {% extends "base/base.html" %}
 
+{% set active_page = 'Home' %}
+
+
 {% block content %}
-    <div class = 'home'>
-        <div class="ui inverted vertical masthead center aligned segment" style = 'min-height:700px'>
+    <div class = 'home' style = 'padding-left:256px;padding-right:256px;'>
+        {# <div class="ui inverted vertical masthead center aligned segment" style = 'min-height:700px'>
             <div class="ui text container">
                 <h1 class="ui inverted header" style = 'margin-top:3em;margin-bottom:0em;font-size:4em;' > Lutece </h1>
                 <h2>Meet the future <i class = 'small cog icon'></i></h2>
@@ -11,14 +14,14 @@
                     <a href = 'https://github.com/LaPluses/Lutece' style = 'color:grey;' ><div id = 'github-button' class = "ui huge button" style = 'margin-top:1em;'><i class="github icon"></i>GitHub</div></a>
                 </div>
             </div>
-        </div>
+        </div> #}
 
-        {# <div class = 'ui grid' style = 'margin-top:15px;'>
+        <div class = 'ui grid' style = 'margin-top:15px;'>
             <div class = 'eight wide column'>
-                <div style = 'width:80%;'>
+                <div>
                     <div>
                         <div class="ui attached message">
-                            <div class="header">Announcements </div>
+                            <div class="header">Announcements</div>
                         </div>
                         <div class="ui attached segment"></div>
                     </div>
@@ -31,13 +34,23 @@
                         <div class="ui attached message">
                             <div class="header">Top Solved</div>
                         </div>
-                        <table class="ui attached celled padded striped table">
+                        <table class="ui attached padded celled table" style = 'text-align:center;'>
                             <thread>
-                                <tr style = 'text-align:center;'>
-                                    <th style = 'width:2em;'>#</th>
-                                    <th style = 'width:8em;'>User</th>
+                                <tr>
+                                    <th style = 'width:1em;'>#</th>
+                                    <th style = 'width:2em;'>User</th>
+                                    <th style = 'width:1em'>Solved</th>
                                 </tr>
                             </thread>
+                            <tbody>
+                                {% for each in top_user %}
+                                    <tr>
+                                        <td> {{ loop.index }} </td>
+                                        <td><a href = "{{ url('user-detail' , args=( each.pk , ) ) }}" > {{ each.display_name }} </a> </td>
+                                        <td> {{ each.solved }} </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
                         </table>
                     </div>
 
@@ -48,10 +61,9 @@
                         <div class="ui attached segment"></div>
                     </div>
 
-
                 </div>
             </div>
-        </div> #}
+        </div>
 
 
     </div>

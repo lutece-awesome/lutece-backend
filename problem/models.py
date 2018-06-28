@@ -17,7 +17,7 @@ class Problem(models.Model):
     visible = models.BooleanField( default = False )
     submit = models.IntegerField( default = 0 )
     accept = models.IntegerField( default = 0 )
-    discussion = models.ForeignKey(Discussion, null=True, blank=True , on_delete=models.SET_NULL)
+    discussionvisible = models.BooleanField( default = True )
 
     def __str__(self):
         return self.title
@@ -28,15 +28,8 @@ class Problem(models.Model):
             ('download_data' , 'Can download test data' ),
         )
 
-    @transaction.atomic
-    def save(self, *args, **kwargs):
-        if not self.discussion_id:
-            self.discussion = Discussion.objects.create()
-        super(Problem, self).save(*args, **kwargs)
-
-
-class ContestProblem( models.Model ):
-    problem = models.ForeignKey( Problem , on_delete = models.CASCADE , db_index = True )
+class ProblemDiscussion( Discussion ):
+    problem = models.ForeignKey( Problem , null=True, blank=True , on_delete = models.CASCADE )
 
 class Sample(models.Model):
     sample_id = models.AutoField(primary_key=True, db_index=True)

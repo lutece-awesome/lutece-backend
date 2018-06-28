@@ -1,0 +1,106 @@
+<div class="ui meidum comments">
+    <h3 class="ui dividing header">Comments
+    {% if not problem.discussionvisible %}
+        (hidden)
+    {% endif %}
+    </h3>
+    {% for node in discussion recursive %}
+        <div class="comment">
+            <div class="avatar"> <img src={{ gravatar_url(email = node.user.email, size=250) }} /> </div>
+            <div class="content">
+                <a class="author" href = {{ url( "user-detail" , args = ( node.user.pk ,  ) ) }} >{{ node.user.display_name }} {{ node.level }} </a>
+                <div class="metadata">
+                    <span class="date">{{ node.submit_time|naturaltime }}</span>
+                </div>
+                {% if not node.visibility %}
+                    <a>(hidden)</a>
+                {% endif %}
+                <div class="text">
+                    {% if node.visibility or view_all %}
+                        <p>{{ node.content }}</p>
+                    {% elif not node.visibility %}
+                        <p>This comment has been removed</p>
+                    {% endif %}
+                </div>
+                <div class="actions">
+                    {% if view_all %}
+                        {% if not node.visibility %}
+                            <a class="toggle-visibility show" discussion-id={{ node.discussion_id }}>Show</a>
+                        {% else %}
+                            <a class="toggle-visibility hide" discussion-id={{ node.discussion_id }}>Hide</a>
+                        {% endif %}
+                        <a class = 'reply'> Reply </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% set children = node.get_children() %}
+            {% if children %}
+                <div class = 'comments'>
+                    {{ loop(children) }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <form class="ui reply fluid form">
+        <div class="field">
+            <textarea id="content"></textarea>
+        </div>
+        <div class="ui blue labeled submit icon button" id="reply-button">
+            <i class="icon edit"></i> Add Reply
+        </div>
+        <div id = "reply-form-error-msg" class="ui negative message transition hidden"　style = 'margin-top:10px;'　></div>
+    </form>
+</div>
+<script>
+    $('#reply-button').click(function () {
+        {% if user.is_authenticated == True %}
+            $(this).addClass( 'loading disabled' );
+            var content = $('#content').val();
+            $.post(
+                '{{ url("discussion-problem-reply" , args = ( problem.pk , ) ) }}',
+                {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'content' : content,
+                },
+                function(data,status){
+                    if (status == 'success' && data.status == true) {
+                        Problem_Discussion.refresh();
+                    } else {
+                        $('#reply-button')
+                            .removeClass('loading disabled primary')
+                            .addClass('red')
+                        ;
+                        $('#reply-form-error-msg')
+                            .empty()
+                            .removeClass( 'hidden' )
+                            .append(get_error_msgText( data.errlist ))
+                        ;
+                    }
+                }
+            )
+        {% else %}
+            $('.login.modal').modal( 'show' );
+        {% endif %}
+    });
+    {% if view_all %}
+    $('.toggle-visibility').click(function () {
+        var discussionid = $(this).attr('discussion-id');
+        var visibility = $(this).hasClass('show') ? 1 : 0;
+        $.post(
+            '{{ url("discussion-change-visibility") }}',
+            {
+                'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                'discussionid' : discussionid,
+                'visibility' : visibility,
+            },
+            function(data,status){
+                if (status == 'success' && data.status == true) {
+                    Problem_Discussion.refresh();
+                } else {
+                    alert('Network error')
+                }
+            }
+        )
+    });
+    {% endif %}
+</script>

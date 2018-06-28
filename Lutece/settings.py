@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'data_server',
     'utils',
     'discussion',
+    'blog',
+    'home',
 ]
 
 MIDDLEWARE = [

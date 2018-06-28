@@ -20,6 +20,17 @@
     </head>
 
     <body>
+
+        {% set navigation_bar = [
+            (url("home"), 'home icon', 'Home'),
+            (url("problem-list" , args = (1,) ), 'tasks icon', 'Problem'),
+            (url("submission-status-list" , args = (1,) ), 'bar chart icon', 'Status'),
+            (url("contest-list", args = (1,) ), 'trophy icon', 'Contest'),
+            (url("user-list" , args = (1 ,) ), 'user icon', 'User'),
+            (url("start"), 'flag icon', 'Start'),
+            (url("about"), 'compass icon', 'About'),
+        ] %}
+
         {% include 'base/top_menu.html' %}
 
         <div class = 'main text container'>

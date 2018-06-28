@@ -224,7 +224,7 @@ def get_contest_rank( request , pk ):
         return render( request , 'contest/contest_not_started.html' )
     start_time = contest.start_time
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
-    sub_all = Submission.objects.raw( 'SELECT submission_id, judge_status, submit_time, problem_id , user_id from submission_submission where contest_id = %d ORDER BY submission_id' % ( pk ) )
+    sub_all = Submission.objects.raw( 'SELECT submission_id, judge_status, submit_time, problem_id , user_id FROM submission_submission WHERE contest_id = %d ORDER BY submission_id' % ( pk ) )
     user_list = { x.user_id for x in sub_all }
     user_list = { x : User.objects.get( pk = x ) for x in user_list }
     base = [ ContestProblemAnalysis(

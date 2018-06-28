@@ -64,7 +64,7 @@
                         'school' : school,
                         'company' : company,
                         'location' : _location,
-                        'display_name' : display_name
+                        'displayname' : display_name
                     },
                     function(data,status){
                         if( status == 'success'  && data.status == true ){
@@ -75,9 +75,8 @@
                                 .addClass('red')
                             ;
                             $('#user-edit-error')
-                                .empty()
+                                .html( data.error_msg )
                                 .removeClass( 'hidden' )
-                                .append(get_error_msgText( data.error_msg ))
                             ;
                         }
                     }

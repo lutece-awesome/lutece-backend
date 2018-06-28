@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 
+{% set active_page = 'Problem' %}
 
 {% block extra_head %}
     <link href="{{ static('css/problem/problem_edit.css') }}" rel="stylesheet" />
@@ -307,8 +308,6 @@
 
     <script>
 
-        {% set discussion = prob.discussion %}
-
         $(document).ready(function(){
 
             $('#visible-checkbox').checkbox();
@@ -318,7 +317,7 @@
             {%  if prob.visible == True %}
                 $('#visible-checkbox').checkbox( 'set checked' );
             {% endif %}
-            {% if discussion.visibility == True %}
+            {% if prob.discussionvisible == True %}
                 $('#discussion-checkbox').checkbox( 'set checked' );
             {% endif %}
 
