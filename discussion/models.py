@@ -14,6 +14,8 @@ class Discussion(MPTTModel):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
     visibility = models.BooleanField(default=True)
+    like = models.IntegerField( default = 0 )
+    dislike = models.IntegerField( default = 0 )
 
     @classmethod
     def get_new(cls):

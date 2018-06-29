@@ -28,7 +28,6 @@ def problem_discussion_reply( request , pk ):
         err = status['errlist']
         problem = Problem.objects.get( pk = pk )
         content = request.POST.get('content')
-        print( len( content ) )
         if not content:
             err.append('Empty content')
             raise RuntimeError('Empty content')

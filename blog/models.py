@@ -15,12 +15,6 @@ class Blog( models.Model ):
     discussion = models.ForeignKey(BlogDiscussion , null = True , on_delete = models.SET_NULL)
     create_time = models.DateTimeField ( default = timezone.now )
 
-    @transaction.atomic
-    def save(self, *args, **kwargs):
-        if not self.discussion_id:
-            self.discussion = BlogDiscussion.objects.create()
-        super(Blog , self).save(*args, **kwargs)
-
 class BlogVoteUser( models.Model ):
     user = models.OneToOneField( User , null = True , on_delete = models.SET_NULL )
     blog = models.OneToOneField( Blog , null = True , on_delete = models.SET_NULL )
