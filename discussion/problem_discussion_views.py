@@ -47,7 +47,7 @@ def problem_discussion_reply( request , pk ):
         return HttpResponse(dumps(status), content_type='application/json')
 
 @login_required_ajax
-def problem_discussion_like( request , pk ):
+def problem_discussion_change_like_status( request , pk ):
     from problem.models import Problem, ProblemDiscussion
     status = {
         'status': False,

@@ -1,30 +1,30 @@
-<div class="ui meidum comments">
-    <h3 class="ui dividing header">Comments
-    {% if not problem.discussionvisible or not problem.visible %}
-        <i class = 'low vision icon'></i>
-    {% endif %}
-    </h3>
+<div class="ui comments">
     {% for node in discussion recursive %}
         <div class="comment">
-            <div class="avatar"> <img src={{ gravatar_url(email = node.user.email, size=250) }} /> </div>
+            <a class="avatar"> <img src={{ gravatar_url(email = node.user.email, size=250) }} /> </a>
             <div class="content">
-                <a class="author" href = {{ url( "user-detail" , args = ( node.user.pk ,  ) ) }} >{{ node.user.display_name }} {{ node.level }} </a>
+                <a class="author" href = {{ url( "user-detail" , args = ( node.user.pk ,  ) ) }} >{{ node.user.display_name }} </a>
                 <div class="metadata">
                     <span class="date">{{ node.submit_time|naturaltime }}</span>
                 </div>
                 {% if not node.visibility %}
                     <i class = 'low vision icon'></i>
                 {% endif %}
+                
                 <div class="text">
-                    {% if node.visibility or view_all %}
-                        <p>{{ node.content }}</p>
-                    {% elif not node.visibility %}
-                        <p>This comment has been removed</p>
-                    {% endif %}
+                    <p>
+                        {% if node.visibility or view_all %}
+                            {{ node.content }}
+                        {% elif not node.visibility %}
+                            <i class="large red times icon"></i>This Comment has been removed
+                        {% endif %}
+                    </p>
                 </div>
+
                 <div class="actions">
-                    <span class = 'ui basic label'><i class = 'thumbs up outline icon'></i>{{ node.like }}</span>
-                    <span class = 'ui basic label' ><i class = 'thumbs down outline icon'></i>{{ node.dislike }}</span>
+                    <a class = 'reply'> Reply </a>
+                    <a><i class = 'thumbs up outline icon'></i>{{ node.like }}</a>
+                    <a ><i class = 'thumbs down outline icon'></i>{{ node.dislike }}</a>
 
                     {% if view_all %}
                         {% if not node.visibility %}
@@ -33,7 +33,6 @@
                             <a class="toggle-visibility hide" discussion-id={{ node.discussion_id }}>Hide</a>
                         {% endif %}
                     {% endif %}
-                    {# <a class = 'reply'> Reply </a> #}
                 </div>
             </div>
             {% set children = node.get_children() %}

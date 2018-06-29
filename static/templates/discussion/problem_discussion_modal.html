@@ -1,5 +1,10 @@
-<div class = 'ui discussion modal' style = 'width:720px;' id = 'disscussion-modal'>
-    <div class = 'header' style = 'text-align:center;' > <i class = 'comments icon'></i> Discussion </div>
+<div class = 'ui discussion modal' style = 'width:800px;' id = 'disscussion-modal'>
+    <div class = 'header' style = 'text-align:center;' > 
+        <i class = 'comments icon'></i> Discussion 
+        {% if not prob.discussionvisible or not prob.visible %}
+            <i class = 'low vision icon'></i>
+        {% endif %}
+    </div>
     <div class = 'scrolling content' style = 'max-height:720px;' >
         <div class = 'ui active loading tab' style = 'height:auto;' id = 'discussion-detail' >
             <div id = 'discussion-content' style = margin-top:15px; ></div>
