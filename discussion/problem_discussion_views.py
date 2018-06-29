@@ -11,6 +11,8 @@ def problem_discussion_show(request, pk):
     from problem.models import Problem
     view_all = request.user and request.user.has_perm('discussion.view_all')
     problem = Problem.objects.get( pk = pk )
+    if ( not problem.discussionvisible or not problem.visible ) and not request.user.has_perm('discussion.view_all'):
+        raise RuntimeError('Permission Denied')
     discussion = problem.problemdiscussion_set.all()
     return render(request, 'discussion/problem_discussion_content.html', {
         'discussion':  discussion,
@@ -34,7 +36,7 @@ def problem_discussion_reply( request , pk ):
         elif len( content ) > 200:
             err.append('Content length too long')
             raise RuntimeError('Content length too long')
-        if not problem.discussionvisible and not request.user.has_perm('discussion.view_all'):
+        if ( not problem.discussionvisible or not problem.visible ) and not request.user.has_perm('discussion.view_all'):
             raise RuntimeError('Permission Denied')
         ProblemDiscussion(
             problem = problem,
@@ -44,24 +46,28 @@ def problem_discussion_reply( request , pk ):
     finally:
         return HttpResponse(dumps(status), content_type='application/json')
 
-@permission_required('discussion.change_visibility')
-def discussion_change_visibility(request):
+@login_required_ajax
+def problem_discussion_like( request , pk ):
+    from problem.models import Problem, ProblemDiscussion
     status = {
         'status': False,
         'errlist': []}
-    err = status['errlist']
     try:
-        if request.method == 'POST':
-            discussionid = request.POST.get('discussionid')
-            visibility = request.POST.get('visibility')
-            discussion = get_object_or_None(
-                Discussion, pk=discussionid)
-            if not discussion:
-                raise ValueError('Permission Denied')
-            discussion.visibility = visibility
-            discussion.save()
-            status['status'] = True
-    except Exception as e:
-        print(str(e))
+        err = status['errlist']
+        problem = Problem.objects.get( pk = pk )
+        content = request.POST.get('content')
+        if not content:
+            err.append('Empty content')
+            raise RuntimeError('Empty content')
+        elif len( content ) > 200:
+            err.append('Content length too long')
+            raise RuntimeError('Content length too long')
+        if ( not problem.discussionvisible or not problem.visible ) and not request.user.has_perm('discussion.view_all'):
+            raise RuntimeError('Permission Denied')
+        ProblemDiscussion(
+            problem = problem,
+            user = request.user,
+            content = content ).save()
+        status['status'] = True
     finally:
         return HttpResponse(dumps(status), content_type='application/json')

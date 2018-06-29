@@ -18,10 +18,8 @@ class UserSignupForm( forms.Form ):
         displayname = cleaned_data.get( 'displayname' )
         if username and get_object_or_None( User , username = username ) is not None:
             self.add_error( 'username' , 'Username already exists.' )
-        if password and compile( '[a-z]' ).search( password ) is None:
-            self.add_error( 'password' , 'Password should contain at least one lowercase letter.' )
-        if password and compile( '[A-Z]' ).search( password ) is None:
-            self.add_error( 'password' , 'Password should contain at least one uppercase letter.' )
+        if password and compile( '[a-zA-Z]' ).search( password ) is None:
+            self.add_error( 'password' , 'Password should contain at least one lowercase or uppercase letter.' )
         if email and get_object_or_None( User , email = email ) is not None:
             self.add_error( 'email' , 'Email already exists.' )
         if displayname and get_object_or_None( User , display_name = displayname ) is not None:

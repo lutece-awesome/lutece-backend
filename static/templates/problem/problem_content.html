@@ -41,7 +41,7 @@
             <div class = 'column'>
                 <div class = 'menu'>
                     <div id = 'summary-button' class = 'ui basic blue button'><i class = 'chart pie icon'></i>Summary</div>
-                    {% if prob.discussionvisible == True or perms.discussion.view_all %}
+                    {% if ( prob.visible == True and prob.discussionvisible == True ) or perms.discussion.view_all %}
                         <div id = 'discussion-button' class = 'ui basic secondary button'><i class = 'comments icon'></i>Discussion</div>
                     {% endif %}
                     {% if perms.problem.change_problem %}

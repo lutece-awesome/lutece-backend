@@ -26,7 +26,7 @@
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class="ui large label">Title</div>
+                    <div class="ui large orange label">Title</div>
                     <div class = 'ui fluid input'>
                         <input id = 'title-input' type = "text" value = '{{ prob.title }}' maxlength = "64">
                     </div>
@@ -36,7 +36,7 @@
             <div class = 'row'>
                 <div class = 'column'>
                     <div>
-                        <label class="ui large label">Time Limit</label>
+                        <label class="ui orange large label">Time Limit</label>
                     </div>
                     <div class = 'ui right labeled input'>
                         <input id = 'timelimit-input' type="number"  maxlength = "5" value = {{ prob.time_limit }} >
@@ -48,7 +48,7 @@
             <div class = 'row'>
                 <div class = 'column'>
                     <div>
-                        <label class="ui large label">Memory Limit</label>
+                        <label class="ui orange large label">Memory Limit</label>
                     </div>                
                     <div class = 'ui right labeled input'>
                         <input id = 'memorylimit-input' type="number" maxlength = "4" value = {{ prob.memory_limit }} >
@@ -60,7 +60,7 @@
             <div class = 'row'>
                 <div class = 'column'>
                     <div>
-                        <label class="ui large label">CPUCore Limit</label>
+                        <label class="ui orange large label">CPUCore Limit</label>
                     </div>  
                     <div class = 'ui right labeled input'>
                         <input id = 'CPUCore-input' type="number" maxlength = "4" value = 1 disabled = "" >
@@ -80,19 +80,17 @@
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div id = "discussion-checkbox" class="ui toggle checkbox">
+                    <div id = "discussion-checkbox" class="ui toggle checkbox" data-tooltip = "为了开启讨论必须保证题目是可见的." data-position="bottom left" >
                         <input type="checkbox" tabindex="0" class="hidden">
                         <label> <b>Discussion</b> </label>
                     </div>
                 </div>
             </div>
 
-
-
             <div class = 'row'>
                 <div class = 'column'>
                     <div>
-                        <label class="ui large label">TestCase</label>
+                        <label class="ui orange large label">TestCase</label>
                     </div>
                     <div class = 'ui right labeled input'>
                         <input id = 'case-number' type="number" maxlength = "4" value = {{ case_number }} disabled = "" >
@@ -131,7 +129,7 @@
             <div class = 'row'>
                 <div class = 'column'>
                     
-                    <div class="ui large label">Checker</div>
+                    <div class="ui attached message">Checker</div>
                     <div id = "checker-selection" class="ui fluid selection dropdown">
                         <i class="dropdown icon"></i>
                         <div class="submit language text">{{prob.checker}}: {{ checker[ prob.checker ] }}</div>
@@ -151,14 +149,14 @@
 
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Content</div>
+                        <div class="ui attached message">Content</div>
                         <textarea style = 'width:100%;height:400px;' id = "content-textarea" >{{ prob.content }}</textarea>
                     </div>
                 </div>
 
                 <div class ='eight wide column'>
-                    <div class="ui large label">Content Preview</div>
-                    <div id = "content-textarea-render" style = 'width:100%;height:auto;min-height:400px;margin-top:0;' class="ui render fluid container raised segment"></div>
+                    <div class="ui attached message">Content Preview</div>
+                    <div id = "content-textarea-render" style = 'width:100%;height:auto;min-height:400px;margin-top:0;' class="ui render fluid container segment"></div>
                 </div>
 
             </div>
@@ -168,14 +166,14 @@
 
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Standard Input</div>
+                        <div class="ui attached message">Standard Input</div>
                         <textarea style = 'width:100%;height:200px;' id = "standard_input-textarea">{{ prob.standard_input }}</textarea>
                     </div>
                 </div>
 
                 <div class = 'eight wide column'>
-                    <div class="ui large label">Input Preview</div>
-                    <div id = "standard_input-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
+                    <div class="ui attached message">Input Preview</div>
+                    <div id = "standard_input-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container segment"></div>
                 </div>
 
             </div>
@@ -185,14 +183,14 @@
 
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Standard Output</div>
+                        <div class="ui attached message">Standard Output</div>
                         <textarea style = 'width:100%;height:200px;' id = "standard_output-textarea">{{ prob.standard_output }}</textarea>
                     </div>
                 </div>
 
                 <div class = 'eight wide column'>
-                    <div class="ui large label">Output Preview</div>
-                    <div id = "standard_output-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
+                    <div class="ui attached message">Output Preview</div>
+                    <div id = "standard_output-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container segment"></div>
                 </div>
 
             </div>
@@ -200,13 +198,13 @@
             <div class = 'row'>
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Constraints</div>
+                        <div class="ui attached message">Constraints</div>
                         <textarea style = 'width:100%;height:200px;' id = "constraints-textarea">{{ prob.constraints }}</textarea>
                     </div>
                 </div>
                 <div class = 'eight wide column'>
-                    <div class="ui large label">Constraints Preview</div>
-                    <div id = "constraints-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
+                    <div class="ui attached message">Constraints Preview</div>
+                    <div id = "constraints-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container segment"></div>
                 </div>
             </div>
 
@@ -215,12 +213,12 @@
             <div class = 'row'>
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Sample Input</div>
+                        <div class="ui attached message">Sample Input</div>
                     </div>
                 </div>
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Sample Output</div>
+                        <div class="ui attached message">Sample Output</div>
                     </div>
                 </div>
             </div>
@@ -271,20 +269,20 @@
             <div class = 'row'>
                 <div class = 'eight wide column'>
                     <div class = 'ui form'>
-                        <div class="ui large label">Note</div>
+                        <div class="ui attached message">Note</div>
                         <textarea style = 'width:100%;height:200px;' id = "note-textarea">{{ prob.note }}</textarea>
                     </div>
                 </div>
                 <div class = 'eight wide column'>
-                    <div class="ui large label">Note Preview</div>
-                    <div id = "note-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container raised segment"></div>
+                    <div class="ui attached message">Note Preview</div>
+                    <div id = "note-textarea-render" style = 'width:100%;height:auto;min-height:200px;margin-top:0;' class="ui render fluid container segment"></div>
                 </div>
             </div>
 
 
             <div class = 'row'>
                 <div class = 'column'>
-                    <div class="ui large label">Resource</div>
+                    <div class="ui attached message">Resource</div>
                     <div class = 'ui fluid input'>
                         <input id = "resource" type="text" value = {{ prob.resource }} >
                     </div>
