@@ -1,11 +1,14 @@
 from django.contrib import admin
-from .models import Problem,Sample
+from .models import Problem, Sample, ProblemDiscussion
 
 
-class Inline(admin.StackedInline):
+class SampleInline(admin.StackedInline):
     model = Sample
 
-class ProblemAdmin(admin.ModelAdmin):
-    inlines = (Inline,)
+class ProblemDiscussionInline(admin.StackedInline):
+    model = ProblemDiscussion
 
-admin.site.register(Problem , ProblemAdmin)
+class ProblemAdmin(admin.ModelAdmin):
+    inlines = (SampleInline, ProblemDiscussionInline, )
+
+admin.site.register(Problem, ProblemAdmin)
