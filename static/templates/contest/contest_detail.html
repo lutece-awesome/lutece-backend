@@ -2,347 +2,175 @@
 
 {% set active_page = 'Contest' %}
 
-
 {% block extra_head %}
     <script type="text/javascript" src="{{ static('/katex/dist/katex.min.js') }}"></script>
     <script type="text/javascript" src="{{ static('/katex/dist/contrib/auto-render.min.js') }}"></script>
     <link rel="stylesheet" href="{{ static('/katex/dist/katex.min.css') }}"/>
-    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ static('/markdown/dist/marked.min.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/vue/dist/vue.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/vue/dist/vue-router.js') }}"></script>
+    <script type="text/javascript" src="{{ static('/vue/dist/vuex.js') }}"></script>
 {% endblock extra_head %}
 
 {% block content %}
-    <div class = 'contest detail'>
-        <div class = 'ui one column grid'>
 
-            <div class = 'column'>
-                <h1 style = 'text-align:center'> {{ contest.title }} </h1>
-            </div>
+<h1 style='text-align:center'> {{ contest.title }} </h1>
+<div class="ui indicating progress" id='runtime-progress'>
+    <div class="bar">
+        <div class="progress"></div>
+    </div>
+    <div class="label" style='font-size:16px;margin-top:10px;'>
+        <i class='{{ conteststatus.value.icon }}' style='color:{{ conteststatus.value.color }};'></i>
+        <span style='color:{{ conteststatus.value.color }};'>
+            <b>{{ conteststatus.value.full }}</b>
+            <span id='time-show'></span>
+        </span>
+    </div>
+</div>
 
-            <div class = 'column'>
-                <div class = "ui indicating progress" id = 'runtime-progress' >
-                    <div class = "bar">
-                        <div class="progress"></div>
-                    </div>
-                    <div class = "label" style = 'font-size:16px;margin-top:10px;' >
-                        <i class = '{{ conteststatus.value.icon }}' style = 'color:{{ conteststatus.value.color }};' ></i> <span style = 'color:{{ conteststatus.value.color }};'><b>{{ conteststatus.value.full }}</b><span id = 'time-show' ></span></span>
-                    </div>
-                </div>
-            </div>
+<div id = "contest-app">
 
-        </div>
 
-            <div class="ui top attached tabular menu"> 
-                <a class="item" data-tab="overview" onclick = 'Overview.request()' id = 'tab-overview'　>Overview</a>
-                <a class='item' data-tab='problem' onclick = 'Problem_List.request()'  id = 'tab-problem'>Problem</a>
-                <a class='item' data-tab='detail' id = 'tab-detail'>Detail</a>
-                <a class="item" data-tab="submission" onclick='Submission_List.request(1)' id = 'tab-submission' >Submission</a>
-                <a class="item" data-tab="clarification" onclick = 'alert( "coming soon" )'  id ='tab-clarification'>Clarification</a>
-                <a class="item" data-tab="rank" onclick = 'Rank_List.request()' id = 'tab-rank' >Rank</a>
-            </div>
-
-            <div class="ui tab" data-tab="overview" id = 'overview-content' ></div>
-            <div class="ui tab" data-tab="problem" id = 'problem-content' ></div>
-
-            <div class="ui tab" data-tab="detail" id = 'detail-content' >
-                <div style = 'margin-top:10px;'>
-                    {% for x in problem_num %}
-                        <div class = 'ui tab' style = 'display:none;min-height:200px;' data-url=" {{ url( 'contest-problem' , args = ( contest.pk , loop.index0 ) ) }} " id = 'problem-detail-content-{{ loop.index0 }}' ></div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="ui tab" data-tab="submission" id = 'submission-content' ></div>
-            <div class="ui tab" data-tab="clarification"></div>
-            <div class="ui tab" data-tab="rank" id = 'rank-content' ></div>
-                
-            
+    <div class="ui top attached tabular menu">
+        <router-link to="/overview" class = 'item' active-class = 'active'  >Contest</router-link>
+        <router-link to="/bar" class = 'item' active-class = 'active' >Admin</router-link>
     </div>
 
-    {% include 'status/submission_detail.html' %}
+    <div v-if='loading' class = 'ui segment' style = 'min-height:300px'>
+        <div class="ui active inverted dimmer">
+            <div class="ui active text loader" >Loading</div>
+        </div>
+    </div>
+    
+    <router-view style = 'margin-top:20px;' ></router-view>
 
+</div>
 
-    {# 
-        Time progress script
-    #}
-    <script>
-        var start_time = new Date('{{ contest.start_time }}');
-        var end_time = new Date('{{ contest.end_time}}' );
-
-        function get_progress_text(){
-            let c = Math.abs(cur);
-            let hour =  Math.floor(c / 3600); c %= 3600;
-            let min = Math.floor(c / 60); c %= 60;
-            let smin = String( min );
-            let sc = String( c );
-            if( smin.length < 2 ) smin = "0" + smin;
-            if( sc.length < 2 ) sc = "0" + sc;
-            return " ( " + String( hour ) + ":" + smin + ":" + sc + " )";
+<script>
+    var start_time = new Date('{{ contest.start_time }}');
+    var end_time = new Date('{{ contest.end_time}}');
+    function get_progress_text() {
+        let c = Math.abs(cur);
+        let hour = Math.floor(c / 3600); c %= 3600;
+        let min = Math.floor(c / 60); c %= 60;
+        let smin = String(min);
+        let sc = String(c);
+        if (smin.length < 2) smin = "0" + smin;
+        if (sc.length < 2) sc = "0" + sc;
+        return " ( " + String(hour) + ":" + smin + ":" + sc + " )";
+    }
+    var total = parseInt({{ (contest.end_time - contest.start_time).total_seconds() }});
+    var cur = parseInt({{ (now - contest.start_time).total_seconds() }});
+    var base = cur;
+    $('#runtime-progress').progress({
+        total: total,
+        onSuccess: function () {
+            // if (base < total)
+            // location.reload();
+        },
+    });
+    function UpdateTimer() {
+        $('#runtime-progress').progress('update progress', cur++);
+        cur = Math.min(cur, total);
+        if (cur == 0) {
+            location.reload();
+            return;
         }
-        var total = parseInt({{ (contest.end_time - contest.start_time).total_seconds() }});
-        var cur = parseInt({{ (now - contest.start_time).total_seconds() }});
-        var base = cur;
+        $('#time-show').text(get_progress_text());
+        if (cur < total)
+            setTimeout("UpdateTimer()", 1000);
+    }
+    UpdateTimer();
+</script>
 
-        $('#runtime-progress').progress({
-            total : total,
-            onSuccess: function(){
-                if( base < total )
-                    location.reload();
+<script>
+
+    const store = new Vuex.Store({
+        state: {
+            loading: false
+        },
+        mutations: {
+            set_loading_state(state , st) {
+                state.loading = st;
             },
-        });
-
-        function UpdateTimer(){
-            $('#runtime-progress').progress( 'update progress' , cur ++ );
-            cur = Math.min( cur , total );
-            if( cur == 0 ){
-                location.reload();
-                return;
+        },
+        actions:{
+            set_loading_state(state, st) {
+                state.commit("set_loading_state", st);
             }
-            $('#time-show').text( get_progress_text() );
-            if( cur < total )
-                setTimeout( "UpdateTimer()" , 1000 );
-        }
-        UpdateTimer();
-        $('.contest.detail .ui.menu > .item').tab();
+        },
+    });
 
-    </script>
+</script>
 
-    {# 
-        Overview script
-    #}
-    <script>
-        var Overview = {
-            _cache : null,
-            _content : null,
-            _running : null,
-
-            init : function(){
-                this._cache = '';
-                this._content = $('#overview-content');
-                this._running = false;
-            },
-
-            request: function(){
-                $('#tab-overview').tab('change tab' , 'overview' );
-                if( this._running == true ) this._content.addClass( 'loading' );
-                if( this._running == true || this._cache.length > 0 ) return;
-                this._running = true;
-                this._content.addClass( 'loading' );
-                let obj = this;
-                $.get(
-                    '{{ url( "contest-overview" , args = ( contest.pk , ) ) }}',
-                    function( data ){
-                        obj._running = false;
-                        obj._cache = data;
-                        obj._content.html( data );
-                        obj._content.removeClass( 'loading' );
-                    }
-                )
+<script>
+    const Overview = Vue.extend({
+        template: `
+            <div>
+                <div v-if='error' class = 'ui compact negative message'>
+                <div class = 'header'> Some errors occured, Please refresh. </div>
+                <ul class = 'list'>
+                    <li> {{ error_msg }} </li>
+                </ul>
+                </div>
+            </div>
+        `,
+        data: function () {
+            return {
+                running: false,
+                error: false,
+                error_msg: ''
             }
-        }
-        Overview.init();
-        Overview.request();
-    </script>
+        },
+        created() {
+            fetch('{{ url( "contest-overview" , args = ( contest.pk , ) ) }}')
+                .then(response => {
+                    store.dispatch('set_loading_state', false);
+                    return response.json()
+                } )
+                .catch(error => {
+                    this.error_msg = String(error);
+                    this.error = true;
+                })
+                .then(response => {
 
-    {# 
-        Problem_List script
-    #}
-    <script>
-        var Problem_List = {
-            _cache : null,
-            _content : null,
-            _running : null,
 
-            init : function(){
-                this._cache = '';
-                this._content = $('#problem-content');
-                this._running = false;
-            },
+                })
+        },
+    });
 
-            request: function(){
-                $('#tab-problem').tab('change tab' , 'problem' );
-                if( this._running == true ) this._content.addClass( 'loading' );
-                if( this._running == true || this._cache.length > 0 ) return;
-                this._running = true;
-                this._content.addClass( 'loading' );
-                let obj = this;
-                $.get(
-                    '{{ url( "contest-problem-list" , args = ( contest.pk , ) ) }}',
-                    function( data ){
-                        obj._running = false;
-                        obj._cache = data;
-                        obj._content.html( data );
-                        obj._content.removeClass( 'loading' );
-                    }
-                )
+</script>
+
+
+<script>
+    const Bar = { template: '<div>bar</div>' }
+
+    const router = new VueRouter({
+        routes:[
+            { path: '/overview', component: Overview },
+            { path: '/bar', component: Bar  }
+        ],
+    });
+
+    router.beforeEach((to, from, next) => {
+        store.dispatch('set_loading_state' , false );
+        next();
+    });
+
+    router.afterEach((to, from) => {
+        store.dispatch('set_loading_state', true);
+    });
+
+    const contestApp = new Vue({
+        store,
+        computed: {
+            loading() {
+                return store.state.loading;
             }
-        }
-        Problem_List.init();
-    </script>
+        },
+        router: router
+    }).$mount('#contest-app');
 
-    {#
-        Problem Detail script
-    #}
-    <script>
-        var Problem_Detail = {
-
-            _content: null,
-            _cache : null,
-            _running : null,
-            _cur : null,
-
-            init : function(){
-                this._content = new Array();
-                this._cache = new Array();
-                this._running = new Array();
-                for(let i = 0 ; i < {{ problem_num | length }} ; ++ i ){
-                    this._content.push( $('#problem-detail-content-'+ String( i )) );
-                    this._cache.push( '' );
-                    this._running.push( false );
-                }
-            },
-
-            display: function( index ){
-                this._content[index].css( 'display' , 'block' );
-                if( this._cache[index].length > 0 )
-                    this._content[index].html( this._cache[index] );
-            },
-
-            hide: function( index ){
-                this._content[index].css( 'display' , 'none' );
-                this._content[index].html('');
-            },
-
-            hide_all: function(){
-                for( let i = 0 ; i < this._content.length ; ++ i)
-                    this.hide( i );
-            },
-
-            get_show_index: function(){
-                for( let i = 0 ; i < this._content.length ; ++ i)
-                    if( this._content[i].css( 'display' ) != 'none' )
-                        return i;
-                return -1;
-            },
-
-            show: function( index ){
-                if( this.get_show_index() == this._cur && this._content[index].html().length > 0 ) return;
-                if( this._cur == index ){
-                    this.hide_all();
-                    this.display( index );
-                }
-            },
-
-            request: function( index ){
-                $('#tab-detail').tab('change tab' , 'detail' );
-                this._cur = index;
-                this.show( index );
-                if( this._running[index] == true ) this._content[index].addClass( 'loading' );
-                if( this._running[index] == true || this._cache[index].length > 0 ) return;
-                this._running[index] = true;
-                this._content[index].addClass( 'loading' );
-                let id = index;
-                let obj = this;
-                $.get(
-                    this._content[index].data( 'url' ),
-                    function( data ){
-                        obj._running[id] = false;
-                        obj._cache[id] = data;
-                        obj.show( id );
-                        obj._content[id].removeClass( 'loading' );
-                    }
-                )
-            }
-        };
-        Problem_Detail.init();
-    </script>
-
-    {#
-        Submission List script
-    #}
-    <script>
-        var Submission_List = {
-            _content : null,
-            _running : null,
-            _cur : null,
-
-            init : function(){
-                this._content = $('#submission-content' );
-                this._running = false;
-            },
-
-            refresh: function( page ){
-                this.request( page , true );
-            },
-
-            request: function( page , force = false ){
-                $('#tab-submission').tab('change tab' , 'submission' );
-                if( this._running == true ) this._content.addClass( 'loading' );
-                if( this._running == true || ( page == this._cur && force == false ) ) return;
-                this._cur = page;
-                this._running = true;
-                this._content.addClass( 'loading' );
-                let obj = this;
-                $.get(
-                    get_prefix_url( "{{ url('contest-submission' , args = ( contest.pk , 1 )) }}" , 1 ) + '/' + String( page ),
-                    function( data ){
-                        obj._content.html( data );
-                        obj._content.removeClass( 'loading' );
-                        obj._running = false;
-                    }
-                )
-            }
-        };
-        Submission_List.init();
-    </script>
-
-    {#
-        Clarification script
-    #}
-    <script>
-    </script>
-
-
-    {#
-        Rank List script
-    #}
-    <script>
-        var Rank_List = {
-            _content : null,
-            _running : null,
-            _cache : null,
-            _refresh : null,
-
-            init : function(){
-                this._content = $('#rank-content' );
-                this._running = false;
-                this._cache = '';
-            },
-
-            refresh: function(){
-                if( this._running == true ) return;
-                this._cache = '';
-                this.request();
-            },
-
-            request: function(){
-                $('#tab-rank').tab('change tab' , 'rank' );
-                if( this._running == true ) this._content.addClass( 'loading' );
-                if( this._running == true || this._cache.length > 0 ) return;
-                this._running = true;
-                this._content.addClass( 'loading' );
-                let obj = this;
-                $.get(
-                    "{{ url('contest-rank' , args = ( contest.pk , )) }}",
-                    function( data ){
-                        obj._cache = data;
-                        obj._content.html( data );
-                        obj._content.removeClass( 'loading' );
-                        obj._running = false;
-                    }
-                )
-            }
-        };
-        Rank_List.init();
-    </script>
+</script>
 
 {% endblock content %}
