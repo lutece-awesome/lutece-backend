@@ -89,24 +89,24 @@
         {% endif %}
     });
     {% if view_all %}
-    $('.toggle-visibility').click(function () {
-        var discussionid = $(this).attr('discussion-id');
-        var visibility = $(this).hasClass('show') ? 1 : 0;
-        $.post(
-            '{{ url("discussion-change-visibility") }}',
-            {
-                'csrfmiddlewaretoken' : '{{ csrf_token }}',
-                'discussionid' : discussionid,
-                'visibility' : visibility,
-            },
-            function(data,status){
-                if (status == 'success' && data.status == true) {
-                    Problem_Discussion.refresh();
-                } else {
-                    alert('Network error')
+        $('.toggle-visibility').click(function () {
+            var discussionid = $(this).attr('discussion-id');
+            var visibility = $(this).hasClass('show') ? 1 : 0;
+            $.post(
+                '{{ url("discussion-change-visibility") }}',
+                {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'discussionid' : discussionid,
+                    'visibility' : visibility,
+                },
+                function(data,status){
+                    if (status == 'success' && data.status == true) {
+                        Problem_Discussion.refresh();
+                    } else {
+                        alert('Network error')
+                    }
                 }
-            }
-        )
-    });
+            )
+        });
     {% endif %}
 </script>

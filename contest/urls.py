@@ -6,10 +6,10 @@ urlpatterns = [
     path( 'create/contest/' , create_contest , name = 'contest-create' ),
     path( 'edit/<int:pk>/' , edit_contest , name = 'contest-edit'  ),
     path( 'update/<int:pk>/' , update_contest , name = 'contest-update' ),
-    path( 'problem/<int:pk>/<int:index>/' , get_contest_problem , name = 'contest-problem' ),
+    path( '<int:pk>/problem/<int:index>/' , get_contest_problem , name = 'contest-problem' ),
     path( 'overview/<int:pk>/' , overview_contest , name = 'contest-overview' ),
     path( 'submission/<int:pk>/<int:page>' , get_contest_submission , name = 'contest-submission' ),
-    path( 'problem/list/<int:pk>/' , get_problem_list , name = 'contest-problem-list' ),
+    path( '<int:pk>/problem/list/' , get_problem_list , name = 'contest-problem-list' ),
     path( 'detail/<int:pk>/' , get_contest_detail , name = 'contest-detail'  ),
     path( 'rank/<int:pk>/' , get_contest_rank , name = 'contest-rank' )
 ]
