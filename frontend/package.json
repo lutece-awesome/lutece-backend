@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "hoek": "^5.0.3",
     "jquery": "^3.3.1",
     "semantic-ui": "^2.3.2",
     "vue": "^2.5.2",

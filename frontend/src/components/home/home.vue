@@ -25,7 +25,6 @@
                         <td v-for = "each_user in top_user" :key = "each_user.id">
                             
                         </td>
-
                     </table>
 
                 </div>
