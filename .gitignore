@@ -135,3 +135,5 @@ static/codemirror-5.37.0/dist/
 static/markdown/dist/
 static/heatmap/dist/
 static/echarts/echarts.js
+
+frontend/semantic/
