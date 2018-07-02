@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,7 +69,7 @@ ROOT_URLCONF = 'Lutece.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [ os.path.join(BASE_DIR , 'static/templates') ],
+        'DIRS': [ os.path.join(BASE_DIR , 'frontend/dist') ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,7 +154,7 @@ SESSION_COOKIE_AGE = 12 * 60 * 60
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join( BASE_DIR , 'static' )
+    os.path.join( BASE_DIR , 'frontend/dist/static' )
 ]
 
 STATICFILES_FINDERS = (

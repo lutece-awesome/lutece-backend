@@ -19,16 +19,16 @@ from django.views.generic import TemplateView
 from markdownx import urls as markdownx
 
 urlpatterns = [
-    path( '' , include( 'home.urls' ) ),
-    path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
-    path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
-    path( 'admin/', admin.site.urls),
-    path( 'contest/' , include( 'contest.urls' ) ),
-    path( 'problem/' , include( 'problem.urls' )  ),
-    path( 'user/' , include( 'user.urls' ) ),
-    path( 'submission/', include( 'submission.urls' ) ),
-    path( 'data_server/' , include ('data_server.urls') ),
-    path( 'discussion/' , include ('discussion.urls') ),
-    path( 'blog/' , include( 'blog.urls' ) ),
-    path( 'markdownx/' , include( markdownx ) ),
+    path( '' , TemplateView.as_view( template_name = 'index.html') )
+    # path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
+    # path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
+    # path( 'admin/', admin.site.urls),
+    # path( 'contest/' , include( 'contest.urls' ) ),
+    # path( 'problem/' , include( 'problem.urls' )  ),
+    # path( 'user/' , include( 'user.urls' ) ),
+    # path( 'submission/', include( 'submission.urls' ) ),
+    # path( 'data_server/' , include ('data_server.urls') ),
+    # path( 'discussion/' , include ('discussion.urls') ),
+    # path( 'blog/' , include( 'blog.urls' ) ),
+    # path( 'markdownx/' , include( markdownx ) ),
 ]

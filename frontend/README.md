@@ -1,4 +1,4 @@
-# static
+# lutece-frontend
 
 > Lutece frontend project
 

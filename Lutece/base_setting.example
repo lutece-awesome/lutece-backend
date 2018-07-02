@@ -19,6 +19,7 @@ DATABASES = {
     }
 }
 
+CORS_ORIGIN_ALLOW_ALL = False
 DEBUG = False
 SECRET_KEY = ''# set the key
 #CSRF_COOKIE_SECURE = True
