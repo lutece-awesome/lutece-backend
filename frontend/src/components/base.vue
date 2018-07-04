@@ -1,18 +1,21 @@
 <template>
     <div>
-        <navbar/>
+        <Navbar/>
         <div id = 'main-container'>
             <router-view></router-view>
+            <Footer/>
         </div>
     </div>
 </template>
 
 
 <script>
-    import navbar from './basic/navbar.vue'
+    import Navbar from './basic/navbar.vue'
+    import Footer from './basic/footer.vue'
     export default {
         components:{
-            navbar,
+            Navbar,
+            Footer
         }
     }
 </script>

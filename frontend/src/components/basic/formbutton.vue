@@ -1,17 +1,30 @@
 <template>
-    <div v-bind:class = "[stateclass , buttonstyle ]" @click = "_clickaction" >
+    <div v-bind:class = "[stateclass , buttonstyle ]" @click = "clickaction" >
         <i v-if = 'icon' v-bind:class = 'icon'></i>
-        {{ msg }} 
+        {{ msg }}
     </div>
 </template>
 
 <script>
     export default {
         props: {
-            msg : String,
-            buttonstyle : String,
-            icon : String,
-            clickaction : Function
+            msg :{
+                type : String,
+                default : ''
+            },
+            buttonstyle : {
+                type: String,
+                default : 'ui primary button'
+            },
+            icon: String,
+            action : {
+                type: Function,
+                default : function(){}
+            },
+            error : {
+                type: Function,
+                default : function(){}
+            }
         },
         data: function(){
             return　{
@@ -30,15 +43,22 @@
             },
 
         },
+
         methods:{
 
-            _clickaction: function(){
+            clickaction: async function(){
+                this.isLoading = true;
+                this.isError = false;
                 try{
-                    this.clickaction();
-                }catch( s ){
-
+                    this.action();
+                    this.isLoading = false;
+                }catch( error ){
+                    this.isLoading = false;
+                    this.isError = true;
+                    this.error( error );
                 }
             }
+            
         }
 
     }

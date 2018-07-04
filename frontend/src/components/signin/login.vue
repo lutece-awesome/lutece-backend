@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class = 'field'>
-                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :clickaction = 'login' />
+                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :action = 'login' :error = 'loginerror' />
                 </div>
             </div>
         </div>
@@ -55,7 +55,10 @@
 
         methods:{
             login: function(){
-                alert( "login" );
+                
+            },
+            loginerror: function( error ){
+                alert( error );
             },
             signup: function(){
                 
