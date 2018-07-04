@@ -1,12 +1,18 @@
 <template>
-    <div v-bind:class = "[stateclass , buttonstyle ]" v-on:click = "action" >
+    <div v-bind:class = "[stateclass , buttonstyle ]" @click = "_clickaction" >
+        <i v-if = 'icon' v-bind:class = 'icon'></i>
         {{ msg }} 
     </div>
 </template>
 
 <script>
     export default {
-        props: [ 'msg' , 'buttonstyle' , 'request' ],
+        props: {
+            msg : String,
+            buttonstyle : String,
+            icon : String,
+            clickaction : Function
+        },
         data: function(){
             return　{
                 isLoading: false,
@@ -14,6 +20,7 @@
             }
         },
         computed:{
+
             stateclass: function(){
                 return {
                     loading: this.isLoading,
@@ -24,11 +31,15 @@
 
         },
         methods:{
-            action: function(){
-                this.isLoading = true;
-                this.isError = false;
-                
+
+            _clickaction: function(){
+                try{
+                    this.clickaction();
+                }catch( s ){
+
+                }
             }
         }
+
     }
 </script>

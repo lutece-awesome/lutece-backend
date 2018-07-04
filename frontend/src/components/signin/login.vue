@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class = 'field'>
-                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login'/>
+                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :clickaction = 'login' />
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
 
         <div class="center aligned column">
             <div style = 'vertical-align:middle;'>
-                <FormButton buttonstyle = 'ui positive button' msg = 'SIGN UP'/>
+                <FormButton buttonstyle = 'ui medium labeled icon positive button' icon = 'edit icon' msg = 'SIGN UP' />
             </div>
         </div>
 
@@ -46,11 +46,20 @@
         data: function(){
             return{
                 username : '',
-                password : ''
+                password : '',
             }
         },
         components:{
             FormButton
+        },
+
+        methods:{
+            login: function(){
+                alert( "login" );
+            },
+            signup: function(){
+                
+            }
         }
     }
 </script>

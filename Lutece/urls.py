@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import include , path
 from django.views.generic import TemplateView
 from markdownx import urls as markdownx
+from graphene_django.views import GraphQLView
+
 
 urlpatterns = [
+    path( 'graphql' , GraphQLView.as_view( graphiql = True ) ),
     path( '' , TemplateView.as_view( template_name = 'index.html') )
     # path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
     # path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),

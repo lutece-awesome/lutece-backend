@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_gravatar',
     'gunicorn',
     'mptt',
+    'graphene_django',
     # Lutece app
     'contest',
     'problem',
@@ -52,6 +53,10 @@ INSTALLED_APPS = [
     'blog',
     'home',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'Lutece.schema.schema'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
