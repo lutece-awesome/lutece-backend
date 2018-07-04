@@ -6,6 +6,7 @@ from .models import User
 class UserType( DjangoObjectType ):
     class Meta:
         model = User
+        only_fields = ( 'id' , 'display_name'  )
 
 class Query( object ):
 

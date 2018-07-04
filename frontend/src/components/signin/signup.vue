@@ -8,7 +8,7 @@
             <label> Username </label>
             <div class="ui left icon input">
             <i class="user icon"></i>
-            <input v-bind = "username" />
+            <input v-model = "username" />
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             <label> Password </label>
             <div class="ui left icon input">
                 <i class="lock icon"></i>
-                <input type = 'password' v-bind = "password" />
+                <input type = 'password' v-model = "password" />
             </div>
         </div>
 
@@ -24,7 +24,7 @@
             <label><i class = 'small info circle icon'></i>Email</label>
             <div class="ui left icon input">
                 <i class="mail icon"></i>
-                <input v-bind = "email" />
+                <input v-model = "email" />
             </div>
         </div>
 
@@ -32,7 +32,7 @@
             <label> Display name </label>
             <div class="ui left icon input">
                 <i class="cloud icon"></i>
-                <input v-bind = "displayname" />
+                <input v-model = "displayname" />
             </div>
         </div>
 
@@ -40,7 +40,7 @@
             <label> School </label>
             <div class="ui left icon input">
                 <i class="university icon"></i>
-                <input v-bind = "school" />
+                <input v-model = "school" />
             </div>
         </div>
 
@@ -48,7 +48,7 @@
             <label> Company </label>
             <div class="ui left icon input">
                 <i class="shopping bag icon"></i>
-                <input v-bind = "company" />
+                <input v-model = "company" />
             </div>
         </div>
 
@@ -56,7 +56,7 @@
             <label> Location </label>
             <div class="ui left icon input">
                 <i class="map marker icon"></i>
-                <input v-bind = "location" />
+                <input v-model = "location" />
             </div>
         </div>
 

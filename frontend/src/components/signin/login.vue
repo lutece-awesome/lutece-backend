@@ -9,20 +9,20 @@
                     <label> Username </label>
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input v-bind = "username" />
+                        <input v-model= "username" />
                     </div>
                 </div>
                 <div class = 'field'>
                     <label> Password </label>
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input type = 'password' v-bind = "password" />
+                        <input type = 'password' v-model = "password" />
                     </div>
                 </div>
                 <div class = 'field'>
-                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :action = 'login' :error = 'loginerror' />
+                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :action = 'login' />
                 </div>
-                <ErrorMessage errorstyle = 'ui error message' header = 'LOGIN ERROR' msg = 'Username or Password Wrong'/>
+                <ErrorMessage errorstyle = 'ui error message' header = 'LOGIN ERROR' v-bind:msg = errormsg  />
             </div>
         </div>
 
@@ -37,21 +37,26 @@
         </div>
 
     </div>
+
+
 </template>
 
 
 <script>
     import FormButton from '@/components/basic/formbutton.vue'
     import ErrorMessage from '@/components/basic/error.vue'
-
+    import { LoginGQL } from '@/graphgql/basic/login.js'
     export default {
+
         data: function(){
             return{
                 username : '',
                 password : '',
                 iserror : false,
+                errormsg : '',
             }
         },
+
         components:{
             FormButton,
             ErrorMessage
@@ -60,9 +65,19 @@
         methods:{
             login: function(){
                 this.iserror = false;
-            },
-            loginerror: function( error ){
-                this.iserror = True;
+                this.$apollo.mutate({
+                    mutation: LoginGQL,
+                    variables:{
+                        username: this.username,
+                        passwrod: this.passwrod
+                    }
+                }).then( data => {
+                    
+                }).catch( error => {
+                    this.iserror = true;
+                    this.errormsg = String( error );
+                })
+                //this.$router.push (this.$route.query.redirect || '/' );
             },
             signup: function(){
                 this.$router.push( { name : 'Signup' });
