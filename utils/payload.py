@@ -1,7 +1,7 @@
 from json import loads
 from datetime import datetime
 
-def Lutece_payload(user, context=None):
+def Lutece_payload( user , context = None ):
     return {
         'pk' : user.pk,
         'displayname' : user.display_name,

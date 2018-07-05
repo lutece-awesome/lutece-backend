@@ -2,16 +2,28 @@ import Vue from 'vue'
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { setContext } from 'apollo-link-context'
 import VueApollo from 'vue-apollo'
 
 const httpLink = new HttpLink({
     // You should use an absolute URL here
     uri: 'http://localhost:8000/graphql',
-    credentials: 'same-origin'
+})
+
+const httpLinkAuth = setContext((_, { headers }) => {
+  // get the authentication token from localstorage if it exists
+  const token = localStorage.getItem('USER_TOKEN')
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : ''
+    }
+  }
 })
 
 const apolloClient = new ApolloClient({
-  link: httpLink,
+  link: httpLinkAuth.concat(httpLink),
   cache: new InMemoryCache(),
   connectToDevTools: true,
 })

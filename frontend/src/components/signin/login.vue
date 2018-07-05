@@ -45,7 +45,7 @@
 <script>
     import FormButton from '@/components/basic/formbutton.vue'
     import ErrorMessage from '@/components/basic/error.vue'
-    import { LoginGQL } from '@/graphql/basic/login.js'
+    import { tokenAuth } from '@/graphql/basic/token.js'
     export default {
 
         data: function(){
@@ -64,20 +64,20 @@
 
         methods:{
             login: function(){
+                console.log( tokenAuth );
                 this.iserror = false;
                 return this.$apollo.mutate({
-                    mutation: LoginGQL,
+                    mutation: tokenAuth,
                     variables:{
                         username: this.username,
                         password: this.password
                     },
-                }).then( response => response.data.UserLogin )
-                  .then( data => {
-                      if( data.state ){
-                        this.redirect();
-                      }else
-                        throw String( data.msg )
-                  })
+                }).then( response => response.data.tokenAuth )
+                .then( data => {
+                    localStorage.setItem('USER_TOKEN', data.token );
+                    this.$bus.emit('navbarUserRefresh');
+                    this.redirect();
+                })
             },
             signup: function(){
                 this.$router.push( { name : 'Signup' });
@@ -87,10 +87,8 @@
             },
             errorfunc: function( error ){
                 this.iserror = true;
-                this.errormsg = String( error );
+                this.errormsg = 'Username or password wrong'
             }
         }
     }
 </script>
-
-
