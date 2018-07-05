@@ -10,8 +10,8 @@
         </div>
         <div class="right menu">
             <div class="item">
-                <FormButton v-if='!authed' buttonstyle = 'ui primary button' icon = 'sign in icon' msg = 'Sign in' :action = 'login'  />
-                <FormButton v-else buttonstyle = 'ui negative button' icon = 'sign out icon' msg = 'Sign out' :action = 'signout'  />
+                <FormButton v-if='!userAuthed' buttonstyle = 'ui primary button' icon = 'sign in icon' msg = 'Sign in' :resolve = 'login'  />
+                <FormButton v-else buttonstyle = 'ui negative button' icon = 'sign out icon' msg = 'Sign out' :resolve = 'signout'  />
             </div>
         </div>
     </div>
@@ -19,14 +19,20 @@
 
 <script>
     import FormButton from '@/components/basic/formbutton.vue'
+    import { UserAuthedGQL } from '@/graphql/basic/authcheck.js'
     export default {
-        data: function(){
+        data: () => {
             return {
-                authed: false
+                UserAuthed: false
             }
         },
         components:{
             FormButton
+        },
+        apollo:{
+            userAuthed:{
+                query: UserAuthedGQL
+            }
         },
         methods:{
             login: function(){

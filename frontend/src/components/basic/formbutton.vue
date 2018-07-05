@@ -6,6 +6,7 @@
 </template>
 
 <script>
+    // action shoule be promise
     export default {
         props: {
             msg :{
@@ -17,13 +18,17 @@
                 default : 'ui primary button'
             },
             icon: String,
+            resolve: {
+                type : Function,
+                default : () => {}
+            },
             action : {
                 type: Function,
-                default : function(){}
+                default : () => new Promise( function( resolve , reject ){ resolve() } )
             },
             error : {
                 type: Function,
-                default : function(){}
+                default : () => {}
             }
         },
         data: function(){
@@ -49,14 +54,9 @@
             clickaction: async function(){
                 this.isLoading = true;
                 this.isError = false;
-                try{
-                    this.action();
-                    this.isLoading = false;
-                }catch( error ){
-                    this.isLoading = false;
-                    this.isError = true;
-                    this.error( error );
-                }
+                this.action()
+                    .then( data => { this.resolve( data ) , this.isLoading = false } )
+                    .catch( error => { this.isLoading = false , this.isError = true , this.error( error ) } )
             }
             
         }

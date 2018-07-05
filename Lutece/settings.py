@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import environ
+from datetime import timedelta
 
 env = environ.Env()
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'gunicorn',
     'mptt',
     'graphene_django',
+    'corsheaders',
     # Lutece app
     'contest',
     'problem',
@@ -65,27 +67,25 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'graphql_jwt.middleware.JSONWebTokenMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 ROOT_URLCONF = 'Lutece.urls'
 
+GRAPHQL_JWT = {
+    'JWT_EXPIRATION_DELTA': timedelta( hours = 12 ),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta( hours = 12 ),
+    'JWT_PAYLOAD_HANDLER' : 'utils.payload.Lutece_payload'
+}
+
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [ os.path.join(BASE_DIR , 'frontend/dist') ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-            'environment': 'Lutece.jinja2_env.environment',
-        },
-    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [''],
@@ -168,5 +168,6 @@ STATICFILES_FINDERS = (
 )
 
 # STATIC_ROOT = os.path.join( BASE_DIR , 'static' )
+
 
 from .base_setting import *

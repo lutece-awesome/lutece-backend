@@ -18,14 +18,14 @@ from django.urls import include , path
 from django.views.generic import TemplateView
 from markdownx import urls as markdownx
 from graphene_django.views import GraphQLView
-
+from django.views.decorators.csrf import csrf_exempt
+from .base_setting import DEBUG as lutece_debug
 
 urlpatterns = [
-    path( 'graphql' , GraphQLView.as_view( graphiql = True ) ),
-    path( '' , TemplateView.as_view( template_name = 'index.html') )
+    path( '' , TemplateView.as_view( template_name = 'frontend/dist/index.html') ),
+    path( 'admin/', admin.site.urls),
     # path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
     # path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
-    # path( 'admin/', admin.site.urls),
     # path( 'contest/' , include( 'contest.urls' ) ),
     # path( 'problem/' , include( 'problem.urls' )  ),
     # path( 'user/' , include( 'user.urls' ) ),
@@ -34,4 +34,4 @@ urlpatterns = [
     # path( 'discussion/' , include ('discussion.urls') ),
     # path( 'blog/' , include( 'blog.urls' ) ),
     # path( 'markdownx/' , include( markdownx ) ),
-]
+] + [ path( 'graphql' , csrf_exempt(GraphQLView.as_view( graphiql = True )) ) if lutece_debug else path( 'graphql' , GraphQLView.as_view( graphiql = False ) ) ]

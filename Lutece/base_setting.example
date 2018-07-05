@@ -19,8 +19,9 @@ DATABASES = {
     }
 }
 
-CORS_ORIGIN_ALLOW_ALL = False
-DEBUG = False
+DEBUG = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = ( 'localhost:8080', )
 SECRET_KEY = ''# set the key
 #CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_SECURE = True

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, Permission
 from json import dumps
 from django.http import HttpResponse
 from annoying.functions import get_object_or_None
+from django_gravatar.helpers import get_gravatar_url
 from .group import Group
 
 
@@ -31,6 +32,10 @@ class User(AbstractUser):
         self.group = group.value.full
         self.show = group.value.show_in_userlist
         self.save()
+
+    @property
+    def gravataremail( self ):
+        return get_gravatar_url( self.email , size = 250 )
 
     class Meta:
         permissions = (

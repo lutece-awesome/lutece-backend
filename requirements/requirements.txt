@@ -61,3 +61,4 @@ wcwidth==0.1.7
 websocket-client==0.47.0
 django-cors-headers==2.3.0
 graphene-django==2.0.0
+django-graphql-jwt==0.1.10

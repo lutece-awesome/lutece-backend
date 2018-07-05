@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class = 'field'>
-                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :action = 'login' />
+                    <FormButton buttonstyle = 'ui primary fluid button' fluid = 'true' msg = 'Login' :action = 'login' :error = 'errorfunc' />
                 </div>
                 <ErrorMessage errorstyle = 'ui error message' header = 'LOGIN ERROR' v-bind:msg = errormsg  />
             </div>
@@ -45,7 +45,7 @@
 <script>
     import FormButton from '@/components/basic/formbutton.vue'
     import ErrorMessage from '@/components/basic/error.vue'
-    import { LoginGQL } from '@/graphgql/basic/login.js'
+    import { LoginGQL } from '@/graphql/basic/login.js'
     export default {
 
         data: function(){
@@ -65,22 +65,29 @@
         methods:{
             login: function(){
                 this.iserror = false;
-                this.$apollo.mutate({
+                return this.$apollo.mutate({
                     mutation: LoginGQL,
                     variables:{
                         username: this.username,
-                        passwrod: this.passwrod
-                    }
-                }).then( data => {
-                    
-                }).catch( error => {
-                    this.iserror = true;
-                    this.errormsg = String( error );
-                })
-                //this.$router.push (this.$route.query.redirect || '/' );
+                        password: this.password
+                    },
+                }).then( response => response.data.UserLogin )
+                  .then( data => {
+                      if( data.state ){
+                        this.redirect();
+                      }else
+                        throw String( data.msg )
+                  })
             },
             signup: function(){
                 this.$router.push( { name : 'Signup' });
+            },
+            redirect: function(){
+                this.$router.push (this.$route.query.redirect || '/' );
+            },
+            errorfunc: function( error ){
+                this.iserror = true;
+                this.errormsg = String( error );
             }
         }
     }
