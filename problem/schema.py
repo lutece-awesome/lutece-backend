@@ -16,8 +16,12 @@ class Query( object ):
         return Problem.objects.get( pk = pk )
 
     def resolve_problemList( self , info , page ):
-        print( info.context.user.is_authenticated )
-        return Problem.objects.all()
+        from django.core.paginator import Paginator
+        from Lutece.config import PER_PAGE_COUNT
+        problem_list = Problem.objects.all()
+        if not info.context.user.has_perm( 'problem.view_all' ):
+            problem_list = problem_list.filter( visible = True )
+        return Paginator( problem_list, PER_PAGE_COUNT ).get_page( page )
 
 class Mutation( graphene.AbstractType ):
     pass

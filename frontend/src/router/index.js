@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Home from '@/components/home/home.vue'
 import Login from '@/components/signin/login.vue'
 import Signup from '@/components/signin/signup.vue'
-import NotFound from '@/components/basic/404.vue'
+import Signout from '@/components/signin/signout.vue'
+import NotFound from '@/components/global/404.vue'
 import ProblemList from '@/components/problem/list.vue'
 import ProblemDetail from '@/components/problem/detail.vue'
 
@@ -36,6 +37,12 @@ export default new Router({
       path: '/signup',
       name: 'Signup',
       component: Signup
+    },
+
+    {
+      path: '/signout',
+      name: 'Signout',
+      component: Signout
     },
 
     {

@@ -25,7 +25,7 @@
 
 <script>
     import FormButton from '@/components/basic/formbutton.vue'
-    import { verifyToken , refreshToken } from '@/graphql/basic/token.js'
+    import { verifyToken , refreshToken } from '@/graphql/signin/token.js'
     export default {
         data: function(){
             return {
@@ -40,7 +40,6 @@
         },
         created(){
             this.refresh();
-            this.$bus.on( 'navbarUserRefresh' , this.refresh );
         },
         methods:{
             refresh: function(){
@@ -62,11 +61,10 @@
                     .catch( error => {this.userAuthed = false; this.logging = false; } );
             },
             login: function(){
-                this.$router.push( { name : 'Login' } );
+                this.$router.push( { name : 'Login' , query:{ redirect: this.$route.path } } );
             },
             signout: function(){
-                localStorage.removeItem( 'USER_TOKEN' );
-                this.refresh();
+                this.$router.push( { name : 'Signout' , query:{ redirect: this.$route.path } } );
             }
         }
     }

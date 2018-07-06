@@ -4,12 +4,11 @@ import Vue from 'vue'
 import router from './router'
 import Base from './components/base'
 import apolloProvider from './apollo.js'
+import store from './store'
 import '../semantic/dist/semantic.min.css'
 import '../semantic/dist/semantic.min.js'
-import VueBus from 'vue-bus';
 
 Vue.config.productionTip = false
-Vue.use(VueBus);
 
 /* eslint-disable no-new */
 new Vue({

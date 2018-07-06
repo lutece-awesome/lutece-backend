@@ -45,7 +45,7 @@
 <script>
     import FormButton from '@/components/basic/formbutton.vue'
     import ErrorMessage from '@/components/basic/error.vue'
-    import { tokenAuth } from '@/graphql/basic/token.js'
+    import { tokenAuth } from '@/graphql/signin/token.js'
     export default {
 
         data: function(){
@@ -64,7 +64,6 @@
 
         methods:{
             login: function(){
-                console.log( tokenAuth );
                 this.iserror = false;
                 return this.$apollo.mutate({
                     mutation: tokenAuth,
@@ -75,7 +74,6 @@
                 }).then( response => response.data.tokenAuth )
                 .then( data => {
                     localStorage.setItem('USER_TOKEN', data.token );
-                    this.$bus.emit('navbarUserRefresh');
                     this.redirect();
                 })
             },
@@ -83,6 +81,8 @@
                 this.$router.push( { name : 'Signup' });
             },
             redirect: function(){
+                Object.values(this.$apollo.provider.clients)
+                    .forEach(client => client.cache.reset())
                 this.$router.push (this.$route.query.redirect || '/' );
             },
             errorfunc: function( error ){
