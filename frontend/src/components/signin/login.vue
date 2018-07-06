@@ -74,6 +74,7 @@
                 }).then( response => response.data.tokenAuth )
                 .then( data => {
                     localStorage.setItem('USER_TOKEN', data.token );
+                    this.$store.commit( 'user/update_authed' , true );
                     this.redirect();
                 })
             },

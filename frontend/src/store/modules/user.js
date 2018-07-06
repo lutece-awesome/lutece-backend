@@ -1,31 +1,25 @@
 
 
 const state = {
+    'displayname' : '',
+    'gravataremail' : '',
     'authed': false,
-    'gravataremail' : null,
-}
-
-const getters = {
-    has_authed: ( state )=>{
-        return state.authed;
-    },
 }
 
 const mutations = {
-    set_authed( state ){
-        state.authed = true;
+    update_authed( state , flag ){
+        state.authed = flag;
     },
-    set_unthed( state ){
-        state.authed = false;
-    },
-    set_gravataremail( state , email ){
+    update_gravataremail( state , email ){
         state.gravataremail = email;
+    },
+    update_displayname( state , displayname ){
+        state.displayname = displayname
     }
 }
 
 export default {
     namespaced: true,
     state,
-    getters,
-    mutations
+    mutations,
 }

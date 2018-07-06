@@ -10,13 +10,13 @@
         </div>
         <div class="right menu">
 
-            <div v-if = 'userAuthed' class = 'item'>
+            <div v-if = 'authed' class = 'item'>
                 <img :src = gravataremail alt="" />
                 <div style = 'margin-left: 10px;' ><a href = "" style = "color:black" >{{ displayname }}</a></div>
             </div>
 
             <div class="item">
-                <FormButton v-bind:class= '{ loading: logging , disabled: logging }' v-if='!userAuthed' buttonstyle = 'ui primary button' icon = 'sign in icon' msg = 'Sign in' :resolve = 'login'  />
+                <FormButton v-bind:class= '{ loading: logging , disabled: logging }' v-if='!authed' buttonstyle = 'ui primary button' icon = 'sign in icon' msg = 'Sign in' :resolve = 'login'  />
                 <FormButton v-else buttonstyle = 'ui negative button' icon = 'sign out icon' msg = 'Sign out' :resolve = 'signout'  />
             </div>
         </div>
@@ -24,14 +24,12 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
     import FormButton from '@/components/basic/formbutton.vue'
     import { verifyToken , refreshToken } from '@/graphql/signin/token.js'
     export default {
         data: function(){
             return {
-                userAuthed: false,
-                gravataremail: '',
-                displayname: '',
                 logging: false
             }
         },
@@ -39,26 +37,36 @@
             FormButton
         },
         created(){
-            this.refresh();
+            this.userAuthed = false;
+            this.logging = true;
+            this.$apollo.mutate({
+                mutation: verifyToken,
+                variables:{
+                    token: localStorage.getItem('USER_TOKEN') || ''
+                }})
+                .then( response => response.data.verifyToken.payload )
+                .then( data => {
+                    this.$store.commit( 'user/update_authed' , true );
+                    this.$store.commit( 'user/update_gravataremail' , data.gravataremail );
+                    this.$store.commit( 'user/update_displayname' , data.displayname );
+                    this.logging = false;
+                })
+                .catch( error => { this.logging = false; } );
+        },
+        computed:{
+            authed: function(){
+                return this.$store.state['user'].authed;
+            },
+            displayname: function(){
+                return this.$store.state['user'].displayname;
+            },
+            gravataremail: function(){
+                return this.$store.state['user'].gravataremail;
+            }
         },
         methods:{
-            refresh: function(){
-                this.userAuthed = false;
-                this.logging = true;
-                this.$apollo.mutate({
-                    mutation: verifyToken,
-                    variables:{
-                        token: localStorage.getItem('USER_TOKEN') || ''
-                    }})
-                    .then( response => response.data.verifyToken.payload )
-                    .then( data => {
-                        this.displayname = data.displayname;
-                        this.gravataremail = data.gravataremail;
-                        this.userAuthed = true;
-                        this.logging = false;
-                        // console.log( data );
-                    })
-                    .catch( error => {this.userAuthed = false; this.logging = false; } );
+            update_auth_state: function( flag ){
+                this.$store.commit( 'user/update_authed' , flag );
             },
             login: function(){
                 this.$router.push( { name : 'Login' , query:{ redirect: this.$route.path } } );

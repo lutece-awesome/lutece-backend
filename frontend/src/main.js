@@ -15,6 +15,7 @@ new Vue({
   el: '#Lutece',
   provide: apolloProvider.provide(),
   router,
+  store,
   components: { Base },
   template: '<Base/>'
 })
