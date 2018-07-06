@@ -87,7 +87,7 @@
             },
             errorfunc: function( error ){
                 this.iserror = true;
-                this.errormsg = 'Username or password wrong'
+                this.errormsg = String( error );
             }
         }
     }

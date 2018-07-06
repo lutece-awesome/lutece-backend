@@ -5,6 +5,7 @@ import Login from '@/components/signin/login.vue'
 import Signup from '@/components/signin/signup.vue'
 import NotFound from '@/components/basic/404.vue'
 import ProblemList from '@/components/problem/list.vue'
+import ProblemDetail from '@/components/problem/detail.vue'
 
 Vue.use(Router)
 
@@ -38,9 +39,15 @@ export default new Router({
     },
 
     {
-      path: '/problem',
-      name : 'Problem',
+      path: '/problem/:page',
+      name : 'ProblemList',
       component: ProblemList
+    },
+
+    {
+      path: '/problem/:id',
+      name: 'ProblemDetail',
+      component: ProblemDetail
     },
 
     {

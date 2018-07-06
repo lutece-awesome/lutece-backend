@@ -6,7 +6,7 @@
         <div class = 'ui container'>
             <div class="header item">Lutece</div>
             <router-link to="/home" class = 'item' active-class = 'active'  >Home</router-link>
-            <router-link to='/problem' class = 'item' active-class = 'active' > Problem </router-link>
+            <router-link :to="{ name: 'ProblemList' , params: { page: 1 } }" class = 'item' active-class = 'active' > Problem </router-link>
         </div>
         <div class="right menu">
 
