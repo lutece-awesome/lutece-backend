@@ -36,7 +36,7 @@
         components:{
             FormButton
         },
-        created(){
+        mounted(){
             this.userAuthed = false;
             this.logging = true;
             this.$apollo.mutate({

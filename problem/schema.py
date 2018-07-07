@@ -1,16 +1,21 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from .models import Problem
+from utils.schema import paginatorList
 
 class ProblemType( DjangoObjectType ):
     class Meta:
         model = Problem
         only_fields = ( 'problem_id' , 'title' , 'content' , 'standardInput' , 'standardOutput' , 'constraints' , 'resource' , 'note' , 'time_limit' , 'memory_limit' , 'submit' , 'accept' )
 
+class ProblemListType( graphene.ObjectType ):
+    class Meta:
+        interfaces = ( paginatorList , )
+    problemList = graphene.List( ProblemType )
 
 class Query( object ):
     problem = graphene.Field( ProblemType , pk = graphene.ID() )
-    problemList = graphene.List( ProblemType , page = graphene.Int() )
+    problemList = graphene.Field( ProblemListType , page = graphene.Int() )
 
     def resolve_problem( self , info , pk ):
         return Problem.objects.get( pk = pk )
@@ -21,7 +26,8 @@ class Query( object ):
         problem_list = Problem.objects.all()
         if not info.context.user.has_perm( 'problem.view_all' ):
             problem_list = problem_list.filter( visible = True )
-        return Paginator( problem_list, PER_PAGE_COUNT ).get_page( page )
+        paginator = Paginator( problem_list , PER_PAGE_COUNT )
+        return ProblemListType( maxpage = paginator.num_pages , problemList = paginator.get_page( page ) )
 
 class Mutation( graphene.AbstractType ):
     pass

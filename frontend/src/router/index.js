@@ -46,13 +46,14 @@ export default new Router({
     },
 
     {
-      path: '/problem/:page',
+      path: '/problem/:page(\\d+)',
       name : 'ProblemList',
+      props: true,
       component: ProblemList
     },
 
     {
-      path: '/problem/:id',
+      path: '/problem/:id(\\d+)',
       name: 'ProblemDetail',
       component: ProblemDetail
     },
