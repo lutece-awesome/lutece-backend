@@ -1,6 +1,6 @@
 <template>
     <div class="ui pagination menu">
-        <router-link class = 'item' v-for= "each in MenuList" :key = 'each.index' :to = 'each.url' >{{ each.index }}</router-link>
+        <a class = 'item' v-for= "(each, index) in MenuList" :key = 'each.index' v-bind:class = '{ active : ( page == index + 1 ) }'  @click = 'each.resolve' >{{ each.index }}</a>
     </div>
 </template>
 
@@ -19,16 +19,15 @@
                 type: Number,
                 default: 10
             },
-            resolve_url:{
+            resolve:{
                 type: Function,
-                default: () =>  { return { name : 'Home' } }
+                default: () =>  {}
             }
         },
         created(){
             let page = parseInt(this.page);
             let count = this.count;
             let maxpage = parseInt(this.maxpage);
-            page = Math.max( maxpage , 1 );
             let before = count / 2;
             let after = count - 1 - before;
             let l = Math.max( 1 , page - before );
@@ -40,13 +39,13 @@
             for( let i = l ; i <= r ; ++ i){
                 this.MenuList.push({
                     index: i,
-                    url: this.resolve_url( i ),
+                    resolve: this.resolve( i ),
                 });
             }
         },
         data: function(){
             return{
-                MenuList : []
+                MenuList : [],
             }
         }
     }

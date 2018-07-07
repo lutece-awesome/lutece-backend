@@ -6,7 +6,7 @@
         <div class = 'ui container'>
             <div class="header item">Lutece</div>
             <router-link to = "/home" class = 'item' active-class = 'active'  >Home</router-link>
-            <router-link to = "/problem/list" class = 'item' active-class = 'active' > Problem </router-link>
+            <router-link to = "/problemlist" class = 'item' active-class = 'active' > Problem </router-link>
         </div>
         <div class="right menu">
 

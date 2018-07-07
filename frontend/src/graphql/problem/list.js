@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 
-export const ProblemList = gql`
+export const ProblemListGQL = gql`
     query problemList( $page: Int! ){
         problemList( page: $page ) {
             maxpage
