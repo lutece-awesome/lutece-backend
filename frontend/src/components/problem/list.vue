@@ -2,7 +2,7 @@
     <div>
         <Loading v-if = "isLoading" loadingstyle = 'ui indeterminate text loader' v-bind:isLoading = 'isLoading' />
         <div v-else>
-            <Paginator v-bind:maxpage = parseInt(maxpage) v-bind:page = parseInt(page) />
+            <Paginator v-bind:maxpage = parseInt(maxpage) v-bind:page = parseInt(page) v-bind:resolve_url = resolve_url />
             <table class = "ui padded table" style = 'text-align:center' >
                 <tr>
                     <th>ID</th>
@@ -33,12 +33,9 @@
             Paginator
         },
 
-        props:{
-            page:{
-                type: String,
-                required: true
-            }
-        },
+        props:[
+            'page'
+        ],
 
         data(){
             return{
@@ -48,7 +45,7 @@
             }
         },
 
-        mounted(){
+        created(){
             let maxpage = 1
             this.$apollo.query({
                 query: ProblemList,
@@ -58,8 +55,13 @@
             }).then( response => response.data.problemList )
               .then( data => { this.problemItem = data.problemList , this.maxpage = data.maxpage } )
               .then( () => this.isLoading = false )
-            console.log( this.maxpage );
         },
+
+        methods:{
+            resolve_url: function( index ){
+                return { name: 'ProblemList' , params: { page: index } };
+            }
+        }
 
     }
 </script>

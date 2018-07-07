@@ -46,14 +46,22 @@ export default new Router({
     },
 
     {
-      path: '/problem/:page(\\d+)',
+      path: '/problem/list',
+      redirect:{
+        name : 'ProblemList',
+        params: { page: 1 }
+      }
+    },
+
+    {
+      path: '/problem/list/:page(\\d+)',
       name : 'ProblemList',
       props: true,
       component: ProblemList
     },
 
     {
-      path: '/problem/:id(\\d+)',
+      path: '/problem/detail/:id(\\d+)',
       name: 'ProblemDetail',
       component: ProblemDetail
     },

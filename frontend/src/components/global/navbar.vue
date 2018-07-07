@@ -5,8 +5,8 @@
     <div class = 'ui fixed top borderless large menu'>
         <div class = 'ui container'>
             <div class="header item">Lutece</div>
-            <router-link to="/home" class = 'item' active-class = 'active'  >Home</router-link>
-            <router-link :to="{ name: 'ProblemList' , params: { page: 1 } }" class = 'item' active-class = 'active' > Problem </router-link>
+            <router-link to = "/home" class = 'item' active-class = 'active'  >Home</router-link>
+            <router-link to = "/problem/list" class = 'item' active-class = 'active' > Problem </router-link>
         </div>
         <div class="right menu">
 
@@ -65,9 +65,6 @@
             }
         },
         methods:{
-            update_auth_state: function( flag ){
-                this.$store.commit( 'user/update_authed' , flag );
-            },
             login: function(){
                 this.$router.push( { name : 'Login' , query:{ redirect: this.$route.path } } );
             },

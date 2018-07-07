@@ -1,6 +1,6 @@
 <template>
     <div class="ui pagination menu">
-        <router-link class = 'item' v-for= "each in MenuList" :key = 'each.index' to = each.url >{{ each.index }}</router-link>
+        <router-link class = 'item' v-for= "each in MenuList" :key = 'each.index' :to = 'each.url' >{{ each.index }}</router-link>
     </div>
 </template>
 
@@ -21,7 +21,7 @@
             },
             resolve_url:{
                 type: Function,
-                default: () => {}
+                default: () =>  { return { name : 'Home' } }
             }
         },
         created(){
