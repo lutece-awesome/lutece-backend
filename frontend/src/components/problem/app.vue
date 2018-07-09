@@ -8,12 +8,8 @@
                 </div>
 
                 <div class = 'column'>
-                    <div class="ui search" style = 'float:right;' >
-                        <div class="ui icon input">
-                            <input class="prompt" type="text" placeholder="通用密码">
-                            <i class="search icon"></i>
-                        </div>
-                        <div class="results"></div>
+                    <div style = 'float:right'>
+                        <problemsearch placeholder = 'Problem' />
                     </div>
                 </div>
             </div>
@@ -29,13 +25,15 @@
     import Paginator from '@/components/basic/paginator.vue'
     import ProblemList from '@/components/problem/list.vue'
     import Loading from '@/components/basic/loading.vue'
+    import problemsearch from '@/components/basic/problemsearch.vue'
     import { ProblemListGQL } from '@/graphql/problem/list.js'
     export default {
 
         components:{
             Paginator,
             ProblemList,
-            Loading
+            Loading,
+            problemsearch
         },
 
         data: function(){
