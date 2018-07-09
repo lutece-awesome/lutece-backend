@@ -1,6 +1,8 @@
 <template>
     <div class="ui pagination menu">
+        <a class = 'icon item' @click = 'firstpageresolve'  ><i class="angle double left icon"></i></a>
         <a class = 'item' v-for= "(each, index) in MenuList" :key = 'each.index' v-bind:class = '{ active : ( page == index + 1 ) }'  @click = 'each.resolve' >{{ each.index }}</a>
+        <a class = 'icon item' @click = 'lastpageresolve' ><i class="angle double right icon"></i></a>
     </div>
 </template>
 
@@ -22,7 +24,7 @@
             resolve:{
                 type: Function,
                 default: () =>  {}
-            }
+            },
         },
         created(){
             let page = parseInt(this.page);
@@ -42,10 +44,14 @@
                     resolve: this.resolve( i ),
                 });
             }
+            this.firstpageresolve = this.resolve( 1 );
+            this.lastpageresolve = this.resolve( maxpage );
         },
         data: function(){
             return{
                 MenuList : [],
+                firstpageresolve: () => {},
+                lastpageresolve: () => {}
             }
         }
     }
