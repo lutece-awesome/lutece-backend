@@ -4,7 +4,7 @@
         <div v-else>
             <div class="ui two column stackable grid">
                 <div class = 'left floated column' >
-                    <Paginator v-bind:maxpage = parseInt(maxpage) v-bind:page = parseInt(page) v-bind:resolve = resolve />
+                    <Paginator v-bind:maxpage = maxpage v-bind:page = page v-bind:resolve = resolve />
                 </div>
 
                 <div class = 'column'>
@@ -53,15 +53,15 @@
         methods:{
             request: function( page ){
                 localStorage.setItem( 'PROBLEM_LIST' , page );
-                this.page = page;
                 this.isLoading = true;
+                this.page = parseInt(page);
                 this.$apollo.query({
                     query: ProblemListGQL,
                     variables:{
-                        page: parseInt( this.page )
+                        page: this.page
                     },
                 }).then( response => response.data.problemList )
-                   .then( data => { this.problemItem = data.problemList , this.maxpage = data.maxpage , this.page = Math.min( this.page , this.maxpage  ) } )
+                   .then( data => { this.problemItem = data.problemList , this.maxpage = data.maxpage } )
                    .then( () => this.isLoading = false )
             },
             resolve: function( index ){
