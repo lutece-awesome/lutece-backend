@@ -8,10 +8,13 @@ import store from './store'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false
-Vue.use(Vuetify)
-
+Vue.use(Vuetify, {
+  iconfont: 'fa'
+ })
+ 
 /* eslint-disable no-new */
 new Vue({
   el: '#Lutece',

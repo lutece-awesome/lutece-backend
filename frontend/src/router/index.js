@@ -51,7 +51,6 @@ export default new Router({
       component: ProblemList
     },
 
-
     {
       path: '/problem/detail/:id(\\d+)',
       name: 'ProblemDetail',
