@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <Navbar/>
+        <Toolbar/>
         <v-content>
             <v-container fluid>
                 <router-view></router-view>
@@ -11,10 +12,12 @@
 
 
 <script>
-    import Navbar from '@/components/global/navbar.vue'
+    import Toolbar from '@/components/global/toolbar.vue'
     import Footer from '@/components/global/footer.vue'
+    import Navbar from '@/components/global/navbar.vue'
     export default {
         components:{
+            Toolbar,
             Navbar,
             Footer
         }
