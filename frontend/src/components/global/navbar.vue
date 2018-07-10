@@ -2,8 +2,14 @@
     Navigation Bar
 -->
 <template>
-    <div class = 'ui fixed top borderless large menu'>
-        <div class = 'ui container'>
+    <v-toolbar>
+        <v-toolbar-side-icon></v-toolbar-side-icon>
+        <v-toolbar-title>Lutece</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn flat> SIGN IN </v-btn>
+        </v-toolbar-items>
+        <!-- <div class = 'ui container'>
             <div class="header item">Lutece</div>
             <router-link to = "/home" class = 'item' active-class = 'active'  >Home</router-link>
             <router-link to = "/problemlist" class = 'item' active-class = 'active' > Problem </router-link>
@@ -19,8 +25,8 @@
                 <FormButton v-bind:class= '{ loading: logging , disabled: logging }' v-if='!authed' buttonstyle = 'ui primary button' icon = 'sign in icon' msg = 'Sign in' :resolve = 'login'  />
                 <FormButton v-else buttonstyle = 'ui negative button' icon = 'sign out icon' msg = 'Sign out' :resolve = 'signout'  />
             </div>
-        </div>
-    </div>
+        </div> -->
+    </v-toolbar>
 </template>
 
 <script>

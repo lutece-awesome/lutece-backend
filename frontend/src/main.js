@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import router from './router'
-import Base from './components/base'
+import Base from './base'
 import apolloProvider from './apollo.js'
 import store from './store'
 import Vuetify from 'vuetify'
