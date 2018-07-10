@@ -5,10 +5,12 @@ import router from './router'
 import Base from './components/base'
 import apolloProvider from './apollo.js'
 import store from './store'
-import '../semantic/dist/semantic.min.css'
-import '../semantic/dist/semantic.min.js'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.config.productionTip = false
+Vue.use(Vuetify)
 
 /* eslint-disable no-new */
 new Vue({

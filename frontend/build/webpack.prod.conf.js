@@ -108,14 +108,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       minChunks: 3
     }),
 
-    // jquery
-    new webpack.ProvidePlugin({
-      // jquery
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery'
-    }),
-
     // copy custom static assets
     new CopyWebpackPlugin([
       {
