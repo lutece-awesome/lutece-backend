@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" fixed clipped app>
       <v-list>
 
-        <v-list-tile @click="">
+        <v-list-tile @click = "home">
           <v-list-tile-action>
             <v-icon>fa-home</v-icon>
           </v-list-tile-action>
@@ -12,7 +12,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile >
           <v-list-tile-action>
             <v-icon>fa-tasks</v-icon>
           </v-list-tile-action>
@@ -21,7 +21,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile>
           <v-list-tile-action>
             <v-icon>fa-chart-bar</v-icon>
           </v-list-tile-action>
@@ -30,7 +30,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile>
           <v-list-tile-action>
             <v-icon>fa-trophy</v-icon>
           </v-list-tile-action>
@@ -39,7 +39,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile>
           <v-list-tile-action>
             <v-icon>fa-user</v-icon>
           </v-list-tile-action>
@@ -48,7 +48,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile @click="">
+        <v-list-tile>
           <v-list-tile-action>
             <v-icon>fa-compass</v-icon>
           </v-list-tile-action>
@@ -59,6 +59,7 @@
 
       </v-list>
     </v-navigation-drawer>
+
     <v-toolbar fixed clipped-left app dark class="primary">
         <v-toolbar-side-icon @click.stop="drawer=!drawer"></v-toolbar-side-icon>
         <v-toolbar-title>
@@ -74,6 +75,7 @@
             <v-icon>fa-sign-in-alt</v-icon>
         </v-btn>
     </v-toolbar>
+
 </div>
 </template>
 
@@ -84,7 +86,7 @@ import { verifyToken, refreshToken } from "@/graphql/signin/token.js";
 export default {
   data: function() {
     return {
-      drawer: true,
+      drawer: false,
       signin: false,
       logging: true
     };
@@ -122,6 +124,11 @@ export default {
     }
   },
   methods: {
+    home: function(){
+      this.$router.push({
+        name: "Home",
+      });
+    },
     login: function() {
       this.$router.push({
         name: "Login",

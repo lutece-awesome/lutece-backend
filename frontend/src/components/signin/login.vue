@@ -1,34 +1,32 @@
 <template>
-    <div>
-        <v-card style = 'width:600px; margin-top:128px; margin-left:auto; margin-right:auto;' >
-            <v-card-title>
-                <span class = 'headline' style = 'margin:0 auto;'>
-                    SIGN IN
-                </span>
-            </v-card-title>
-            <v-card-text>
-                <v-container grid-list-md>
-                    <v-form>
-                        <v-layout row wrap>
-                            <v-flex xs12>
-                                <v-text-field v-model = "username" label = "Username" required />
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-text-field v-model = "password" type = "password" label = "Password" required />
-                            </v-flex>
-                            <v-flex xs12 sm6>
-                                <a @click = 'signup' >Do not have account? </a>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-btn block big :loading = loading @click = 'login' :color = 'error ? "error" : "primary"'  >Login</v-btn>
-                            </v-flex>
-                        </v-layout>
-                    </v-form>
-                </v-container>
-            </v-card-text>
-        </v-card>
+    <v-card style = 'width:600px; margin-top:128px; margin-left:auto; margin-right:auto;' >
+        <v-card-title>
+            <span class = 'headline' style = 'margin:0 auto;'>
+                SIGN IN
+            </span>
+        </v-card-title>
+        <v-card-text>
+            <v-container grid-list-md>
+                <v-form>
+                    <v-layout row wrap>
+                        <v-flex xs12>
+                            <v-text-field v-model = "username" label = "Username" required />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "password" type = "password" label = "Password" required />
+                        </v-flex>
+                        <v-flex xs12 sm6>
+                            <a @click = 'signup' >Do not have account? </a>
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-btn block big :loading = loading @click = 'login' :color = 'error ? "error" : "primary"'  >Login</v-btn>
+                        </v-flex>
+                    </v-layout>
+                </v-form>
+            </v-container>
+        </v-card-text>
         <v-alert :value = error type = 'error' style = 'margin:0;' > {{ errormsg }} </v-alert>
-    </div>
+    </v-card>
 </template>
 
 
@@ -60,11 +58,9 @@
                     localStorage.setItem('USER_TOKEN', data.token );
                     this.$store.commit( 'user/update_authed' , true );
                     this.loading = false;
-                    this.dialog = false;
-                    location.reload();
                 })
                 .catch( error => {
-                    this.errormsg = String( error );
+                    this.errormsg = error.graphQLErrors[0].message;
                     this.error = true;
                     this.loading = false;
                 })
@@ -75,7 +71,7 @@
                 this.$router.push (this.$route.query.redirect || '/' );
             },
             signup: function(){
-                
+                this.$router.push( { name : 'Signup' } );                
             },
         }
     }

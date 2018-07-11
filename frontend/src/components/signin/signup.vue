@@ -1,74 +1,48 @@
 
 <template>
-    <div class = 'ui form segment' style = 'margin:0 auto;width:600px;' >
-
-        <h3 class = 'header' style = 'text-align:center;'> <i class = 'edit icon'></i> SIGN UP </h3>
-
-        <div class = 'required field'>
-            <label> Username </label>
-            <div class="ui left icon input">
-            <i class="user icon"></i>
-            <input v-model = "username" />
-            </div>
-        </div>
-
-        <div class = 'required field'>
-            <label> Password </label>
-            <div class="ui left icon input">
-                <i class="lock icon"></i>
-                <input type = 'password' v-model = "password" />
-            </div>
-        </div>
-
-        <div class = 'required field' data-tooltip = "Will be used to provide gravatar in Lutece" data-position = "top left" >
-            <label><i class = 'small info circle icon'></i>Email</label>
-            <div class="ui left icon input">
-                <i class="mail icon"></i>
-                <input v-model = "email" />
-            </div>
-        </div>
-
-        <div class = 'required field'>
-            <label> Display name </label>
-            <div class="ui left icon input">
-                <i class="cloud icon"></i>
-                <input v-model = "displayname" />
-            </div>
-        </div>
-
-        <div class = 'field'>
-            <label> School </label>
-            <div class="ui left icon input">
-                <i class="university icon"></i>
-                <input v-model = "school" />
-            </div>
-        </div>
-
-        <div class = 'field'>
-            <label> Company </label>
-            <div class="ui left icon input">
-                <i class="shopping bag icon"></i>
-                <input v-model = "company" />
-            </div>
-        </div>
-
-        <div class = 'field'>
-            <label> Location </label>
-            <div class="ui left icon input">
-                <i class="map marker icon"></i>
-                <input v-model = "location" />
-            </div>
-        </div>
-
-        <div class = 'field'>
-            <FormButton buttonstyle = 'ui primary fluid button' msg = 'Register' />
-        </div>
-
-    </div>
+    <v-card style = 'width:600px; margin-top:32px; margin-left:auto; margin-right:auto;' >
+        <v-card-title>
+            <span class = 'headline' style = 'margin:0 auto;'>
+                SIGN UP
+            </span>
+        </v-card-title>
+        <v-card-text>
+            <v-container grid-list-md>
+                <v-form>
+                    <v-layout row wrap>
+                        <v-flex xs12>
+                            <v-text-field v-model = "username" label = "Username *" required :error-messages = "geterror('username')" />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "password" type = "password" label = "Password *" :error-messages = "geterror('password')" required />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "email" label = "Email *" :error-messages = "geterror('email')" required />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "displayname" label = "Display name *" :error-messages = "geterror('displayname')" required />
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "school" :error-messages = "geterror('school')" label = "School"/>
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "company" :error-messages = "geterror('company')" label = "Company"/>
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-text-field v-model = "location" :error-messages = "geterror('location')" label = "Location"/>
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-btn block big v-bind:loading = loading @click = 'register' :color = 'error ? "error" : "primary"'  >Register</v-btn>
+                        </v-flex>
+                    </v-layout>
+                </v-form>
+            </v-container>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
-    import FormButton from '@/components/basic/formbutton.vue'
+    import { RegisterGQL } from '@/graphql/signin/register.js'
     export default {
         data: function(){
             return {
@@ -78,11 +52,45 @@
                 displayname : '',
                 school : '',
                 company : '',
-                location : ''
+                location : '',
+                loading: false,
+                error: false,
+                errordetail: {},
             }
         },
-        components:{
-            FormButton
-        },
+        
+        methods:{
+
+            geterror: function( field ){
+                if(this.errordetail.hasOwnProperty( field ))
+                    return this.errordetail[field][0].message;
+                return ''
+            },
+
+            register: function(){
+                this.errordetail = {};
+                this.error = false;
+                this.loading = true;
+                this.$apollo.mutate({
+                    mutation: RegisterGQL,
+                    variables:{
+                        username: this.username,
+                        password: this.password,
+                        email: this.email,
+                        displayname: this.displayname,
+                        school: this.school,
+                        company: this.company,
+                        location: this.location
+                    }
+                })
+                .then( data => {
+                    console.log( data );
+                }).catch( error => {
+                    this.loading = false;
+                    this.error = true;
+                    this.errordetail = JSON.parse( error.graphQLErrors[0].message );
+                })
+            }
+        }
     }
 </script>

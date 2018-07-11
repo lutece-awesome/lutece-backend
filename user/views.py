@@ -39,7 +39,7 @@ def user_signup(request):
         'signup_status': False,
         'error_msg': ''}
     from .form import UserSignupForm
-    SignupForm = UserSignupForm( request.POST )    
+    SignupForm = UserSignupForm( request.POST )
     if SignupForm.is_valid():
         values = SignupForm.cleaned_data
         new_user = User(

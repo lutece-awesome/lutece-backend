@@ -11,4 +11,4 @@ class Mutations( UserSchema.Mutation , ProblemSchema.Mutation , graphene.ObjectT
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
 
-schema = graphene.Schema( query = Query , mutation=Mutations )
+schema = graphene.Schema( query = Query , mutation = Mutations )
