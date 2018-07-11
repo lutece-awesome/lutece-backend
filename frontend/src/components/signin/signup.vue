@@ -99,7 +99,9 @@
                 let s = JSON.parse( payload )
                 localStorage.setItem('USER_TOKEN', token );
                 this.$store.commit( 'user/update_authed' , true );
-                console.log( s );
+                Object.values(this.$apollo.provider.clients)
+                    .forEach(client => client.cache.reset())
+                this.$router.push({ name: 'Home' });
             }
         }
     }
