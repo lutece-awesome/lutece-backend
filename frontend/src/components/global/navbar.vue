@@ -80,68 +80,68 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Login from "@/components/signin/login.vue";
-import { verifyToken, refreshToken } from "@/graphql/signin/token.js";
-export default {
-  data: function() {
-    return {
-      drawer: false,
-      signin: false,
-      logging: true
-    };
-  },
-  components: {
-    Login
-  },
-  mounted() {
-    this.userAuthed = false;
-    this.logging = true;
-    this.$apollo
-      .mutate({
-        mutation: verifyToken,
-        variables: {
-          token: localStorage.getItem("USER_TOKEN") || ""
-        }
-      })
-      .then(response => response.data.verifyToken.payload)
-      .then(data => {
-        this.$store.commit("user/update_authed", true);
-        this.$store.commit("user/update_gravataremail", data.gravataremail);
-        this.$store.commit("user/update_displayname", data.displayname);
-        this.logging = false;
-      })
-      .catch(error => {
-        this.logging = false;
-      });
-  },
-  computed: {
-    authed: function() {
-      return this.$store.state["user"].authed;
+  import { mapGetters } from "vuex";
+  import Login from "@/components/signin/login.vue";
+  import { verifyToken, refreshToken } from "@/graphql/signin/token.js";
+  export default {
+    data: function() {
+        return {
+          drawer: false,
+          signin: false,
+          logging: true
+        };
     },
-    gravataremail: function() {
-      return this.$store.state["user"].gravataremail;
+    components: {
+      Login
+    },
+    mounted() {
+      this.userAuthed = false;
+      this.logging = true;
+      this.$apollo
+        .mutate({
+          mutation: verifyToken,
+          variables: {
+            token: localStorage.getItem("USER_TOKEN") || ""
+          }
+        })
+        .then(response => response.data.verifyToken.payload)
+        .then(data => {
+          this.$store.commit("user/update_authed", true);
+          this.$store.commit("user/update_gravataremail", data.gravataremail);
+          this.$store.commit("user/update_displayname", data.displayname);
+          this.logging = false;
+        })
+        .catch(error => {
+          this.logging = false;
+        });
+    },
+    computed: {
+      authed: function() {
+        return this.$store.state["user"].authed;
+      },
+      gravataremail: function() {
+        return this.$store.state["user"].gravataremail;
+      }
+    },
+    methods: {
+      home: function(){
+        this.$router.push({
+          name: "Home",
+        });
+      },
+      login: function() {
+        this.$router.push({
+          name: "Login",
+          query: { redirect: this.$route.path }
+        });
+      },
+      signup: function() {},
+      signout: function() {
+        this.$router.push({
+          name: "Signout",
+          query: { redirect: this.$route.path }
+        });
+      }
     }
-  },
-  methods: {
-    home: function(){
-      this.$router.push({
-        name: "Home",
-      });
-    },
-    login: function() {
-      this.$router.push({
-        name: "Login",
-        query: { redirect: this.$route.path }
-      });
-    },
-    signup: function() {},
-    signout: function() {
-      this.$router.push({
-        name: "Signout",
-        query: { redirect: this.$route.path }
-      });
-    }
-  }
-};
+  };
 </script>

@@ -8,6 +8,9 @@ class UserSignupForm( forms.Form ):
     password = forms.CharField( required = True , max_length = 20 , min_length = 6 )
     email = forms.EmailField( required = True )
     displayname = forms.CharField( required = True , max_length = 12 )
+    school = forms.CharField( required = False , max_length = 60 )
+    company = forms.CharField( required = False , max_length = 32 )
+    location = forms.CharField( required = False , max_length = 32 )
 
     def clean( self ):
         from re import compile, search

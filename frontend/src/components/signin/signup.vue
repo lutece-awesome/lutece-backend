@@ -83,13 +83,23 @@
                         location: this.location
                     }
                 })
+                .then( response => response.data.Register )
                 .then( data => {
-                    console.log( data );
-                }).catch( error => {
+                    this.loading = false;
+                    this.aftersignup( data.token , data.payload );
+                })
+                .catch( error => {
                     this.loading = false;
                     this.error = true;
                     this.errordetail = JSON.parse( error.graphQLErrors[0].message );
                 })
+            },
+
+            aftersignup: function( token , payload ){
+                let s = JSON.parse( payload )
+                localStorage.setItem('USER_TOKEN', token );
+                this.$store.commit( 'user/update_authed' , true );
+                console.log( s );
             }
         }
     }
