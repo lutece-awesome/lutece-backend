@@ -21,10 +21,8 @@
     };
 </script>
 
-<style scoped>
-    #main-container {
-    padding-top: 80px;
-    padding-left: 225px;
-    padding-right: 225px;
+<style>
+    .v-label.error--text {
+        animation: none !important;
     }
 </style>

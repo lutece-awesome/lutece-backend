@@ -71,12 +71,10 @@
           <v-spacer></v-spacer>
 
           <v-toolbar-items class="hidden-sm-and-down">
-
               <v-btn flat v-if='!logging && !authed' @click='login'>
                   <v-icon left>fa-sign-in-alt</v-icon>
                   SIGN IN
               </v-btn>
-
               <v-menu open-on-hover top>
                   <v-btn slot = "activator" flat> 
                       {{ displayname }} 
@@ -84,6 +82,10 @@
                   </v-btn>
               </v-menu>
           </v-toolbar-items>
+
+          <v-btn icon v-if='!logging && !authed' @click='login' class="hidden-md-and-up">
+              <v-icon>fa-sign-in-alt</v-icon>
+          </v-btn>
 
 
       </v-toolbar>      

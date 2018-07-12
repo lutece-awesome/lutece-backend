@@ -1,44 +1,46 @@
 
 <template>
-    <v-card style = 'width:600px; margin-top:32px; margin-left:auto; margin-right:auto;' >
-        <v-card-title>
-            <span class = 'headline' style = 'margin:0 auto;'>
-                SIGN UP
-            </span>
-        </v-card-title>
-        <v-card-text>
-            <v-container grid-list-md>
-                <v-form>
-                    <v-layout row wrap>
-                        <v-flex xs12>
-                            <v-text-field v-model = "username" label = "Username *" required :error-messages = "geterror('username')" />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field v-model = "password" type = "password" label = "Password *" :error-messages = "geterror('password')" required />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field v-model = "email" label = "Email *" :error-messages = "geterror('email')" required />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field v-model = "displayname" label = "Display name *" :error-messages = "geterror('displayname')" required />
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field v-model = "school" :error-messages = "geterror('school')" label = "School"/>
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field v-model = "company" :error-messages = "geterror('company')" label = "Company"/>
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-text-field v-model = "location" :error-messages = "geterror('location')" label = "Location"/>
-                        </v-flex>
-                        <v-flex xs12>
-                            <v-btn block big v-bind:loading = loading @click = 'register' :color = 'error ? "error" : "primary"'  >Register</v-btn>
-                        </v-flex>
+    <v-layout justify-center>
+        <v-flex xs12 sm6>
+            <v-card>
+                <v-card-title>
+                    <v-layout justify-center mt-3>
+                        <span class="headline">SIGN UP</span>
                     </v-layout>
-                </v-form>
-            </v-container>
-        </v-card-text>
-    </v-card>
+                </v-card-title>
+                <v-card-text>
+                    <form>
+                        <v-layout column>
+                            <v-flex>
+                                <v-text-field v-model = "username" label = "Username *" required :error-messages = "geterror('username')" />
+                            </v-flex>
+                            <v-flex>
+                                <v-text-field v-model = "password" type = "password" label = "Password *" :error-messages = "geterror('password')" required />
+                            </v-flex>
+                            <v-flex>
+                                <v-text-field v-model = "email" label = "Email *" :error-messages = "geterror('email')" required />
+                            </v-flex>
+                            <v-flex>
+                                <v-text-field v-model = "displayname" label = "Display name *" :error-messages = "geterror('displayname')" required />
+                            </v-flex>
+                            <v-flex>
+                                <v-text-field v-model = "school" :error-messages = "geterror('school')" label = "School"/>
+                            </v-flex>
+                            <v-flex>
+                                <v-text-field v-model = "company" :error-messages = "geterror('company')" label = "Company"/>
+                            </v-flex>
+                            <v-flex>
+                                <v-text-field v-model = "location" :error-messages = "geterror('location')" label = "Location"/>
+                            </v-flex>
+                            <v-flex mt-3>
+                                <v-btn block big v-bind:loading = loading @click = 'register' :color = 'error ? "error" : "primary"'  >Register</v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </form>
+                </v-card-text>
+            </v-card>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>
