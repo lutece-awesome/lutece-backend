@@ -1,62 +1,42 @@
 <template>
     <v-layout row wrap justify-center>
-        <v-flex xs12 md10 xl8 class='ma-2'>
-            <h1>A PLUS B</h1>
-        </v-flex>
-        <v-flex xs12 md10 xl8>
-            <v-tabs v-model="tabs" color="transparent">
-                <v-tab>Description</v-tab>
-                <v-tab>Editor</v-tab>
-                <v-tab>Discussion</v-tab>
-            </v-tabs>
-        </v-flex>
-        <v-flex xs12 md10 xl8 class='mt-2'>
-            <v-tabs-items v-model="tabs">
-                <v-tab-item>
-                    <v-layout row wrap class='ma-1'>
-                        <v-flex xs12 class='mb-2'>
-                            <div class='headline my-2'>Content</div>
-                            <v-card>
-                                <v-card-text>输入两个整数,输出它们的和</v-card-text>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12 class='mb-2'>
-                            <div class='headline my-2'>Standard Input</div>
-                            <v-card>
-                                <v-card-text>输入只有一行，包含两个整数a和b.</v-card-text>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12 class='mb-2'>
-                            <div class='headline my-2'>Standard Output</div>
-                            <v-card>
-                                <v-card-text>输出a + b</v-card-text>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12 class='mb-2'>
-                            <div class='headline my-2'>Constraints</div>
-                            <v-card>
-                                <v-card-text>0≤a,b≤100000</v-card-text>
-                            </v-card>
-                        </v-flex>
-                        <v-flex xs12 class='mb-2'>
-                            <div class='headline my-2'>Sample</div>
-                            <v-card>
-                                <v-card-text>0≤a,b≤100000</v-card-text>
-                            </v-card>
-                        </v-flex>
-                    </v-layout>
-                </v-tab-item>
-                <v-tab-item>
-                    <v-layout row wrap class='ma-1'>
-                        <v-flex xs12 sm6 class='mb-2'>
-                            <v-select v-model="language" :items="items" width='100'></v-select>
-                        </v-flex>
-                    </v-layout>
-                </v-tab-item>
-                <v-tab-item>
-                    discussion
-                </v-tab-item>
-            </v-tabs-items>
+        <v-flex xs12 md9>
+            <v-card>
+                <v-card-title>
+                    <h1 class="display-1 primary--text mt-4">
+                        A PLUS B
+                    </h1>
+                </v-card-title>
+                <v-card-text>
+                    <v-tabs v-model="tabs" color="transparent" slider-color='primary'>
+                        <v-tab active-class='v-tabs__item--active primary--text' :ripple='false'>Description</v-tab>
+                        <v-tab active-class='v-tabs__item--active primary--text' :ripple='false'>Editor</v-tab>
+                        <v-tab active-class='v-tabs__item--active primary--text' :ripple='false'>Discussion</v-tab>
+                    </v-tabs>
+                    <v-tabs-items v-model="tabs" class='mt-3'>
+                        <v-tab-item>
+                            <h2 class="headline primary--text mb-3">Content</h2>
+                            <p>输入两个整数,输出它们的和</p>
+                            <h2 class="headline primary--text mb-3">Standard Input</h2>
+                            <p>输入只有一行，包含两个整数a和b.</p>
+                            <h2 class="headline primary--text mb-3">Standard Output</h2>
+                            <p>输出a + b</p>
+                            <h2 class="headline primary--text mb-3">Constraints</h2>
+                            <p>0≤a,b≤100000</p>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <v-layout row wrap class='ma-1'>
+                                <v-flex xs12 sm6 class='mb-2'>
+                                    <v-select v-model="language" :items="items" width='100'></v-select>
+                                </v-flex>
+                            </v-layout>
+                        </v-tab-item>
+                        <v-tab-item>
+                            discussion
+                        </v-tab-item>
+                    </v-tabs-items>
+                </v-card-text>
+            </v-card>
         </v-flex>
     </v-layout>
 </template>
