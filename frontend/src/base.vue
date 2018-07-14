@@ -3,7 +3,7 @@
         <Navbar/>
         <v-content>
             <v-container fluid>
-                <transition name="fade" mode="out-in">
+                <transition name="fade">
                     <router-view></router-view>
                 </transition>
             </v-container>
