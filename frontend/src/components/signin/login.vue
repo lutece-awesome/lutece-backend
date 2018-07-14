@@ -1,6 +1,6 @@
 <template>
     <v-layout justify-center>
-        <v-flex xs12 sm6 md4>
+        <v-flex xs12 sm8 md6 xl4>
             <v-card>
                 <v-card-title>
                     <v-layout justify-center mt-3>
