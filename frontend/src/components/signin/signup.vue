@@ -33,7 +33,7 @@
                                 <v-text-field v-model="location" :error-messages="geterror('location')" label="Location" />
                             </v-flex>
                             <v-flex mt-3>
-                                <v-btn block big v-bind:loading=l oading @click='register' :color='error ? "error" : "primary"'>Register</v-btn>
+                                <v-btn block big v-bind:loading=loading @click='register' :color='error ? "error" : "primary"'>Register</v-btn>
                             </v-flex>
                         </v-layout>
                     </form>
