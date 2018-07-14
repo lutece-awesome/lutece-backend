@@ -23,26 +23,34 @@
                     <v-icon left>fa-sign-in-alt</v-icon>
                     SIGN IN
                 </v-btn>
+                <v-menu v-if='authed' open-on-hover offset-y>
+                    <v-btn slot="activator" flat>
+                        <v-avatar v-if='authed' size='36' class="mr-2" >
+                            <img :src=gravataremail />
+                        </v-avatar>
+                        {{ displayname }}
+                        <v-icon right>fa-caret-down</v-icon>
+                    </v-btn>
+                    <v-list>
+                        <v-list-tile @click='signout'>
+                            <v-list-tile-action>
+                                <v-icon>fa-sign-out-alt</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Sign Out</v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
             </v-toolbar-items>
-            <v-avatar v-if='authed'>
-                <img :src=g ravataremail />
-            </v-avatar>
-            <v-menu v-if='authed' open-on-hover offset-x offset-y>
-                <v-btn slot="activator" flat>
-                    {{ displayname }}
-                    <v-icon right>fa-caret-down</v-icon>
-                </v-btn>
-                <v-list>
-                    <v-list-tile @click='signout'>
-                        <v-list-tile-action>
-                            <v-icon>fa-sign-out-alt</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title> Sign Out </v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-            </v-menu>
+            <v-btn icon v-if='authed' class="hidden-md-and-up">
+                <v-avatar size='36'>
+                    <img :src=gravataremail />
+                </v-avatar>
+            </v-btn>
+            <v-btn icon v-if='authed' @click='signout' class="hidden-md-and-up">
+                <v-icon>fa-sign-out-alt</v-icon>
+            </v-btn>
             <v-btn icon v-if='!logging && !authed' @click='login' class="hidden-md-and-up">
                 <v-icon>fa-sign-in-alt</v-icon>
             </v-btn>
