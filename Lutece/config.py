@@ -2,7 +2,7 @@
 PER_PAGINATOR_COUNT = 10
 
 # Set the number of problem/status one page should be shown
-PER_PAGE_COUNT = 20
+PER_PAGE_COUNT = 15
 
 # User per page count
 USER_PER_PAGE_COUNT = 10

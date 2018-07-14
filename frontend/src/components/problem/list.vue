@@ -22,17 +22,17 @@
             hidden: false,
             headers:[
                 {
-                    text: 'ID',
+                    text: '#',
                     align: 'center',
                     sortable: false,
                 },
                 {
-                    text: 'title',
+                    text: 'Title',
                     align: 'center',
                     sortable: false,
                 },
                 {
-                    text: 'Accepted / Solved',
+                    text: 'Accepted / Submit',
                     align: 'center',
                     sortable: false
                 },

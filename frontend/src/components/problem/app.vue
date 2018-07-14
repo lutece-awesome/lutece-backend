@@ -1,11 +1,8 @@
 <template>
-    <v-layout justify-center>
+    <v-layout row justify-center>
         <v-flex xs12 sm6>
             <Loading v-if = "isLoading" loadingstyle = 'ui indeterminate text loader' v-bind:isLoading = 'isLoading' />
             <div v-else>
-
-                
-
                 <!-- <div class="ui two column stackable grid">
                     <div class = 'left floated column' >
                         <Paginator v-bind:maxpage = maxpage v-bind:page = page v-bind:resolve = resolve />
@@ -18,7 +15,14 @@
                     </div>
                 </div> -->
                 <!-- <div style = 'margin-top:20px;' > -->
-                <ProblemList v-bind:problemItem = 'problemItem' />
+                <v-flex>
+                    <ProblemList v-bind:problemItem = 'problemItem' />
+                </v-flex>
+                <v-flex>
+                    <div class="text-xs-center pt-2">
+                        <v-pagination v-model = page :length = maxpage ></v-pagination>
+                    </div>
+                </v-flex>
                 <!-- </div> -->
             </div>
         </v-flex>
@@ -26,7 +30,6 @@
 </template>
 
 <script>
-    import Paginator from '@/components/basic/paginator.vue'
     import ProblemList from '@/components/problem/list.vue'
     import Loading from '@/components/basic/loading.vue'
     import problemsearch from '@/components/basic/problemsearch.vue'
@@ -34,7 +37,6 @@
     export default {
 
         components:{
-            Paginator,
             ProblemList,
             Loading,
             problemsearch
@@ -54,9 +56,14 @@
             this.request( pre );
         },
 
+        watch:{
+            page: function(){
+                this.request( this.page );
+            },
+        },
+
         methods:{
             request: function( page ){
-                localStorage.setItem( 'PROBLEM_LIST' , page );
                 this.isLoading = true;
                 this.page = parseInt(page);
                 this.$apollo.query({
@@ -65,12 +72,10 @@
                         page: this.page
                     },
                 }).then( response => response.data.problemList )
-                   .then( data => { this.problemItem = data.problemList , this.maxpage = data.maxpage } )
+                   .then( data => { this.problemItem = data.problemList , this.maxpage = data.maxpage , this.page = Math.min( this.page , this.maxpage ) } )
                    .then( () => this.isLoading = false )
+                localStorage.setItem( 'PROBLEM_LIST' , this.page );
             },
-            resolve: function( index ){
-                return () => this.request( index );
-            }
         }
     }
 </script>

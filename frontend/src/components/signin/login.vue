@@ -20,7 +20,7 @@
                                 <a @click='signup'>Do not have account? </a>
                             </v-flex>
                             <v-flex class="text-xs-center" mt-3>
-                                <v-btn block big :loading=loading @click='login' :color='error ? "error" : "primary"'>Login</v-btn>
+                                <v-btn block big :loading = loading @click='login' :color='error ? "error" : "primary"'>Login</v-btn>
                             </v-flex>
                         </v-layout>
                     </form>
