@@ -3,6 +3,9 @@
         <v-flex xs12 sm6>
             <Loading v-if = "isLoading" loadingstyle = 'ui indeterminate text loader' v-bind:isLoading = 'isLoading' />
             <div v-if = "!isLoading">
+                <v-flex sm4>
+                    <problemsearch />
+                </v-flex>
                 <v-flex>
                     <ProblemList v-bind:problemItem = 'problemItem' />
                 </v-flex>
