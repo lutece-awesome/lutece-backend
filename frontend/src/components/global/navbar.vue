@@ -2,7 +2,7 @@
     <div>
         <v-navigation-drawer v-model="drawer" fixed clipped app :width="240">
             <v-list>
-                <v-list-tile v-for="item in items" :key="item.title" :to="item.path" ripple>
+                <v-list-tile v-for="item in items" :key="item.title" :to="item.path" ripple active-class="grey lighten-2">
                     <v-list-tile-action>
                         <v-icon>{{ item.icon }}</v-icon>
                     </v-list-tile-action>
