@@ -2,19 +2,7 @@
     <v-layout row justify-center>
         <v-flex xs12 sm6>
             <Loading v-if = "isLoading" loadingstyle = 'ui indeterminate text loader' v-bind:isLoading = 'isLoading' />
-            <div v-else>
-                <!-- <div class="ui two column stackable grid">
-                    <div class = 'left floated column' >
-                        <Paginator v-bind:maxpage = maxpage v-bind:page = page v-bind:resolve = resolve />
-                    </div>
-
-                    <div class = 'column'>
-                        <div style = 'float:right'>
-                            <problemsearch placeholder = 'Problem' />
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div style = 'margin-top:20px;' > -->
+            <div v-if = "!isLoading">
                 <v-flex>
                     <ProblemList v-bind:problemItem = 'problemItem' />
                 </v-flex>
@@ -23,7 +11,6 @@
                         <v-pagination v-model = page :length = maxpage ></v-pagination>
                     </div>
                 </v-flex>
-                <!-- </div> -->
             </div>
         </v-flex>
     </v-layout>
