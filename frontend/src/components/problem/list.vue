@@ -34,7 +34,14 @@
                 {
                     text: 'Accepted / Submit',
                     align: 'center',
-                    sortable: false
+                    sortable: false,
+                    class: 'hidden-sm-and-down'
+                },
+                {
+                    text: 'A / S',
+                    align: 'center',
+                    sortable: false,
+                    class: 'hidden-md-and-up'
                 },
                 {
                     text: 'Ratio',
