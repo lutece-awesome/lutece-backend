@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer v-model="drawer" fixed clipped app>
+        <v-navigation-drawer v-model="drawer" fixed clipped app :width="240">
             <v-list>
                 <v-list-tile v-for="item in items" :key="item.title" :to="item.path" ripple>
                     <v-list-tile-action>
