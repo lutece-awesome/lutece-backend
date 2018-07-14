@@ -4,7 +4,7 @@
             <v-list>
                 <v-list-tile v-for="item in items" :key="item.title" :to="item.path" ripple>
                     <v-list-tile-action>
-                        <v-icon class="fa-fw">{{ item.icon }}</v-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-content>
                         <v-list-tile-title>{{ item.title }}</v-list-tile-title>
@@ -20,7 +20,7 @@
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn flat v-if='!logging && !authed' @click='login'>
-                    <v-icon left>fa-sign-in-alt</v-icon>
+                    <v-icon left>mdi-login</v-icon>
                     SIGN IN
                 </v-btn>
                 <v-menu v-if='authed' open-on-hover offset-y>
@@ -29,12 +29,12 @@
                             <img :src=gravataremail />
                         </v-avatar>
                         {{ displayname }}
-                        <v-icon right>fa-caret-down</v-icon>
+                        <v-icon right>mdi-menu-down</v-icon>
                     </v-btn>
                     <v-list>
                         <v-list-tile @click='signout'>
                             <v-list-tile-action>
-                                <v-icon>fa-sign-out-alt</v-icon>
+                                <v-icon>mdi-logout</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-content>
                                 <v-list-tile-title>Sign Out</v-list-tile-title>
@@ -49,10 +49,10 @@
                 </v-avatar>
             </v-btn>
             <v-btn icon v-if='authed' @click='signout' class="hidden-md-and-up">
-                <v-icon>fa-sign-out-alt</v-icon>
+                <v-icon>mdi-logout</v-icon>
             </v-btn>
             <v-btn icon v-if='!logging && !authed' @click='login' class="hidden-md-and-up">
-                <v-icon>fa-sign-in-alt</v-icon>
+                <v-icon>mdi-login</v-icon>
             </v-btn>
         </v-toolbar>
     </div>
@@ -71,32 +71,32 @@
                 signin: false,
                 logging: true,
                 items: [{
-                        icon: 'fa-home',
+                        icon: 'mdi-home',
                         title: 'Home',
                         path: '/home'
                     },
                     {
-                        icon: 'fa-tasks',
+                        icon: 'mdi-view-list',
                         title: 'Problem',
                         path: ''
                     },
                     {
-                        icon: 'fa-chart-bar',
+                        icon: 'mdi-chart-bar',
                         title: 'Status',
                         path: ''
                     },
                     {
-                        icon: 'fa-trophy',
+                        icon: 'mdi-trophy',
                         title: 'Contest',
                         path: ''
                     },
                     {
-                        icon: 'fa-user',
+                        icon: 'mdi-account-multiple',
                         title: 'User',
                         path: ''
                     },
                     {
-                        icon: 'fa-compass',
+                        icon: 'mdi-information',
                         title: 'About',
                         path: ''
                     },
