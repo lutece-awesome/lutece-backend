@@ -77,12 +77,14 @@
                         this.loading = false;
                     });
             },
+
             redirect: function() {
                 Object.values(this.$apollo.provider.clients).forEach(client =>
                     client.cache.reset()
                 );
                 this.$router.push(this.$route.query.redirect || "/");
             },
+            
             signup: function() {
                 this.$router.push({
                     name: "Signup"

@@ -1,20 +1,12 @@
 <template>
-    <div>
-        <table class = "ui padded table" style = 'text-align:center' >
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Accepted / Submit</th>
-                <th>Ratio</th>        
-            </tr>
-            <tr v-for= "each in problemItem" :key = 'each.problemId' >
-                <td> {{ each.problemId }} </td>
-                <td> {{ each.title }} </td>
-                <td> {{ each.accept }} / {{ each.submit }} </td>
-                <td> {{ each.submit ? ( ( each.accept / each.submit ) * 100 ).toFixed( 2 ) : '0.00' }}% </td>
-            </tr>
-        </table>
-    </div>
+    <v-data-table :items = "problemItem"  :headers = "headers" class = "elevation-3" hide-actions >
+        <template slot="items" slot-scope = "props">
+            <td class="text-xs-center">{{ props.item.problemId }}</td>
+            <td class="text-xs-center">{{ props.item.title }}</td>
+            <td class="text-xs-center">{{ props.item.accept }} / {{ props.item.submit }}</td>
+            <td class="text-xs-center">{{ props.item.submit ? ( ( props.item.accept / props.item.submit ) * 100 ).toFixed( 2 ) : '0.00' }}%  </td>
+        </template>
+    </v-data-table>
 </template>
 
 
@@ -25,7 +17,32 @@
                 type: Array,
                 default : []
             }
-        }
+        },
+        data: () => ({
+            hidden: false,
+            headers:[
+                {
+                    text: 'ID',
+                    align: 'center',
+                    sortable: false,
+                },
+                {
+                    text: 'title',
+                    align: 'center',
+                    sortable: false,
+                },
+                {
+                    text: 'Accepted / Solved',
+                    align: 'center',
+                    sortable: false
+                },
+                {
+                    text: 'Ratio',
+                    align: 'center',
+                    sortable: false
+                }
+            ]
+        })
     }
 </script>
 

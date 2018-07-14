@@ -1,24 +1,28 @@
 <template>
-    <div>
-        <Loading v-if = "isLoading" loadingstyle = 'ui indeterminate text loader' v-bind:isLoading = 'isLoading' />
-        <div v-else>
-            <div class="ui two column stackable grid">
-                <div class = 'left floated column' >
-                    <Paginator v-bind:maxpage = maxpage v-bind:page = page v-bind:resolve = resolve />
-                </div>
+    <v-layout justify-center>
+        <v-flex xs12 sm6>
+            <Loading v-if = "isLoading" loadingstyle = 'ui indeterminate text loader' v-bind:isLoading = 'isLoading' />
+            <div v-else>
 
-                <div class = 'column'>
-                    <div style = 'float:right'>
-                        <problemsearch placeholder = 'Problem' />
+                
+
+                <!-- <div class="ui two column stackable grid">
+                    <div class = 'left floated column' >
+                        <Paginator v-bind:maxpage = maxpage v-bind:page = page v-bind:resolve = resolve />
                     </div>
-                </div>
-            </div>
 
-            <div style = 'margin-top:20px;' >
+                    <div class = 'column'>
+                        <div style = 'float:right'>
+                            <problemsearch placeholder = 'Problem' />
+                        </div>
+                    </div>
+                </div> -->
+                <!-- <div style = 'margin-top:20px;' > -->
                 <ProblemList v-bind:problemItem = 'problemItem' />
+                <!-- </div> -->
             </div>
-        </div>
-    </div>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>

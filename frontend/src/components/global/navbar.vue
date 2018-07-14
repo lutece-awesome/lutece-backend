@@ -78,7 +78,7 @@
                     {
                         icon: 'mdi-view-list',
                         title: 'Problem',
-                        path: ''
+                        path: '/problemlist'
                     },
                     {
                         icon: 'mdi-chart-bar',
