@@ -20,7 +20,7 @@
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn flat v-if='!logging && !authed' @click='login'>
-                    <v-icon left>mdi-login</v-icon>
+                    <v-icon class='mr-2'>mdi-login</v-icon>
                     SIGN IN
                 </v-btn>
                 <v-menu v-if='authed' open-on-hover offset-y>
@@ -29,13 +29,11 @@
                             <img :src=gravataremail />
                         </v-avatar>
                         {{ displayname }}
-                        <v-icon right>mdi-menu-down</v-icon>
+                        <v-icon>mdi-menu-down</v-icon>
                     </v-btn>
                     <v-list>
                         <v-list-tile @click='signout'>
-                            <v-list-tile-action>
-                                <v-icon>mdi-logout</v-icon>
-                            </v-list-tile-action>
+                            <v-icon class='mr-2'>mdi-logout</v-icon>
                             <v-list-tile-content>
                                 <v-list-tile-title>Sign Out</v-list-tile-title>
                             </v-list-tile-content>
