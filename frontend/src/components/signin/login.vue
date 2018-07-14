@@ -57,24 +57,25 @@ export default {
         })
         .then(response => response.data.tokenAuth)
         .then(data => {
-          localStorage.setItem("USER_TOKEN", data.token);
-          this.$store.commit("user/update_authed", true);
-          this.loading = false;
+            localStorage.setItem("USER_TOKEN", data.token);
+            this.$store.commit("user/update_authed", true);
+            this.loading = false;
+            this.redirect();
         })
         .catch(error => {
-          this.errormsg = error.graphQLErrors[0].message;
-          this.error = true;
-          this.loading = false;
+            this.errormsg = error.graphQLErrors[0].message;
+            this.error = true;
+            this.loading = false;
         });
     },
     redirect: function() {
-      Object.values(this.$apollo.provider.clients).forEach(client =>
-        client.cache.reset()
-      );
-      this.$router.push(this.$route.query.redirect || "/");
+        Object.values(this.$apollo.provider.clients).forEach(client =>
+            client.cache.reset()
+        );
+        this.$router.push(this.$route.query.redirect || "/");
     },
     signup: function() {
-      this.$router.push({ name: "Signup" });
+        this.$router.push({ name: "Signup" });
     }
   }
 };

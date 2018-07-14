@@ -12,7 +12,7 @@
                     <form>
                         <v-layout column>
                             <v-flex>
-                                <v-text-field v-model = "username" label = "Username *" required :error-messages = "geterror('username')" />
+                                <v-text-field v-model = "username" label = "Username *" :error-messages = "geterror('username')" required />
                             </v-flex>
                             <v-flex>
                                 <v-text-field v-model = "password" type = "password" label = "Password *" :error-messages = "geterror('password')" required />
@@ -99,10 +99,12 @@
 
             aftersignup: function( token , payload ){
                 let s = JSON.parse( payload )
-                localStorage.setItem('USER_TOKEN', token );
-                this.$store.commit( 'user/update_authed' , true );
                 Object.values(this.$apollo.provider.clients)
                     .forEach(client => client.cache.reset())
+                localStorage.setItem('USER_TOKEN', token );
+                this.$store.commit( 'user/update_authed' , true );
+                // this.$store.commit("user/update_gravataremail", data.gravataremail);
+                // this.$store.commit("user/update_displayname", data.displayname);
                 this.$router.push({ name: 'Home' });
             }
         }

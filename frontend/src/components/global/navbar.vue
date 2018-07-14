@@ -3,7 +3,7 @@
       <v-navigation-drawer v-model="drawer" fixed clipped app>
         <v-list>
 
-          <v-list-tile @click = "home">
+          <v-list-tile to = 'Home' >
             <v-list-tile-action>
               <v-icon>fa-home</v-icon>
             </v-list-tile-action>
@@ -71,22 +71,46 @@
           <v-spacer></v-spacer>
 
           <v-toolbar-items class="hidden-sm-and-down">
+
               <v-btn flat v-if='!logging && !authed' @click='login'>
                   <v-icon left>fa-sign-in-alt</v-icon>
                   SIGN IN
               </v-btn>
-              <v-menu open-on-hover top>
-                  <v-btn slot = "activator" flat> 
-                      {{ displayname }} 
-                      <v-icon right>fa-caret-down</v-icon>
-                  </v-btn>
-              </v-menu>
+                
           </v-toolbar-items>
+
+          <v-avatar v-if = 'authed' >
+            <img :src = gravataremail />
+          </v-avatar>
+          
+          <v-menu v-if = 'authed' open-on-hover offset-x offset-y> 
+              
+            <v-btn slot = "activator" flat> 
+                {{ displayname }} 
+                <v-icon right>fa-caret-down</v-icon>
+            </v-btn>
+
+            <v-list>
+
+              <v-list-tile @click = 'signout'>
+
+                <v-list-tile-action>
+                  <v-icon>fa-sign-out-alt</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title > Sign Out </v-list-tile-title>
+                </v-list-tile-content>
+                
+              </v-list-tile>
+
+            </v-list>
+            
+          </v-menu>
 
           <v-btn icon v-if='!logging && !authed' @click='login' class="hidden-md-and-up">
               <v-icon>fa-sign-in-alt</v-icon>
           </v-btn>
-
 
       </v-toolbar>      
   </div>
@@ -98,15 +122,35 @@
     export default {
         data: function() {
             return {
-              drawer: false,
-              signin: false,
-              logging: true
+                drawer: false,
+                signin: false,
+                logging: true,
             };
         },
         components: {
           Login
         },
         mounted() {
+          this.refresh();
+        },
+        watch:{
+          authed: function(){
+            this.refresh();
+          }
+        },
+        computed: {
+          authed: function() {
+              return this.$store.state["user"].authed;
+          },
+          gravataremail: function() {
+              return this.$store.state["user"].gravataremail;
+          },
+          displayname: function(){
+              return this.$store.state["user"].displayname;
+          }
+        },
+        methods: {
+          refresh(){
             this.logging = true;
             this.$apollo
               .mutate({
@@ -125,23 +169,6 @@
               .catch(error => {
                   this.logging = false;
               });
-        },
-        computed: {
-          authed: function() {
-              return this.$store.state["user"].authed;
-          },
-          gravataremail: function() {
-              return this.$store.state["user"].gravataremail;
-          },
-          displayname: function(){
-              return this.$store.state["user"].displayname;
-          }
-        },
-        methods: {
-          home: function(){
-            this.$router.push({
-              name: "Home",
-            });
           },
           login: function() {
             this.$router.push({
@@ -149,7 +176,6 @@
               query: { redirect: this.$route.path }
             });
           },
-          signup: function() {},
           signout: function() {
             this.$router.push({
               name: "Signout",
