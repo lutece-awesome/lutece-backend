@@ -11,6 +11,23 @@ class UserType( DjangoObjectType ):
         model = User
         only_fields = ( 'id' , 'display_name' , 'group' , 'school' , 'company' , 'location' , 'about' , 'tried' , 'solved' )
 
+class UserLogin( graphene.Mutation ):
+    class Arguments:
+        username = graphene.String( required = True )
+        password = graphene.String( required = True )
+    
+    token = graphene.String()
+
+    def mutate( self , info , ** kwargs ):
+        from .form import UserLoginForm
+        LoginForm = UserLoginForm( kwargs )
+        if LoginForm.is_valid():
+            values = LoginForm.cleaned_data
+            user = User.objects.get( username = values[ 'username' ] )
+            return UserLogin( token = get_token( user ) )
+        else:
+            raise RuntimeError( LoginForm.errors.as_json() )
+
 class Register( graphene.Mutation  ):
     class Arguments:
         username = graphene.String( required = True )
@@ -55,3 +72,4 @@ class Query( object ):
 
 class Mutation( graphene.AbstractType ):
     Register = Register.Field()
+    UserLogin = UserLogin.Field()

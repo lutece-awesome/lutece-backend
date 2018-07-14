@@ -11,10 +11,10 @@
                     <form>
                         <v-layout column>
                             <v-flex>
-                                <v-text-field v-model="username" label="Username" required />
+                                <v-text-field v-model="username" label="Username" :error-messages="geterror('username')" required />
                             </v-flex>
                             <v-flex>
-                                <v-text-field v-model="password" type="password" label="Password" required />
+                                <v-text-field v-model="password" type="password" label="Password" :error-messages="geterror('password')" required />
                             </v-flex>
                             <v-flex>
                                 <a @click='signup'>Do not have account? </a>
@@ -26,7 +26,6 @@
                     </form>
                 </v-card-text>
             </v-card>
-            <v-alert :value=error type='error'>{{ errormsg }}</v-alert>
         </v-flex>
     </v-layout>
 </template>
@@ -34,7 +33,7 @@
 
 <script>
     import {
-        tokenAuth
+        UserLogin
     } from "@/graphql/signin/token.js";
     export default {
         data: () => ({
@@ -42,22 +41,30 @@
             error: false,
             username: "",
             password: "",
-            errormsg: ""
+            errordetail: {}
         }),
     
         methods: {
+
+            geterror: function(field) {
+                if (this.errordetail.hasOwnProperty(field))
+                    return this.errordetail[field][0].message;
+                return ''
+            },
+
             login: function() {
                 this.loading = true;
                 this.error = false;
+                this.errordetail = {};
                 this.$apollo
                     .mutate({
-                        mutation: tokenAuth,
+                        mutation: UserLogin,
                         variables: {
                             username: this.username,
                             password: this.password
                         }
                     })
-                    .then(response => response.data.tokenAuth)
+                    .then(response => response.data.UserLogin)
                     .then(data => {
                         localStorage.setItem("USER_TOKEN", data.token);
                         this.$store.commit("user/update_authed", true);
@@ -65,7 +72,7 @@
                         this.redirect();
                     })
                     .catch(error => {
-                        this.errormsg = error.graphQLErrors[0].message;
+                        this.errordetail = JSON.parse(error.graphQLErrors[0].message);
                         this.error = true;
                         this.loading = false;
                     });

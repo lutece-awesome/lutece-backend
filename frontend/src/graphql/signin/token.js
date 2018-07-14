@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
-export const tokenAuth = gql`
+export const UserLogin = gql`
     mutation( $username: String! , $password: String! ){
-        tokenAuth(username: $username password: $password){
+        UserLogin(username: $username password: $password){
             token
         }
     }
