@@ -2,12 +2,12 @@
     <v-layout row wrap justify-center>
         <v-flex xs12 md9>
             <v-card>
-                <v-card-title primary-title class='primary darken-1'>
-                    <h1 class="display-1 white--text mt-2">
+                <v-card-title primary-title class='secondary'>
+                    <span class="display-1 white--text mt-2">
                         A PLUS B
-                    </h1>
+                    </span>
                 </v-card-title>
-                <v-tabs v-model="tabs" color="primary darken-1" dark>
+                <v-tabs v-model="tabs" color="secondary" dark>
                     <v-tab :ripple='false'>Description</v-tab>
                     <v-tab :ripple='false'>Editor</v-tab>
                     <v-tab :ripple='false'>Discussion</v-tab>

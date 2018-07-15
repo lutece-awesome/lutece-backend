@@ -1,5 +1,5 @@
 <template>
-    <v-data-table :items = "problemItem"  :headers = "headers" class = "elevation-3" hide-actions >
+    <v-data-table :items = "problemItem"  :headers = "headers" hide-actions >
         <template slot="items" slot-scope = "props">
             <td class="text-xs-center">{{ props.item.problemId }}</td>
             <td class="text-xs-center">{{ props.item.title }}</td>
