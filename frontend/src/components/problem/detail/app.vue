@@ -1,6 +1,6 @@
 <template>
     <v-layout row wrap justify-center>
-        <v-flex xs12 md9>
+        <v-flex xs12>
             <v-card>
                 <v-toolbar card prominent tabs>
                     <v-toolbar-title>
@@ -12,19 +12,17 @@
                         <v-tab :ripple='false' to="discussion">Discussion</v-tab>
                     </v-tabs>
                 </v-toolbar>
-                <v-card-text>
-                    <v-tabs-items touchless v-model="tabs">
-                        <v-tab-item id="description">
-                            <ProblemDescription/>
-                        </v-tab-item>
-                        <v-tab-item id="editor">
-                            <ProblemEditor/>
-                        </v-tab-item>
-                        <v-tab-item id="discussion">
-                            <ProblemDiscussion/>
-                        </v-tab-item>
-                    </v-tabs-items>
-                </v-card-text>
+                <v-tabs-items touchless v-model="tabs">
+                    <v-tab-item id="description">
+                        <ProblemDescription/>
+                    </v-tab-item>
+                    <v-tab-item id="editor">
+                        <ProblemEditor/>
+                    </v-tab-item>
+                    <v-tab-item id="discussion">
+                        <ProblemDiscussion/>
+                    </v-tab-item>
+                </v-tabs-items>
             </v-card>
         </v-flex>
     </v-layout>            

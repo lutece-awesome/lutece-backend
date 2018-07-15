@@ -1,5 +1,7 @@
 <template>
-    <CodeEditor/>
+    <v-card-text>
+        <CodeEditor/>
+    </v-card-text>
 </template>
 
 

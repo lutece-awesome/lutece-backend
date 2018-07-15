@@ -1,5 +1,7 @@
 <template>
-    <div> 123</div>
+    <v-card-text>
+        123
+    </v-card-text>
 </template>
 
 
