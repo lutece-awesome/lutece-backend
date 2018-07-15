@@ -2,19 +2,19 @@
     <v-layout row wrap justify-center>
         <v-flex xs12 md9>
             <v-card>
-                <v-card-title>
-                    <h1 class="display-1 primary--text mt-4">
+                <v-card-title primary-title class='primary darken-1'>
+                    <h1 class="display-1 white--text mt-2">
                         A PLUS B
                     </h1>
                 </v-card-title>
+                <v-tabs v-model="tabs" color="primary darken-1" dark>
+                    <v-tab :ripple='false'>Description</v-tab>
+                    <v-tab :ripple='false'>Editor</v-tab>
+                    <v-tab :ripple='false'>Discussion</v-tab>
+                </v-tabs>
                 <v-card-text>
-                    <v-tabs v-model="tabs" color="transparent" slider-color='primary'>
-                        <v-tab active-class='v-tabs__item--active primary--text' :ripple='false'>Description</v-tab>
-                        <v-tab active-class='v-tabs__item--active primary--text' :ripple='false'>Editor</v-tab>
-                        <v-tab active-class='v-tabs__item--active primary--text' :ripple='false'>Discussion</v-tab>
-                    </v-tabs>
-                    <v-tabs-items v-model="tabs" class='mt-3'>
-                        <v-tab-item>
+                    <v-tabs-items v-model="tabs">
+                        <v-tab-item class='mt-1'>
                             <h2 class="headline primary--text mb-3">Content</h2>
                             <p>输入两个整数,输出它们的和</p>
                             <h2 class="headline primary--text mb-3">Standard Input</h2>
@@ -25,8 +25,8 @@
                             <p>0≤a,b≤100000</p>
                         </v-tab-item>
                         <v-tab-item>
-                            <v-layout row wrap class='ma-1'>
-                                <v-flex xs12 sm6 class='mb-2'>
+                            <v-layout row wrap>
+                                <v-flex xs12 sm6>
                                     <v-select v-model="language" :items="items" width='100'></v-select>
                                 </v-flex>
                             </v-layout>
