@@ -1,10 +1,12 @@
 from django.db import models, transaction
 from discussion.models import Discussion
+from uuslug import uuslug
+
 
 class Problem(models.Model):
     problem_id = models.AutoField(primary_key=True, db_index=True)
     title = models.CharField(
-        max_length=250, db_index=True, default='Default Title', unique = True )
+        max_length = 128 , db_index=True , default='Default Title', unique = True )
     content = models.TextField( blank = True )
     standard_input = models.TextField( blank = True )
     standard_output = models.TextField( blank = True )
@@ -18,9 +20,15 @@ class Problem(models.Model):
     submit = models.IntegerField( default = 0 )
     accept = models.IntegerField( default = 0 )
     discussionvisible = models.BooleanField( default = True )
+    slug = models.CharField( blank = True , max_length = 256 )
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = uuslug( self.title, instance = self )
+        super( Problem , self ).save( * args , ** kwargs )
+    
     class Meta:
         ordering = ['problem_id']
         permissions = (

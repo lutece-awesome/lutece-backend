@@ -6,7 +6,7 @@ from utils.schema import paginatorList
 class ProblemType( DjangoObjectType ):
     class Meta:
         model = Problem
-        only_fields = ( 'problem_id' , 'title' , 'content' , 'standardInput' , 'standardOutput' , 'constraints' , 'resource' , 'note' , 'time_limit' , 'memory_limit' , 'submit' , 'accept' )
+        only_fields = ( 'problem_id' , 'title' , 'content' , 'standardInput' , 'standardOutput' , 'constraints' , 'resource' , 'note' , 'time_limit' , 'memory_limit' , 'submit' , 'accept' , 'slug' )
 
 class ProblemListType( graphene.ObjectType ):
     class Meta:

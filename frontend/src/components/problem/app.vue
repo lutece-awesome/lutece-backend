@@ -1,8 +1,10 @@
 <template>
     <v-layout row justify-center>
         <v-flex xs12 md8>
-            <Loading v-if="isLoading" loadingstyle='ui indeterminate text loader' v-bind:isLoading='isLoading' />
-            <div v-if="!isLoading">
+            <div v-if = "!isLoading" >
+                <v-flex sm3>
+                    <problemsearch />
+                </v-flex>
                 <v-flex>
                     <ProblemList v-bind:problemItem='problemItem' />
                 </v-flex>
@@ -56,15 +58,16 @@
                 this.isLoading = true;
                 this.page = parseInt(page);
                 this.$apollo.query({
-                        query: ProblemListGQL,
-                        variables: {
-                            page: this.page
-                        },
-                    }).then(response => response.data.problemList)
-                    .then(data => {
-                        this.problemItem = data.problemList, this.maxpage = data.maxpage, this.page = Math.min(this.page, this.maxpage)
-                    })
-                    .then(() => this.isLoading = false)
+                    query: ProblemListGQL,
+                    variables: {
+                        page: this.page
+                    },
+                })
+                .then(response => response.data.problemList)
+                .then(data => {
+                    this.problemItem = data.problemList, this.maxpage = data.maxpage, this.page = Math.min(this.page, this.maxpage)
+                })
+                .then(() => this.isLoading = false)
                 localStorage.setItem('PROBLEM_LIST', this.page);
             },
         }
