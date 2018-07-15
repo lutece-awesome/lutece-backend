@@ -2,11 +2,11 @@
     <v-layout row wrap justify-center>
         <v-flex xs12 md9>
             <v-card>
-                <v-toolbar card prominent tabs class='secondary' dark>
+                <v-toolbar card prominent tabs>
                     <v-toolbar-title>
                         A PLUS B
                     </v-toolbar-title>
-                    <v-tabs v-model="tabs" color="secondary" slot="extension">
+                    <v-tabs v-model="tabs" color="transparent" slot="extension">
                         <v-tab :ripple='false'>Description</v-tab>
                         <v-tab :ripple='false'>Editor</v-tab>
                         <v-tab :ripple='false'>Discussion</v-tab>

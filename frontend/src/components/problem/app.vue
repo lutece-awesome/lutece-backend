@@ -2,7 +2,7 @@
     <v-layout row justify-center>
         <v-flex xs12 md8 v-if = "!isLoading">
             <v-card>
-                <v-toolbar card prominent class='secondary' dark>
+                <v-toolbar card prominent>
                     <v-toolbar-title>
                         Problem
                     </v-toolbar-title>
