@@ -2,10 +2,10 @@
     <v-layout row justify-center>
         <v-flex xs12 md8 v-if = "!isLoading">
             <v-card>
-                <v-toolbar primary-title class='secondary' dark>
-                    <span class="headline">
+                <v-toolbar card prominent class='secondary' dark>
+                    <v-toolbar-title>
                         Problem
-                    </span>
+                    </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <problemsearch />
                 </v-toolbar>

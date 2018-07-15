@@ -1,7 +1,7 @@
 <template>
     <v-autocomplete v-model="model" :items="items" :loading="isLoading" :search-input.sync="search"
         single-line hide-details hide-no-data append-icon='mdi-magnify' return-object
-        label="Search" color='white' class='ml-3'>
+        label="Search" color='white'>
     </v-autocomplete>
 </template>
 

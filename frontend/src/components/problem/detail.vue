@@ -2,10 +2,10 @@
     <v-layout row wrap justify-center>
         <v-flex xs12 md9>
             <v-card>
-                <v-toolbar tabs primary-title class='secondary' dark>
-                    <span class="headline">
+                <v-toolbar card prominent tabs class='secondary' dark>
+                    <v-toolbar-title>
                         A PLUS B
-                    </span>
+                    </v-toolbar-title>
                     <v-tabs v-model="tabs" color="secondary" slot="extension">
                         <v-tab :ripple='false'>Description</v-tab>
                         <v-tab :ripple='false'>Editor</v-tab>
