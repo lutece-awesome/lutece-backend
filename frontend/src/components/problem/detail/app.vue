@@ -1,7 +1,7 @@
 <template>
     <v-layout row wrap justify-center>
         <v-flex xs12 md9>
-            <v-card>
+            <v-card v-if = '!isLoading'>
                 <v-toolbar card prominent tabs>
                     <v-toolbar-title>
                         A PLUS B
@@ -12,11 +12,9 @@
                         <v-tab :ripple='false' to = 'discussion' >Discussion</v-tab>
                     </v-tabs>
                 </v-toolbar>
-
                 <v-card-text>
                     <router-view />
                 </v-card-text>
-                
             </v-card>
         </v-flex>
     </v-layout>            
@@ -28,6 +26,7 @@
     export default {
         data: () => ({
             slug: '',
+            isLoading: false
         }),
 
         mounted(){
@@ -36,17 +35,9 @@
         },
 
         methods:{
-            Description(){
-                this.$router.push({
-                    name: 'ProblemDetailDescription',
-                    params:{
-                        slug: this.slug
-                    }
-                })
-            },
-
-
-
+            request: function(){
+                
+            }
         }
     }
 </script>
