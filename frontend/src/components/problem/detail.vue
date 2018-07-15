@@ -2,16 +2,16 @@
     <v-layout row wrap justify-center>
         <v-flex xs12 md9>
             <v-card>
-                <v-card-title primary-title class='secondary'>
-                    <span class="display-1 white--text mt-2">
+                <v-toolbar tabs primary-title class='secondary' dark>
+                    <span class="headline">
                         A PLUS B
                     </span>
-                </v-card-title>
-                <v-tabs v-model="tabs" color="secondary" dark>
-                    <v-tab :ripple='false'>Description</v-tab>
-                    <v-tab :ripple='false'>Editor</v-tab>
-                    <v-tab :ripple='false'>Discussion</v-tab>
-                </v-tabs>
+                    <v-tabs v-model="tabs" color="secondary" slot="extension">
+                        <v-tab :ripple='false'>Description</v-tab>
+                        <v-tab :ripple='false'>Editor</v-tab>
+                        <v-tab :ripple='false'>Discussion</v-tab>
+                    </v-tabs>
+                </v-toolbar>
                 <v-card-text>
                     <v-tabs-items v-model="tabs">
                         <v-tab-item class='mt-1'>

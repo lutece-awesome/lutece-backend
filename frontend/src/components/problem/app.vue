@@ -2,13 +2,13 @@
     <v-layout row justify-center>
         <v-flex xs12 md8 v-if = "!isLoading">
             <v-card>
-                <v-card-title primary-title class='secondary'>
-                    <span class="headline white--text">
+                <v-toolbar primary-title class='secondary' dark>
+                    <span class="headline">
                         Problem
                     </span>
                     <v-spacer></v-spacer>
                     <problemsearch />
-                </v-card-title>
+                </v-toolbar>
                 <ProblemList v-bind:problemItem='problemItem' />
             </v-card>
             <div class="text-xs-center mt-2">
