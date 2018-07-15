@@ -1,18 +1,18 @@
 <template>
     <v-layout row justify-center>
-        <v-flex xs12 md8>
-            <div v-if = "!isLoading" >
-                <v-flex sm3>
+        <v-flex xs12 md8 v-if = "!isLoading">
+            <v-card>
+                <v-toolbar card prominent>
+                    <v-toolbar-title>
+                        Problem
+                    </v-toolbar-title>
+                    <v-spacer></v-spacer>
                     <problemsearch />
-                </v-flex>
-                <v-flex>
-                    <ProblemList v-bind:problemItem='problemItem' />
-                </v-flex>
-                <v-flex>
-                    <div class="text-xs-center mt-2">
-                        <v-pagination v-model=page :length=maxpage></v-pagination>
-                    </div>
-                </v-flex>
+                </v-toolbar>
+                <ProblemList v-bind:problemItem='problemItem' />
+            </v-card>
+            <div class="text-xs-center mt-2">
+                <v-pagination v-model=page :length=maxpage></v-pagination>
             </div>
         </v-flex>
     </v-layout>

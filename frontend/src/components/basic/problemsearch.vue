@@ -1,5 +1,5 @@
 <template>
-    <v-autocomplete 
+    <!-- <v-autocomplete 
         v-model = "model"
         :items = "items"
         :loading = "isLoading"
@@ -21,7 +21,10 @@
                     </v-list-tile-title>
                 </v-list-tile>
             </v-list>
-        </v-slide-transition>
+        </v-slide-transition> -->
+    <v-autocomplete v-model="model" :items="items" :loading="isLoading" :search-input.sync="search"
+        single-line hide-details hide-no-data append-icon='mdi-magnify' return-object
+        label="Search">
     </v-autocomplete>
 
 </template>
@@ -62,9 +65,7 @@
                 .finally(() => (this.isLoading = false))
             }
         }
-        
-
     }
-
+};
 </script>
 
