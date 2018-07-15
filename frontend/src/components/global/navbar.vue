@@ -60,7 +60,6 @@
     import Login from "@/components/signin/login.vue";
     import {
         verifyToken,
-        refreshToken
     } from "@/graphql/signin/token.js";
     export default {
         data: function() {

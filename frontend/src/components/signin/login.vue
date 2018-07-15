@@ -68,14 +68,13 @@
                     .then(data => {
                         localStorage.setItem("USER_TOKEN", data.token);
                         this.$store.commit("user/update_authed", true);
-                        this.loading = false;
                         this.redirect();
                     })
                     .catch(error => {
                         this.errordetail = JSON.parse(error.graphQLErrors[0].message);
                         this.error = true;
-                        this.loading = false;
-                    });
+                    })
+                    .finally(() => (this.loading = false))
             },
 
             redirect: function() {

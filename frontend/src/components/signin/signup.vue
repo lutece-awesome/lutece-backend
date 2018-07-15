@@ -89,14 +89,13 @@
                     })
                     .then(response => response.data.Register)
                     .then(data => {
-                        this.loading = false;
                         this.aftersignup(data.token, data.payload);
                     })
                     .catch(error => {
-                        this.loading = false;
                         this.error = true;
                         this.errordetail = JSON.parse(error.graphQLErrors[0].message);
                     })
+                    .finally(() => (this.loading = false))
             },
     
             aftersignup: function(token, payload) {

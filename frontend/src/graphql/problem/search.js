@@ -1,13 +1,11 @@
 import gql from 'graphql-tag'
 
 
-export const ProblemListGQL = gql`
-    query problemList( $page: Int! ){
-        problemList( page: $page ) {
-            problemId,
+export const ProblemSearchGQL = gql`
+    query( $title: String! ){
+        problemsearch( title: $title){
             title,
-            submit,
-            accept,
+            slug,
         }
     }
 `
