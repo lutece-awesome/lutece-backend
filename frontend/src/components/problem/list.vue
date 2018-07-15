@@ -1,7 +1,7 @@
 <template>
     <v-data-table :items = "problemItem"  :headers = "headers" hide-actions >
         <template slot="items" slot-scope = "props">
-            <router-link tile tag="tr" :to='{name: "ProblemDetail", params: {slug: props.item.slug}}' :style="{cursor: 'pointer'}">
+            <router-link tile tag="tr" :to='{name: "ProblemDetailDescription", params: {slug: props.item.slug}}' :style="{cursor: 'pointer'}">
                 <td class="text-xs-center">{{ props.item.problemId }}</td>
                 <td class="text-xs-center">{{ props.item.title }}</td>
                 <td class="text-xs-center">{{ props.item.accept }} / {{ props.item.submit }}</td>
@@ -53,11 +53,6 @@
             ]
         }),
 
-        methods:{
-            click: function(){
-                alert( "click" );
-            }
-        }
     }
 </script>
 

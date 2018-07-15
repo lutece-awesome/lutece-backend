@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
 
 
-export const ProblemDetail = gql`
-    query( $pk: ID! ){
-        problem( pk: $pk ){
+export const ProblemDetailGQL = gql`
+    query( $slug: String! ){
+        problem( slug: $slug ){
             title,
             content,
             standardInput,
@@ -11,8 +11,8 @@ export const ProblemDetail = gql`
             constraints,
             resource,
             note,
-            time_limit,
-            memory_limit
+            timeLimit,
+            memoryLimit
         }
     }
 `
