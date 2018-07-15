@@ -41,7 +41,8 @@
         },
         data: () => ({
             slug: '',
-            isLoading: false
+            isLoading: false,
+            tabs: null,
         }),
 
         mounted(){
