@@ -6,7 +6,7 @@ import Signup from '@/components/signin/signup.vue'
 import Signout from '@/components/signin/signout.vue'
 import NotFound from '@/components/global/404.vue'
 import ProblemList from '@/components/problem/app.vue'
-import ProblemDetail from '@/components/problem/detail.vue'
+import ProblemDetail from '@/components/problem/detail/description.vue'
 
 Vue.use(Router)
 
@@ -52,9 +52,12 @@ export default new Router({
     },
 
     {
-      path: '/problem/detail/:id(\\d+)',
+      path: '/problem',
       name: 'ProblemDetail',
-      component: ProblemDetail
+      children:
+      [
+        
+      ]
     },
 
     {

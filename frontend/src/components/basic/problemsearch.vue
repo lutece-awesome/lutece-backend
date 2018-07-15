@@ -22,11 +22,10 @@
                 </v-list-tile>
             </v-list>
         </v-slide-transition> -->
-    <v-autocomplete v-model="model" :items="items" :loading="isLoading" :search-input.sync="search"
-        single-line hide-details hide-no-data append-icon='mdi-magnify' return-object
-        label="Search">
-    </v-autocomplete>
-
+        <v-autocomplete v-model = "model" :items = "items" :loading = "isLoading" :search-input.sync = "search"
+            single-line hide-details hide-no-data append-icon='mdi-magnify' return-object small-chips
+            label="Search">
+        </v-autocomplete>
 </template>
 
 
@@ -50,7 +49,7 @@
 
         watch:{
             search( val ){
-                if( val.length == 0 || this.isLoading ) return;
+                if( !val || val.length == 0 || this.isLoading ) return;
                 this.isLoading = true;
                 this.$apollo.query({
                     query: ProblemSearchGQL,
@@ -65,7 +64,6 @@
                 .finally(() => (this.isLoading = false))
             }
         }
-    }
-};
+    };
 </script>
 
