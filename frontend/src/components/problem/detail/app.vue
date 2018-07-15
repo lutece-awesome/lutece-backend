@@ -6,17 +6,25 @@
                     <v-toolbar-title>
                         A PLUS B
                     </v-toolbar-title>
-                    <v-tabs color="transparent" slot="extension">
-                        <v-tab :ripple='false' to = 'description' >Description</v-tab>
-                        <v-tab :ripple='false' to = 'editor' >Editor</v-tab>
-                        <v-tab :ripple='false' to = 'discussion' >Discussion</v-tab>
+                    <v-tabs v-model="tabs" color="transparent" slot="extension">
+                        <v-tab :ripple='false' to="description">Description</v-tab>
+                        <v-tab :ripple='false' to="editor">Editor</v-tab>
+                        <v-tab :ripple='false' to="discussion">Discussion</v-tab>
                     </v-tabs>
                 </v-toolbar>
-
                 <v-card-text>
-                    <router-view />
+                    <v-tabs-items touchless v-model="tabs">
+                        <v-tab-item id="description">
+                            <ProblemDescription/>
+                        </v-tab-item>
+                        <v-tab-item id="editor">
+                            <ProblemEditor/>
+                        </v-tab-item>
+                        <v-tab-item id="discussion">
+                            <ProblemDiscussion/>
+                        </v-tab-item>
+                    </v-tabs-items>
                 </v-card-text>
-                
             </v-card>
         </v-flex>
     </v-layout>            
@@ -24,29 +32,17 @@
 
 
 <script>
-
+    import ProblemDescription from "@/components/problem/detail/description.vue";
+    import ProblemEditor from "@/components/problem/detail/editor.vue";
+    import ProblemDiscussion from "@/components/problem/detail/discussion.vue";
     export default {
-        data: () => ({
-            slug: '',
-        }),
-
-        mounted(){
-            this.slug = this.$route.params.slug;
-            this.$router.push( 'description' );
+        components: {
+            ProblemDescription,
+            ProblemEditor,
+            ProblemDiscussion,
         },
-
-        methods:{
-            Description(){
-                this.$router.push({
-                    name: 'ProblemDetailDescription',
-                    params:{
-                        slug: this.slug
-                    }
-                })
-            },
-
-
-
-        }
+        data: () => ({
+            tabs: "",
+        }),
     }
 </script>

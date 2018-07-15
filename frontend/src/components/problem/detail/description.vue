@@ -9,18 +9,6 @@
         <h2 class="headline primary--text mb-3">Constraints</h2>
         <p>0≤a,b≤100000</p>
     </div>
-        <!-- </v-tab-item>
-        <v-tab-item>
-            <v-layout row wrap>
-                <v-flex xs12 sm6>
-                    <v-select v-model="language" :items="items" width='100'></v-select>
-                </v-flex>
-            </v-layout>
-        </v-tab-item>
-        <v-tab-item>
-            discussion
-        </v-tab-item>
-    </v-tabs-items> -->
 </template>
 
 
@@ -28,7 +16,6 @@
     export default {
         data: function() {
             return {
-                tabs: null,
             };
         },
     }
