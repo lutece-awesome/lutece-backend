@@ -10,6 +10,7 @@ export const ProblemListGQL = gql`
                 title,
                 submit,
                 accept,
+                slug,
             }
         }
     }

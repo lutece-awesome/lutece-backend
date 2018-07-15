@@ -1,8 +1,12 @@
 <template>
     <v-data-table :items = "problemItem"  :headers = "headers" hide-actions >
-        <template slot="items" slot-scope = "props">
+        <template slot="items" slot-scope = "props" >
             <td class="text-xs-center">{{ props.item.problemId }}</td>
-            <td class="text-xs-center">{{ props.item.title }}</td>
+            <td class="text-xs-center">
+                <router-link :to = '{ name: "ProblemDetail" , params: { slug: props.item.slug }  }' >
+                    {{ props.item.title }}
+                </router-link>
+            </td>
             <td class="text-xs-center">{{ props.item.accept }} / {{ props.item.submit }}</td>
             <td class="text-xs-center">{{ props.item.submit ? ( ( props.item.accept / props.item.submit ) * 100 ).toFixed( 2 ) : '0.00' }}%  </td>
         </template>
@@ -49,7 +53,13 @@
                     sortable: false
                 }
             ]
-        })
+        }),
+
+        methods:{
+            click: function(){
+                alert( "click" );
+            }
+        }
     }
 </script>
 

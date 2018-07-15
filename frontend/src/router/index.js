@@ -6,7 +6,10 @@ import Signup from '@/components/signin/signup.vue'
 import Signout from '@/components/signin/signout.vue'
 import NotFound from '@/components/global/404.vue'
 import ProblemList from '@/components/problem/app.vue'
-import ProblemDetail from '@/components/problem/detail/description.vue'
+import ProblemDetail from '@/components/problem/detail/app.vue'
+import ProblemDescription from '@/components/problem/detail/description.vue'
+import ProblemEditor from '@/components/problem/detail/editor.vue'
+import ProblemDiscussion from '@/components/problem/detail/discussion.vue'
 
 Vue.use(Router)
 
@@ -52,11 +55,30 @@ export default new Router({
     },
 
     {
-      path: '/problem',
-      name: 'ProblemDetail',
+      path: '/problem/:slug',
+      component: ProblemDetail,
       children:
       [
-        
+        {
+          path: '',
+          name: 'ProblemDetail',
+          component: ProblemDetail
+        },
+        {
+          path: 'description',
+          name: 'ProblemDetailDescription',
+          component: ProblemDescription
+        },
+        {
+          path: 'editor',
+          name: 'ProblemDetailEditor',
+          component: ProblemEditor
+        },
+        {
+          path: 'discussion',
+          name: 'ProblemDetailDiscussion',
+          component: ProblemDiscussion
+        }
       ]
     },
 
