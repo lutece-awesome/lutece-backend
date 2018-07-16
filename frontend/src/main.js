@@ -14,19 +14,19 @@ import '@mdi/font/css/materialdesignicons.css'
 
 Vue.config.productionTip = false
 Vue.use(Vuetify, {
-  theme: {
-    primary: colors.blue.darken1,
-    secondary: colors.blue.darken2,
-    accent: colors.pink.base
-  }
+	theme: {
+		primary: colors.blue.darken1,
+		secondary: colors.blue.darken2,
+		accent: colors.pink.base
+	}
 })
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  provide: apolloProvider.provide(),
-  router,
-  store,
-  components: { Base },
-  template: '<Base/>'
+	el: '#app',
+	provide: apolloProvider.provide(),
+	router,
+	store,
+	components: { Base },
+	template: '<Base/>'
 })

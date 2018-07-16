@@ -1,7 +1,7 @@
 <template>
-  <v-card-text>
-    123
-  </v-card-text>
+	<v-card-text>
+		123
+	</v-card-text>
 </template>
 
 <script>
