@@ -14,13 +14,12 @@ import ProblemDiscussion from '@/components/problem/detail/discussion.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode : 'history',
+  mode: 'history',
   routes: [
-
     {
       path: '',
-      redirect:{
-        name : 'Home'
+      redirect: {
+        name: 'Home'
       }
     },
 
@@ -31,8 +30,8 @@ export default new Router({
     },
 
     {
-      path : '/login',
-      name : 'Login',
+      path: '/login',
+      name: 'Login',
       component: Login
     },
 
@@ -57,8 +56,7 @@ export default new Router({
     {
       path: '/problem/:slug',
       component: ProblemDetail,
-      children:
-      [
+      children: [
         {
           path: '',
           name: 'ProblemDetail',
@@ -83,10 +81,9 @@ export default new Router({
     },
 
     {
-      path : '*',
-      name : '404',
+      path: '*',
+      name: '404',
       component: NotFound
     }
-
   ]
 })

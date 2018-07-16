@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import { ApolloClient } from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
+import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import VueApollo from 'vue-apollo'
+import fetch from 'unfetch'
 
-const httpLink = new HttpLink({
-    // You should use an absolute URL here
-    uri: 'http://localhost:8000/graphql',
+const httpLink = createHttpLink({
+  // You should use an absolute URL here
+  uri: 'http://localhost:8000/graphql',
+  fetch: fetch
 })
 
 const httpLinkAuth = setContext((_, { headers }) => {
@@ -25,13 +27,13 @@ const httpLinkAuth = setContext((_, { headers }) => {
 const apolloClient = new ApolloClient({
   link: httpLinkAuth.concat(httpLink),
   cache: new InMemoryCache(),
-  connectToDevTools: true,
+  connectToDevTools: true
 })
 
 Vue.use(VueApollo)
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
+  defaultClient: apolloClient
 })
 
 export default apolloProvider
