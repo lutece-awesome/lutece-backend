@@ -11,6 +11,7 @@ import store from './store';
 import VueKatex from '@/plugins/katex';
 import 'vuetify/dist/vuetify.min.css';
 import '@mdi/font/css/materialdesignicons.css';
+import '../node_modules/katex/dist/katex.min.css';
 
 Vue.config.productionTip = false;
 Vue.use(VueKatex);

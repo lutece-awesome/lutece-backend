@@ -1,25 +1,35 @@
 import katex from 'katex';
+import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render.min.js';
 
 export default {
 	install(Vue, _options) {
 		Vue.directive('katex', (el, binding) => {
 			const displayStyle = binding.arg === 'display';
-
+			const expression = binding.value.expression ? binding.value.expression : binding.value;
 			if (binding.value.expression) {
 				if (binding.value.options) {
-					katex.render(binding.value.expression, el, {
-						displayMode: displayStyle,
+					renderMathInElement(
+						el,
 						...binding.value.options,
-					});
+					);
 				} else {
-					katex.render(binding.value.expression, el, {
-						displayMode: displayStyle,
-					});
+					renderMathInElement(
+						el,
+					);
 				}
 			} else {
-				katex.render(binding.value, el, {
-					displayMode: displayStyle,
-				});
+				console.log(el);
+				renderMathInElement(
+					el,
+					{
+						delimiters: [
+							{ left: '$$', right: '$$', display: true },
+							{ left: '$', right: '$', display: false },
+							{ left: '\\[', right: '\\]', display: true },
+							{ left: '\\(', right: '\\)', display: false },
+						],
+					},
+				);
 			}
 		});
 	},

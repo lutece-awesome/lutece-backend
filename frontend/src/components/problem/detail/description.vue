@@ -1,5 +1,6 @@
 <template>
-	<div class="ma-4">
+	<div
+		class="ma-4">
 		<h2
 			v-if="content"
 			class="headline mb-3">Content</h2>
@@ -7,11 +8,7 @@
 		<h2
 			v-if="standardInput"
 			class="headline mb-3">Standard Input</h2>
-		<div
-			v-katex="{ expression: standardInput , options:{
-				throwOnError: false
-			} }"
-			class="mb-3" />
+		<div v-katex:display="standardInput"/>
 		<h2
 			v-if="standardOutput"
 			class="headline mb-3">Standard Output</h2>
@@ -32,6 +29,8 @@
 </template>
 
 <script>
+import renderMathInElement from '../../../../node_modules/katex/dist/contrib/auto-render.min.js';
+
 export default {
 	props: {
 		content: {
@@ -64,10 +63,6 @@ export default {
 			required: false,
 			default: '',
 		},
-	},
-	data() {
-		return {
-		};
 	},
 };
 </script>
