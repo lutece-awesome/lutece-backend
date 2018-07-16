@@ -14,21 +14,21 @@ export default {
 	props: {
 		height: {
 			type: Number,
-			default: 250
+			default: 250,
 		},
 		loadingmsg: {
 			type: String,
-			default: 'Loading'
+			default: 'Loading',
 		},
 		loadingstyle: {
 			type: String,
-			default: 'ui text loader'
-		}
+			default: 'ui text loader',
+		},
 	},
-	data: function () {
+	data() {
 		return {
-			isLoading: true
-		}
-	}
-}
+			isLoading: true,
+		};
+	},
+};
 </script>

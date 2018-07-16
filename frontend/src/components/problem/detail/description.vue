@@ -33,37 +33,37 @@ export default {
 		content: {
 			type: String,
 			required: false,
-			default: ''
+			default: '',
 		},
 		standardInput: {
 			type: String,
 			required: false,
-			default: ''
+			default: '',
 		},
 		standardOutput: {
 			type: String,
 			required: false,
-			default: ''
+			default: '',
 		},
 		constraints: {
 			type: String,
 			required: false,
-			default: ''
+			default: '',
 		},
 		resource: {
 			type: String,
 			required: false,
-			default: ''
+			default: '',
 		},
 		note: {
 			type: String,
 			required: false,
-			default: ''
-		}
+			default: '',
+		},
 	},
-	data: function () {
+	data() {
 		return {
-		}
-	}
-}
+		};
+	},
+};
 </script>

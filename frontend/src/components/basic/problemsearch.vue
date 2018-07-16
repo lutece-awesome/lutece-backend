@@ -14,39 +14,40 @@
 </template>
 
 <script>
-import { ProblemSearchGQL } from '@/graphql/problem/search.js'
+import ProblemSearchGQL from '@/graphql/problem/search.gql';
+
 export default {
-	data: function () {
+	data() {
 		return {
 			model: null,
 			result: [],
 			isLoading: false,
-			search: null
-		}
+			search: null,
+		};
 	},
 
 	computed: {
-		items () {
-			return this.result
-		}
+		items() {
+			return this.result;
+		},
 	},
 
 	watch: {
-		search (val) {
-			if (!val || val.length === 0 || this.isLoading) return
-			this.isLoading = true
+		search(val) {
+			if (!val || val.length === 0 || this.isLoading) return;
+			this.isLoading = true;
 			this.$apollo.query({
 				query: ProblemSearchGQL,
 				variables: {
-					title: val
-				}
+					title: val,
+				},
 			})
 				.then(response => response.data.problemsearch)
-				.then(data => {
-					this.result = data
+				.then((data) => {
+					this.result = data;
 				})
-				.finally(() => (this.isLoading = false))
-		}
-	}
-}
+				.finally(() => { this.isLoading = false; });
+		},
+	},
+};
 </script>

@@ -81,11 +81,10 @@
 </template>
 
 <script>
-import {
-	RegisterGQL
-} from '@/graphql/signin/register.js'
+import RegisterGQL from '@/graphql/signin/register.gql';
+
 export default {
-	data: function () {
+	data() {
 		return {
 			username: '',
 			password: '',
@@ -96,21 +95,23 @@ export default {
 			location: '',
 			loading: false,
 			error: false,
-			errordetail: {}
-		}
+			errordetail: {},
+		};
 	},
 
 	methods: {
 
-		geterror: function (field) {
-			if (this.errordetail.hasOwnProperty(field)) { return this.errordetail[field][0].message }
-			return ''
+		geterror(field) {
+			if (this.errordetail.hasOwnProperty.call(field)) {
+				return this.errordetail[field][0].message;
+			}
+			return '';
 		},
 
-		register: function () {
-			this.errordetail = {}
-			this.error = false
-			this.loading = true
+		register() {
+			this.errordetail = {};
+			this.error = false;
+			this.loading = true;
 			this.$apollo.mutate({
 				mutation: RegisterGQL,
 				variables: {
@@ -120,32 +121,31 @@ export default {
 					displayname: this.displayname,
 					school: this.school,
 					company: this.company,
-					location: this.location
-				}
+					location: this.location,
+				},
 			})
 				.then(response => response.data.Register)
-				.then(data => {
-					this.aftersignup(data.token, data.payload)
+				.then((data) => {
+					this.aftersignup(data.token);
 				})
-				.catch(error => {
-					this.error = true
-					this.errordetail = JSON.parse(error.graphQLErrors[0].message)
+				.catch((error) => {
+					this.error = true;
+					this.errordetail = JSON.parse(error.graphQLErrors[0].message);
 				})
-				.finally(() => (this.loading = false))
+				.finally(() => { this.loading = false; });
 		},
 
-		aftersignup: function (token, payload) {
-			// let s = JSON.parse(payload)
+		aftersignup(token) {
 			Object.values(this.$apollo.provider.clients)
-				.forEach(client => client.cache.reset())
-			localStorage.setItem('USER_TOKEN', token)
-			this.$store.commit('user/update_authed', true)
+				.forEach(client => client.cache.reset());
+			localStorage.setItem('USER_TOKEN', token);
+			this.$store.commit('user/update_authed', true);
 			// this.$store.commit("user/update_gravataremail", data.gravataremail);
 			// this.$store.commit("user/update_displayname", data.displayname);
 			this.$router.push({
-				name: 'Home'
-			})
-		}
-	}
-}
+				name: 'Home',
+			});
+		},
+	},
+};
 </script>

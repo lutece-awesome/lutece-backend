@@ -1,25 +1,25 @@
-import 'babel-polyfill'
+import 'babel-polyfill';
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import router from './router'
-import Base from './base'
-import apolloProvider from './apollo.js'
-import store from './store'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import colors from 'vuetify/es5/util/colors'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import '@mdi/font/css/materialdesignicons.css'
+import Vue from 'vue';
+import Vuetify from 'vuetify';
+import colors from 'vuetify/es5/util/colors';
+import router from './router';
+import Base from './base';
+import apolloProvider from './apollo';
+import store from './store';
+import 'vuetify/dist/vuetify.min.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import '@mdi/font/css/materialdesignicons.css';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.use(Vuetify, {
 	theme: {
 		primary: colors.blue.darken1,
 		secondary: colors.blue.darken2,
-		accent: colors.pink.base
-	}
-})
+		accent: colors.pink.base,
+	},
+});
 
 /* eslint-disable no-new */
 new Vue({
@@ -28,5 +28,5 @@ new Vue({
 	router,
 	store,
 	components: { Base },
-	template: '<Base/>'
-})
+	template: '<Base/>',
+});

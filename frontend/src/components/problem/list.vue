@@ -14,7 +14,9 @@
 				<td class="text-xs-center">{{ props.item.problemId }}</td>
 				<td class="text-xs-center">{{ props.item.title }}</td>
 				<td class="text-xs-center">{{ props.item.accept }} / {{ props.item.submit }}</td>
-				<td class="text-xs-center">{{ props.item.submit ? ( ( props.item.accept / props.item.submit ) * 100 ).toFixed( 2 ) : '0.00' }}%  </td>
+				<td class="text-xs-center">
+					{{ (props.item.submit ? (props.item.accept / props.item.submit) * 100 : 0).toFixed(2) }}%
+				</td>
 			</router-link>
 		</template>
 	</v-data-table>
@@ -25,8 +27,8 @@ export default {
 	props: {
 		problemItem: {
 			type: Array,
-			default: () => []
-		}
+			default: () => [],
+		},
 	},
 	data: () => ({
 		hidden: false,
@@ -34,32 +36,32 @@ export default {
 			{
 				text: '#',
 				align: 'center',
-				sortable: false
+				sortable: false,
 			},
 			{
 				text: 'Title',
 				align: 'center',
-				sortable: false
+				sortable: false,
 			},
 			{
 				text: 'Accepted / Submit',
 				align: 'center',
 				sortable: false,
-				class: 'hidden-sm-and-down'
+				class: 'hidden-sm-and-down',
 			},
 			{
 				text: 'A / S',
 				align: 'center',
 				sortable: false,
-				class: 'hidden-md-and-up'
+				class: 'hidden-md-and-up',
 			},
 			{
 				text: 'Ratio',
 				align: 'center',
-				sortable: false
-			}
-		]
-	})
+				sortable: false,
+			},
+		],
+	}),
 
-}
+};
 </script>

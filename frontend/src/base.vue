@@ -12,14 +12,15 @@
 </template>
 
 <script>
-import Footer from '@/components/global/footer.vue'
-import Navbar from '@/components/global/navbar.vue'
+import Footer from '@/components/global/footer';
+import Navbar from '@/components/global/navbar';
+
 export default {
 	components: {
 		Navbar,
-		Footer
-	}
-}
+		Footer,
+	},
+};
 </script>
 
 <style>

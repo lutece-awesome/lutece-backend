@@ -53,62 +53,60 @@
 </template>
 
 <script>
-import {
-	UserLogin
-} from '@/graphql/signin/token.js'
+import { UserLogin } from '@/graphql/signin/token.gql';
+
 export default {
 	data: () => ({
 		loading: false,
 		error: false,
 		username: '',
 		password: '',
-		errordetail: {}
+		errordetail: {},
 	}),
 
 	methods: {
-
-		geterror: function (field) {
-			if (this.errordetail.hasOwnProperty(field)) { return this.errordetail[field][0].message }
-			return ''
+		geterror(field) {
+			if (this.errordetail.hasOwnProperty.call(field)) {
+				return this.errordetail[field][0].message;
+			}
+			return '';
 		},
 
-		login: function () {
-			this.loading = true
-			this.error = false
-			this.errordetail = {}
+		login() {
+			this.loading = true;
+			this.error = false;
+			this.errordetail = {};
 			this.$apollo
 				.mutate({
 					mutation: UserLogin,
 					variables: {
 						username: this.username,
-						password: this.password
-					}
+						password: this.password,
+					},
 				})
 				.then(response => response.data.UserLogin)
-				.then(data => {
-					localStorage.setItem('USER_TOKEN', data.token)
-					this.$store.commit('user/update_authed', true)
-					this.redirect()
+				.then((data) => {
+					localStorage.setItem('USER_TOKEN', data.token);
+					this.$store.commit('user/update_authed', true);
+					this.redirect();
 				})
-				.catch(error => {
-					this.errordetail = JSON.parse(error.graphQLErrors[0].message)
-					this.error = true
+				.catch((error) => {
+					this.errordetail = JSON.parse(error.graphQLErrors[0].message);
+					this.error = true;
 				})
-				.finally(() => (this.loading = false))
+				.finally(() => { this.loading = false; });
 		},
 
-		redirect: function () {
-			Object.values(this.$apollo.provider.clients).forEach(client =>
-				client.cache.reset()
-			)
-			this.$router.push(this.$route.query.redirect || '/')
+		redirect() {
+			Object.values(this.$apollo.provider.clients).forEach(client => client.cache.reset());
+			this.$router.push(this.$route.query.redirect || '/');
 		},
 
-		signup: function () {
+		signup() {
 			this.$router.push({
-				name: 'Signup'
-			})
-		}
-	}
-}
+				name: 'Signup',
+			});
+		},
+	},
+};
 </script>

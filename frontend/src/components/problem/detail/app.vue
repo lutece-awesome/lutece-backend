@@ -52,15 +52,16 @@
 </template>
 
 <script>
-import ProblemDescription from '@/components/problem/detail/description.vue'
-import ProblemEditor from '@/components/problem/detail/editor.vue'
-import ProblemDiscussion from '@/components/problem/detail/discussion.vue'
-import { ProblemDetailGQL } from '@/graphql/problem/detail.js'
+import ProblemDescription from '@/components/problem/detail/description';
+import ProblemEditor from '@/components/problem/detail/editor';
+import ProblemDiscussion from '@/components/problem/detail/discussion';
+import ProblemDetailGQL from '@/graphql/problem/detail.gql';
+
 export default {
 	components: {
 		ProblemDescription,
 		ProblemEditor,
-		ProblemDiscussion
+		ProblemDiscussion,
 	},
 	data: () => ({
 		slug: '',
@@ -74,35 +75,35 @@ export default {
 		resource: '',
 		note: '',
 		timeLimit: 0,
-		memoryLimit: 0
+		memoryLimit: 0,
 	}),
 
-	mounted () {
-		this.slug = this.$route.params.slug
-		this.request()
+	mounted() {
+		this.slug = this.$route.params.slug;
+		this.request();
 	},
 
 	methods: {
-		request: function () {
+		request() {
 			this.$apollo.query({
 				query: ProblemDetailGQL,
 				variables: {
-					slug: this.slug
-				}
+					slug: this.slug,
+				},
 			})
 				.then(response => response.data.problem)
-				.then(data => {
-					this.title = data.title
-					this.content = data.content
-					this.standardInput = data.standardInput
-					this.standardOutput = data.standardOutput
-					this.constraints = data.constraints
-					this.resource = data.resource
-					this.note = data.note
-					this.timeLimit = data.timeLimit
-					this.memoryLimit = data.memoryLimit
-				})
-		}
-	}
-}
+				.then((data) => {
+					this.title = data.title;
+					this.content = data.content;
+					this.standardInput = data.standardInput;
+					this.standardOutput = data.standardOutput;
+					this.constraints = data.constraints;
+					this.resource = data.resource;
+					this.note = data.note;
+					this.timeLimit = data.timeLimit;
+					this.memoryLimit = data.memoryLimit;
+				});
+		},
+	},
+};
 </script>

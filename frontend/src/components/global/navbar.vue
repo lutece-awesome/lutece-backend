@@ -94,15 +94,14 @@
 </template>
 
 <script>
-import Login from '@/components/signin/login.vue'
-import {
-	verifyToken
-} from '@/graphql/signin/token.js'
+import Login from '@/components/signin/login';
+import { verifyToken } from '@/graphql/signin/token.gql';
+
 export default {
 	components: {
-		Login
+		Login,
 	},
-	data: function () {
+	data() {
 		return {
 			drawer: null,
 			signin: false,
@@ -110,93 +109,92 @@ export default {
 			items: [{
 				icon: 'mdi-home',
 				title: 'Home',
-				path: '/home'
+				path: '/home',
 			},
 			{
 				icon: 'mdi-view-list',
 				title: 'Problem',
-				path: '/problemlist'
+				path: '/problemlist',
 			},
 			{
 				icon: 'mdi-chart-bar',
 				title: 'Status',
-				path: ''
+				path: '',
 			},
 			{
 				icon: 'mdi-trophy',
 				title: 'Contest',
-				path: ''
+				path: '',
 			},
 			{
 				icon: 'mdi-account-multiple',
 				title: 'User',
-				path: ''
+				path: '',
 			},
 			{
 				icon: 'mdi-information',
 				title: 'About',
-				path: ''
-			}
-			]
-		}
+				path: '',
+			},
+			],
+		};
 	},
 	computed: {
-		authed: function () {
-			return this.$store.state['user'].authed
+		authed() {
+			return this.$store.state.user.authed;
 		},
-		gravataremail: function () {
-			return this.$store.state['user'].gravataremail
+		gravataremail() {
+			return this.$store.state.user.gravataremail;
 		},
-		displayname: function () {
-			return this.$store.state['user'].displayname
-		}
+		displayname() {
+			return this.$store.state.user.displayname;
+		},
 	},
 	watch: {
-		authed: function () {
-			this.refresh()
-		}
+		authed() {
+			this.refresh();
+		},
 	},
-	mounted () {
-		this.refresh()
+	mounted() {
+		this.refresh();
 	},
 	methods: {
-		refresh () {
-			this.logging = true
+		refresh() {
+			this.logging = true;
 			this.$apollo
 				.mutate({
 					mutation: verifyToken,
 					variables: {
-						token: localStorage.getItem('USER_TOKEN') || ''
-					}
+						token: localStorage.getItem('USER_TOKEN') || '',
+					},
 				})
 				.then(response => response.data.verifyToken.payload)
-				.then(data => {
-					this.$store.commit('user/update_authed', true)
-					this.$store.commit('user/update_gravataremail', data.gravataremail)
-					this.$store.commit('user/update_displayname', data.displayname)
-					this.logging = false
+				.then((data) => {
+					this.$store.commit('user/update_authed', true);
+					this.$store.commit('user/update_gravataremail', data.gravataremail);
+					this.$store.commit('user/update_displayname', data.displayname);
+					this.logging = false;
 				})
-				.catch(error => {
-					console.error(error)
-					this.logging = false
-				})
+				.catch(() => {
+					this.logging = false;
+				});
 		},
-		login: function () {
+		login() {
 			this.$router.push({
 				name: 'Login',
 				query: {
-					redirect: this.$route.path
-				}
-			})
+					redirect: this.$route.path,
+				},
+			});
 		},
-		signout: function () {
+		signout() {
 			this.$router.push({
 				name: 'Signout',
 				query: {
-					redirect: this.$route.path
-				}
-			})
-		}
-	}
-}
+					redirect: this.$route.path,
+				},
+			});
+		},
+	},
+};
 </script>

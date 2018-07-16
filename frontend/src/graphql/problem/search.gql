@@ -1,0 +1,6 @@
+query ProblemSearchGQL($title: String!) {
+	problemsearch(title: $title) {
+		title
+		slug
+	}
+}
