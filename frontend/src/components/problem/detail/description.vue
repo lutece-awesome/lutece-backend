@@ -7,7 +7,11 @@
 		<h2
 			v-if="standardInput"
 			class="headline mb-3">Standard Input</h2>
-		<div class="mb-3">{{ standardInput }}</div>
+		<div
+			v-katex="{ expression: standardInput , options:{
+				throwOnError: false
+			} }"
+			class="mb-3" />
 		<h2
 			v-if="standardOutput"
 			class="headline mb-3">Standard Output</h2>

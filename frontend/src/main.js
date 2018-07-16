@@ -8,11 +8,13 @@ import router from './router';
 import Base from './base';
 import apolloProvider from './apollo';
 import store from './store';
+import VueKatex from '@/plugins/katex';
 import 'vuetify/dist/vuetify.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@mdi/font/css/materialdesignicons.css';
 
 Vue.config.productionTip = false;
+Vue.use(VueKatex);
 Vue.use(Vuetify, {
 	theme: {
 		primary: colors.blue.darken1,
