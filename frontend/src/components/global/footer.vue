@@ -14,9 +14,9 @@ export default {
 </script>
 
 <style scoped>
-  #footer{
-    margin-top: 64px;
-    font-size: 15px;
-    text-align: center;
-  }
+#footer{
+	margin-top: 64px;
+	font-size: 15px;
+	text-align: center;
+}
 </style>

@@ -24,19 +24,19 @@ export default {
 
 <style>
 .v-label.error--text {
-  animation: none !important;
+	animation: none !important;
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition-property: opacity;
-  transition-duration: .1s;
+	transition-property: opacity;
+	transition-duration: .1s;
 }
 
 .fade-enter-active {
-  transition-delay: .1s;
+	transition-delay: .1s;
 }
 
 .fade-enter, .fade-leave-active {
-  opacity: 0
+	opacity: 0
 }
 </style>
