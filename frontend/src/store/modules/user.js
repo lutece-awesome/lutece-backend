@@ -1,3 +1,4 @@
+/* eslint no-shadow: ["error", { "allow": ["state"] }] */
 const state = {
 	displayname: '',
 	gravataremail: '',

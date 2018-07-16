@@ -40,7 +40,6 @@ module.exports = {
         'e' // for e.returnvalue
       ]
     }],
-    'no-shadow': ['error', { "allow": ["state"] }],
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       optionalDependencies: ['test/unit/index.js']
