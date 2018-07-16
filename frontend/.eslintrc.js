@@ -54,6 +54,10 @@ module.exports = {
       "error", 
       "tab"
     ],
-    "no-tabs": 0
+    "no-tabs": 0,
+    'no-unused-vars': [
+      "error", 
+      { "argsIgnorePattern": "^_" }
+    ]
   }
 }
