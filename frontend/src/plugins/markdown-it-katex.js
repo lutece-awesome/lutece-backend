@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
 const md = require('markdown-it')();
-const mk = require('@iktakahiro/markdown-it-katex');
+const mk = require('@neilsustc/markdown-it-katex');
 
 md.use(mk);
 
