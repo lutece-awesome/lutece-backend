@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include , path
+from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 from markdownx import urls as markdownx
 from graphene_django.views import GraphQLView
@@ -22,8 +22,9 @@ from django.views.decorators.csrf import csrf_exempt
 from .base_setting import DEBUG as lutece_debug
 
 urlpatterns = [
-    path( '' , TemplateView.as_view( template_name = 'frontend/dist/index.html') ),
+    path( 'graphql' , csrf_exempt(GraphQLView.as_view( graphiql = True )) ) if lutece_debug else path( 'graphql' , GraphQLView.as_view( graphiql = False ) ),
     path( 'admin/', admin.site.urls),
+    re_path( r'^.*$' , TemplateView.as_view( template_name = 'frontend/dist/index.html') ),
     # path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
     # path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
     # path( 'contest/' , include( 'contest.urls' ) ),
@@ -34,4 +35,4 @@ urlpatterns = [
     # path( 'discussion/' , include ('discussion.urls') ),
     # path( 'blog/' , include( 'blog.urls' ) ),
     # path( 'markdownx/' , include( markdownx ) ),
-] + [ path( 'graphql' , csrf_exempt(GraphQLView.as_view( graphiql = True )) ) if lutece_debug else path( 'graphql' , GraphQLView.as_view( graphiql = False ) ) ]
+]

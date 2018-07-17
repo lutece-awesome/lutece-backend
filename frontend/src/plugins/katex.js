@@ -1,11 +1,11 @@
-import katex from 'katex';
-import renderMathInElement from '../../node_modules/katex/dist/contrib/auto-render.min.js';
+// import katex from 'katex';
+import renderMathInElement from 'katex/contrib/auto-render/auto-render';
 
 export default {
 	install(Vue, _options) {
 		Vue.directive('katex', (el, binding) => {
-			const displayStyle = binding.arg === 'display';
-			const expression = binding.value.expression ? binding.value.expression : binding.value;
+			// const displayStyle = binding.arg === 'display';
+			// const expression = binding.value.expression ? binding.value.expression : binding.value;
 			if (binding.value.expression) {
 				if (binding.value.options) {
 					renderMathInElement(
@@ -18,7 +18,7 @@ export default {
 					);
 				}
 			} else {
-				console.log(el);
+				// console.log(el);
 				renderMathInElement(
 					el,
 					{

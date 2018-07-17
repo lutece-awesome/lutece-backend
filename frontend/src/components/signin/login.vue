@@ -66,7 +66,7 @@ export default {
 
 	methods: {
 		geterror(field) {
-			if (this.errordetail.hasOwnProperty.call(field)) {
+			if (Object.prototype.hasOwnProperty.call(this.errordetail, field)) {
 				return this.errordetail[field][0].message;
 			}
 			return '';

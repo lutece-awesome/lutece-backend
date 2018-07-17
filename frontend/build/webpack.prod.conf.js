@@ -7,6 +7,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const FontminPlugin = require('fontmin-webpack');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const glob = require('glob-all');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('../config');
 const utils = require('./utils');
@@ -27,9 +31,27 @@ const webpackConfig = merge(baseWebpackConfig, {
 		chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
 	},
 	plugins: [
+		new UglifyJsPlugin({
+			uglifyOptions: {
+				compress: {
+					warnings: false,
+				},
+			},
+			sourceMap: config.build.productionSourceMap,
+			parallel: true,
+		}),
 		new MiniCssExtractPlugin({
 			filename: utils.assetsPath('css/[name].[hash].css'),
 			chunkFilename: utils.assetsPath('css/[id].[hash].css'),
+		}),
+		new PurgecssPlugin({
+			paths: glob.sync([
+				path.join(__dirname, './../index.html'),
+				path.join(__dirname, './../src/**/*.vue'),
+				path.join(__dirname, './../src/**/*.js'),
+				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
+			]),
+			whitelistPatterns: [/^v-progress-circular/, /transition/],
 		}),
 		// generate dist index.html with correct asset hash for caching.
 		// you can customize output by editing /index.html
@@ -57,6 +79,39 @@ const webpackConfig = merge(baseWebpackConfig, {
 				ignore: ['.*'],
 			},
 		]),
+		new FontminPlugin({
+			autodetect: false,
+			glyphs: [
+				'\uF00E',
+				'\uF026',
+				'\uF05D',
+				'\uF128',
+				'\uF12C',
+				'\uF5E0',
+				'\uF131',
+				'\uF132',
+				'\uF140',
+				'\uF141',
+				'\uF142',
+				'\uF764',
+				'\uF156',
+				'\uF159',
+				'\uF205',
+				'\uF2DC',
+				'\uF2FC',
+				'\uF342',
+				'\uF343',
+				'\uF349',
+				'\uF35C',
+				'\uF35D',
+				'\uF375',
+				'\uF3EB',
+				'\uF43D',
+				'\uF43E',
+				'\uF538',
+				'\uF572',
+			],
+		}),
 	],
 	optimization: {
 		splitChunks: {

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import renderMathInElement from '../../../../node_modules/katex/dist/contrib/auto-render.min.js';
+// import renderMathInElement from 'katex/contrib/auto-render/auto-render';
 
 export default {
 	props: {
