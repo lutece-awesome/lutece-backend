@@ -40,4 +40,9 @@ export default {
 .fade-enter, .fade-leave-active {
 	opacity: 0
 }
+
+span.mord {
+	background-color: transparent !important;
+    border-color: transparent !important;
+}
 </style>
