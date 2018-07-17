@@ -4,23 +4,33 @@
 		<h2
 			v-if="content"
 			class="headline mb-3">Content</h2>
-		<div class="mb-3">{{ content }}</div>
+		<div
+			v-mixrend = "content"
+			class="mb-3" />
 		<h2
 			v-if="standardInput"
 			class="headline mb-3">Standard Input</h2>
-		<div v-katex:display="standardInput"/>
+		<div
+			v-mixrend = "standardInput"
+			class="mb-3" />
 		<h2
 			v-if="standardOutput"
 			class="headline mb-3">Standard Output</h2>
-		<div class="mb-3">{{ standardOutput }}</div>
+		<div
+			v-mixrend = "standardOutput"
+			class="mb-3" />
 		<h2
 			v-if="constraints"
 			class="headline mb-3">Constraints</h2>
-		<div class="mb-3">{{ constraints }}</div>
+		<div
+			v-mixrend = "constraints"
+			class="mb-3" />
 		<h2
 			v-if="resource"
 			class="headline mb-3">Resource</h2>
-		<div class="mb-3">{{ resource }}</div>
+		<div
+			v-mixrend = "resource"
+			class="mb-3" />
 		<h2
 			v-if="note"
 			class="headline mb-3">Note</h2>
@@ -29,8 +39,6 @@
 </template>
 
 <script>
-// import renderMathInElement from 'katex/contrib/auto-render/auto-render';
-
 export default {
 	props: {
 		content: {
@@ -62,6 +70,12 @@ export default {
 			type: String,
 			required: false,
 			default: '',
+		},
+	},
+
+	methods: {
+		rend(_field) {
+
 		},
 	},
 };

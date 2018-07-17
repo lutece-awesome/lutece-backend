@@ -28,14 +28,14 @@ import router from './router';
 import Base from './base';
 import apolloProvider from './apollo';
 import store from './store';
-import VueKatex from '@/plugins/katex';
+import mixrend from '@/plugins/markdown-it-katex';
 import '@mdi/font/css/materialdesignicons.css';
 import 'katex/dist/katex.min.css';
 
 require('vuetify/src/stylus/app.styl');
 
 Vue.config.productionTip = false;
-Vue.use(VueKatex);
+Vue.use(mixrend);
 Vue.use(Vuetify, {
 	components: {
 		VApp,
