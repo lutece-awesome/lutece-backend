@@ -31,7 +31,7 @@ import apolloProvider from './apollo';
 import store from './store';
 import mixrend from '@/plugins/markdown-it-katex';
 import '@mdi/font/css/materialdesignicons.css';
-import 'katex/dist/katex.min.css';
+import 'katex/dist/katex.css';
 
 require('vuetify/src/stylus/app.styl');
 

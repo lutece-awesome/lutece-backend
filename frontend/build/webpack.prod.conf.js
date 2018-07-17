@@ -11,9 +11,26 @@ const FontminPlugin = require('fontmin-webpack');
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob-all');
+const _ = require('lodash');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('../config');
 const utils = require('./utils');
+
+class MyFontminPlugin extends FontminPlugin {
+	findFontFiles(compilation) {
+		const regular = this.findRegularFontFiles(compilation);
+		const extract = this.findExtractTextFontFiles(compilation);
+		return _.filter(_.uniqBy(regular.concat(extract), 'asset'), o => !o.asset.includes('KaTeX'));
+	}
+
+	apply(compiler) {
+		compiler.hooks.compilation.tap('Fontmin', (compilation) => {
+			compilation.hooks.additionalAssets.tap('Fontmin', () => {
+				this.onAdditionalAssets(compilation, () => {});
+			});
+		});
+	}
+}
 
 const webpackConfig = merge(baseWebpackConfig, {
 	mode: 'production',
@@ -52,6 +69,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
 			]),
 			whitelistPatterns: [/^v-progress-circular/, /transition/],
+			whitelistPatternsChildren: [/katex/],
 		}),
 		// generate dist index.html with correct asset hash for caching.
 		// you can customize output by editing /index.html
@@ -79,38 +97,8 @@ const webpackConfig = merge(baseWebpackConfig, {
 				ignore: ['.*'],
 			},
 		]),
-		new FontminPlugin({
-			autodetect: false,
-			glyphs: [
-				'\uF00E',
-				'\uF026',
-				'\uF05D',
-				'\uF128',
-				'\uF12C',
-				'\uF5E0',
-				'\uF131',
-				'\uF132',
-				'\uF140',
-				'\uF141',
-				'\uF142',
-				'\uF764',
-				'\uF156',
-				'\uF159',
-				'\uF205',
-				'\uF2DC',
-				'\uF2FC',
-				'\uF342',
-				'\uF343',
-				'\uF349',
-				'\uF35C',
-				'\uF35D',
-				'\uF375',
-				'\uF3EB',
-				'\uF43D',
-				'\uF43E',
-				'\uF538',
-				'\uF572',
-			],
+		new MyFontminPlugin({
+			autodetect: true,
 		}),
 	],
 	optimization: {
