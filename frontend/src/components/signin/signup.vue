@@ -15,7 +15,7 @@
 					</v-layout>
 				</v-card-title>
 				<v-card-text>
-					<form>
+					<v-form @submit.prevent="register">
 						<v-layout column>
 							<v-flex>
 								<v-text-field
@@ -70,10 +70,10 @@
 									:color="error ? &quot;error&quot; : &quot;primary&quot;"
 									block
 									big
-									@click="register">Register</v-btn>
+									type="submit">Register</v-btn>
 							</v-flex>
 						</v-layout>
-					</form>
+					</v-form>
 				</v-card-text>
 			</v-card>
 		</v-flex>

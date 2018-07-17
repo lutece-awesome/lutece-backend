@@ -13,7 +13,7 @@
 				tag="tr">
 				<td class="text-xs-center">{{ props.item.problemId }}</td>
 				<td class="text-xs-center">{{ props.item.title }}</td>
-				<td class="text-xs-center">{{ props.item.accept }} / {{ props.item.submit }}</td>
+				<td class="text-xs-center">{{ props.item.accept }}/{{ props.item.submit }}</td>
 				<td class="text-xs-center">
 					{{ (props.item.submit ? (props.item.accept / props.item.submit) * 100 : 0).toFixed(2) }}%
 				</td>
@@ -44,13 +44,13 @@ export default {
 				sortable: false,
 			},
 			{
-				text: 'Accepted / Submit',
+				text: 'Accepted/Submit',
 				align: 'center',
 				sortable: false,
 				class: 'hidden-sm-and-down',
 			},
 			{
-				text: 'A / S',
+				text: 'A/S',
 				align: 'center',
 				sortable: false,
 				class: 'hidden-md-and-up',
