@@ -2,7 +2,9 @@
 	<v-app>
 		<Navbar/>
 		<v-content>
-			<v-container fluid>
+			<v-container
+				:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+				fluid>
 				<transition name="fade">
 					<router-view/>
 				</transition>

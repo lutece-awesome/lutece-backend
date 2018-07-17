@@ -5,7 +5,8 @@
 		justify-center>
 		<v-flex
 			xs12
-			md8>
+			md10
+			xl8>
 			<v-card>
 				<v-toolbar
 					card
