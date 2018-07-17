@@ -2,36 +2,24 @@
     Homepage
 -->
 <template>
-	<div class = "hone">
-		<div class = "ui grid">
-			<div class = "eight wide column">
-				<div class="ui attached message">
-					<div class="header">Announcements</div>
-				</div>
-				<div class="ui attached segment"/>
-			</div>
+	<div
+		:class="{'pa-3': $vuetify.breakpoint.xsOnly }">
+		<h1 class="display-3">Lutece</h1>
 
-			<div class = "eight wide column">
-				<div class="ui attached message">
-					<div class="header">Top Solved</div>
-				</div>
-				<div class="ui attached ">
-					<table
-						class="ui attached padded celled table"
-						style = "text-align:center;">
-						<tr>
-							<th style = "width:1em;">#</th>
-							<th style = "width:2em;">User</th>
-							<th style = "width:1em">Solved</th>
-						</tr>
-						<td
-							v-for = "each_user in top_user"
-							:key = "each_user.id"/>
-					</table>
+		<span class="display-1">Meet the future</span>
 
-				</div>
-			</div>
-		</div>
+		<v-divider class="my-3"/>
+		<v-btn
+			class="mx-0"
+			color="primary"
+			large
+			href="https://github.com/LaPluses/Lutece"
+		>
+			<v-icon
+				left
+				dark>mdi-github-circle</v-icon>
+			Github
+		</v-btn>
 	</div>
 
 </template>

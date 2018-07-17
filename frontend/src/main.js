@@ -21,6 +21,7 @@ import {
 	VSelect,
 	VTextField,
 	VForm,
+	VDivider,
 	transitions,
 } from 'vuetify';
 import { Ripple } from 'vuetify/es5/directives';
@@ -56,6 +57,7 @@ Vue.use(Vuetify, {
 		VSelect,
 		VTextField,
 		VForm,
+		VDivider,
 		transitions,
 	},
 	directives: {
