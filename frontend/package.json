@@ -9,6 +9,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "@iktakahiro/markdown-it-katex": "^3.0.3",
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.5",
     "apollo-link-context": "^1.0.8",
@@ -19,6 +20,7 @@
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "katex": "^0.10.0-beta",
+    "markdown-it": "^8.4.1",
     "unfetch": "^3.0.0",
     "vue": "^2.5.2",
     "vue-apollo": "^3.0.0-beta.19",
