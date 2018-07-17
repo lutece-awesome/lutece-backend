@@ -114,27 +114,27 @@ export default {
 			{
 				icon: 'mdi-view-list',
 				title: 'Problem',
-				path: '/problemlist',
+				path: '/problem',
 			},
 			{
 				icon: 'mdi-chart-bar',
 				title: 'Status',
-				path: '',
+				path: '/status',
 			},
 			{
 				icon: 'mdi-trophy',
 				title: 'Contest',
-				path: '',
+				path: '/contest',
 			},
 			{
 				icon: 'mdi-account-multiple',
 				title: 'User',
-				path: '',
+				path: '/user',
 			},
 			{
 				icon: 'mdi-information',
 				title: 'About',
-				path: '',
+				path: '/about',
 			},
 			],
 		};

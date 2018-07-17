@@ -26,10 +26,5 @@
 
 <script>
 export default {
-	data() {
-		return {
-			top_user: [],
-		};
-	},
 };
 </script>
