@@ -67,10 +67,9 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, './../src/**/*.vue'),
 				path.join(__dirname, './../src/**/*.js'),
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
-				path.join(__dirname, '..', 'node_modules', 'codemirror', 'src', '**/*.js'),
 			]),
 			whitelistPatterns: [/^v-progress-circular/, /transition/],
-			whitelistPatternsChildren: [/katex/],
+			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/],
 		}),
 		// generate dist index.html with correct asset hash for caching.
 		// you can customize output by editing /index.html
