@@ -20,9 +20,6 @@
 			/>
 		</v-flex>
 
-		<v-btn @click = "test" />
-
-
 	</v-layout>
 </template>
 
@@ -37,7 +34,7 @@ import 'codemirror/mode/go/go';
 import 'codemirror/mode/rust/rust';
 import 'codemirror/mode/ruby/ruby';
 import 'codemirror/mode/python/python';
-
+import { LanguageList } from '@/graphql/language/languagelist.gql';
 
 export default {
 	components: {
@@ -55,48 +52,36 @@ export default {
 			mode: 'text/x-c++src',
 		},
 		code: '',
-		language: {
-			text: 'GNU G++17',
-			value: 'GNU G++',
-		},
-		items: [{
-			text: 'GNU G++17',
-			value: 'GNU G++',
-		},
-		{
-			text: 'GNU GCC 7.3',
-			value: 'GNU GCC',
-		},
-		{
-			text: 'Clang 6.0.0',
-			value: 'Clang',
-		},
-		{
-			text: 'Python 3.6.5',
-			value: 'Python',
-		},
-		{
-			text: 'Java 10',
-			value: 'Java',
-		},
-		{
-			text: 'Go 1.10.2',
-			value: 'Go',
-		},
-		{
-			text: 'Ruby 2.5.1',
-			value: 'Ruby',
-		},
-		{
-			text: 'Rust 1.26.1',
-			value: 'Rust',
-		}],
+		language: '',
+		items: [],
 	}),
 
-	methods: {
-		test() {
-			alert('!23');
+	watch: {
+		language() {
+			for (let i = 0; i < this.items.length; i += 1) {
+				if (this.items[i].value === this.language) {
+					this.cmOptions.mode = this.items[i].codemirror;
+				}
+			}
 		},
 	},
+
+	mounted() {
+		this.$apollo.query({
+			query: LanguageList,
+		})
+			.then(response => JSON.parse(response.data.allLanguage))
+			.then((data) => {
+				this.data = [];
+				for (let i = 0; i < data.length; i += 1) {
+					const {
+						full, info,
+					} = data[i];
+					this.items.push({ text: info, value: full, codemirror: data[i].codemirror });
+				}
+				this.language = this.items[0].value;
+			});
+	},
+
 };
 </script>
