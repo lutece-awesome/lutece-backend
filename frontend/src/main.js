@@ -40,6 +40,7 @@ require('vuetify/src/stylus/app.styl');
 Vue.config.productionTip = false;
 Vue.use(Meta);
 Vue.use(mixrend);
+
 Vue.use(Vuetify, {
 	components: {
 		VApp,
