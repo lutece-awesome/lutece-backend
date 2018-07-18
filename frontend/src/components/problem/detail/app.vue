@@ -59,6 +59,7 @@ import ProblemDiscussion from '@/components/problem/detail/discussion';
 import ProblemDetailGQL from '@/graphql/problem/detail.gql';
 
 export default {
+	metaInfo() { return { title: this.title || 'Loading...' }; },
 	components: {
 		ProblemDescription,
 		ProblemEditor,
@@ -83,7 +84,6 @@ export default {
 		this.slug = this.$route.params.slug;
 		this.request();
 	},
-
 	methods: {
 		request() {
 			this.$apollo.query({

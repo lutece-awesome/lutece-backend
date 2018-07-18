@@ -34,7 +34,7 @@ import problemsearch from '@/components/basic/problemsearch';
 import ProblemListGQL from '@/graphql/problem/list.gql';
 
 export default {
-
+	metaInfo() { return { title: 'Problem' }; },
 	components: {
 		ProblemList,
 		Loading,

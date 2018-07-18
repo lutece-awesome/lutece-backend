@@ -6,9 +6,11 @@ import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo';
 import fetch from 'unfetch';
 
+const env = process.env.NODE_ENV;
+
 const httpLink = createHttpLink({
 	// You should use an absolute URL here
-	uri: 'http://localhost:8000/graphql',
+	uri: env === 'production' ? '/graphql' : 'http://localhost:8000/graphql',
 	fetch,
 });
 

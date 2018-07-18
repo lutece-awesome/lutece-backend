@@ -26,6 +26,7 @@ import {
 } from 'vuetify';
 import { Ripple } from 'vuetify/es5/directives';
 import colors from 'vuetify/es5/util/colors';
+import Meta from 'vue-meta';
 import router from './router';
 import Base from './base';
 import apolloProvider from './apollo';
@@ -37,6 +38,7 @@ import 'katex/dist/katex.css';
 require('vuetify/src/stylus/app.styl');
 
 Vue.config.productionTip = false;
+Vue.use(Meta);
 Vue.use(mixrend);
 Vue.use(Vuetify, {
 	components: {

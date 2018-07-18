@@ -26,5 +26,6 @@
 
 <script>
 export default {
+	metaInfo() { return { title: 'Home' }; },
 };
 </script>

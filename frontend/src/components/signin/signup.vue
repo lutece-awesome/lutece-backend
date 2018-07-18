@@ -84,6 +84,7 @@
 import RegisterGQL from '@/graphql/signin/register.gql';
 
 export default {
+	metaInfo() { return { title: 'Sign Up' }; },
 	data() {
 		return {
 			username: '',

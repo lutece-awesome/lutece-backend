@@ -56,6 +56,7 @@
 import { UserLogin } from '@/graphql/signin/token.gql';
 
 export default {
+	metaInfo() { return { title: 'Login' }; },
 	data: () => ({
 		loading: false,
 		error: false,
