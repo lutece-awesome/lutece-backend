@@ -2,24 +2,28 @@
 	<v-layout
 		row
 		wrap>
-		<v-flex
-			xs12
-			sm4>
-			<v-select
-				v-model = "language"
-				:items = "items"
-				width="100"/>
-		</v-flex>
-
-		<v-flex
-			xs12
-			sm10>
+		<v-flex xs12>
 			<codemirror
+				ref="codeMirror"
 				v-model = "code"
 				:options = "cmOptions"
 			/>
 		</v-flex>
-
+		<v-flex xs12>
+			<v-card-actions class="v-toolbar">
+				<v-select
+					v-model = "language"
+					:items = "items"
+					label="Language"
+					hide-details
+				/>
+				<v-spacer/>
+				<v-btn
+					large
+					flat
+					type="submit">Submit</v-btn>
+			</v-card-actions>
+		</v-flex>
 	</v-layout>
 </template>
 

@@ -1,7 +1,5 @@
 <template>
-	<v-card-text>
-		<CodeEditor/>
-	</v-card-text>
+	<CodeEditor ref="codeMirror"/>
 </template>
 
 <script>

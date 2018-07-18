@@ -18,7 +18,9 @@
 					<v-tabs
 						slot="extension"
 						v-model="tabs"
-						color="transparent">
+						fixed-tabs
+						color="transparent"
+						@input="tabChanged">
 						<v-tab
 							:ripple="false"
 							to="description">Description</v-tab>
@@ -30,26 +32,21 @@
 							to="discussion">Discussion</v-tab>
 					</v-tabs>
 				</v-toolbar>
-
 				<v-tabs-items
 					v-model="tabs"
 					touchless>
 					<v-tab-item id="description">
-						<keep-alive>
-							<router-view
-								:content = "content"
-								:standard-input = "standardInput"
-								:standard-output = "standardOutput"
-								:constraints = "constraints" />
-						</keep-alive>
+						<ProblemDescription
+							:content = "content"
+							:standard-input = "standardInput"
+							:standard-output = "standardOutput"
+							:constraints = "constraints" />
 					</v-tab-item>
 					<v-tab-item id="editor">
-						<keep-alive>
-							<router-view/>
-						</keep-alive>
+						<ProblemEditor ref="problemEditor"/>
 					</v-tab-item>
 					<v-tab-item id="discussion">
-						<router-view/>
+						<ProblemDiscussion/>
 					</v-tab-item>
 				</v-tabs-items>
 			</v-card>
@@ -109,6 +106,14 @@ export default {
 					this.timeLimit = data.timeLimit;
 					this.memoryLimit = data.memoryLimit;
 				});
+		},
+		tabChanged() {
+			if (this.$refs.problemEditor
+				&& this.$refs.problemEditor.$refs.codeMirror
+				&& this.$refs.problemEditor.$refs.codeMirror.$refs.codeMirror) {
+				const cm = this.$refs.problemEditor.$refs.codeMirror.$refs.codeMirror;
+				cm.refresh();
+			}
 		},
 	},
 };
