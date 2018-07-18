@@ -20,6 +20,8 @@
 			/>
 		</v-flex>
 
+		<v-btn @click = "test" />
+
 
 	</v-layout>
 </template>
@@ -30,6 +32,12 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/selection/active-line';
 import 'codemirror/keymap/sublime';
 import 'codemirror/addon/edit/closebrackets';
+import 'codemirror/mode/clike/clike';
+import 'codemirror/mode/go/go';
+import 'codemirror/mode/rust/rust';
+import 'codemirror/mode/ruby/ruby';
+import 'codemirror/mode/python/python';
+
 
 export default {
 	components: {
@@ -44,6 +52,7 @@ export default {
 			line: true,
 			styleActiveLine: true,
 			matchBrackets: true,
+			mode: 'text/x-c++src',
 		},
 		code: '',
 		language: {
@@ -83,5 +92,11 @@ export default {
 			value: 'Rust',
 		}],
 	}),
+
+	methods: {
+		test() {
+			alert('!23');
+		},
+	},
 };
 </script>
