@@ -30,21 +30,26 @@
 							to="discussion">Discussion</v-tab>
 					</v-tabs>
 				</v-toolbar>
+
 				<v-tabs-items
 					v-model="tabs"
 					touchless>
 					<v-tab-item id="description">
-						<ProblemDescription
-							:content = "content"
-							:standard-input = "standardInput"
-							:standard-output = "standardOutput"
-							:constraints = "constraints" />
+						<keep-alive>
+							<router-view
+								:content = "content"
+								:standard-input = "standardInput"
+								:standard-output = "standardOutput"
+								:constraints = "constraints" />
+						</keep-alive>
 					</v-tab-item>
 					<v-tab-item id="editor">
-						<ProblemEditor/>
+						<keep-alive>
+							<router-view/>
+						</keep-alive>
 					</v-tab-item>
 					<v-tab-item id="discussion">
-						<ProblemDiscussion/>
+						<router-view/>
 					</v-tab-item>
 				</v-tabs-items>
 			</v-card>

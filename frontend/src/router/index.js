@@ -76,11 +76,6 @@ export default new Router({
 			component: ProblemDetail,
 			children: [
 				{
-					path: '',
-					name: 'ProblemDetail',
-					component: ProblemDetail,
-				},
-				{
 					path: 'description',
 					name: 'ProblemDetailDescription',
 					component: ProblemDescription,
