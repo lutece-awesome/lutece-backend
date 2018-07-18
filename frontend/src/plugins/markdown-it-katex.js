@@ -1,18 +1,24 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
-const md = require('markdown-it')();
-const mk = require('@neilsustc/markdown-it-katex');
-
-md.use(mk);
-
 export default {
 	install(Vue) {
+		const mdPromise = new Promise(((resolve, _reject) => {
+			import('markdown-it').then(({ default: MD }) => {
+				import('@neilsustc/markdown-it-katex').then(({ default: mk }) => {
+					const md = MD();
+					md.use(mk);
+					resolve(md);
+				});
+			});
+		}));
 		Vue.directive('mixrend', (el, binding) => {
-			if (binding.value.expression) {
-				el.innerHTML = md.render(binding.value.expression);
-			} else {
-				el.innerHTML = md.render(binding.value);
-			}
+			mdPromise.then((md) => {
+				if (binding.value.expression) {
+					el.innerHTML = md.render(binding.value.expression);
+				} else {
+					el.innerHTML = md.render(binding.value);
+				}
+			});
 		});
 	},
 };
