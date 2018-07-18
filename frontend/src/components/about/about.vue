@@ -10,6 +10,7 @@
 		<h1
 			class="headline mb-3 primary--text">Author</h1>
 		<v-container
+			fluid
 			grid-list-lg
 			class="pa-0 mb-3">
 			<v-layout
@@ -18,7 +19,9 @@
 			>
 				<v-flex
 					xs12
-					md6>
+					sm6
+					md4
+					xl3>
 					<v-card>
 						<v-container
 							fluid
@@ -50,7 +53,9 @@
 				</v-flex>
 				<v-flex
 					xs12
-					md6>
+					sm6
+					md4
+					xl3>
 					<v-card>
 						<v-container
 							fluid
@@ -85,6 +90,7 @@
 		<h1
 			class="headline mb-3 primary--text">Contributor</h1>
 		<v-container
+			fluid
 			grid-list-lg
 			class="pa-0 mb-3">
 			<v-layout
@@ -93,7 +99,9 @@
 			>
 				<v-flex
 					xs12
-					md6>
+					sm6
+					md4
+					xl3>
 					<v-card>
 						<v-container
 							fluid
