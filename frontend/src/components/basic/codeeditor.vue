@@ -18,7 +18,11 @@
 				v-model = "code"
 				:options = "cmOptions"
 			/>
+			<v-btn
+				color="primary"
+				block > Submit </v-btn>
 		</v-flex>
+
 
 	</v-layout>
 </template>
