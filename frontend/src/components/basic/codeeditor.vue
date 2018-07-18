@@ -4,18 +4,48 @@
 		wrap>
 		<v-flex
 			xs12
-			sm6>
+			sm4>
 			<v-select
 				v-model = "language"
 				:items = "items"
 				width="100"/>
 		</v-flex>
+
+		<v-flex
+			xs12
+			sm10>
+			<codemirror
+				v-model = "code"
+				:options = "cmOptions"
+			/>
+		</v-flex>
+
+
 	</v-layout>
 </template>
 
 <script>
+import { codemirror } from 'vue-codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/selection/active-line';
+import 'codemirror/keymap/sublime';
+import 'codemirror/addon/edit/closebrackets';
+
 export default {
+	components: {
+		codemirror,
+	},
 	data: () => ({
+		cmOptions: {
+			indentUnit: 4,
+			lineNumbers: true,
+			keyMap: 'sublime',
+			tabindex: '0',
+			line: true,
+			styleActiveLine: true,
+			matchBrackets: true,
+		},
+		code: '',
 		language: {
 			text: 'GNU G++17',
 			value: 'GNU G++',

@@ -18,10 +18,17 @@ const httpLinkAuth = setContext((_, { headers }) => {
 	// get the authentication token from localstorage if it exists
 	const token = localStorage.getItem('USER_TOKEN');
 	// return the headers to the context so httpLink can read them
+	if (token) {
+		return {
+			headers: {
+				...headers,
+				Authorization: `JWT ${token}`,
+			},
+		};
+	}
 	return {
 		headers: {
 			...headers,
-			Authorization: token ? `JWT ${token}` : 'JWT ',
 		},
 	};
 });
