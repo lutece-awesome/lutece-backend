@@ -160,6 +160,7 @@ export default {
 	},
 	methods: {
 		refresh() {
+			if (!localStorage.getItem('USER_TOKEN')) return;
 			this.logging = true;
 			this.$apollo
 				.mutate({
