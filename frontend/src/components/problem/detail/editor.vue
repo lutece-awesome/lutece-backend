@@ -5,11 +5,10 @@
 </template>
 
 <script>
-import CodeEditor from '@/components/basic/codeeditor';
 
 export default {
 	components: {
-		CodeEditor,
+		CodeEditor: () => import('@/components/basic/codeeditor'),
 	},
 };
 </script>
