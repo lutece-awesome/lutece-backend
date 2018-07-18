@@ -64,7 +64,7 @@
     "node-gyp": "github:nodejs/node-gyp#pull/1492/head",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
-    "ora": "^2.1.0",
+    "ora": "^3.0.0",
     "portfinder": "^1.0.13",
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
