@@ -49,7 +49,7 @@ export default {
 			line: true,
 			styleActiveLine: true,
 			matchBrackets: true,
-			mode: 'text/x-c++src',
+			mode: '',
 		},
 		code: '',
 		language: '',
