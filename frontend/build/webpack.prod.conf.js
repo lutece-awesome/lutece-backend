@@ -69,7 +69,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
 			]),
 			whitelistPatterns: [/^v-progress-circular/, /transition/],
-			whitelistPatternsChildren: [/katex/],
+			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/],
 		}),
 		// generate dist index.html with correct asset hash for caching.
 		// you can customize output by editing /index.html

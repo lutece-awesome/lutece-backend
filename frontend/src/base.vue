@@ -57,4 +57,8 @@ span.mord {
 	background-color: transparent !important;
     border-color: transparent !important;
 }
+
+.v-toolbar--clipped {
+	z-index: 5;
+}
 </style>
