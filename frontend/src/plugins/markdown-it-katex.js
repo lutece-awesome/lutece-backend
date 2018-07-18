@@ -12,6 +12,11 @@ export default {
 			});
 		}));
 		Vue.directive('mixrend', (el, binding) => {
+			if (binding.value.expression) {
+				el.innerHTML = binding.value.expression;
+			} else {
+				el.innerHTML = binding.value;
+			}
 			mdPromise.then((md) => {
 				if (binding.value.expression) {
 					el.innerHTML = md.render(binding.value.expression);
