@@ -115,9 +115,6 @@ Lutece.db
 db.sqlite3
 Lutece/local_hezhu.py
 
-# Mathjax
-MathJax-2.7.4/
-
 # migrations
 */migrations/
 
@@ -128,12 +125,3 @@ MathJax-2.7.4/
 production.py
 
 base_setting.py
-
-
-static/katex/dist/
-static/codemirror-5.37.0/dist/
-static/markdown/dist/
-static/heatmap/dist/
-static/echarts/echarts.js
-
-frontend/semantic/
