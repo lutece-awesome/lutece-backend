@@ -19,8 +19,7 @@
 						slot="extension"
 						v-model="tabs"
 						fixed-tabs
-						color="transparent"
-						@input="tabChanged">
+						color="transparent">
 						<v-tab
 							:ripple="false"
 							to="description">Description</v-tab>
@@ -37,13 +36,13 @@
 					touchless>
 					<v-tab-item id="description">
 						<ProblemDescription
-							:content = "content"
-							:standard-input = "standardInput"
-							:standard-output = "standardOutput"
-							:constraints = "constraints" />
+							:content="content"
+							:standard-input="standardInput"
+							:standard-output="standardOutput"
+							:constraints="constraints" />
 					</v-tab-item>
 					<v-tab-item id="editor">
-						<ProblemEditor ref="problemEditor"/>
+						<ProblemEditor />
 					</v-tab-item>
 					<v-tab-item id="discussion">
 						<ProblemDiscussion/>
@@ -106,14 +105,6 @@ export default {
 					this.timeLimit = data.timeLimit;
 					this.memoryLimit = data.memoryLimit;
 				});
-		},
-		tabChanged() {
-			if (this.$refs.problemEditor
-				&& this.$refs.problemEditor.$refs.codeMirror
-				&& this.$refs.problemEditor.$refs.codeMirror.$refs.codeMirror) {
-				const cm = this.$refs.problemEditor.$refs.codeMirror.$refs.codeMirror;
-				cm.refresh();
-			}
 		},
 	},
 };

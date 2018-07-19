@@ -1,5 +1,5 @@
 <template>
-	<CodeEditor ref="codeMirror"/>
+	<CodeEditor />
 </template>
 
 <script>

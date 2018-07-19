@@ -4,7 +4,6 @@
 		wrap>
 		<v-flex xs12>
 			<codemirror
-				ref="codeMirror"
 				v-model="code"
 				:options="cmOptions"
 			/>
@@ -48,6 +47,7 @@ import 'codemirror/mode/python/python';
 import 'codemirror/theme/neo.css';
 import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/scroll/simplescrollbars.css';
+import 'codemirror/addon/display/autorefresh';
 import { LanguageList } from '@/graphql/language/languagelist.gql';
 
 
@@ -67,6 +67,7 @@ export default {
 			scrollbarStyle: 'overlay',
 			mode: '',
 			theme: 'neo',
+			autoRefresh: true,
 		},
 		code: '',
 		language: '',
