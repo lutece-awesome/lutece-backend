@@ -95,6 +95,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 			config: {
 				appName: 'Lutece',
 				background: '#1e88e5',
+				theme_color: '#1e88e5',
 				start_url: '/home',
 			},
 		}),
