@@ -12,6 +12,7 @@ const PurgecssPlugin = require('purgecss-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob-all');
 const _ = require('lodash');
+const AppManifestWebpackPlugin = require('app-manifest-webpack-plugin');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('../config');
 const utils = require('./utils');
@@ -87,6 +88,15 @@ const webpackConfig = merge(baseWebpackConfig, {
 			},
 			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
 			chunksSortMode: 'dependency',
+		}),
+		new AppManifestWebpackPlugin({
+			logo: path.join(__dirname, 'logo.svg'),
+			output: '/static/icons-[hash:8]/',
+			config: {
+				appName: 'Lutece',
+				background: '#1e88e5',
+				start_url: '/home',
+			},
 		}),
 		// keep module.id stable when vendor modules does not change
 		new webpack.HashedModuleIdsPlugin(),
