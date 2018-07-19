@@ -1,5 +1,6 @@
 <template>
 	<v-layout
+		v-resize="onResize"
 		row
 		wrap>
 		<v-flex xs12>
@@ -73,17 +74,11 @@ export default {
 		code: '',
 		language: '',
 		items: [],
+		height: 0,
 	}),
 	computed: {
 		cmHeight() {
-			switch (this.$vuetify.breakpoint.name) {
-			case 'xs': return 'height: 400px';
-			case 'sm': return 'height: 400px';
-			case 'md': return 'height: 400px';
-			case 'lg': return 'height: 500px';
-			case 'xl': return 'height: 600px';
-			default: return 'height: 400px';
-			}
+			return `height: ${this.height}px`;
 		},
 	},
 	watch: {
@@ -97,6 +92,7 @@ export default {
 	},
 
 	mounted() {
+		this.onResize();
 		this.$apollo.query({
 			query: LanguageList,
 		})
@@ -111,6 +107,11 @@ export default {
 				}
 				this.language = this.items[0].value;
 			});
+	},
+	methods: {
+		onResize() {
+			this.height = Math.max(window.innerHeight - 300, 300);
+		},
 	},
 
 };

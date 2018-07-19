@@ -24,7 +24,7 @@ import {
 	VDivider,
 	transitions,
 } from 'vuetify';
-import { Ripple } from 'vuetify/es5/directives';
+import { Ripple, Resize } from 'vuetify/es5/directives';
 import colors from 'vuetify/es5/util/colors';
 import Meta from 'vue-meta';
 import router from './router';
@@ -64,6 +64,7 @@ Vue.use(Vuetify, {
 	},
 	directives: {
 		Ripple,
+		Resize,
 	},
 	iconfont: 'mdi',
 	theme: {
