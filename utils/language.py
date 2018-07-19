@@ -86,7 +86,7 @@ class Language( Enum ):
 
     @classmethod
     def get_language( cls , result ):
-        for each in cls.Language:
+        for each in cls:
             if each.value.full == result:
                 return each
         return None

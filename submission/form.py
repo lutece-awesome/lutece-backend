@@ -2,10 +2,11 @@ from django import forms
 from Lutece.config import MAX_SOURCECORE_LENGTH
 from problem.models import Problem
 from utils.language import Language
+from annoying.functions import get_object_or_None
 
 class SubmitSolutionForm( forms.Form ):
     problemslug = forms.CharField( required = True )
-    code = forms.CharField( required = True , max_length = MAX_SOURCECORE_LENGTH )
+    code = forms.CharField( required = True , max_length = MAX_SOURCECORE_LENGTH , min_length = 1 )
     language = forms.CharField( required = True )
 
     def clean( self ):
