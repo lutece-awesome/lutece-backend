@@ -150,14 +150,14 @@ def overview_contest( request , pk ):
 
 def get_contest_problem( request , pk , index ):
     from problem.models import Problem
-    from utils.language import get_language_list
+    from utils.language import Language
     contest = get_object_or_None( Contest, pk = pk )
     if not check_contest_started_or_has_perms( contest , request.user ):
         return HttpResponse( 'Contest has not yet started' )
     prob = get_object_or_None( Problem , pk = contest.contestproblem_set.all()[index].problem )
     return render( request , 'contest/contest_problem.html' ,{
         'prob' : prob,
-        'support_lang': get_language_list(),
+        'support_lang': list( Language ),
         'sample': prob.sample_set.all(),
         'contest' : contest,})
 

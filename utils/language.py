@@ -84,15 +84,9 @@ class Language( Enum ):
         codemirror = 'text/x-rustsrc'
     )
 
-
-def get_language( result ):
-    for each in Language:
-        if each.value.full == result:
-            return each
-    return None
-
-def get_prism( result ):
-    return get_language( result ).value.prism
-
-def get_language_list():
-    return list( Language )
+    @classmethod
+    def get_language( cls , result ):
+        for each in cls.Language:
+            if each.value.full == result:
+                return each
+        return None
