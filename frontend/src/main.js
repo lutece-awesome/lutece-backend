@@ -34,8 +34,7 @@ import store from './store';
 import mixrend from '@/plugins/markdown-it-katex';
 import '@mdi/font/css/materialdesignicons.css';
 import 'katex/dist/katex.css';
-
-require('vuetify/src/stylus/app.styl');
+import './stylus/main.styl';
 
 Vue.config.productionTip = false;
 Vue.use(Meta);

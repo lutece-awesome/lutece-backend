@@ -105,7 +105,7 @@ export default {
 		return {
 			drawer: null,
 			signin: false,
-			logging: true,
+			logging: false,
 			items: [{
 				icon: 'mdi-home',
 				title: 'Home',
