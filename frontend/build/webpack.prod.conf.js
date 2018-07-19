@@ -106,7 +106,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 			chunks: 'all',
 		},
 		minimizer: [
-			new OptimizeCSSAssetsPlugin({}),
+			new OptimizeCSSAssetsPlugin(),
 		],
 	},
 });

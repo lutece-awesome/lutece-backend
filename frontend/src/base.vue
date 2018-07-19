@@ -36,10 +36,6 @@ export default {
 </script>
 
 <style>
-.v-label.error--text {
-	animation: none !important;
-}
-
 .fade-enter-active, .fade-leave-active {
 	transition-property: opacity;
 	transition-duration: .1s;
@@ -56,9 +52,5 @@ export default {
 span.mord {
 	background-color: transparent !important;
     border-color: transparent !important;
-}
-
-.v-toolbar--clipped {
-	z-index: 5;
 }
 </style>

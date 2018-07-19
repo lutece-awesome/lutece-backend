@@ -12,7 +12,7 @@
 					:key="item.title"
 					:to="item.path"
 					ripple
-					active-class="grey lighten-2">
+					active-class="grey lighten-3">
 					<v-list-tile-action>
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-tile-action>
