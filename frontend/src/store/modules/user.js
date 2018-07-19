@@ -5,6 +5,10 @@ const state = {
 	authed: false,
 };
 
+const getters = {
+	authed: state => state.authed,
+};
+
 const mutations = {
 	update_authed(state, flag) {
 		state.authed = flag;
@@ -19,6 +23,7 @@ const mutations = {
 
 export default {
 	namespaced: true,
+	getters,
 	state,
 	mutations,
 };

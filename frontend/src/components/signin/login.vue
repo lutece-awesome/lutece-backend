@@ -65,6 +65,19 @@ export default {
 		errordetail: {},
 	}),
 
+	computed: {
+		authed() {
+			return this.$store.state.user.authed;
+		},
+	},
+
+	watch: {
+		authed(val) {
+			if (val === true) { this.$router.push(this.$route.query.redirect || '/'); }
+		},
+	},
+
+
 	methods: {
 		geterror(field) {
 			if (Object.prototype.hasOwnProperty.call(this.errordetail, field)) {

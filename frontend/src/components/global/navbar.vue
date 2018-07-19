@@ -174,11 +174,8 @@ export default {
 					this.$store.commit('user/update_authed', true);
 					this.$store.commit('user/update_gravataremail', data.gravataremail);
 					this.$store.commit('user/update_displayname', data.displayname);
-					this.logging = false;
 				})
-				.catch(() => {
-					this.logging = false;
-				});
+				.finally(() => { this.logging = false; });
 		},
 		login() {
 			this.$router.push({
