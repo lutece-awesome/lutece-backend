@@ -6,6 +6,7 @@
 			<codemirror
 				v-model="code"
 				:options="cmOptions"
+				:style="cmHeight"
 			/>
 		</v-flex>
 		<v-flex xs12>
@@ -73,7 +74,18 @@ export default {
 		language: '',
 		items: [],
 	}),
-
+	computed: {
+		cmHeight() {
+			switch (this.$vuetify.breakpoint.name) {
+			case 'xs': return 'height: 400px';
+			case 'sm': return 'height: 400px';
+			case 'md': return 'height: 400px';
+			case 'lg': return 'height: 500px';
+			case 'xl': return 'height: 600px';
+			default: return 'height: 400px';
+			}
+		},
+	},
 	watch: {
 		language() {
 			for (let i = 0; i < this.items.length; i += 1) {
