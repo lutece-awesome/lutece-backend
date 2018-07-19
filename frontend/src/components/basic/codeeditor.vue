@@ -5,8 +5,8 @@
 		<v-flex xs12>
 			<codemirror
 				ref="codeMirror"
-				v-model = "code"
-				:options = "cmOptions"
+				v-model="code"
+				:options="cmOptions"
 			/>
 		</v-flex>
 		<v-flex xs12>
@@ -45,7 +45,11 @@ import 'codemirror/mode/go/go';
 import 'codemirror/mode/rust/rust';
 import 'codemirror/mode/ruby/ruby';
 import 'codemirror/mode/python/python';
+import 'codemirror/theme/neo.css';
+import 'codemirror/addon/scroll/simplescrollbars';
+import 'codemirror/addon/scroll/simplescrollbars.css';
 import { LanguageList } from '@/graphql/language/languagelist.gql';
+
 
 export default {
 	components: {
@@ -60,7 +64,9 @@ export default {
 			line: true,
 			styleActiveLine: true,
 			matchBrackets: true,
+			scrollbarStyle: 'overlay',
 			mode: '',
+			theme: 'neo',
 		},
 		code: '',
 		language: '',
