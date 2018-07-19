@@ -10,17 +10,24 @@
 			/>
 		</v-flex>
 		<v-flex xs12>
-			<v-card-actions class="v-toolbar">
-				<v-select
-					v-model = "language"
-					:items = "items"
-					label="Language"
-					hide-details
-				/>
+			<v-divider/>
+		</v-flex>
+		<v-flex xs12>
+			<v-card-actions>
 				<v-spacer/>
+				<v-select
+					v-model="language"
+					:items="items"
+					offset-y
+					solo
+					flat
+					hide-details
+					class="shrink"
+				/>
 				<v-btn
 					large
 					flat
+					color="primary"
 					type="submit">Submit</v-btn>
 			</v-card-actions>
 		</v-flex>
