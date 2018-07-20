@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import Footer from '@/components/global/footer';
 import Navbar from '@/components/global/navbar';
 
@@ -22,9 +23,14 @@ export default {
 		Navbar,
 		Footer,
 	},
-	metaInfo: {
-		title: 'Lutece',
-		titleTemplate: '%s | Lutece',
+	metaInfo() {
+		return {
+			title: 'Lutece',
+			titleTemplate: '%s | Lutece',
+			meta: [
+				{ name: 'theme-color', content: Vue.prototype.$vuetify.theme.primary },
+			],
+		};
 	},
 };
 </script>
