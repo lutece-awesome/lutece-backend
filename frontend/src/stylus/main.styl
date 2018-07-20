@@ -1,3 +1,5 @@
+@import '~vuetify/src/stylus/app'
+
 .v-divider
 	border-style: solid
 
@@ -7,4 +9,21 @@
 .v-toolbar--clipped
 	z-index: 5
 
-@import '~vuetify/src/stylus/app'
+table.sample-table
+	width: 100%
+	table-layout: fixed
+	border-spacing: 0px
+	border-width: thin 0
+	th
+		@extend .body-2
+		@extend .pa-1
+	td
+		@extend .pa-1
+		vertical-align: top
+		border-width: thin 0 0 0
+		word-wrap: break-word
+
+table.sample-table
+table.sample-table td
+	border-style: solid
+	border-color: rgba(0,0,0,0.12)

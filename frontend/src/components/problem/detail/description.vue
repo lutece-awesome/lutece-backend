@@ -35,6 +35,14 @@
 			v-if="note"
 			class="headline mb-3">Note</h2>
 		<div class="mb-3">{{ note }}</div>
+		<h2 class="headline mb-3">Sample</h2>
+		<table class="sample-table">
+			<tr><th>Input</th><th>Output</th></tr>
+			<tr>
+				<td>333333333333333333333333333333333333333333<br>1<br>2<br>3</td>
+				<td>1<br>20<br>115</td>
+			</tr>
+		</table>
 	</div>
 </template>
 
