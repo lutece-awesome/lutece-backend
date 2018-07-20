@@ -71,6 +71,18 @@ export default {
 			required: false,
 			default: '',
 		},
+		timeLimit: {
+			type: Number,
+			required: true,
+		},
+		memoryLimit: {
+			type: Number,
+			required: true,
+		},
+		sample: {
+			type: Array,
+			required: true,
+		},
 	},
 
 	methods: {

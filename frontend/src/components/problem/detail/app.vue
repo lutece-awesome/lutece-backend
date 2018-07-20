@@ -36,10 +36,16 @@
 					touchless>
 					<v-tab-item id="description">
 						<ProblemDescription
-							:content="content"
-							:standard-input="standardInput"
-							:standard-output="standardOutput"
-							:constraints="constraints" />
+							:content = "content"
+							:standard-input = "standardInput"
+							:standard-output = "standardOutput"
+							:constraints = "constraints"
+							:note = "note"
+							:time-limit = "timeLimit"
+							:memory-limit = "memoryLimit"
+							:sample = "sample"
+							:resource = "resource"
+						/>
 					</v-tab-item>
 					<v-tab-item id="editor">
 						<ProblemEditor :problemslug = "slug" />
@@ -79,6 +85,7 @@ export default {
 		note: '',
 		timeLimit: 0,
 		memoryLimit: 0,
+		sample: [],
 	}),
 
 	mounted() {
@@ -104,6 +111,7 @@ export default {
 					this.note = data.note;
 					this.timeLimit = data.timeLimit;
 					this.memoryLimit = data.memoryLimit;
+					this.sample = JSON.parse(data.sample);
 				});
 		},
 	},
