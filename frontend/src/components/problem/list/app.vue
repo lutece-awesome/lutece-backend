@@ -29,7 +29,6 @@
 
 <script>
 import ProblemList from '@/components/problem/list/list';
-import Loading from '@/components/basic/loading';
 import problemsearch from '@/components/basic/problemsearch';
 import ProblemListGQL from '@/graphql/problem/list.gql';
 
@@ -37,7 +36,6 @@ export default {
 	metaInfo() { return { title: 'Problem' }; },
 	components: {
 		ProblemList,
-		Loading,
 		problemsearch,
 	},
 
@@ -58,24 +56,24 @@ export default {
 
 	mounted() {
 		const pre = localStorage.getItem('PROBLEM_LIST') || 1;
-		this.request(pre);
+		this.page = pre;
 	},
 
 	methods: {
 		request(page) {
 			this.isLoading = true;
-			this.page = parseInt(page, 10);
+			page = parseInt(page, 10);
 			this.$apollo.query({
 				query: ProblemListGQL,
 				variables: {
-					page: this.page,
+					page,
 				},
 			})
 				.then(response => response.data.problemList)
 				.then((data) => {
 					this.problemItem = data.problemList;
 					this.maxpage = data.maxpage;
-					this.page = Math.min(this.page, this.maxpage);
+					this.page = Math.min(page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });
 			localStorage.setItem('PROBLEM_LIST', this.page);

@@ -22,7 +22,7 @@ class SubmissionType( DjangoObjectType ):
     memorycost = graphene.Int()
 
     def resolve_problem( self , info , * args , ** kwargs ):
-        return { 'title' : self.problem.title , 'slug' : self.problem.slug }
+        return self.problem.title
     
     def resolve_code( self , info , * args , ** kwargs ):
         if self.user == info.context.user or info.context.user.has_perm( 'submission.view_all' ):

@@ -6,7 +6,7 @@ from django.forms.models import model_to_dict
 
 import django.utils.timezone as timezone
 from django.http import Http404
-
+from functools import reduce
 # Create your models here.
 
 class Submission(models.Model):
@@ -45,19 +45,19 @@ class Submission(models.Model):
     @property
     def timecost( self ):
         s = Judgeinfo.objects.filter( submission = self )
-        return max( [ int(x.time_cost) for x in s ] )
+        return reduce( lambda x , y : max( x , y ) , [ x.time_cost for x in s ] , 0 )
 
     @property
     def memorycost( self ):
         s = Judgeinfo.objects.filter( submission = self )
-        return max( [ int(x.memory_cost) for x in s ] )
+        return reduce( lambda x , y : max( x , y ) , [ x.memory_cost for x in s ] , 0 )
         
 class Judgeinfo(models.Model):
     judgeinfo_id = models.AutoField(primary_key=True, db_index = True )
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE , db_index = True )
     result = models.CharField( max_length = 64 , default = '' )
-    time_cost = models.CharField( max_length = 12 )
-    memory_cost = models.CharField( max_length = 12 )
+    time_cost = models.IntegerField( default = 0 )
+    memory_cost = models.IntegerField( default = 0 )
     additional_info = models.CharField( max_length = 512 )
     case = models.SmallIntegerField( null = True , editable = False )
 

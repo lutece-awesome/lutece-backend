@@ -32,6 +32,7 @@
 <script>
 
 import StatusList from '@/components/status/list/list';
+import StatusListGQL from '@/graphql/submission/list.gql';
 
 
 export default {
@@ -47,6 +48,38 @@ export default {
 			maxpage: 0,
 			statusItem: [],
 		};
+	},
+
+	watch: {
+		page() {
+			this.request(this.page);
+		},
+	},
+
+	mounted() {
+		const pre = localStorage.getItem('STATUS_LIST') || 1;
+		this.page = pre;
+	},
+
+	methods: {
+		request(page) {
+			this.isLoading = true;
+			page = parseInt(page, 10);
+			this.$apollo.query({
+				query: StatusListGQL,
+				variables: {
+					page,
+				},
+			})
+				.then(response => response.data.submissionList)
+				.then((data) => {
+					this.statusItem = data.submissionList;
+					this.maxpage = data.maxpage;
+					this.page = Math.min(page, this.maxpage);
+				})
+				.then(() => { this.isLoading = false; });
+			localStorage.setItem('STATUS_LIST', this.page);
+		},
 	},
 };
 </script>

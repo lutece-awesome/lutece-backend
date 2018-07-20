@@ -151,8 +151,8 @@ export default {
 		},
 	},
 	watch: {
-		authed() {
-			this.refresh();
+		authed(val) {
+			if (val === false) { this.refresh(); }
 		},
 	},
 	mounted() {

@@ -1,0 +1,13 @@
+query SubmissionListGQL($page: Int!) {
+	submissionList(page: $page) {
+		maxpage
+		submissionList {
+            submissionId
+            submitTime
+            user
+			problem
+            judgeStatus
+            language
+		}
+	}
+}
