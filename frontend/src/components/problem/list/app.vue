@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import ProblemList from '@/components/problem/list';
+import ProblemList from '@/components/problem/list/list';
 import Loading from '@/components/basic/loading';
 import problemsearch from '@/components/basic/problemsearch';
 import ProblemListGQL from '@/graphql/problem/list.gql';

@@ -2,14 +2,14 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/home/home';
 import About from '@/components/about/about';
-import Status from '@/components/status/status';
+import StatusList from '@/components/status/list/app';
 import Contest from '@/components/contest/contest';
 import User from '@/components/user/user';
 import Login from '@/components/signin/login';
 import Signup from '@/components/signin/signup';
 import Signout from '@/components/signin/signout';
 import NotFound from '@/components/global/404';
-import ProblemList from '@/components/problem/app';
+import ProblemList from '@/components/problem/list/app';
 import ProblemDetail from '@/components/problem/detail/app';
 import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
@@ -39,7 +39,7 @@ export default new Router({
 		{
 			path: '/status',
 			name: 'Status',
-			component: Status,
+			component: StatusList,
 		},
 		{
 			path: '/contest',

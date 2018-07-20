@@ -5,7 +5,53 @@ from problem.models import Problem
 from .models import Submission
 from graphql_jwt.decorators import login_required
 from .tasks import Submission_task
+from utils.schema import paginatorList
 
+
+class SubmissionType( DjangoObjectType ):
+    class Meta:
+        model = Submission
+        only_fields = ( 'submission_id' , 'language' , 'judge_status' , 'submit_time' , 'case_number' , 'completed' )
+    
+    problem = graphene.String()
+    code = graphene.String()
+    user = graphene.String()
+    judgererror_msg = graphene.String()
+    compileerror_msg = graphene.String()
+    timecost = graphene.Int()
+    memorycost = graphene.Int()
+
+    def resolve_problem( self , info , * args , ** kwargs ):
+        return { 'title' : self.problem.title , 'slug' : self.problem.slug }
+    
+    def resolve_code( self , info , * args , ** kwargs ):
+        if self.user == info.context.user or info.context.user.has_perm( 'submission.view_all' ):
+            return self.code
+        return ''
+    
+    def resolve_user( self , info , * args , ** kwargs ):
+        return self.user.display_name
+    
+    def resolve_judgererror_msg( self , info , * args , ** kwargs ):
+        if info.context.user.has_perm( 'submission.view_all' ):
+            return self.judgererror_msg
+        return ''
+    
+    def resolve_compileerror_msg( self , info , * args , ** kwargs ):
+        if self.user == info.context.user or info.context.user.has_perm( 'submission.view_all' ):
+            return self.compileerror_msg
+        return ''
+
+    def resolve_timecost( self , info , * args , ** kwargs ):
+        return self.timecost
+
+    def resolve_memorycost( self , info , * args , ** kwargs ):
+        return self.memorycost
+
+class SubmissionListType( graphene.ObjectType ):
+    class Meta:
+        interfaces = ( paginatorList , )
+    submissionList = graphene.List( SubmissionType )
 
 class SubmitSolution( graphene.Mutation ):
 
@@ -42,7 +88,23 @@ class SubmitSolution( graphene.Mutation ):
             raise RuntimeError( SolutionForm.errors.as_json() )
 
 class Query( object ):
-    pass
+    submission = graphene.Field( SubmissionType , pk = graphene.ID() )
+    submissionList = graphene.Field( SubmissionListType , page = graphene.Int() )
+
+    def resolve_submission( self , info , pk ):
+        return Submission.objects.get( pk = pk )
+    
+    def resolve_submissionList( self , info , page ):
+        from django.core.paginator import Paginator
+        from Lutece.config import PER_PAGE_COUNT
+        statuslist = Submission.objects.all()
+        if not info.context.user.has_perm( 'problem.view_all' ):
+            statuslist = statuslist.filter( problem__visible = True )
+        if not info.context.user.has_perm( 'submission.view_all' ):
+            statuslist = statuslist.filter( user__show = True )
+        paginator = Paginator( statuslist , PER_PAGE_COUNT )
+        return SubmissionListType( maxpage = paginator.num_pages , submissionList = paginator.get_page( page ) )
+
 
 class Mutation( graphene.AbstractType ):
     SubmitSolution = SubmitSolution.Field()

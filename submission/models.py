@@ -43,12 +43,12 @@ class Submission(models.Model):
         return { ** dic , ** model_to_dict( self , fields = self.Judge.field ) }
 
     @property
-    def get_time_cost( self ):
+    def timecost( self ):
         s = Judgeinfo.objects.filter( submission = self )
         return max( [ int(x.time_cost) for x in s ] )
 
     @property
-    def get_memory_cost( self ):
+    def memorycost( self ):
         s = Judgeinfo.objects.filter( submission = self )
         return max( [ int(x.memory_cost) for x in s ] )
         
