@@ -9,5 +9,6 @@ query ProblemDetailGQL($slug: String!) {
 		note
 		timeLimit
 		memoryLimit
+		sample
 	}
 }

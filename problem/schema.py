@@ -7,6 +7,10 @@ class ProblemType( DjangoObjectType ):
     class Meta:
         model = Problem
         only_fields = ( 'problem_id' , 'title' , 'content' , 'standard_input' , 'standard_output' , 'constraints' , 'resource' , 'note' , 'time_limit' , 'memory_limit' , 'submit' , 'accept' , 'slug' )
+    sample = graphene.JSONString()
+
+    def resolve_sample( self , info , * args , ** kwargs ):
+        return [ { 'input' : x.input_content , 'output' : x.output_content } for x in self.sample_set.all() ]
 
 class ProblemListType( graphene.ObjectType ):
     class Meta:

@@ -4,6 +4,8 @@ from annoying.functions import get_object_or_None
 from problem.models import Problem
 from .models import Submission
 from graphql_jwt.decorators import login_required
+from .tasks import Submission_task
+
 
 class SubmitSolution( graphene.Mutation ):
 
@@ -12,7 +14,7 @@ class SubmitSolution( graphene.Mutation ):
         code = graphene.String( required = True )
         language = graphene.String( required = True )
     
-    state = graphene.Boolean()
+    pk = graphene.ID()
     
     @login_required
     def mutate( self , info , ** kwargs ):
@@ -35,10 +37,9 @@ class SubmitSolution( graphene.Mutation ):
             s.save()
             Submission_task.apply_async( args = (s.get_push_dict() ,) , queue = TASK_QUEUE )
             InsSubmittimes( problem.pk )
-            return SubmitSolution( state = True )
+            return SubmitSolution( pk = s.pk )
         else:
             raise RuntimeError( SolutionForm.errors.as_json() )
-
 
 class Query( object ):
     pass
