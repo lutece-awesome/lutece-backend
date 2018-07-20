@@ -42,7 +42,7 @@
 							:constraints="constraints" />
 					</v-tab-item>
 					<v-tab-item id="editor">
-						<ProblemEditor />
+						<ProblemEditor :problemslug = "slug" />
 					</v-tab-item>
 					<v-tab-item id="discussion">
 						<ProblemDiscussion/>

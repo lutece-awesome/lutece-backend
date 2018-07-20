@@ -29,7 +29,8 @@
 					large
 					flat
 					color="primary"
-					type="submit">Submit</v-btn>
+					type="submit"
+					@click= "submitsolution" >Submit</v-btn>
 			</v-card-actions>
 		</v-flex>
 	</v-layout>
@@ -51,11 +52,19 @@ import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'codemirror/addon/display/autorefresh';
 import { LanguageList } from '@/graphql/language/languagelist.gql';
+import { SubmitSolution } from '@/graphql/submission/submit.gql';
 
 
 export default {
+
 	components: {
 		codemirror,
+	},
+	props: {
+		problemslug: {
+			type: String,
+			required: true,
+		},
 	},
 	data: () => ({
 		cmOptions: {
@@ -111,6 +120,27 @@ export default {
 	methods: {
 		onResize() {
 			this.height = Math.max(window.innerHeight - 300, 300);
+		},
+		submitsolution() {
+			if (this.$store.state.user.authed === false) {
+				this.$router.push({
+					name: 'Login',
+					query: {
+						redirect: this.$route.path,
+					},
+				});
+				return;
+			}
+			this.$apollo.mutate({
+				mutation: SubmitSolution,
+				variables: {
+					code: this.code,
+					language: this.language,
+					problemslug: this.problemslug,
+				},
+			}).then(response => response.data.SubmitSolution)
+				.then(data => console.log(data))
+				.catch(error => alert(error));
 		},
 	},
 
