@@ -1,9 +1,6 @@
 <template>
 	<div
 		class="ma-4">
-		<h2
-			v-if="content"
-			class="headline mb-3">Content</h2>
 		<div
 			v-mixrend = "content"
 			class="mb-3" />
@@ -25,22 +22,32 @@
 		<div
 			v-mixrend = "constraints"
 			class="mb-3" />
-		<h2
-			v-if="resource"
-			class="headline mb-3">Resource</h2>
-		<div
-			v-mixrend = "resource"
-			class="mb-3" />
+		<h2 class="headline mb-3">Sample</h2>
+		<table class="sample-table mb-3">
+			<tr><th>Input</th><th>Output</th></tr>
+			<tr
+				v-for="(sample, index) in samples"
+				:key="index">
+				<td><pre>{{ sample.input }}</pre></td>
+				<td><pre>{{ sample.output }}</pre></td>
+			</tr>
+		</table>
 		<h2
 			v-if="note"
 			class="headline mb-3">Note</h2>
 		<div class="mb-3">{{ note }}</div>
-		<h2 class="headline mb-3">Sample</h2>
-		<table class="sample-table">
-			<tr><th>Input</th><th>Output</th></tr>
+		<table class="guideline-table">
 			<tr>
-				<td>333333333333333333333333333333333333333333<br>1<br>2<br>3</td>
-				<td>1<br>20<br>115</td>
+				<td>Time Limit</td>
+				<td>{{ timeLimit }} ms</td>
+			</tr>
+			<tr>
+				<td>Memory Limit</td>
+				<td>{{ memoryLimit }} MiB</td>
+			</tr>
+			<tr v-if="resource">
+				<td>Source</td>
+				<td>{{ resource }}</td>
 			</tr>
 		</table>
 	</div>
@@ -87,7 +94,7 @@ export default {
 			type: Number,
 			required: true,
 		},
-		sample: {
+		samples: {
 			type: Array,
 			required: true,
 		},

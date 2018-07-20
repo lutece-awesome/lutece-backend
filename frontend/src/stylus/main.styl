@@ -13,17 +13,28 @@ table.sample-table
 	width: 100%
 	table-layout: fixed
 	border-spacing: 0px
-	border-width: thin 0
 	th
 		@extend .body-2
-		@extend .pa-1
+		border-width: thin 0
+	td
+		vertical-align: top
+		border-width: 0 0 thin 0
+		word-wrap: break-word
+	th
 	td
 		@extend .pa-1
-		vertical-align: top
-		border-width: thin 0 0 0
-		word-wrap: break-word
+		border-style: solid
+		border-color: rgba(0,0,0,0.12)
 
-table.sample-table
-table.sample-table td
-	border-style: solid
-	border-color: rgba(0,0,0,0.12)
+table.guideline-table
+	width: 100%
+	border-spacing: 0px
+	color: rgba(0,0,0,0.6)
+	td
+		@extend .py-1
+		border-width: 0 0 thin 0
+		border-style: solid
+		border-color: rgba(0,0,0,0.12)
+	tr > td:first-child
+		@extend .body-2
+		width: 120px

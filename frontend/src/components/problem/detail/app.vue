@@ -43,7 +43,7 @@
 							:note = "note"
 							:time-limit = "timeLimit"
 							:memory-limit = "memoryLimit"
-							:sample = "sample"
+							:samples = "samples"
 							:resource = "resource"
 						/>
 					</v-tab-item>
@@ -85,7 +85,7 @@ export default {
 		note: '',
 		timeLimit: 0,
 		memoryLimit: 0,
-		sample: [],
+		samples: [],
 	}),
 
 	mounted() {
@@ -111,7 +111,7 @@ export default {
 					this.note = data.note;
 					this.timeLimit = data.timeLimit;
 					this.memoryLimit = data.memoryLimit;
-					this.sample = JSON.parse(data.sample);
+					this.samples = JSON.parse(data.sample);
 				});
 		},
 	},
