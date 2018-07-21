@@ -1,5 +1,5 @@
 from .models import Submission, Judgeinfo
-from .judge_result import Judge_result, get_judge_result
+from .judge_result import Judge_result
 from problem.util import InsAccepttimes
 
 def Modify_submission_status( ** report ):
@@ -23,7 +23,7 @@ def Modify_submission_status( ** report ):
             ** get_update_dict( report )).save()
         if complete == True:
             Submission.objects.filter( pk = submission ).update( judge_status = result , completed = True )
-            if get_judge_result( result ) is Judge_result.AC:
+            if Judge_result.get_judge_result( result ) is Judge_result.AC:
                 InsAccepttimes( sub.problem.pk )
             from user.util import Modify_user_tried_solved
             Modify_user_tried_solved( sub.user )

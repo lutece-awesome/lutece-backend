@@ -6,6 +6,7 @@ from .models import Submission
 from graphql_jwt.decorators import login_required
 from .tasks import Submission_task
 from utils.schema import paginatorList
+from submission.judge_result import Judge_result
 
 
 class SubmissionType( DjangoObjectType ):
@@ -18,8 +19,7 @@ class SubmissionType( DjangoObjectType ):
     user = graphene.String()
     judgererror_msg = graphene.String()
     compileerror_msg = graphene.String()
-    timecost = graphene.Int()
-    memorycost = graphene.Int()
+    color = graphene.String()
 
     def resolve_problem( self , info , * args , ** kwargs ):
         return self.problem.title
@@ -42,11 +42,9 @@ class SubmissionType( DjangoObjectType ):
             return self.compileerror_msg
         return ''
 
-    def resolve_timecost( self , info , * args , ** kwargs ):
-        return self.timecost
+    def resolve_color( self , info , * args , ** kwargs ):
+        return Judge_result.get_judge_result( self.judge_status ).value.color    
 
-    def resolve_memorycost( self , info , * args , ** kwargs ):
-        return self.memorycost
 
 class SubmissionListType( graphene.ObjectType ):
     class Meta:

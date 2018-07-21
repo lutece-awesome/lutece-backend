@@ -8,6 +8,7 @@ query SubmissionListGQL($page: Int!) {
 			problem
             judgeStatus
             language
+			color
 		}
 	}
 }

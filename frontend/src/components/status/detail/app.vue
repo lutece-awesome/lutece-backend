@@ -11,7 +11,7 @@
 					card
 					prominent>
 					<v-toolbar-title>
-						Detail
+						JudgeStatus
 					</v-toolbar-title>
 					<v-spacer/>
 				</v-toolbar>

@@ -14,7 +14,7 @@
 				<td class="text-xs-center">{{ props.item.submissionId }}</td>
 				<td class="text-xs-center">{{ props.item.user }}</td>
 				<td class="text-xs-center">{{ props.item.problem }}</td>
-				<td class="text-xs-center">{{ props.item.judgeStatus.toUpperCase() }}</td>
+				<td class="text-xs-center">{{ props.item.judgeStatus.toUpperCase() }} {{ props.item.color }} </td>
 				<td class="text-xs-center">{{ props.item.submitTime }}</td>
 				<td class="text-xs-center">{{ props.item.language.toUpperCase() }}</td>
 			</router-link>
