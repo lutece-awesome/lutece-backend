@@ -1,5 +1,5 @@
-query SubmissionListGQL($page: Int!) {
-	submissionList(page: $page) {
+query SubmissionListGQL($page: Int!,$date: String!) {
+	submissionList(page: $page,date: $date) {
 		maxpage
 		submissionList {
             submissionId

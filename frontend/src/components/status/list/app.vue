@@ -68,6 +68,7 @@ export default {
 				query: StatusListGQL,
 				variables: {
 					page,
+					date: new Date().getTime(),
 				},
 			})
 				.then(response => response.data.submissionList)

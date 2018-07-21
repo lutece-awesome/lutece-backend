@@ -87,12 +87,12 @@ class SubmitSolution( graphene.Mutation ):
 
 class Query( object ):
     submission = graphene.Field( SubmissionType , pk = graphene.ID() )
-    submissionList = graphene.Field( SubmissionListType , page = graphene.Int() )
+    submissionList = graphene.Field( SubmissionListType , page = graphene.Int() , date = graphene.String() )
 
     def resolve_submission( self , info , pk ):
         return Submission.objects.get( pk = pk )
     
-    def resolve_submissionList( self , info , page ):
+    def resolve_submissionList( self , info , page , date ):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
         statuslist = Submission.objects.all()
