@@ -101,6 +101,9 @@ ENV/
 # vscode work file
 .vscode/
 
+# vs work file
+.vs/
+
 # setting.py
 Lutece/xiper_local.py
 
