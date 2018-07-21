@@ -63,3 +63,5 @@ django-cors-headers==2.3.0
 graphene-django==2.0.0
 django-graphql-jwt==0.1.10
 django-uuslug==1.1.8
+channels==2.1.2
+channels-redis==2.2.1

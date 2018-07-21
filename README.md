@@ -23,3 +23,14 @@ Simplicity online judge
     sudo rabbitmqctl add_vhost judger_host
     sudo rabbitmqctl set_permissions -p judger_host task_user ".*" ".*" ".*"
 </pre>
+
++ Install redis
+<pre>
+    sudo apt-get update
+    sudo apt-get install redis-server
+</pre>
+
++ Run redis
+<pre>
+    sudo service redis-server start
+</pre>

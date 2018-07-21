@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'discussion',
     'blog',
     'home',
+    # channel
+    'channels'
 ]
 
 GRAPHENE = {
@@ -76,6 +78,16 @@ AUTHENTICATION_BACKENDS = [
     'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+        'ROUTING': 'Lutece.routing.channel_routing',
+    }
+}
 
 ROOT_URLCONF = 'Lutece.urls'
 
@@ -169,5 +181,7 @@ STATICFILES_FINDERS = (
 
 # STATIC_ROOT = os.path.join( BASE_DIR , 'static' )
 
+# Django channels
+ASGI_APPLICATION = "Lutece.routing.application"
 
 from .base_setting import *
