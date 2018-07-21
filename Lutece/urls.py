@@ -24,6 +24,7 @@ from .base_setting import DEBUG as lutece_debug
 urlpatterns = [
     path( 'graphql' , csrf_exempt(GraphQLView.as_view( graphiql = True )) ) if lutece_debug else path( 'graphql' , GraphQLView.as_view( graphiql = False ) ),
     path( 'admin/', admin.site.urls),
+    path( 'data_server/' , include ('data_server.urls') ),
     re_path( r'^.*$' , TemplateView.as_view( template_name = 'frontend/dist/index.html') ),
     # path( 'start/' , TemplateView.as_view( template_name = 'base/start.html') , name = 'start' ),
     # path( 'about/' , TemplateView.as_view( template_name = 'base/about.html') , name = 'about' ),
@@ -31,7 +32,6 @@ urlpatterns = [
     # path( 'problem/' , include( 'problem.urls' )  ),
     # path( 'user/' , include( 'user.urls' ) ),
     # path( 'submission/', include( 'submission.urls' ) ),
-    # path( 'data_server/' , include ('data_server.urls') ),
     # path( 'discussion/' , include ('discussion.urls') ),
     # path( 'blog/' , include( 'blog.urls' ) ),
     # path( 'markdownx/' , include( markdownx ) ),
