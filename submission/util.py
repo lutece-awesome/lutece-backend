@@ -40,3 +40,10 @@ def get_update_dict( dic ):
     for _ in L:
         t.pop( _ )
     return t
+
+
+def construct_websocketdata( result , judge ):
+    return dumps({
+        'result' : result,
+        'judge': judge,
+    })
