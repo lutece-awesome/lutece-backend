@@ -62,7 +62,6 @@ export default {
 	methods: {
 		request(page) {
 			this.isLoading = true;
-			page = parseInt(page, 10);
 			this.$apollo.query({
 				query: ProblemListGQL,
 				variables: {

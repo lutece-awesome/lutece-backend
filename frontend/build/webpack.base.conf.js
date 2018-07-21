@@ -1,5 +1,5 @@
 const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const utils = require('./utils');
 const config = require('../config');
 const vueLoaderConfig = require('./vue-loader.conf');
@@ -31,6 +31,9 @@ module.exports = {
 			? config.build.assetsPublicPath
 			: config.dev.assetsPublicPath,
 	},
+	plugins: [
+		new VueLoaderPlugin(),
+	],
 	resolve: {
 		extensions: ['.js', '.vue', '.json'],
 		alias: {
@@ -94,7 +97,4 @@ module.exports = {
 		tls: 'empty',
 		child_process: 'empty',
 	},
-	plugins: [
-		new VueLoaderPlugin(),
-	],
 };

@@ -1,5 +1,3 @@
-
-
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -13,9 +11,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob-all');
 const _ = require('lodash');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const safeParser = require('postcss-safe-parser');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('../config');
 const utils = require('./utils');
+const env = require('../config/prod.env');
 
 class MyFontminPlugin extends FontminPlugin {
 	findFontFiles(compilation) {
@@ -46,21 +46,15 @@ const webpackConfig = merge(baseWebpackConfig, {
 	output: {
 		path: config.build.assetsRoot,
 		filename: utils.assetsPath('js/[name].[chunkhash].js'),
-		chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
 	},
 	plugins: [
-		new UglifyJsPlugin({
-			uglifyOptions: {
-				compress: {
-					warnings: false,
-				},
-			},
-			sourceMap: config.build.productionSourceMap,
-			parallel: true,
+		// http://vuejs.github.io/vue-loader/en/workflow/production.html
+		new webpack.DefinePlugin({
+			'process.env': env,
 		}),
+		// extract css into its own file
 		new MiniCssExtractPlugin({
-			filename: utils.assetsPath('css/[name].[hash].css'),
-			chunkFilename: utils.assetsPath('css/[id].[hash].css'),
+			filename: utils.assetsPath('css/[name].[chunkhash].css'),
 		}),
 		new PurgecssPlugin({
 			paths: glob.sync([
@@ -71,6 +65,13 @@ const webpackConfig = merge(baseWebpackConfig, {
 			]),
 			whitelistPatterns: [/^v-progress-circular/, /transition/],
 			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/],
+		}),
+		// Compress extracted CSS. We are using this plugin so that possible
+		// duplicated CSS from different components can be deduped.
+		new OptimizeCSSAssetsPlugin({
+			cssProcessorOptions: config.build.productionSourceMap
+				? { parser: safeParser, map: { inline: false } }
+				: { parser: safeParser },
 		}),
 		// generate dist index.html with correct asset hash for caching.
 		// you can customize output by editing /index.html
@@ -86,7 +87,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 				// more options:
 				// https://github.com/kangax/html-minifier#options-quick-reference
 			},
-			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
+			// necessary to consistently work with multiple chunks
 			chunksSortMode: 'dependency',
 		}),
 		new FaviconsWebpackPlugin({
@@ -105,7 +106,9 @@ const webpackConfig = merge(baseWebpackConfig, {
 			// },
 		}),
 		// keep module.id stable when vendor modules does not change
+		new webpack.NamedChunksPlugin(),
 		new webpack.HashedModuleIdsPlugin(),
+		// copy custom static assets
 		new CopyWebpackPlugin([
 			{
 				from: path.resolve(__dirname, '../static'),
@@ -122,7 +125,15 @@ const webpackConfig = merge(baseWebpackConfig, {
 			chunks: 'all',
 		},
 		minimizer: [
-			new OptimizeCSSAssetsPlugin(),
+			new UglifyJsPlugin({
+				uglifyOptions: {
+					compress: {
+						warnings: false,
+					},
+				},
+				sourceMap: config.build.productionSourceMap,
+				parallel: true,
+			}),
 		],
 	},
 });
@@ -133,11 +144,14 @@ if (config.build.productionGzip) {
 	webpackConfig.plugins.push(
 		new CompressionWebpackPlugin({
 			asset: '[path].gz[query]',
+			algorithm: 'gzip',
 			test: new RegExp(
 				`\\.(${
 					config.build.productionGzipExtensions.join('|')
 				})$`,
 			),
+			threshold: 10240,
+			minRatio: 0.8,
 		}),
 	);
 }

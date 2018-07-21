@@ -1,5 +1,3 @@
-
-
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
@@ -47,8 +45,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 		},
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env': require('../config/dev.env'),
+		}),
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoEmitOnErrorsPlugin(),
 		// https://github.com/ampedandwired/html-webpack-plugin
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
@@ -64,6 +64,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 			},
 		]),
 	],
+	optimization: {
+		namedModules: true,
+		noEmitOnErrors: true,
+	},
 });
 
 module.exports = new Promise((resolve, reject) => {
