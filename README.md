@@ -23,3 +23,9 @@ Simplicity online judge
     sudo rabbitmqctl add_vhost judger_host
     sudo rabbitmqctl set_permissions -p judger_host task_user ".*" ".*" ".*"
 </pre>
+
++ Install redis for websocket backend
+<pre>
+    sudo apt-get update
+    sudo apt-get install redis-server
+</pre>

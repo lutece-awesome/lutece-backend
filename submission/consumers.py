@@ -8,7 +8,6 @@ class StatusDetailConsumer( WebsocketConsumer ):
     def connect( self ):
         self.submission = Submission.objects.get( pk = self.scope['url_route']['kwargs']['pk'] )
         self.group_name = 'StatusDetail_%d' % self.submission.pk
-
         '''
             Auth
         '''
