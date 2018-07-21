@@ -13,9 +13,10 @@
 					prominent
 					tabs>
 					<v-toolbar-title>
-						{{ title }}
+						{{ title || 'Loading...' }}
 					</v-toolbar-title>
 					<v-tabs
+						v-if="title"
 						slot="extension"
 						v-model="tabs"
 						fixed-tabs
@@ -32,6 +33,7 @@
 					</v-tabs>
 				</v-toolbar>
 				<v-tabs-items
+					v-if="title"
 					v-model="tabs"
 					touchless>
 					<v-tab-item id="description">

@@ -4,9 +4,11 @@
 
 <script>
 
+import CodeEditor from '@/components/basic/codeeditor';
+
 export default {
 	components: {
-		CodeEditor: () => import('@/components/basic/codeeditor'),
+		CodeEditor,
 	},
 	props: {
 		problemslug: {
