@@ -22,11 +22,13 @@
     "graphql-tag": "^2.9.2",
     "katex": "^0.10.0-beta",
     "markdown-it": "^8.4.2",
+    "moment": "^2.22.2",
     "unfetch": "^3.0.0",
     "vue": "^2.5.2",
     "vue-apollo": "^3.0.0-beta.19",
     "vue-codemirror": "^4.0.5",
     "vue-meta": "^1.5.2",
+    "vue-moment": "^4.0.0",
     "vue-router": "^3.0.1",
     "vuetify": "^1.1.6",
     "vuex": "^3.0.1"

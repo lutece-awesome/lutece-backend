@@ -39,6 +39,7 @@ import './stylus/main.styl';
 Vue.config.productionTip = false;
 Vue.use(Meta);
 Vue.use(mixrend);
+Vue.use(require('vue-moment'));
 
 Vue.use(Vuetify, {
 	components: {
