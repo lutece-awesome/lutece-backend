@@ -70,7 +70,7 @@ def check_contest_submit_code( contest , user , err ):
         err.append( 'Contest has ended' )
 
 def get_contest_analysis( contest ):
-    from submission.judge_result import Judge_result, get_judge_result
+    from submission.judge_result import Judge_result
     from submission.models import Submission
     from user.models import User
     pos_hashtable = { x.problem : i for i , x in enumerate(contest.contestproblem_set.all()) }
@@ -86,7 +86,7 @@ def get_contest_analysis( contest ):
         _id = each.problem_id
         if _id in pos_hashtable:
             _id = pos_hashtable[_id]
-            se = get_judge_result( each.judge_status )
+            se = Judge_result.get_judge_result( each.judge_status )
             if se is Judge_result.AC and each.user_id in solved_user[_id]:
                 continue
             analysis[_id][1] += 1
