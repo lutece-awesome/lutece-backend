@@ -32,14 +32,17 @@ import Base from './base';
 import apolloProvider from './apollo';
 import store from './store';
 import mixrend from '@/plugins/markdown-it-katex';
+
 import '@mdi/font/css/materialdesignicons.css';
 import 'katex/dist/katex.css';
 import './stylus/main.styl';
+
 
 Vue.config.productionTip = false;
 Vue.use(Meta);
 Vue.use(mixrend);
 Vue.use(require('vue-moment'));
+
 
 Vue.use(Vuetify, {
 	components: {

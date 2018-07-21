@@ -81,10 +81,14 @@ AUTHENTICATION_BACKENDS = [
 
 CHANNEL_LAYERS = {
     'default': {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        'ROUTING': 'Lutece.routing.channel_routing',
-    }
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
+# Django channels
+ASGI_APPLICATION = "Lutece.routing.application"
 
 ROOT_URLCONF = 'Lutece.urls'
 
@@ -177,8 +181,5 @@ STATICFILES_FINDERS = (
 )
 
 # STATIC_ROOT = os.path.join( BASE_DIR , 'static' )
-
-# Django channels
-ASGI_APPLICATION = "Lutece.routing.application"
 
 from .base_setting import *

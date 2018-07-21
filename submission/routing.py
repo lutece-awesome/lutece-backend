@@ -2,5 +2,5 @@ from django.conf.urls import url
 from . import consumers
 
 websocket_urlpatterns = [
-    url( r'ws/status/detail/(?P<pk>\d+/$' , consumers.StatusDetailConsumer )
+    url( r'ws/status/(?P<pk>\d{1,})/$' , consumers.StatusDetailConsumer )
 ]

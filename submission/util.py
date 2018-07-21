@@ -1,6 +1,7 @@
 from .models import Submission, Judgeinfo
 from .judge_result import Judge_result
 from problem.util import InsAccepttimes
+from json import dumps
 
 def Modify_submission_status( ** report ):
     '''
