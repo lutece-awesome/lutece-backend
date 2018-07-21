@@ -4,12 +4,12 @@
 		:items = "items"
 		:loading = "isLoading"
 		:search-input.sync = "search"
-		single-line
 		hide-details
 		hide-no-data
 		append-icon="mdi-magnify"
 		return-object
 		small-chips
+		solo
 		label="Search"/>
 </template>
 

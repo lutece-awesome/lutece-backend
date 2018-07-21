@@ -8,30 +8,20 @@
 			md10
 			xl8>
 			<v-card>
-				<v-toolbar
-					card
-					prominent
-					tabs>
-					<v-toolbar-title>
-						{{ title || 'Loading...' }}
-					</v-toolbar-title>
-					<v-tabs
-						v-if="title"
-						slot="extension"
-						v-model="tabs"
-						fixed-tabs
-						color="transparent">
-						<v-tab
-							:ripple="false"
-							to="description">Description</v-tab>
-						<v-tab
-							:ripple="false"
-							to="editor">Editor</v-tab>
-						<v-tab
-							:ripple="false"
-							to="discussion">Discussion</v-tab>
-					</v-tabs>
-				</v-toolbar>
+				<v-tabs
+					v-if="title"
+					v-model="tabs"
+					fixed-tabs>
+					<v-tab
+						:ripple="false"
+						to="description">Description</v-tab>
+					<v-tab
+						:ripple="false"
+						to="editor">Editor</v-tab>
+					<v-tab
+						:ripple="false"
+						to="discussion">Discussion</v-tab>
+				</v-tabs>
 				<v-tabs-items
 					v-if="title"
 					v-model="tabs"

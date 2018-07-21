@@ -85,5 +85,10 @@ new Vue({
 	router,
 	store,
 	components: { Base },
+	data() {
+		return {
+			title: 'Lutece',
+		};
+	},
 	template: '<Base/>',
 });

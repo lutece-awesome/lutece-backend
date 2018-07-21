@@ -30,7 +30,7 @@
 			color="primary">
 			<v-toolbar-side-icon @click.stop="drawer=!drawer"/>
 			<v-toolbar-title>
-				Lutece
+				{{ title }}
 			</v-toolbar-title>
 			<v-spacer/>
 			<v-toolbar-items class="hidden-sm-and-down">
@@ -149,6 +149,9 @@ export default {
 		displayname() {
 			return this.$store.state.user.displayname;
 		},
+		title() {
+			return this.$root.title;
+		},
 	},
 	watch: {
 		authed(val) {
@@ -157,6 +160,13 @@ export default {
 	},
 	mounted() {
 		this.refresh();
+	},
+	metaInfo: {
+		changed(newInfo, _addedTags, _removedTags) {
+			if (typeof newInfo.titleChunk !== 'undefined') {
+				this.$root.title = newInfo.titleChunk;
+			}
+		},
 	},
 	methods: {
 		refresh() {
