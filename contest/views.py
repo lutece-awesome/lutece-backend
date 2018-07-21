@@ -215,7 +215,7 @@ def get_contest_rank( request , pk ):
     from submission.models import Submission
     from .util import ContestProblemAnalysis, time_format_hm , time_format_hms
     from datetime import timedelta
-    from submission.judge_result import Judge_result, get_judge_result, Query_field
+    from submission.judge_result import Judge_result, Query_field
     from copy import deepcopy
     from user.models import User
 
@@ -240,7 +240,7 @@ def get_contest_rank( request , pk ):
         each.user = user_list[each.user_id]
         _id = each.problem_id
         if _id in pos_hashtable:
-            se = get_judge_result( each.judge_status )
+            se = Judge_result.get_judge_result( each.judge_status )
             if se not in Query_field.contest_field.value:
                 continue
             user = each.user

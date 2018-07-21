@@ -1,5 +1,5 @@
 from submission.models import Submission
-from submission.judge_result import get_judge_result, Judge_result, Query_field
+from submission.judge_result import Judge_result, Query_field
 
 def get_user_report( user , has_perm ):
     _all = Submission.objects.filter( user = user )
@@ -11,7 +11,7 @@ def get_user_report( user , has_perm ):
     tried = set()
     for sub in _all:
         prob = sub.problem.pk
-        result = get_judge_result( sub.judge_status )
+        result = Judge_result.get_judge_result( sub.judge_status )
         if result not in Query_field.basic_field.value:
             continue
         tried.add( prob )
