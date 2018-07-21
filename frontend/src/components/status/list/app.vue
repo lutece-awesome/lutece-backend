@@ -36,6 +36,7 @@ import StatusListGQL from '@/graphql/submission/list.gql';
 
 
 export default {
+	metaInfo() { return { title: 'Status' }; },
 
 	components: {
 		StatusList,

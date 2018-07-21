@@ -5,7 +5,7 @@
 		hide-actions >
 		<template
 			slot="items"
-			slot-scope = "props">
+			slot-scope="props">
 			<router-link
 				:to="{name: &quot;StatusDetail&quot;, params: {pk: props.item.submissionId}}"
 				:style="{cursor: 'pointer'}"
@@ -14,9 +14,14 @@
 				<td class="text-xs-center">{{ props.item.submissionId }}</td>
 				<td class="text-xs-center">{{ props.item.user }}</td>
 				<td class="text-xs-center">{{ props.item.problem }}</td>
-				<td class="text-xs-center">{{ props.item.judgeStatus.toUpperCase() }} {{ props.item.color }} </td>
-				<td class="text-xs-center">{{ props.item.submitTime }}</td>
-				<td class="text-xs-center">{{ props.item.language.toUpperCase() }}</td>
+				<td
+					:class="props.item.color + '--text'"
+					class="text-xs-center">{{ props.item.judgeStatus }}</td>
+				<td class="text-xs-center time">
+					<span class="humanize-time">{{ props.item.submitTime | moment("from") }}</span>
+					<span class="full-time">{{ props.item.submitTime | moment("Y-M-D H:m:s") }}</span>
+				</td>
+				<td class="text-xs-center">{{ props.item.language }}</td>
 			</router-link>
 		</template>
 	</v-data-table>
@@ -46,7 +51,7 @@ export default {
 				sortable: false,
 			},
 			{
-				text: 'Title',
+				text: 'Problem',
 				align: 'center',
 				sortable: false,
 			},
@@ -54,10 +59,9 @@ export default {
 				text: 'Verdict',
 				align: 'center',
 				sortable: false,
-				class: 'hidden-sm-and-down',
 			},
 			{
-				text: 'When',
+				text: 'Time',
 				align: 'center',
 				sortable: false,
 			},
