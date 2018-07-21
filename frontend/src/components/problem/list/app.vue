@@ -6,16 +6,8 @@
 			v-if = "!isLoading"
 			xs12
 			md8>
+			<problemsearch class="mb-2" />
 			<v-card>
-				<v-toolbar
-					card
-					prominent>
-					<v-toolbar-title>
-						Problem
-					</v-toolbar-title>
-					<v-spacer/>
-					<problemsearch />
-				</v-toolbar>
 				<ProblemList :problem-item="problemItem" />
 			</v-card>
 			<div class="text-xs-center mt-2">

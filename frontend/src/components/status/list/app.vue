@@ -8,14 +8,6 @@
 			xs12
 			md8>
 			<v-card>
-				<v-toolbar
-					card
-					prominent>
-					<v-toolbar-title>
-						Status
-					</v-toolbar-title>
-					<v-spacer/>
-				</v-toolbar>
 				<StatusList :status-item = "statusItem" />
 			</v-card>
 			<div class="text-xs-center mt-2">
