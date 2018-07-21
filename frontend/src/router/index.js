@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Home from '@/components/home/home';
 import About from '@/components/about/about';
 import StatusList from '@/components/status/list/app';
+import StatusDetail from '@/components/status/detail/app';
 import Contest from '@/components/contest/contest';
 import User from '@/components/user/user';
 import Login from '@/components/signin/login';
@@ -40,6 +41,11 @@ export default new Router({
 			path: '/status',
 			name: 'Status',
 			component: StatusList,
+		},
+		{
+			path: '/status/:pk',
+			name: 'StatusDetail',
+			component: StatusDetail,
 		},
 		{
 			path: '/contest',
