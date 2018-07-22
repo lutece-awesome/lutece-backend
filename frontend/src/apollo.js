@@ -12,6 +12,7 @@ const env = process.env.NODE_ENV;
 const httpLink = createHttpLink({
 	// You should use an absolute URL here
 	uri: env === 'production' ? '/graphql' : 'http://localhost:8000/graphql',
+	credentials: 'same-origin',
 	fetch,
 });
 
@@ -20,7 +21,6 @@ const httpLinkAuth = setContext((_, { headers }) => {
 	const token = localStorage.getItem('USER_TOKEN');
 	const headersWithCSRF = {
 		...headers,
-		Cookie: document.cookie,
 		'X-CSRFToken': Cookies.get('csrftoken'),
 	};
 	// return the headers to the context so httpLink can read them
