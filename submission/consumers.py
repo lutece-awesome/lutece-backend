@@ -1,9 +1,9 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Submission, Judgeinfo
-from .util import construct_websocketdata
 from graphql_jwt.shortcuts import get_user_by_token
 from django.contrib.auth.models import AnonymousUser
 from utils.language import Language
+from json import dumps
 
 class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
@@ -34,14 +34,15 @@ class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
     async def init( self ):
         s = Judgeinfo.objects.filter( submission = self.submission )
-        code = self.submission.code if ( self.submission.user == self.user or self.user.has_perm( 'submission.view_all' ) ) else ''
-        codehighlight =  Language.get_language( self.submission.language ).value.codemirror if ( self.submission.user == self.user or self.user.has_perm( 'submission.view_all' ) ) else ''
-        await self.send( text_data = construct_websocketdata( result = self.submission.judge_status ,  judge =  [ {
-            'timecost' : each.time_cost,
-            'memorycost' : each.memory_cost,
-            'result': each.result,
-            'case': each.case
-        } for each in s ] , casenumber = self.submission.case_number , code = code , codehighlight = codehighlight ) )
+        lang = Language.get_language( self.submission.language )
+        await self.update_result( event = { 'data':{
+            'result' : self.submission.judge_status ,
+            'judge' :  [ each.get_websocket_field() for each in s ] ,
+            'compileerror_msg' : self.submission.compileerror_msg,
+            'judgererror_msg' : self.submission.judgererror_msg,
+            'casenumber' : self.submission.case_number ,
+            'code' : self.submission.code ,
+            'codehighlight' : lang.value.codemirror }} )
     
     async def disconnect( self , close_code ):
         await self.channel_layer.group_discard(
@@ -51,4 +52,12 @@ class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
     async def update_result( self , event ):
         data = event['data']
-        await self.send( text_data = data )
+        perm = self.submission.user == self.user
+        privilege = self.user.has_perm( 'submission.view_all' )
+        if 'compileerror_msg' in data and not ( perm or privilege ):
+            data.pop( 'compileerror_msg' )
+        if 'judgererror_msg' in data and not privilege:
+            data.pop( 'judgererror_msg' )
+        if 'code' in data and not ( perm or privilege ):
+            data.pop( 'code' )
+        await self.send( text_data = dumps( data ) )

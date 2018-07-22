@@ -67,3 +67,9 @@ class Judgeinfo(models.Model):
     class Meat:
         ordering = ['case']
         websocket_field = ( 'result' , 'time_cost' , 'memory_cost' , 'case' )
+    
+    def get_websocket_field( self ):
+        dic = dict()
+        for _ in self.Meat.websocket_field:
+            dic[_] = getattr( self , _ )
+        return dic
