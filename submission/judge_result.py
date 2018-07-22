@@ -120,6 +120,7 @@ class Query_field( Enum ):
     basic_field = ( Judge_result.AC , Judge_result.CE , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
     listshow_field = ( Judge_result.AC , Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
     contest_field = ( Judge_result.AC , Judge_result.WA , Judge_result.RE, Judge_result.TLE , Judge_result.OLE, Judge_result.MLE )
+    failedcase_field = ( Judge_result.WA , Judge_result.RE , Judge_result.TLE , Judge_result.OLE , Judge_result.MLE )
 
 def get_judge_result_color( result ):
     return get_judge_result( result ).value.color

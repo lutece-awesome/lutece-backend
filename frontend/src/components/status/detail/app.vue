@@ -42,6 +42,8 @@ export default {
 		pk: '',
 		code: '',
 		codehighlight: '',
+		compileerror_msg: '',
+		judgererror_msg: '',
 		result: '',
 		casenumber: 0,
 		judge: [],
@@ -64,6 +66,8 @@ export default {
 			if (Object.prototype.hasOwnProperty.call(data, 'casenumber')) { this.casenumber = data.casenumber; }
 			if (Object.prototype.hasOwnProperty.call(data, 'code')) { this.casenumber = data.code; }
 			if (Object.prototype.hasOwnProperty.call(data, 'codehighlight')) { this.casenumber = data.codehighlight; }
+			if (Object.prototype.hasOwnProperty.call(data, 'compileerror_msg')) { this.compileerror_msg = data.compileerror_msg; }
+			if (Object.prototype.hasOwnProperty.call(data, 'judgererror_msg')) { this.casenumber = data.judgererror_msg; }
 		};
 	},
 };

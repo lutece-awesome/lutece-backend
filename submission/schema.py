@@ -2,11 +2,11 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from annoying.functions import get_object_or_None
 from problem.models import Problem
-from .models import Submission
+from .models import Submission, Judgeinfo
 from graphql_jwt.decorators import login_required
 from .tasks import Submission_task
 from utils.schema import paginatorList
-from submission.judge_result import Judge_result
+from submission.judge_result import Judge_result, Query_field
 
 
 class SubmissionType( DjangoObjectType ):
@@ -20,6 +20,7 @@ class SubmissionType( DjangoObjectType ):
     judgererror_msg = graphene.String()
     compileerror_msg = graphene.String()
     color = graphene.String()
+    failed_case = graphene.Int()
 
     def resolve_problem( self , info , * args , ** kwargs ):
         return self.problem.title
@@ -43,7 +44,12 @@ class SubmissionType( DjangoObjectType ):
         return ''
 
     def resolve_color( self , info , * args , ** kwargs ):
-        return Judge_result.get_judge_result( self.judge_status ).value.color    
+        return Judge_result.get_judge_result( self.judge_status ).value.color
+    
+    def resolve_failed_case( self , info , * args , ** kwargs ):
+        if Judge_result.get_judge_result( self.judge_status ) in Query_field.failedcase_field.value:
+            return Judgeinfo.objects.filter( submission = self ).count()
+        return None
 
 
 class SubmissionListType( graphene.ObjectType ):

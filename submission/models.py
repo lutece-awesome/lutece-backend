@@ -63,5 +63,7 @@ class Judgeinfo(models.Model):
 
     def __str__(self):
         return str(self.judgeinfo_id)
+
     class Meat:
         ordering = ['case']
+        websocket_field = ( 'result' , 'time_cost' , 'memory_cost' , 'case' )

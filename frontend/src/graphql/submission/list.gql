@@ -3,6 +3,7 @@ query SubmissionListGQL($page: Int!,$date: String!) {
 		maxpage
 		submissionList {
             submissionId
+			failedCase
             submitTime
             user
 			problem
