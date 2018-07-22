@@ -20,6 +20,7 @@ const httpLinkAuth = setContext((_, { headers }) => {
 	const token = localStorage.getItem('USER_TOKEN');
 	const headersWithCSRF = {
 		...headers,
+		Cookie: document.cookie,
 		'X-CSRFToken': Cookies.get('csrftoken'),
 	};
 	// return the headers to the context so httpLink can read them
