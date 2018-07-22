@@ -62,7 +62,7 @@ export default {
 			let { data } = event;
 			data = JSON.parse(data);
 			for (let i = 0; i < data.judge.length; i += 1) { this.judge.push(data.judge[i]); }
-			this.result = data.result;
+			if (Object.prototype.hasOwnProperty.call(data, 'result')) { this.result = data.result; }
 			if (Object.prototype.hasOwnProperty.call(data, 'casenumber')) { this.casenumber = data.casenumber; }
 			if (Object.prototype.hasOwnProperty.call(data, 'code')) { this.casenumber = data.code; }
 			if (Object.prototype.hasOwnProperty.call(data, 'codehighlight')) { this.casenumber = data.codehighlight; }

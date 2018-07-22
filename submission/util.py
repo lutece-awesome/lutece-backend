@@ -35,16 +35,17 @@ def Modify_submission_status( ** report ):
             submission = sub,
             ** get_update_dict( report ))
         s.save()
+        send_data = {
+            'judge': [ s.get_websocket_field() ]
+        }
         if complete == True:
             Submission.objects.filter( pk = submission ).update( judge_status = result , completed = True )
             if Judge_result.get_judge_result( result ) is Judge_result.AC:
                 InsAccepttimes( sub.problem.pk )
             from user.util import Modify_user_tried_solved
             Modify_user_tried_solved( sub.user )
-        async_to_sync(channel_layer.group_send)( name , {"type": "update_result" , 'data' : {
-            'result': result,
-            'judge': [ s.get_websocket_field() ]
-         } })
+            send_data['result'] = result
+        async_to_sync(channel_layer.group_send)( name , {"type": "update_result" , 'data' : send_data })
 
 def get_update_dict( dic ):
     '''
