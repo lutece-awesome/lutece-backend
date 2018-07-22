@@ -1,16 +1,23 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Submission, Judgeinfo
 from .util import construct_websocketdata
+from graphql_jwt.shortcuts import get_user_by_token
+from django.contrib.auth.models import AnonymousUser
 
 class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
     async def connect( self ):
         self.submission = Submission.objects.get( pk = self.scope['url_route']['kwargs']['pk'] )
         self.group_name = 'StatusDetail_%d' % self.submission.pk
+        try:
+            self.user = get_user_by_token( token = self.scope['query_string'] )
+        except:
+            self.user = AnonymousUser()
+        print( self.user )
         '''
             Auth
         '''
-        if not self.scope['user'].has_perm( 'problem.view_all' ) and not self.submission.problem.visible:
+        if not self.user.has_perm( 'problem.view_all' ) and not self.submission.problem.visible:
             raise RuntimeError( 'Permission Denied' )
         await self.channel_layer.group_add(
             self.group_name,
