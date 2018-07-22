@@ -1,11 +1,10 @@
-from channels.generic.websocket import WebsocketConsumer
-from asgiref.sync import async_to_sync
+from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Submission, Judgeinfo
 from .util import construct_websocketdata
 
-class StatusDetailConsumer( WebsocketConsumer ):
+class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
-    def connect( self ):
+    async def connect( self ):
         self.submission = Submission.objects.get( pk = self.scope['url_route']['kwargs']['pk'] )
         self.group_name = 'StatusDetail_%d' % self.submission.pk
         '''
@@ -13,21 +12,21 @@ class StatusDetailConsumer( WebsocketConsumer ):
         '''
         if not self.scope['user'].has_perm( 'problem.view_all' ) and not self.submission.problem.visible:
             raise RuntimeError( 'Permission Denied' )
-        async_to_sync(self.channel_layer.group_add)(
+        await self.channel_layer.group_add(
             self.group_name,
             self.channel_name
         )
-        self.accept()
-        self.init()
+        await self.accept()
+        await self.init()
         if self.submission.completed:
-            self.close()
+            await self.close()
 
     '''
         Send the judge_result that has been created before
     '''
 
     async def init( self ):
-        s = await Judgeinfo.objects.filter( submission = self.submission )
+        s = Judgeinfo.objects.filter( submission = self.submission )
         await self.send( text_data = construct_websocketdata( result = self.submission.judge_status ,  judge =  [ {
             'timecost' : each.time_cost,
             'memorycost' : each.memory_cost,
@@ -36,7 +35,7 @@ class StatusDetailConsumer( WebsocketConsumer ):
         } for each in s ] ) )
     
     async def disconnect( self , close_code ):
-        await async_to_sync(self.channel_layer.group_discard)(
+        await self.channel_layer.group_discard(
             self.group_name,
             self.channel_name
         )
