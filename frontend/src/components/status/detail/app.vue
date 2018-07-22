@@ -39,7 +39,9 @@ export default {
 	data: () => ({
 		pk: '',
 		code: '',
+		codehighlight: '',
 		result: '',
+		casenumber: 0,
 		judge: [],
 		ws: null,
 	}),
@@ -55,8 +57,11 @@ export default {
 		this.ws.onmessage = (event) => {
 			let { data } = event;
 			data = JSON.parse(data);
-			this.judge = data.judge;
+			for (let i = 0; i < data.judge.length; i += 1) { this.judge.push(data.judge[i]); }
 			this.result = data.result;
+			if (Object.prototype.hasOwnProperty.call(data, 'casenumber')) { this.casenumber = data.casenumber; }
+			if (Object.prototype.hasOwnProperty.call(data, 'code')) { this.casenumber = data.code; }
+			if (Object.prototype.hasOwnProperty.call(data, 'codehighlight')) { this.casenumber = data.codehighlight; }
 		};
 	},
 };

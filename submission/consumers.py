@@ -3,6 +3,7 @@ from .models import Submission, Judgeinfo
 from .util import construct_websocketdata
 from graphql_jwt.shortcuts import get_user_by_token
 from django.contrib.auth.models import AnonymousUser
+from utils.language import Language
 
 class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
@@ -13,7 +14,6 @@ class StatusDetailConsumer( AsyncWebsocketConsumer ):
             self.user = get_user_by_token( token = self.scope['query_string'] )
         except:
             self.user = AnonymousUser()
-        print( self.user )
         '''
             Auth
         '''
@@ -34,12 +34,14 @@ class StatusDetailConsumer( AsyncWebsocketConsumer ):
 
     async def init( self ):
         s = Judgeinfo.objects.filter( submission = self.submission )
+        code = self.submission.code if ( self.submission.user == self.user or self.user.has_perm( 'submission.view_all' ) ) else ''
+        codehighlight =  Language.get_language( self.submission.language ).value.codemirror if ( self.submission.user == self.user or self.user.has_perm( 'submission.view_all' ) ) else ''
         await self.send( text_data = construct_websocketdata( result = self.submission.judge_status ,  judge =  [ {
             'timecost' : each.time_cost,
             'memorycost' : each.memory_cost,
             'result': each.result,
             'case': each.case
-        } for each in s ] ) )
+        } for each in s ] , casenumber = self.submission.case_number , code = code , codehighlight = codehighlight ) )
     
     async def disconnect( self , close_code ):
         await self.channel_layer.group_discard(

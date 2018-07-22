@@ -43,8 +43,8 @@ def get_update_dict( dic ):
     return t
 
 
-def construct_websocketdata( result , judge ):
-    return dumps({
+def construct_websocketdata( result , judge , ** extra ):
+    return dumps( {**{
         'result' : result,
         'judge': judge,
-    })
+    } , ** extra } )
