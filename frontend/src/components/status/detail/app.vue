@@ -16,7 +16,16 @@
 					<v-spacer/>
 				</v-toolbar>
 				<v-card>
-					<v-card-title> {{ result }} </v-card-title>
+					<v-card-title primary-title>
+						<div>
+							<h3 class="headline mb-0">{{ result }}</h3>
+						</div>
+					</v-card-title>
+					<v-card-text>
+						<v-btn
+							v-for = "(each , index ) in judge"
+							:key = "each.index" > {{ each.result }} </v-btn>
+					</v-card-text>
 				</v-card>
 			</v-card>
 		</v-flex>
@@ -44,7 +53,13 @@ export default {
 
 	mounted() {
 		this.pk = this.$route.params.pk;
-		this.ws = new WebSocket(`${getWebSocketUri()}/status/${String(this.pk)}/`);
+		this.ws = new WebSocket(`${getWebSocketUri()}/status/${String(this.pk)}/?${localStorage.getItem('USER_TOKEN') || ''}`);
+		this.ws.onmessage = (event) => {
+			let { data } = event;
+			data = JSON.parse(data);
+			this.judge = data.judge;
+			this.result = data.result;
+		};
 	},
 };
 </script>
