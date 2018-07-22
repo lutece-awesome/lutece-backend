@@ -26,6 +26,8 @@
 
 
 <script>
+import { getWebSocketUri } from '@/utils';
+
 export default {
 	data: () => ({
 		pk: '',
@@ -42,7 +44,7 @@ export default {
 
 	mounted() {
 		this.pk = this.$route.params.pk;
-		this.ws = new WebSocket(`ws://127.0.0.1:8000/ws/status/${String(this.pk)}/`);
+		this.ws = new WebSocket(`${getWebSocketUri()}/status/${String(this.pk)}/`);
 	},
 };
 </script>
