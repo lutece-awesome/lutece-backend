@@ -35,19 +35,14 @@ export default {
 		ws: null,
 	}),
 
-	beforeDestory() {
-		alert('123');
+	beforeRouteLeave(to, from, next) {
 		this.ws.close();
+		next();
 	},
 
 	mounted() {
 		this.pk = this.$route.params.pk;
 		this.ws = new WebSocket(`ws://127.0.0.1:8000/ws/status/${String(this.pk)}/`);
-		// this.ws.onmessage = function (e) {
-		// 	const data = JSON.parse(e.data);
-		// 	console.log(data);
-		// };
-		// this.ws.send('ready');
 	},
 };
 </script>
