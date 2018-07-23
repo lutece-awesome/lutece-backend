@@ -20,6 +20,7 @@ table.sample-table
 		vertical-align: top
 		border-width: 0 0 thin 0
 		word-wrap: break-word
+		white-space: pre-wrap
 	th
 	td
 		@extend .pa-1
@@ -52,3 +53,13 @@ table.guideline-table
 			display: none
 		.full-time
 			display: inline
+
+[dense] table.v-table 
+	thead tr:not(.v-datatable__progress)
+		height: 48px
+	tbody td
+		height: 40px
+
+pre
+	word-wrap: break-word
+	white-space: pre-wrap

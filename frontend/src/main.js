@@ -22,6 +22,7 @@ import {
 	VTextField,
 	VForm,
 	VDivider,
+	VProgressLinear,
 	transitions,
 } from 'vuetify';
 import { Ripple, Resize } from 'vuetify/es5/directives';
@@ -64,6 +65,7 @@ Vue.use(Vuetify, {
 		VTextField,
 		VForm,
 		VDivider,
+		VProgressLinear,
 		transitions,
 	},
 	directives: {
