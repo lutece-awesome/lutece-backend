@@ -13,18 +13,19 @@
 				<v-progress-linear
 					v-model="progress"
 					height="2"
-					class="mt-1"/>
+					class="ma-0"/>
 				<codemirror
+					v-if="code"
 					v-model="code"
 					:options="cmOptions"
 				/>
+				<v-divider/>
 				<v-card-text v-if="judgererror_msg">
 					<pre>{{ judgererror_msg }}</pre>
 				</v-card-text>
 				<v-card-text v-if="compileerror_msg">
 					<pre>{{ compileerror_msg }}</pre>
 				</v-card-text>
-				<v-divider class="mt-3"/>
 				<v-data-table
 					v-if="judge.length > 0"
 					:items="judge"
