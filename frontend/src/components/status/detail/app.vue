@@ -35,7 +35,7 @@
 						slot="items"
 						slot-scope="props">
 						<tr>
-							<td class="text-xs-center">{{ props.index + 1 }}</td>
+							<td class="text-xs-center">{{ props.item.case }}</td>
 							<td class="text-xs-center">{{ props.item.result }}</td>
 							<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
 							<td class="text-xs-center">{{ props.item.memory_cost }} MiB</td>
