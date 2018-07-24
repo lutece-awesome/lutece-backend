@@ -86,6 +86,7 @@
 <script>
 import { getWebSocketUri } from '@/utils';
 
+
 export default {
 	components: {
 		codemirror: () => import('@/components/basic/codemirror'),

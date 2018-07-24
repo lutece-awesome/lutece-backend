@@ -136,6 +136,14 @@ export default {
 					problemslug: this.problemslug,
 				},
 			}).then(response => response.data.SubmitSolution)
+				.then((data) => {
+					this.$router.push({
+						name: 'StatusDetail',
+						params: {
+							pk: data.pk,
+						},
+					});
+				})
 				.catch((error) => {
 					this.error_text = error.message;
 					this.snackbar = true;
