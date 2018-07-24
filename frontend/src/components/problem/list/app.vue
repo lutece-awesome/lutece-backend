@@ -41,8 +41,8 @@ export default {
 	},
 
 	watch: {
-		page() {
-			this.request(this.page);
+		page(newpage, oldpage) {
+			if (newpage != oldpage) { this.request(this.page); }
 		},
 	},
 
