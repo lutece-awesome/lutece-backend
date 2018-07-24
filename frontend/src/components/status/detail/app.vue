@@ -44,17 +44,16 @@
 				/>
 				<div
 					v-if="judgererror_msg"
-					class="output-code pb-1">
+					class="output-code">
 					<pre>{{ judgererror_msg }}</pre>
 				</div>
 				<div
 					v-if="compileerror_msg"
-					class="output-code pb-1">
+					class="output-code">
 					<pre>{{ compileerror_msg }}</pre>
 				</div>
-				<div
-					v-if="judge.length > 0"
-					class="mt-2">
+				<div class="py-1"/>
+				<div v-if="judge.length > 0">
 					<v-divider/>
 					<v-data-table
 						:items="judge"
