@@ -127,7 +127,7 @@ class Query_field(Enum):
                       Judge_result.TLE, Judge_result.OLE, Judge_result.MLE)
     contest_field = (Judge_result.AC, Judge_result.WA, Judge_result.RE,
                      Judge_result.TLE, Judge_result.OLE, Judge_result.MLE)
-    failedcase_field = (Judge_result.WA, Judge_result.RE,
+    failedcase_field = (Judge_result.WA, Judge_result.RE, Judge_result.RN,
                         Judge_result.TLE, Judge_result.OLE, Judge_result.MLE)
 
 
