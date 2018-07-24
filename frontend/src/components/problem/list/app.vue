@@ -6,7 +6,7 @@
 			v-if = "!isLoading"
 			xs12
 			md8>
-			<problemsearch class="mb-2" />
+			<!-- <problemsearch class="mb-2" /> -->
 			<v-card>
 				<ProblemList :problem-item="problemItem" />
 			</v-card>
