@@ -71,7 +71,7 @@
 								<td class="text-xs-center">{{ props.item.case }}</td>
 								<td class="text-xs-center">{{ props.item.result }}</td>
 								<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
-								<td class="text-xs-center">{{ props.item.memory_cost }} MiB</td>
+								<td class="text-xs-center">{{ props.item.memory_cost }} KiB</td>
 							</tr>
 						</template>
 					</v-data-table>
@@ -152,7 +152,6 @@ export default {
 			this.cmOptions.mode = val;
 		},
 		completed(val) {
-			alert('completed , zhu zhu ');
 			if (val) {
 				this.ws.close();
 			}
