@@ -12,8 +12,8 @@ from submission.judge_result import Judge_result, Query_field
 class SubmissionType(DjangoObjectType):
     class Meta:
         model = Submission
-        only_fields = ('submission_id', 'language', 'judge_status',
-                       'submit_time', 'case_number', 'completed')
+        only_fields = ('submission_id', 'language', 'judge_status', 'submit_time',
+                       'case_number', 'completed', 'time_cost', 'memory_cost')
 
     problem = graphene.String()
     code = graphene.String()
@@ -22,8 +22,8 @@ class SubmissionType(DjangoObjectType):
     compileerror_msg = graphene.String()
     color = graphene.String()
     failed_case = graphene.Int()
-    timecost = graphene.Int()
-    memorycost = graphene.Int()
+    time_cost = graphene.Int()
+    memory_cost = graphene.Int()
 
     def resolve_problem(self, info, * args, ** kwargs):
         return self.problem.title
@@ -54,11 +54,11 @@ class SubmissionType(DjangoObjectType):
             return Judgeinfo.objects.filter(submission=self).count()
         return None
 
-    def resolve_timecost(self, info, * args, ** kwargs):
-        return self.timecost
+    def resolve_time_cost(self, info, * args, ** kwargs):
+        return self.time_cost
 
-    def resolve_memorycost(self, info, * args, ** kwargs):
-        return self.memorycost
+    def resolve_memory_cost(self, info, * args, ** kwargs):
+        return self.memory_cost
 
 
 class SubmissionListType(graphene.ObjectType):

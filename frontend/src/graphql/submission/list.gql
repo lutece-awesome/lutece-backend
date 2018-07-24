@@ -10,8 +10,8 @@ query SubmissionListGQL($page: Int!,$date: String!) {
             judgeStatus
             language
 			color
-			timecost
-			memorycost
+			timeCost
+			memoryCost
 		}
 	}
 }

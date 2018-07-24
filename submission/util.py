@@ -18,15 +18,15 @@ def Modify_submission_status(** report):
     if 'complete' in report and report['complete'] is True:
         send_data['completed'] = report['complete']
     if result == Judge_result.RN.value.full or result == Judge_result.PR.value.full:
-        Submission.objects.filter(pk=submission).update(judge_status=result)
+        Submission.objects.get(pk=submission).update(judge_status=result)
         send_data['result'] = result
     elif 'judgererror_msg' in report:
-        Submission.objects.filter(pk=submission).update(
+        Submission.objects.get(pk=submission).update(
             completed=True, judgererror_msg=report['judgererror_msg'], judge_status=result)
         send_data['result'] = result
         send_data['judgererror_msg'] = report['judgererror_msg']
     elif 'compileerror_msg' in report:
-        Submission.objects.filter(pk=submission).update(
+        Submission.objects.get(pk=submission).update(
             completed=True, compileerror_msg=report['compileerror_msg'], judge_status=result)
         send_data['result'] = result
         send_data['compileerror_msg'] = report['compileerror_msg']
@@ -39,14 +39,18 @@ def Modify_submission_status(** report):
             **get_update_dict(report))
         s.save()
         send_data['judge'] = [s.get_websocket_field()]
+        print(sub.time_cost, s.time_cost)
+        sub.time_cost = max(sub.time_cost, int(s.time_cost))
+        sub.memory_cost = max(sub.memory_cost, int(s.memory_cost))
         if complete == True:
-            Submission.objects.filter(pk=submission).update(
-                judge_status=result, completed=True)
+            sub.judge_status = result
+            sub.completed = True
             if Judge_result.get_judge_result(result) is Judge_result.AC:
                 InsAccepttimes(sub.problem.pk)
             from user.util import Modify_user_tried_solved
             Modify_user_tried_solved(sub.user)
             send_data['result'] = result
+        sub.save()
     async_to_sync(channel_layer.group_send)(
         name, {"type": "update_result", 'data': send_data})
 

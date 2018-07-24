@@ -20,8 +20,8 @@
 					{{ props.item.judgeStatus }}
 					<span v-if="props.item.failedCase">#{{ props.item.failedCase }}</span>
 				</td>
-				<td class="text-xs-center">{{ props.item.timecost }}</td>
-				<td class="text-xs-center">{{ props.item.memorycost }}</td>
+				<td class="text-xs-center">{{ props.item.timeCost }}</td>
+				<td class="text-xs-center">{{ props.item.memoryCost }}</td>
 				<td class="text-xs-center time">
 					<span class="humanize-time">{{ props.item.submitTime | moment("from") }}</span>
 					<span class="full-time">{{ props.item.submitTime | moment("Y-MM-DD HH:mm:ss") }}</span>
