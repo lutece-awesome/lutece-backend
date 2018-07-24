@@ -8,7 +8,9 @@
 			md8>
 			<v-card>
 				<v-card-title primary-title>
-					<h3 class="headline mb-0">{{ result }}</h3>
+					<h3
+						:class="result_color + '--text'"
+						class="headline mb-0">{{ result }}</h3>
 				</v-card-title>
 				<v-progress-linear
 					v-model="progress"
