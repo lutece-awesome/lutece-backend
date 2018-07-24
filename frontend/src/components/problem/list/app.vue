@@ -3,12 +3,13 @@
 		row
 		justify-center>
 		<v-flex
-			v-if = "!isLoading"
 			xs12
 			md8>
 			<!-- <problemsearch class="mb-2" /> -->
 			<v-card>
-				<ProblemList :problem-item="problemItem" />
+				<ProblemList
+					:problem-item="problemItem"
+					:is-loading="isLoading"/>
 			</v-card>
 			<div class="text-xs-center mt-2">
 				<v-pagination

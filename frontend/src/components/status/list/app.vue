@@ -4,11 +4,12 @@
 		row
 		justify-center>
 		<v-flex
-			v-if = "!isLoading"
 			xs12
 			lg10>
 			<v-card>
-				<StatusList :status-item = "statusItem" />
+				<StatusList
+					:status-item="statusItem"
+					:is-loading="isLoading" />
 			</v-card>
 			<div class="text-xs-center mt-2">
 				<v-pagination

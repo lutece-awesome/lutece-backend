@@ -2,6 +2,7 @@
 	<v-data-table
 		:items = "problemItem"
 		:headers = "headers"
+		:loading="isLoading"
 		hide-actions >
 		<template
 			slot="items"
@@ -28,6 +29,10 @@ export default {
 		problemItem: {
 			type: Array,
 			default: () => [],
+		},
+		isLoading: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	data: () => ({
