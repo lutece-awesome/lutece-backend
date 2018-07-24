@@ -84,6 +84,7 @@ export default {
 		this.slug = this.$route.params.slug;
 		this.request();
 	},
+
 	methods: {
 		request() {
 			this.$apollo.query({

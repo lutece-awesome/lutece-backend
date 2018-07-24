@@ -151,6 +151,12 @@ export default {
 		codehighlight(val) {
 			this.cmOptions.mode = val;
 		},
+		completed(val) {
+			alert('completed , zhu zhu ');
+			if (val) {
+				this.ws.close();
+			}
+		},
 	},
 
 	beforeRouteLeave(to, from, next) {
@@ -167,6 +173,7 @@ export default {
 			if (data.judge !== undefined) {
 				data.judge = this.judge.concat(data.judge);
 			}
+			alert(data);
 			Object.assign(this, data);
 		};
 	},

@@ -43,6 +43,7 @@ class StatusDetailConsumer(AsyncWebsocketConsumer):
             'judge':  [each.get_websocket_field() for each in s],
             'compileerror_msg': self.submission.compileerror_msg,
             'judgererror_msg': self.submission.judgererror_msg,
+            'completed' : self.submission.completed,
             'code': self.submission.code,
             'casenumber': self.submission.case_number,
             'codehighlight': lang.value.codemirror,
