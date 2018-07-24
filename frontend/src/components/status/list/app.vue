@@ -45,12 +45,15 @@ export default {
 
 	watch: {
 		page(newpage, oldpage) {
-			if (newpage != oldpage) { this.request(this.page); }
+			if (oldpage <= this.maxpage) {
+				this.request(this.page);
+			}
 		},
 	},
 
 	mounted() {
 		const pre = localStorage.getItem('STATUS_LIST') || 1;
+		this.maxpage = pre;
 		this.page = pre;
 	},
 
