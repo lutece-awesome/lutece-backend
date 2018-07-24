@@ -4,6 +4,7 @@ from graphql_jwt.shortcuts import get_user_by_token
 from django.contrib.auth.models import AnonymousUser
 from utils.language import Language
 from json import dumps
+from submission.judge_result import get_judge_result_color
 
 
 class StatusDetailConsumer(AsyncWebsocketConsumer):
@@ -68,4 +69,6 @@ class StatusDetailConsumer(AsyncWebsocketConsumer):
             data.pop('judgererror_msg')
         if 'code' in data and not (perm or privilege):
             data.pop('code')
+        if 'result' in data:
+            data['result_color'] = get_judge_result_color(data['result'])
         await self.send(text_data=dumps(data))

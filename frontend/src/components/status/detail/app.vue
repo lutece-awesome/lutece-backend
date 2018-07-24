@@ -12,6 +12,7 @@
 				</v-card-title>
 				<v-progress-linear
 					v-model="progress"
+					:color="result_color"
 					height="2"
 					class="ma-0"/>
 				<table class="submission-table output-code mt-2">
@@ -102,6 +103,7 @@ export default {
 		user__display_name: null,
 		user__username: null,
 		submit_time: null,
+		result_color: null,
 		headers: [
 			{
 				text: 'Case',
