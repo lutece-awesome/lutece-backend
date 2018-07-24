@@ -18,15 +18,15 @@ def Modify_submission_status(** report):
     if 'complete' in report and report['complete'] is True:
         send_data['completed'] = report['complete']
     if result == Judge_result.RN.value.full or result == Judge_result.PR.value.full:
-        Submission.objects.get(pk=submission).update(judge_status=result)
+        Submission.objects.filter(pk=submission).update(judge_status=result)
         send_data['result'] = result
     elif 'judgererror_msg' in report:
-        Submission.objects.get(pk=submission).update(
+        Submission.objects.filter(pk=submission).update(
             completed=True, judgererror_msg=report['judgererror_msg'], judge_status=result)
         send_data['result'] = result
         send_data['judgererror_msg'] = report['judgererror_msg']
     elif 'compileerror_msg' in report:
-        Submission.objects.get(pk=submission).update(
+        Submission.objects.filter(pk=submission).update(
             completed=True, compileerror_msg=report['compileerror_msg'], judge_status=result)
         send_data['result'] = result
         send_data['compileerror_msg'] = report['compileerror_msg']
