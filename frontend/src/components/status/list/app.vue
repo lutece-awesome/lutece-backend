@@ -6,7 +6,7 @@
 		<v-flex
 			v-if = "!isLoading"
 			xs12
-			md8>
+			lg10>
 			<v-card>
 				<StatusList :status-item = "statusItem" />
 			</v-card>
