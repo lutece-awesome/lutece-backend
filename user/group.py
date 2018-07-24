@@ -168,12 +168,12 @@ class Group(Enum):
         permission=tuple(_Permission)
     )
 
-
-def get_user_group(full):
-    for each in Group:
-        if each.value.full == full:
-            return each
-    return None
+    @classmethod
+    def get_user_group( cls , full):
+        for each in cls:
+            if each.value.full == full:
+                return each
+        return None
 
 
 def get_user_control_permission(group, target_user):
@@ -187,6 +187,6 @@ def get_user_control_permission(group, target_user):
     for each in group.value.permission:
         if each in USER_TYPE_PERMISSION:
             ret.append(USER_TYPE_PERMISSION[each])
-    if get_user_group(target_user.group) not in ret:
+    if Group.get_user_group(target_user.group) not in ret:
         return list()
     return ret

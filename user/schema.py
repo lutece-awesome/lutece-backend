@@ -9,7 +9,16 @@ from json import dumps
 class UserType( DjangoObjectType ):
     class Meta:
         model = User
-        only_fields = ( 'id' , 'display_name' , 'group' , 'school' , 'company' , 'location' , 'about' , 'tried' , 'solved' )
+        only_fields = ( 'id' , 'display_name' , 'school' , 'company' , 'location' , 'about' , 'tried' , 'solved' )
+    
+    gravataremail = graphene.String()
+    group = graphene.String()
+
+    def resolve_gravataremail( self , info , * args , ** kwargs ):
+        return self.gravataremail
+    
+    def resolve_group( self , info , * args ,  ** kwargs ):
+        return Group.get_user_group( self.group ).value.display
 
 class UserLogin( graphene.Mutation ):
     class Arguments:
@@ -65,10 +74,10 @@ class Register( graphene.Mutation  ):
 
 class Query( object ):
     
-    all_user = graphene.List( UserType )
+    user = graphene.Field( UserType , pk = graphene.ID() )
     
-    def resolve_all_user( self , info , ** kwargs ):
-        return User.objects.all()
+    def resolve_user( self , info , pk ):
+        return User.objects.get( pk = pk )
 
 class Mutation( graphene.AbstractType ):
     Register = Register.Field()
