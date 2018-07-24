@@ -44,17 +44,13 @@ export default {
 	},
 
 	watch: {
-		page(newpage, oldpage) {
-			if (oldpage <= this.maxpage) {
-				this.request(this.page);
-			}
+		page() {
+			this.request(this.page);
 		},
 	},
 
 	mounted() {
-		const pre = localStorage.getItem('STATUS_LIST') || 1;
-		this.maxpage = pre;
-		this.page = pre;
+		this.page = parseInt(localStorage.getItem('STATUS_LIST'), 10) || 1;
 	},
 
 	methods: {
