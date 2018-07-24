@@ -14,7 +14,7 @@ def Modify_submission_status(** report):
     submission = report['submission']
     name = 'StatusDetail_%d' % submission
     channel_layer = get_channel_layer()
-    send_data = {}
+    send_data = {'completed': report['complete']}
     if result == 'Running' or result == 'Preparing':
         Submission.objects.filter(pk=submission).update(judge_status=result)
         send_data['result'] = result

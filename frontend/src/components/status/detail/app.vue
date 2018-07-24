@@ -13,6 +13,7 @@
 						class="headline mb-0">{{ result }}</h3>
 				</v-card-title>
 				<v-progress-linear
+					:indeterminate="!completed && judge.length == 0"
 					v-model="progress"
 					:color="result_color"
 					height="2"
@@ -100,12 +101,13 @@ export default {
 		code: null,
 		casenumber: null,
 		codehighlight: null,
+		completed: false,
 		problem__title: null,
 		problem__slug: null,
 		user__display_name: null,
 		user__username: null,
 		submit_time: null,
-		result_color: null,
+		result_color: 'info',
 		headers: [
 			{
 				text: 'Case',

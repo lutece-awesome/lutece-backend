@@ -46,6 +46,7 @@ class StatusDetailConsumer(AsyncWebsocketConsumer):
             'code': self.submission.code,
             'casenumber': self.submission.case_number,
             'codehighlight': lang.value.codemirror,
+            'completed': self.submission.completed,
             'problem__title': self.submission.problem.title,
             'problem__slug': self.submission.problem.slug,
             'user__display_name': self.submission.user.display_name,
