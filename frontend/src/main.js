@@ -23,6 +23,7 @@ import {
 	VForm,
 	VDivider,
 	VProgressLinear,
+	VSnackBar,
 	transitions,
 } from 'vuetify';
 import { Ripple, Resize } from 'vuetify/es5/directives';
@@ -66,6 +67,7 @@ Vue.use(Vuetify, {
 		VForm,
 		VDivider,
 		VProgressLinear,
+		VSnackBar,
 		transitions,
 	},
 	directives: {

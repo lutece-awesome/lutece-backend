@@ -19,7 +19,7 @@
 					class="text-xs-center">{{ props.item.judgeStatus }}</td>
 				<td class="text-xs-center time">
 					<span class="humanize-time">{{ props.item.submitTime | moment("from") }}</span>
-					<span class="full-time">{{ props.item.submitTime | moment("Y-M-D H:m:s") }}</span>
+					<span class="full-time">{{ props.item.submitTime | moment("Y-MM-DD HH:mm:ss") }}</span>
 				</td>
 				<td class="text-xs-center">{{ props.item.language }}</td>
 			</router-link>

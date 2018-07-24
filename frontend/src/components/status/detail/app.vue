@@ -14,35 +14,65 @@
 					v-model="progress"
 					height="2"
 					class="ma-0"/>
+				<table class="submission-table output-code mt-2">
+					<tr>
+						<td><pre>Problem:</pre></td>
+						<td>
+							<router-link :to="{name: 'ProblemDetailDescription', params: {slug: problem__slug}}">
+								<pre>{{ problem__title }}</pre>
+							</router-link>
+						</td>
+					</tr>
+					<tr>
+						<td><pre>User:</pre></td>
+						<td>
+							<!-- TODO: User link -->
+							<router-link :to="{name: 'ProblemDetailDescription', params: {slug: problem__slug}}">
+								<pre>{{ user__display_name }}</pre>
+							</router-link>
+						</td>
+					</tr>
+					<tr>
+						<td><pre>Time:</pre></td>
+						<td><pre>{{ submit_time }}</pre></td>
+					</tr>
+				</table>
 				<codemirror
 					v-if="code"
 					v-model="code"
 					:options="cmOptions"
 				/>
-				<v-divider/>
-				<v-card-text v-if="judgererror_msg">
+				<div
+					v-if="judgererror_msg"
+					class="output-code pb-1">
 					<pre>{{ judgererror_msg }}</pre>
-				</v-card-text>
-				<v-card-text v-if="compileerror_msg">
+				</div>
+				<div
+					v-if="compileerror_msg"
+					class="output-code pb-1">
 					<pre>{{ compileerror_msg }}</pre>
-				</v-card-text>
-				<v-data-table
+				</div>
+				<div
 					v-if="judge.length > 0"
-					:items="judge"
-					:headers="headers"
-					dense
-					hide-actions>
-					<template
-						slot="items"
-						slot-scope="props">
-						<tr>
-							<td class="text-xs-center">{{ props.item.case }}</td>
-							<td class="text-xs-center">{{ props.item.result }}</td>
-							<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
-							<td class="text-xs-center">{{ props.item.memory_cost }} MiB</td>
-						</tr>
-					</template>
-				</v-data-table>
+					class="mt-2">
+					<v-divider/>
+					<v-data-table
+						:items="judge"
+						:headers="headers"
+						dense
+						hide-actions>
+						<template
+							slot="items"
+							slot-scope="props">
+							<tr>
+								<td class="text-xs-center">{{ props.item.case }}</td>
+								<td class="text-xs-center">{{ props.item.result }}</td>
+								<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
+								<td class="text-xs-center">{{ props.item.memory_cost }} MiB</td>
+							</tr>
+						</template>
+					</v-data-table>
+				</div>
 			</v-card>
 		</v-flex>
 	</v-layout>
@@ -60,13 +90,19 @@ export default {
 	metaInfo() { return { title: `Submission#${this.pk}` }; },
 	data: () => ({
 		pk: '',
-		code: '',
-		compileerror_msg: '',
-		judgererror_msg: '',
-		result: '',
-		casenumber: 0,
 		judge: [],
 		ws: null,
+		result: null,
+		compileerror_msg: null,
+		judgererror_msg: null,
+		code: null,
+		casenumber: null,
+		codehighlight: null,
+		problem__title: null,
+		problem__slug: null,
+		user__display_name: null,
+		user__username: null,
+		submit_time: null,
 		headers: [
 			{
 				text: 'Case',
@@ -105,6 +141,12 @@ export default {
 		},
 	},
 
+	watch: {
+		codehighlight(val) {
+			this.cmOptions.mode = val;
+		},
+	},
+
 	beforeRouteLeave(to, from, next) {
 		this.ws.close();
 		next();
@@ -116,13 +158,10 @@ export default {
 		this.ws.onmessage = (event) => {
 			let { data } = event;
 			data = JSON.parse(data);
-			for (let i = 0; i < data.judge.length; i += 1) { this.judge.push(data.judge[i]); }
-			if (Object.prototype.hasOwnProperty.call(data, 'result')) { this.result = data.result; }
-			if (Object.prototype.hasOwnProperty.call(data, 'casenumber')) { this.casenumber = data.casenumber; }
-			if (Object.prototype.hasOwnProperty.call(data, 'code')) { this.code = data.code; }
-			if (Object.prototype.hasOwnProperty.call(data, 'codehighlight')) { this.cmOptions.mode = data.codehighlight; }
-			if (Object.prototype.hasOwnProperty.call(data, 'compileerror_msg')) { this.compileerror_msg = data.compileerror_msg; }
-			if (Object.prototype.hasOwnProperty.call(data, 'judgererror_msg')) { this.judgererror_msg = data.judgererror_msg; }
+			if (data.judge !== undefined) {
+				data.judge = this.judge.concat(data.judge);
+			}
+			Object.assign(this, data);
 		};
 	},
 };
