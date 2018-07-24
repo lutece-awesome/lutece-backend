@@ -173,7 +173,6 @@ export default {
 			if (data.judge !== undefined) {
 				data.judge = this.judge.concat(data.judge);
 			}
-			alert(data);
 			Object.assign(this, data);
 		};
 	},

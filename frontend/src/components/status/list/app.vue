@@ -51,7 +51,7 @@ export default {
 
 	mounted() {
 		const pre = localStorage.getItem('STATUS_LIST') || 1;
-		this.page = pre;
+		this.page = 1;
 	},
 
 	methods: {
