@@ -5,6 +5,7 @@ from django.contrib.auth.models import AnonymousUser
 from utils.language import Language
 from json import dumps
 from submission.judge_result import get_judge_result_color
+from channels.db import database_sync_to_async
 
 
 class StatusDetailConsumer(AsyncWebsocketConsumer):
@@ -14,7 +15,7 @@ class StatusDetailConsumer(AsyncWebsocketConsumer):
             pk=self.scope['url_route']['kwargs']['pk'])
         self.group_name = 'StatusDetail_%d' % self.submission.pk
         try:
-            self.user = get_user_by_token(token=self.scope['query_string'])
+            self.user = await database_sync_to_async(get_user_by_token)(token=self.scope['query_string'])
         except:
             self.user = AnonymousUser()
         '''
@@ -36,14 +37,14 @@ class StatusDetailConsumer(AsyncWebsocketConsumer):
     '''
 
     async def init(self):
-        s = Judgeinfo.objects.filter(submission=self.submission)
+        s = await database_sync_to_async(Judgeinfo.objects.filter)(submission=self.submission)
         lang = Language.get_language(self.submission.language)
         await self.update_result(event={'data': {
             'result': self.submission.judge_status,
             'judge':  [each.get_websocket_field() for each in s],
             'compileerror_msg': self.submission.compileerror_msg,
             'judgererror_msg': self.submission.judgererror_msg,
-            'completed' : self.submission.completed,
+            'completed': self.submission.completed,
             'code': self.submission.code,
             'casenumber': self.submission.case_number,
             'codehighlight': lang.value.codemirror,
