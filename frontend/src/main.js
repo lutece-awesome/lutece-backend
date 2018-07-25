@@ -26,7 +26,7 @@ import {
 	VSnackbar,
 	transitions,
 } from 'vuetify';
-import { Ripple, Resize } from 'vuetify/es5/directives';
+import { Resize } from 'vuetify/es5/directives';
 import colors from 'vuetify/es5/util/colors';
 import Meta from 'vue-meta';
 import router from './router';
@@ -71,7 +71,6 @@ Vue.use(Vuetify, {
 		transitions,
 	},
 	directives: {
-		Ripple,
 		Resize,
 	},
 	iconfont: 'mdi',

@@ -3,22 +3,22 @@
 		<v-navigation-drawer
 			v-model="drawer"
 			:width="240"
+			:mini-variant="$vuetify.breakpoint.mdOnly"
 			fixed
 			clipped
+			mobile-break-point="960"
 			app>
 			<v-toolbar
 				flat
 				class="hidden-sm-and-up">
-				<v-list>
-					<v-list-tile avatar>
-						<v-list-tile-content>
-							<v-list-tile-title class="title">Lutece</v-list-tile-title>
-						</v-list-tile-content>
-					</v-list-tile>
-				</v-list>
+				<v-list-tile >
+					<v-list-tile-content>
+						<v-list-tile-title class="title">Lutece</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
 			</v-toolbar>
+			<v-divider class="hidden-sm-and-up"/>
 			<v-list>
-				<v-divider class="hidden-sm-and-up"/>
 				<v-list-tile
 					v-for="item in items"
 					:key="item.title"

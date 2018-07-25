@@ -4,14 +4,17 @@
 		justify-center>
 		<v-flex
 			xs12
-			md8>
+			md10
+			lg8>
 			<!-- <problemsearch class="mb-2" /> -->
 			<v-card>
 				<ProblemList
 					:problem-item="problemItem"
 					:is-loading="isLoading"/>
 			</v-card>
-			<div class="text-xs-center mt-2">
+			<div
+				:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+				class="text-xs-center mt-2">
 				<v-pagination
 					v-model="page"
 					:length="maxpage"/>
