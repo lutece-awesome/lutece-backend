@@ -39,7 +39,6 @@ def Modify_submission_status(** report):
             **get_update_dict(report))
         s.save()
         send_data['judge'] = [s.get_websocket_field()]
-        print(sub.time_cost, s.time_cost)
         sub.time_cost = max(sub.time_cost, int(s.time_cost))
         sub.memory_cost = max(sub.memory_cost, int(s.memory_cost))
         if complete == True:
