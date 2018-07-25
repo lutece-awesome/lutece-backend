@@ -76,9 +76,8 @@ table.submission-table
 a
 	text-decoration none
 
-.v-datatable__progress .column
+tr.v-datatable__progress th.column
 	opacity 0
 	transition 0.5s
-
-.v-datatable__progress .column:not(:empty)
-	opacity 1
+	&:not(:empty)
+		opacity 1
