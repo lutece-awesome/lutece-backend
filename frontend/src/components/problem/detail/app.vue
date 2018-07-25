@@ -20,6 +20,9 @@
 						to="editor">Editor</v-tab>
 					<v-tab
 						:ripple="false"
+						to="submission">Submission</v-tab>
+					<v-tab
+						:ripple="false"
 						to="discussion">Discussion</v-tab>
 				</v-tabs>
 				<v-tabs-items
@@ -42,6 +45,9 @@
 					<v-tab-item id="editor">
 						<ProblemEditor :problemslug = "slug" />
 					</v-tab-item>
+					<v-tab-item id="submission">
+						<ProblemSubmission :problemslug = "slug" />
+					</v-tab-item>
 					<v-tab-item id="discussion">
 						<ProblemDiscussion/>
 					</v-tab-item>
@@ -54,6 +60,7 @@
 <script>
 import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
+import ProblemSubmission from '@/components/problem/detail/submission';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
 import ProblemDetailGQL from '@/graphql/problem/detail.gql';
 
@@ -63,6 +70,7 @@ export default {
 		ProblemDescription,
 		ProblemEditor,
 		ProblemDiscussion,
+		ProblemSubmission,
 	},
 	data: () => ({
 		slug: '',

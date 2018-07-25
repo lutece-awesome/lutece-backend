@@ -5,6 +5,7 @@ import Vue from 'vue';
 import {
 	Vuetify, // required
 	VApp, // required
+	VSwitch,
 	VNavigationDrawer,
 	VGrid,
 	VToolbar,
@@ -48,6 +49,7 @@ Vue.use(require('vue-moment'));
 
 Vue.use(Vuetify, {
 	components: {
+		VSwitch,
 		VApp,
 		VNavigationDrawer,
 		VGrid,
