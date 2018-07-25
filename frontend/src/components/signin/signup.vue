@@ -141,8 +141,6 @@ export default {
 				.forEach(client => client.cache.reset());
 			localStorage.setItem('USER_TOKEN', token);
 			this.$store.commit('user/update_authed', true);
-			// this.$store.commit("user/update_gravataremail", data.gravataremail);
-			// this.$store.commit("user/update_displayname", data.displayname);
 			this.$router.push({
 				name: 'Home',
 			});
