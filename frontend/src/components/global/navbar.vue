@@ -6,7 +6,19 @@
 			fixed
 			clipped
 			app>
+			<v-toolbar
+				flat
+				class="hidden-sm-and-up">
+				<v-list>
+					<v-list-tile avatar>
+						<v-list-tile-content>
+							<v-list-tile-title class="title">Lutece</v-list-tile-title>
+						</v-list-tile-content>
+					</v-list-tile>
+				</v-list>
+			</v-toolbar>
 			<v-list>
+				<v-divider class="hidden-sm-and-up"/>
 				<v-list-tile
 					v-for="item in items"
 					:key="item.title"
@@ -29,9 +41,16 @@
 			dark
 			color="primary">
 			<v-toolbar-side-icon @click.stop="drawer=!drawer"/>
-			<v-toolbar-title>
-				{{ title }}
+			<v-toolbar-title class="hidden-xs-only">
+				Lutece
 			</v-toolbar-title>
+			<v-divider
+				class="mx-3 hidden-xs-only"
+				inset
+				vertical
+			/>
+			<span class="subheading hidden-xs-only">{{ title }}</span>
+			<v-toolbar-title class="hidden-sm-and-up">{{ title }}</v-toolbar-title>
 			<v-spacer/>
 			<v-toolbar-items class="hidden-sm-and-down">
 				<v-btn
