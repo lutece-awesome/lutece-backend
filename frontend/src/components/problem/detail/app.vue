@@ -95,16 +95,8 @@ export default {
 			})
 				.then(response => response.data.problem)
 				.then((data) => {
-					this.title = data.title;
-					this.content = data.content;
-					this.standardInput = data.standardInput;
-					this.standardOutput = data.standardOutput;
-					this.constraints = data.constraints;
-					this.resource = data.resource;
-					this.note = data.note;
-					this.timeLimit = data.timeLimit;
-					this.memoryLimit = data.memoryLimit;
-					this.samples = JSON.parse(data.sample);
+					Object.assign(this, data);
+					this.samples = JSON.parse(this.sample);
 				});
 		},
 	},

@@ -9,7 +9,7 @@
 			<!-- <problemsearch class="mb-2" /> -->
 			<v-card>
 				<ProblemList
-					:problem-item="problemItem"
+					:problem-item="problemList"
 					:is-loading="isLoading"/>
 			</v-card>
 			<div
@@ -40,7 +40,7 @@ export default {
 			isLoading: true,
 			page: 0,
 			maxpage: 0,
-			problemItem: [],
+			problemList: [],
 		};
 	},
 
@@ -65,9 +65,8 @@ export default {
 			})
 				.then(response => response.data.problemList)
 				.then((data) => {
-					this.problemItem = data.problemList;
-					this.maxpage = data.maxpage;
-					this.page = Math.min(page, this.maxpage);
+					Object.assign(this, data);
+					this.page = Math.min(this.page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });
 			localStorage.setItem('PROBLEM_LIST', this.page);

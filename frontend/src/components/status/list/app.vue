@@ -8,7 +8,7 @@
 			lg10>
 			<v-card>
 				<StatusList
-					:status-item="statusItem"
+					:status-item="submissionList"
 					:is-loading="isLoading" />
 			</v-card>
 			<div
@@ -42,7 +42,7 @@ export default {
 			isLoading: false,
 			page: 0,
 			maxpage: 0,
-			statusItem: [],
+			submissionList: [],
 		};
 	},
 
@@ -68,9 +68,8 @@ export default {
 			})
 				.then(response => response.data.submissionList)
 				.then((data) => {
-					this.statusItem = data.submissionList;
-					this.maxpage = data.maxpage;
-					this.page = Math.min(page, this.maxpage);
+					Object.assign(this, data);
+					this.page = Math.min(this.page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });
 			localStorage.setItem('STATUS_LIST', this.page);
