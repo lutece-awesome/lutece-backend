@@ -5,7 +5,7 @@ import About from '@/components/about/about';
 import StatusList from '@/components/status/list/app';
 import StatusDetail from '@/components/status/detail/app';
 import Contest from '@/components/contest/contest';
-import User from '@/components/user/user';
+import User from '@/components/user/list/app';
 import Login from '@/components/signin/login';
 import Signup from '@/components/signin/signup';
 import Signout from '@/components/signin/signout';

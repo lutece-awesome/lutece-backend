@@ -4,6 +4,7 @@ from .models import User
 from annoying.functions import get_object_or_None
 from graphql_jwt.shortcuts import get_token, get_payload
 from .group import Group
+from utils.schema import paginatorList
 from json import dumps
 
 class UserType( DjangoObjectType ):
@@ -19,6 +20,13 @@ class UserType( DjangoObjectType ):
     
     def resolve_group( self , info , * args ,  ** kwargs ):
         return Group.get_user_group( self.group ).value.display
+
+
+class UserListType(graphene.ObjectType):
+    class Meta:
+        interfaces = (paginatorList, )
+    userList = graphene.List(UserType)
+    
 
 class UserLogin( graphene.Mutation ):
     class Arguments:
@@ -75,9 +83,17 @@ class Register( graphene.Mutation  ):
 class Query( object ):
     
     user = graphene.Field( UserType , pk = graphene.ID() )
+    userList = graphene.Field( UserListType , page = graphene.Int() )
     
     def resolve_user( self , info , pk ):
         return User.objects.get( pk = pk )
+
+    def resolve_userList( self , info , page ):
+        from django.core.paginator import Paginator
+        from Lutece.config import PER_PAGE_COUNT
+        userlist = User.objects.all().order_by( '-solved' ).filter( show = True )
+        paginator = Paginator( userlist , PER_PAGE_COUNT )
+        return UserListType(maxpage=paginator.num_pages, userList = paginator.get_page(page) ) 
 
 class Mutation( graphene.AbstractType ):
     Register = Register.Field()
