@@ -1,4 +1,4 @@
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 from .models import Submission, Judgeinfo
 from graphql_jwt.shortcuts import get_user_by_token
 from django.contrib.auth.models import AnonymousUser
@@ -75,3 +75,12 @@ class StatusDetailConsumer(AsyncWebsocketConsumer):
         if 'result' in data:
             data['result_color'] = get_judge_result_color(data['result'])
         await self.send(text_data=dumps(data))
+
+
+class StatusListConsumer( WebsocketConsumer ):
+
+    def connect( self ):
+        pass
+    
+    def disconnect( self ):
+        pass

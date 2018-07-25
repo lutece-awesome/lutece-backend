@@ -1,7 +1,6 @@
 <template>
 	<v-card>
-		<v-list subheader>
-			<v-subheader>Top Solved</v-subheader>
+		<v-list two-line>
 			<v-list-tile
 				v-for = "each in userItem"
 				:key = "each.displayName"
@@ -21,27 +20,6 @@
 			</v-list-tile>
 		</v-list>
 	</v-card>
-	<!-- <v-container>
-		<v-layout
-			row
-			wrap>
-			<v-flex
-				v-for = "( each , index ) in userItem "
-				:key = "index"
-				xs12
-				sm4>
-				<v-card>
-					<v-card-media
-						:src = "each.gravataremail"
-						height = "200px"
-					/>
-					<v-card-title primary-title>
-						{{ each.displayName }}
-					</v-card-title>
-				</v-card>
-			</v-flex>
-		</v-layout>
-	</v-container> -->
 </template>
 
 

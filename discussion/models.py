@@ -20,6 +20,9 @@ class Discussion(MPTTModel):
     @classmethod
     def get_new(cls):
         return cls.objects.create().discussion_id
+    
+    def get_discussion( self , privilege ):
+        pass
 
     class Meta:
         permissions = (

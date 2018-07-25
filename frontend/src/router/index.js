@@ -14,6 +14,7 @@ import ProblemList from '@/components/problem/list/app';
 import ProblemDetail from '@/components/problem/detail/app';
 import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
+import ProblemSubmission from '@/components/problem/detail/submission';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
 
 Vue.use(Router);
@@ -90,6 +91,11 @@ export default new Router({
 					path: 'editor',
 					name: 'ProblemDetailEditor',
 					component: ProblemEditor,
+				},
+				{
+					path: 'submission',
+					name: 'ProblemSubmission',
+					component: ProblemSubmission,
 				},
 				{
 					path: 'discussion',
