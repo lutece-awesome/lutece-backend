@@ -35,6 +35,7 @@ class Problem(models.Model):
             ('view_all' , 'Can view all problems'),
             ('download_data' , 'Can download test data' ),
         )
+        
 
 class ProblemDiscussion( Discussion ):
     problem = models.ForeignKey( Problem , null=True, blank=True , on_delete = models.CASCADE )
