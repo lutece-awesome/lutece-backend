@@ -174,7 +174,7 @@ export default {
 	},
 	watch: {
 		authed(val) {
-			if (val === false) { this.refresh(); }
+			if (val === true) { this.refresh(); }
 		},
 	},
 	mounted() {
