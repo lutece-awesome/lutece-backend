@@ -51,7 +51,7 @@ export default {
 	},
 
 	mounted() {
-		this.page = parseInt(localStorage.getItem('PROBLEM_LIST'), 10) || 1;
+		this.page = 1;
 	},
 
 	methods: {
@@ -69,7 +69,6 @@ export default {
 					this.page = Math.min(this.page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });
-			localStorage.setItem('PROBLEM_LIST', this.page);
 		},
 	},
 };

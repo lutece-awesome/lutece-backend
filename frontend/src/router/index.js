@@ -43,6 +43,9 @@ export default new Router({
 			path: '/status',
 			name: 'Status',
 			component: StatusList,
+			meta: {
+				keepAlive: true,
+			},
 		},
 		{
 			path: '/status/:pk',

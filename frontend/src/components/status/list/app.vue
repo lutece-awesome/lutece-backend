@@ -53,7 +53,7 @@ export default {
 	},
 
 	mounted() {
-		this.page = parseInt(localStorage.getItem('STATUS_LIST'), 10) || 1;
+		if (this.page === 0) { this.page = 1; }
 	},
 
 	methods: {
@@ -72,7 +72,6 @@ export default {
 					this.page = Math.min(this.page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });
-			localStorage.setItem('STATUS_LIST', this.page);
 		},
 	},
 };
