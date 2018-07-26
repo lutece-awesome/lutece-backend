@@ -86,6 +86,9 @@ export default new Router({
 			path: '/problem',
 			name: 'Problem',
 			component: ProblemList,
+			meta: {
+				keepAlive: true,
+			},
 		},
 		{
 			path: '/problem/:slug',

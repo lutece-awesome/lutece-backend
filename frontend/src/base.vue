@@ -6,7 +6,12 @@
 				:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
 				fluid>
 				<transition name="fade">
-					<router-view/>
+					<keep-alive>
+						<router-view v-if="$route.meta.keepAlive"/>
+					</keep-alive>
+				</transition>
+				<transition name="fade">
+					<router-view v-if="!($route.meta.keepAlive || false)"/>
 				</transition>
 			</v-container>
 		</v-content>
