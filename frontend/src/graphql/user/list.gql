@@ -2,8 +2,12 @@ query UserListGQL($page: Int!) {
 	userList(page: $page) {
 		maxpage
 		userList {
-            gravataremail
-            displayName
+			gravataremail
+			displayName
+			school
+			company
+			location
+			about
 		}
 	}
 }

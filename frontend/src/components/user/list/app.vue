@@ -2,11 +2,7 @@
 	<v-layout
 		row
 		justify-center>
-		<v-flex
-			xs12
-			md10
-			lg8>
-			<!-- <problemsearch class="mb-2" /> -->
+		<v-flex xs12>
 			<UserList
 				:user-item="userList"
 				:is-loading="isLoading"/>
