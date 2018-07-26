@@ -51,7 +51,7 @@
 					<v-card-text
 						v-if="each.about">
 						<div
-							v-line-clamp:21="2"
+							v-line-clamp:21="4"
 							class="user-about"
 							v-html="$options.filters.nl2br(each.about)"/>
 					</v-card-text>
