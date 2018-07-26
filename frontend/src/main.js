@@ -105,7 +105,7 @@ new Vue({
 		},
 	},
 	created() {
-		this.$store.dispatch('user/refresh_token');
+		this.$store.dispatch('user/refresh_token', true);
 	},
 	template: '<Base/>',
 });

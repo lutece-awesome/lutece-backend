@@ -5,6 +5,7 @@ import apolloProvider from '@/apollo';
 
 const state = {
 	authed: false,
+	username: '',
 	displayname: '',
 	gravataremail: '',
 };
@@ -16,26 +17,30 @@ const getters = {
 const mutations = {
 	login(state, data) {
 		state.authed = true;
-		state.gravataremail = data.payload.gravataremail;
+		state.username = data.payload.username;
 		state.displayname = data.payload.displayname;
+		state.gravataremail = data.payload.gravataremail;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
 		state.authed = false;
-		state.gravataremail = '';
+		state.username = '';
 		state.displayname = '';
+		state.gravataremail = '';
 		localStorage.removeItem('USER_TOKEN');
 	},
 };
 
 const actions = {
-	refresh_token({ commit }) {
+	refresh_token({ commit }, force) {
+		const BEFORE_EXPIRATION_DELTA = 60 * 60;
 		const token = localStorage.getItem('USER_TOKEN');
 		if (token) {
 			const decoded = jwtDecode(token);
-			if (decoded.exp <= Date.now() / 1000) {
+			const now = Date.now() / 1000;
+			if (decoded.exp <= now) {
 				commit('logout');
-			} else {
+			} else if (force || decoded.exp - now < BEFORE_EXPIRATION_DELTA) {
 				apolloProvider.defaultClient.mutate({
 					mutation: RefreshToken,
 					variables: {
@@ -45,6 +50,10 @@ const actions = {
 					.then(response => response.data.refreshToken)
 					.then((data) => {
 						commit('login', data);
+					})
+					.catch((error) => {
+						commit('snackbar/setSnack', error.networkError.result.errors[0].message, { root: true });
+						commit('logout');
 					});
 			}
 		}

@@ -96,7 +96,8 @@ GRAPHQL_JWT = {
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_EXPIRATION_DELTA': timedelta(hours=12),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-    'JWT_PAYLOAD_HANDLER': 'utils.payload.Lutece_payload'
+    'JWT_PAYLOAD_HANDLER': 'utils.jwt.lutece_payload',
+    'JWT_DECODE_HANDLER': 'utils.jwt.lutece_decode',
 }
 
 TEMPLATES = [
