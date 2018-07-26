@@ -68,6 +68,7 @@ class SubmissionType(DjangoObjectType):
 class SubmissionListType(graphene.ObjectType):
     class Meta:
         interfaces = (paginatorList, )
+
     submissionList = graphene.List(SubmissionType)
 
 
@@ -110,12 +111,12 @@ class SubmitSolution(graphene.Mutation):
 class Query(object):
     submission = graphene.Field(SubmissionType, pk=graphene.ID())
     submissionList = graphene.Field(
-        SubmissionListType, page=graphene.Int(), date=graphene.String())
+        SubmissionListType , page = graphene.Int(), date = graphene.String() , pk = graphene.ID() , user = graphene.ID() , problem = graphene.String() , judge_status = graphene.String() , language = graphene.String() )
 
     def resolve_submission(self, info, pk):
         return Submission.objects.get(pk=pk)
 
-    def resolve_submissionList(self, info, page, date):
+    def resolve_submissionList(self , info , page , date ,  ** kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
         statuslist = Submission.objects.all()
@@ -123,6 +124,10 @@ class Query(object):
             statuslist = statuslist.filter(problem__visible=True)
         if not info.context.user.has_perm('submission.view_all'):
             statuslist = statuslist.filter(user__show=True)
+        if 'problem' in kwargs:
+            statuslist = statuslist.filter( problem__title__icontains = kwargs['problem'] )
+            kwargs.pop( 'problem' )
+        statuslist = statuslist.filter( ** kwargs )
         paginator = Paginator(statuslist, PER_PAGE_COUNT)
         return SubmissionListType(maxpage=paginator.num_pages, submissionList=paginator.get_page(page))
 
