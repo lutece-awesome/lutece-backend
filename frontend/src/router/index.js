@@ -5,7 +5,8 @@ import About from '@/components/about/about';
 import StatusList from '@/components/status/list/app';
 import StatusDetail from '@/components/status/detail/app';
 import Contest from '@/components/contest/contest';
-import User from '@/components/user/list/app';
+import UserList from '@/components/user/list/app';
+import UserDetail from '@/components/user/detail/app';
 import Login from '@/components/signin/login';
 import Signup from '@/components/signin/signup';
 import Signout from '@/components/signin/signout';
@@ -56,7 +57,12 @@ export default new Router({
 		{
 			path: '/user',
 			name: 'User',
-			component: User,
+			component: UserList,
+		},
+		{
+			path: '/user/:username',
+			name: 'UserDetail',
+			component: UserDetail,
 		},
 		{
 			path: '/about',

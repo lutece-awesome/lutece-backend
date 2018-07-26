@@ -30,6 +30,7 @@ import {
 import { Resize } from 'vuetify/es5/directives';
 import colors from 'vuetify/es5/util/colors';
 import Meta from 'vue-meta';
+import lineClamp from 'vue-line-clamp';
 import router from './router';
 import Base from './base';
 import apolloProvider from './apollo';
@@ -40,13 +41,12 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'katex/dist/katex.css';
 import './stylus/main.styl';
 
+Vue.use(require('vue-moment'));
 
 Vue.config.productionTip = false;
 Vue.use(Meta);
 Vue.use(mixrend);
-Vue.use(require('vue-moment'));
-
-
+Vue.use(lineClamp);
 Vue.use(Vuetify, {
 	components: {
 		VSwitch,
@@ -82,6 +82,8 @@ Vue.use(Vuetify, {
 		accent: colors.pink.base,
 	},
 });
+
+Vue.filter('nl2br', text => text.replace(/(?:\r\n|\r|\n)/g, '<br>'));
 
 /* eslint-disable no-new */
 new Vue({

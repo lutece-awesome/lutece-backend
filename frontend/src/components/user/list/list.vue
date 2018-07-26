@@ -50,17 +50,11 @@
 					<v-divider/>
 					<v-card-text
 						v-if="each.about">
-						{{ each.about }}
+						<div
+							v-line-clamp:21="2"
+							class="user-about"
+							v-html="$options.filters.nl2br(each.about)"/>
 					</v-card-text>
-					<v-divider/>
-					<v-card-actions>
-						<v-spacer/>
-						<v-btn
-							flat
-							color="primary">
-							Follow
-						</v-btn>
-					</v-card-actions>
 				</v-card>
 			</v-flex>
 		</v-layout>
