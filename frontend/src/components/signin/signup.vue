@@ -127,23 +127,16 @@ export default {
 			})
 				.then(response => response.data.Register)
 				.then((data) => {
-					this.aftersignup(data.token);
+					this.$store.commit('user/login', data);
+					this.$apollo.provider.defaultClient.resetStore().then(() => {
+						this.$router.push(this.$route.query.redirect || '/');
+					});
 				})
 				.catch((error) => {
 					this.error = true;
 					this.errordetail = JSON.parse(error.graphQLErrors[0].message);
 				})
 				.finally(() => { this.loading = false; });
-		},
-
-		aftersignup(token) {
-			Object.values(this.$apollo.provider.clients)
-				.forEach(client => client.cache.reset());
-			localStorage.setItem('USER_TOKEN', token);
-			this.$store.commit('user/update_authed', true);
-			this.$router.push({
-				name: 'Home',
-			});
 		},
 	},
 };

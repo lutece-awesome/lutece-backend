@@ -65,19 +65,6 @@ export default {
 		errordetail: {},
 	}),
 
-	computed: {
-		authed() {
-			return this.$store.state.user.authed;
-		},
-	},
-
-	watch: {
-		authed(val) {
-			if (val === true) { this.$router.push(this.$route.query.redirect || '/'); }
-		},
-	},
-
-
 	methods: {
 		geterror(field) {
 			if (Object.prototype.hasOwnProperty.call(this.errordetail, field)) {
@@ -98,10 +85,9 @@ export default {
 						password: this.password,
 					},
 				})
-				.then(response => response.data.UserLogin)
+				.then(response => response.data.userLogin)
 				.then((data) => {
-					localStorage.setItem('USER_TOKEN', data.token);
-					this.$store.commit('user/update_authed', true);
+					this.$store.commit('user/login', data);
 					this.redirect();
 				})
 				.catch((error) => {
@@ -112,13 +98,17 @@ export default {
 		},
 
 		redirect() {
-			Object.values(this.$apollo.provider.clients).forEach(client => client.cache.reset());
-			this.$router.push(this.$route.query.redirect || '/');
+			this.$apollo.provider.defaultClient.resetStore().then(() => {
+				this.$router.push(this.$route.query.redirect || '/');
+			});
 		},
 
 		signup() {
 			this.$router.push({
 				name: 'Signup',
+				query: {
+					redirect: this.$route.query.redirect || '/',
+				},
 			});
 		},
 	},

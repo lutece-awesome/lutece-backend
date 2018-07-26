@@ -95,5 +95,15 @@ new Vue({
 			title: 'Lutece',
 		};
 	},
+	watch: {
+		$route(to) {
+			if (to.name !== 'Signout') {
+				this.$store.dispatch('user/refresh_token');
+			}
+		},
+	},
+	created() {
+		this.$store.dispatch('user/refresh_token');
+	},
 	template: '<Base/>',
 });

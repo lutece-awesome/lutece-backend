@@ -93,9 +93,10 @@ ASGI_APPLICATION = "Lutece.routing.application"
 ROOT_URLCONF = 'Lutece.urls'
 
 GRAPHQL_JWT = {
-    'JWT_EXPIRATION_DELTA': timedelta( hours = 12 ),
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta( hours = 12 ),
-    'JWT_PAYLOAD_HANDLER' : 'utils.payload.Lutece_payload'
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': timedelta(hours=12),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_PAYLOAD_HANDLER': 'utils.payload.Lutece_payload'
 }
 
 TEMPLATES = [
@@ -172,7 +173,7 @@ SESSION_COOKIE_AGE = 12 * 60 * 60
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join( BASE_DIR , 'frontend/dist/static' )
+    os.path.join(BASE_DIR, 'frontend/dist/static')
 ]
 
 STATICFILES_FINDERS = (
@@ -180,6 +181,6 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
 )
 
-STATIC_ROOT = os.path.join( BASE_DIR , 'static' )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 from .base_setting import *

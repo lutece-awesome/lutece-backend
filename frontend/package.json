@@ -21,6 +21,7 @@
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "js-cookie": "^2.2.0",
+    "jwt-decode": "^2.2.0",
     "katex": "^0.10.0-beta",
     "markdown-it": "^8.4.2",
     "moment": "^2.22.2",

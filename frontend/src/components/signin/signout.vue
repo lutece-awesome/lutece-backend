@@ -5,10 +5,10 @@
 <script>
 export default {
 	created() {
-		Object.values(this.$apollo.provider.clients).forEach(client => client.cache.reset());
-		localStorage.removeItem('USER_TOKEN');
-		this.$store.commit('user/update_authed', false);
-		this.$router.push(this.$route.query.redirect || '/');
+		this.$store.commit('user/logout');
+		this.$apollo.provider.defaultClient.resetStore().then(() => {
+			this.$router.push(this.$route.query.redirect || '/');
+		});
 	},
 };
 </script>

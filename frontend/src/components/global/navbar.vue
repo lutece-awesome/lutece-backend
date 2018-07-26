@@ -114,7 +114,6 @@
 
 <script>
 import Login from '@/components/signin/login';
-import { verifyToken } from '@/graphql/signin/token.gql';
 
 export default {
 	components: {
@@ -172,14 +171,6 @@ export default {
 			return this.$root.title;
 		},
 	},
-	watch: {
-		authed(val) {
-			if (val === true) { this.refresh(); }
-		},
-	},
-	mounted() {
-		this.refresh();
-	},
 	metaInfo: {
 		changed(newInfo, _addedTags, _removedTags) {
 			if (typeof newInfo.titleChunk !== 'undefined') {
@@ -188,24 +179,6 @@ export default {
 		},
 	},
 	methods: {
-		refresh() {
-			if (!localStorage.getItem('USER_TOKEN')) return;
-			this.logging = true;
-			this.$apollo
-				.mutate({
-					mutation: verifyToken,
-					variables: {
-						token: localStorage.getItem('USER_TOKEN') || '',
-					},
-				})
-				.then(response => response.data.verifyToken.payload)
-				.then((data) => {
-					this.$store.commit('user/update_authed', true);
-					this.$store.commit('user/update_gravataremail', data.gravataremail);
-					this.$store.commit('user/update_displayname', data.displayname);
-				})
-				.finally(() => { this.logging = false; });
-		},
 		login() {
 			this.$router.push({
 				name: 'Login',
