@@ -1,7 +1,6 @@
 <template>
 	<v-data-table
 		:items="statusItem"
-		:headers="headers"
 		:loading="isLoading"
 		hide-actions >
 		<template
@@ -37,6 +36,87 @@
 				<td class="text-xs-center">{{ props.item.language }}</td>
 			</router-link>
 		</template>
+		<template
+			slot="headers"
+			slot-scope="props">
+			<tr>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">
+					<v-text-field
+						label="#"
+						single-line
+						hide-details
+						style="width: 40px"
+					/>
+				</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">
+					<v-text-field
+						label="User"
+						single-line
+						hide-details
+						style="width: 80px"
+					/>
+				</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">
+					<v-text-field
+						label="Problem"
+						single-line
+						hide-details
+						style="width: 100px"
+					/>
+				</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">
+					<v-select
+						:items="verdictItems"
+						label="Verdict"
+						single-line
+						hide-details
+						dense
+						clearable
+						offset-y
+						style="width: 100px"
+					/>
+				</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">Time (ms)</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">Memory (KiB)</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">Submit Time</th>
+				<th
+					role="columnheader"
+					scope="col"
+					class="column text-xs-center">
+					<v-select
+						:items="languageItems"
+						label="Language"
+						single-line
+						hide-details
+						dense
+						clearable
+						offset-y
+						style="width: 100px"
+					/>
+				</th>
+			</tr>
+		</template>
 	</v-data-table>
 
 </template>
@@ -56,47 +136,13 @@ export default {
 	},
 	data: () => ({
 		hidden: false,
-		headers: [
-			{
-				text: '#',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'User',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'Problem',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'Verdict',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'Time (ms)',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'Memory (KiB)',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'Submit Time',
-				align: 'center',
-				sortable: false,
-			},
-			{
-				text: 'Language',
-				align: 'center',
-				sortable: false,
-			},
+		verdictItems: [
+			'Compile Error',
+			'Accepted',
+			'Time Limit Exceeding',
+		],
+		languageItems: [
+			'Xiper++',
 		],
 	}),
 };

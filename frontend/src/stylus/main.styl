@@ -91,3 +91,38 @@ tr.v-datatable__progress th.column
 
 .nowrap
 	white-space nowrap
+
+th
+	.v-input
+		margin 0 auto
+		label
+			text-align center
+			top 0 !important
+			left 0 !important
+			right 0 !important
+			bottom 0 !important
+			margin auto !important
+			z-index 0
+			font-size 12px
+		input
+			@extend .body-1
+			text-align center
+			z-index 1
+			padding 2px 0
+		.v-input__append-inner
+			margin 0
+			padding 0
+		.v-select__selections
+			.v-select__selection
+				@extend .caption
+				margin 0 !important
+				overflow hidden
+				max-width 72px
+		.v-input__icon--clear
+			width 16px
+			min-width 16px
+			.mdi-close
+				font-size 16px
+		.v-input__icon--append
+			width 12px
+			min-width 12px
