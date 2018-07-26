@@ -13,7 +13,14 @@
 				tile
 				tag="tr">
 				<td class="text-xs-center">{{ props.item.submissionId }}</td>
-				<td class="text-xs-center">{{ props.item.user }}</td>
+				<td class="text-xs-center nowrap">
+					<v-avatar
+						size="32"
+						class="mr-1" >
+						<img :src="props.item.userGravataremail" >
+					</v-avatar>
+					{{ props.item.user }}
+				</td>
 				<td class="text-xs-center">{{ props.item.problem }}</td>
 				<td
 					:class="props.item.color + '--text'"

@@ -18,6 +18,7 @@ class SubmissionType(DjangoObjectType):
     problem = graphene.String()
     code = graphene.String()
     user = graphene.String()
+    user_gravataremail = graphene.String()
     judgererror_msg = graphene.String()
     compileerror_msg = graphene.String()
     color = graphene.String()
@@ -35,6 +36,9 @@ class SubmissionType(DjangoObjectType):
 
     def resolve_user(self, info, * args, ** kwargs):
         return self.user.display_name
+
+    def resolve_user_gravataremail(self, info, * args, ** kwargs):
+        return self.user.gravataremail
 
     def resolve_judgererror_msg(self, info, * args, ** kwargs):
         if info.context.user.has_perm('submission.view_all'):

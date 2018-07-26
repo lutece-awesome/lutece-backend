@@ -6,6 +6,7 @@ query SubmissionListGQL($page: Int!,$date: String!) {
 			failedCase
             submitTime
             user
+			userGravataremail
 			problem
             judgeStatus
             language
