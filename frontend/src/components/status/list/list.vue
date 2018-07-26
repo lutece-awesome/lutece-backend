@@ -46,6 +46,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
+						v-model="filter.pk"
 						label="#"
 						single-line
 						hide-details
@@ -57,6 +58,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
+						v-model="filter.user"
 						label="User"
 						single-line
 						hide-details
@@ -68,6 +70,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
+						v-model="filter.problem"
 						label="Problem"
 						single-line
 						hide-details
@@ -79,6 +82,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-select
+						v-model="filter.judgeStatus"
 						:items="verdictItems"
 						label="Verdict"
 						single-line
@@ -106,6 +110,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-select
+						v-model="filter.language"
 						:items="languageItems"
 						label="Language"
 						single-line
@@ -134,16 +139,35 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		filter: {
+			type: Object,
+			default: () => {},
+		},
 	},
 	data: () => ({
 		hidden: false,
 		verdictItems: [
-			'Compile Error',
+			'Pending',
+			'Preparing',
 			'Accepted',
+			'Running',
+			'Compile Error',
+			'Wrong Answer',
+			'Runtime Error',
+			'Time Limit Exceeded',
+			'Output Limit Exceeded',
 			'Memory Limit Exceeded',
+			'Judger Error',
 		],
 		languageItems: [
-			'Xiper++',
+			'GNU G++',
+			'GNU GCC',
+			'Clang',
+			'Python',
+			'Java',
+			'Go',
+			'Ruby',
+			'Rust',
 		],
 	}),
 };

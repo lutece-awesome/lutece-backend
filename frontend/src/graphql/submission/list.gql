@@ -1,15 +1,31 @@
-query SubmissionListGQL($page: Int!,$date: String!) {
-	submissionList(page: $page,date: $date) {
+query SubmissionListGQL(
+	$page: Int!
+	$date: String!
+	$pk: ID
+	$user: String
+	$problem: String
+	$judgeStatus: String
+	$language: String
+) {
+	submissionList(
+		page: $page
+		date: $date
+		pk: $pk
+		user: $user
+		problem: $problem
+		judgeStatus: $judgeStatus
+		language: $language
+	) {
 		maxpage
 		submissionList {
-            submissionId
+			submissionId
 			failedCase
-            submitTime
-            user
+			submitTime
+			user
 			userGravataremail
 			problem
-            judgeStatus
-            language
+			judgeStatus
+			language
 			color
 			timeCost
 			memoryCost

@@ -134,7 +134,6 @@ export default {
 					});
 				})
 				.catch((error) => {
-					console.dir(error);
 					this.$store.commit('snackbar/setSnack', error.message);
 				});
 		},
