@@ -30,8 +30,7 @@
 					<tr>
 						<td><pre>User:</pre></td>
 						<td>
-							<!-- TODO: User link -->
-							<router-link :to="{name: 'ProblemDetailDescription', params: {slug: problem__slug}}">
+							<router-link :to="{name: 'UserDetail', params: {username: user__username}}">
 								<pre>{{ user__display_name }}</pre>
 							</router-link>
 						</td>

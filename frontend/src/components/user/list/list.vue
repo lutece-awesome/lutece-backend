@@ -15,7 +15,7 @@
 				sm6
 				md4
 				xl3>
-				<v-card>
+				<v-card :to="{name: 'UserDetail', params: {username: each.username}}">
 					<v-layout>
 						<v-flex
 							xs5>

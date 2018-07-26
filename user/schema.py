@@ -11,7 +11,7 @@ from json import dumps
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        only_fields = ('id', 'display_name', 'school', 'company',
+        only_fields = ('username', 'display_name', 'school', 'company',
                        'location', 'about', 'tried', 'solved')
 
     gravataremail = graphene.String()

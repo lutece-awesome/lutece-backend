@@ -2,6 +2,7 @@ query UserListGQL($page: Int!) {
 	userList(page: $page) {
 		maxpage
 		userList {
+			username
 			gravataremail
 			displayName
 			school
