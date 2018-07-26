@@ -5,7 +5,7 @@
 		justify-center>
 		<v-flex
 			xs12
-			lg10>
+			xl10>
 			<v-card>
 				<StatusList
 					:status-item="submissionList"

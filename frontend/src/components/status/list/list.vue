@@ -2,6 +2,7 @@
 	<v-data-table
 		:items="statusItem"
 		:loading="isLoading"
+		:headers-length="8"
 		hide-actions >
 		<template
 			slot="items"
@@ -85,7 +86,7 @@
 						dense
 						clearable
 						offset-y
-						style="width: 100px"
+						style="width: 180px"
 					/>
 				</th>
 				<th
@@ -139,7 +140,7 @@ export default {
 		verdictItems: [
 			'Compile Error',
 			'Accepted',
-			'Time Limit Exceeding',
+			'Memory Limit Exceeded',
 		],
 		languageItems: [
 			'Xiper++',
