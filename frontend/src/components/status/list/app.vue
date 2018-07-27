@@ -43,7 +43,7 @@ export default {
 	data() {
 		return {
 			isLoading: false,
-			page: 0,
+			page: 1,
 			maxpage: 0,
 			submissionList: [],
 			filter: {
@@ -65,27 +65,26 @@ export default {
 	},
 
 	mounted() {
-		if (this.page === 0) { this.page = 1; }
+		this.request();
 	},
 
 	methods: {
 		request() {
-			const filter = {};
+			const variables = {
+				page: this.page,
+				date: new Date().getTime(),
+			};
 			if (this.filter.pk) {
-				filter.pk = parseInt(this.filter.pk, 10);
+				variables.pk = parseInt(this.filter.pk, 10);
 			}
-			filter.user = this.filter.user;
-			filter.problem = this.filter.problem;
-			filter.judgeStatus = this.filter.judgeStatus;
-			filter.language = this.filter.language;
+			variables.user = this.filter.user;
+			variables.problem = this.filter.problem;
+			variables.judgeStatus = this.filter.judgeStatus;
+			variables.language = this.filter.language;
 			this.isLoading = true;
 			this.$apollo.query({
 				query: StatusListGQL,
-				variables: {
-					page: this.page,
-					date: new Date().getTime(),
-					...filter,
-				},
+				variables,
 			})
 				.then(response => response.data.submissionList)
 				.then((data) => {

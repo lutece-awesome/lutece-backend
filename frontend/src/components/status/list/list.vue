@@ -145,7 +145,6 @@ export default {
 		},
 	},
 	data: () => ({
-		hidden: false,
 		verdictItems: [
 			'Pending',
 			'Preparing',

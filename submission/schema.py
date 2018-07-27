@@ -116,7 +116,7 @@ class Query(object):
     def resolve_submission(self, info, pk):
         return Submission.objects.get(pk=pk)
 
-    def resolve_submissionList(self, info, page, date,  ** kwargs):
+    def resolve_submissionList(self, info, page, date, **kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
         statuslist = Submission.objects.all()
@@ -124,15 +124,15 @@ class Query(object):
             statuslist = statuslist.filter(problem__visible=True)
         if not info.context.user.has_perm('submission.view_all'):
             statuslist = statuslist.filter(user__show=True)
-        if 'problem' in kwargs:
+        if 'problem' in kwargs and kwargs['problem']:
             statuslist = statuslist.filter(
                 problem__title__icontains=kwargs['problem'])
             kwargs.pop('problem')
-        if 'user' in kwargs:
+        if 'user' in kwargs and kwargs['user']:
             statuslist = statuslist.filter(
                 user__display_name__icontains=kwargs['user'])
             kwargs.pop('user')
-        statuslist = statuslist.filter(** kwargs)
+        statuslist = statuslist.filter(**kwargs)
         paginator = Paginator(statuslist, PER_PAGE_COUNT)
         return SubmissionListType(maxpage=paginator.num_pages, submissionList=paginator.get_page(page))
 

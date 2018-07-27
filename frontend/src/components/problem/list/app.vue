@@ -6,7 +6,10 @@
 			xs12
 			md10
 			lg8>
-			<!-- <problemsearch class="mb-2" /> -->
+			<Searchbar
+				v-model="filter"
+				label="E.g. &quot;A+B&quot;, &quot;#123&quot;, &quot;#1230-1235&quot;"
+				class="mb-2" />
 			<v-card>
 				<ProblemList
 					:problem-item="problemList"
@@ -25,43 +28,52 @@
 
 <script>
 import ProblemList from '@/components/problem/list/list';
-import problemsearch from '@/components/basic/problemsearch';
+import Searchbar from '@/components/basic/searchbar';
 import ProblemListGQL from '@/graphql/problem/list.gql';
+
+const debounce = require('lodash.debounce');
 
 export default {
 	metaInfo() { return { title: 'Problem' }; },
 	components: {
 		ProblemList,
-		problemsearch,
+		Searchbar,
 	},
 
 	data() {
 		return {
 			isLoading: true,
-			page: 0,
+			page: 1,
 			maxpage: 0,
 			problemList: [],
+			filter: '',
 		};
 	},
 
 	watch: {
 		page() {
-			this.request(this.page);
+			this.request();
+		},
+		filter() {
+			this.isLoading = true;
+			this.debouncedRequest();
 		},
 	},
 
 	mounted() {
-		this.page = 1;
+		this.request();
 	},
 
 	methods: {
-		request(page) {
+		request() {
+			const variables = {
+				page: this.page,
+				filter: this.filter,
+			};
 			this.isLoading = true;
 			this.$apollo.query({
 				query: ProblemListGQL,
-				variables: {
-					page,
-				},
+				variables,
 			})
 				.then(response => response.data.problemList)
 				.then((data) => {
@@ -70,6 +82,9 @@ export default {
 				})
 				.then(() => { this.isLoading = false; });
 		},
+		debouncedRequest: debounce(function _debouncedRequest() {
+			this.request();
+		}, 250),
 	},
 };
 </script>

@@ -1,5 +1,5 @@
-query ProblemListGQL($page: Int!) {
-	problemList(page: $page) {
+query ProblemListGQL($page: Int!, $filter: String) {
+	problemList(page: $page, filter: $filter) {
 		maxpage
 		problemList {
 			problemId
