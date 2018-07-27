@@ -3,24 +3,29 @@
 		class="pa-0"
 		fluid
 		grid-list-lg>
-		<v-layout
+		<v-data-iterator
+			:items="userItem"
+			:loading="isLoading"
+			content-tag="v-layout"
+			hide-actions
 			row
 			wrap
 		>
 			<v-flex
-				v-for="each in userItem"
-				:key="each.displayName"
+				slot="item"
+				slot-scope="props"
 				xs12
 				sm6
 				md4
-				xl3>
-				<v-card :to="{name: 'UserDetail', params: {username: each.username}}">
+				lg3
+			>
+				<v-card :to="{name: 'UserDetail', params: {username: props.item.username}}">
 					<v-layout
 						class="ma-0">
 						<v-flex
 							xs5>
 							<v-card-media
-								:src="each.gravataremail"
+								:src="props.item.gravataremail"
 								class="card-avatar"
 								height="125px"
 								contain
@@ -33,15 +38,17 @@
 								<div>
 									<div
 										class="headline"
-										style="text-overflow: ellipsis;overflow: hidden;">{{ each.displayName }}</div>
-									<div v-if="each.school">
-										<v-icon class="mdi-18px">mdi-school</v-icon> {{ each.school }}
+										style="text-overflow: ellipsis;overflow: hidden;">
+										{{ props.item.displayName }}
 									</div>
-									<div v-if="each.company">
-										<v-icon class="mdi-18px">mdi-domain</v-icon> {{ each.company }}
+									<div v-if="props.item.school">
+										<v-icon class="mdi-18px">mdi-school</v-icon> {{ props.item.school }}
 									</div>
-									<div v-if="each.location">
-										<v-icon class="mdi-18px">mdi-map-marker</v-icon> {{ each.location }}
+									<div v-if="props.item.company">
+										<v-icon class="mdi-18px">mdi-domain</v-icon> {{ props.item.company }}
+									</div>
+									<div v-if="props.item.location">
+										<v-icon class="mdi-18px">mdi-map-marker</v-icon> {{ props.item.location }}
 									</div>
 								</div>
 							</v-card-title>
@@ -49,15 +56,15 @@
 					</v-layout>
 					<v-divider/>
 					<v-card-text
-						v-if="each.about">
+						v-if="props.item.about">
 						<div
 							v-line-clamp:21="4"
 							class="user-about"
-							v-html="$options.filters.nl2br(each.about)"/>
+							v-html="$options.filters.nl2br(props.item.about)"/>
 					</v-card-text>
 				</v-card>
 			</v-flex>
-		</v-layout>
+		</v-data-iterator>
 	</v-container>
 </template>
 
@@ -68,6 +75,10 @@ export default {
 		userItem: {
 			type: Array,
 			default: () => [],
+		},
+		isLoading: {
+			type: Boolean,
+			default: false,
 		},
 	},
 };

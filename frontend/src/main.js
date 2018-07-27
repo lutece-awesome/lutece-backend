@@ -25,6 +25,7 @@ import {
 	VDivider,
 	VProgressLinear,
 	VSnackbar,
+	VDataIterator,
 	transitions,
 } from 'vuetify';
 import { Resize } from 'vuetify/es5/directives';
@@ -70,6 +71,7 @@ Vue.use(Vuetify, {
 		VDivider,
 		VProgressLinear,
 		VSnackbar,
+		VDataIterator,
 		transitions,
 	},
 	directives: {
