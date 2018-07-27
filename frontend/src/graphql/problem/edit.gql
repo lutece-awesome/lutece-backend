@@ -1,0 +1,19 @@
+mutation UpdateProblem($title: String!, $content: String!, $note: String!, $timeLimit: Int!, $memoryLimit: Int!, $constraints: String!, $resource: String!, $standardInput: String! , $standardOutput: String! , $slug: String! , $samples: String!, $discussionvisible: Boolean! , $visible: Boolean!  ) {
+	UpdateProblem(
+        title: $title,
+        content: $content,
+        note: $note,
+        timeLimit: $timeLimit,
+        memoryLimit: $memoryLimit,
+        constraints: $constraints,
+        resource: $resource,
+        standardInput: $standardInput,
+        standardOutput: $standardOutput,
+        slug: $slug,
+        samples: $samples,
+        discussionvisible: $discussionvisible,
+        visible: $visible
+    ) {
+        state
+	}
+}

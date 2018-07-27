@@ -64,6 +64,7 @@
 							:memory-limit = "memoryLimit"
 							:samples = "samples"
 							:resource = "resource"
+							:slug = "slug"
 						/>
 					</v-tab-item>
 				</v-tabs-items>

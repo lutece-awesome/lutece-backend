@@ -1,7 +1,10 @@
 import graphene
 from graphene_django.types import DjangoObjectType
-from .models import Problem
+from .models import Problem, Sample
 from utils.schema import paginatorList
+from graphql_jwt.decorators import permission_required
+from .form import UpdateProblemForm
+from annoying.functions import get_object_or_None
 
 
 class ProblemType(DjangoObjectType):
@@ -19,6 +22,49 @@ class ProblemListType(graphene.ObjectType):
     class Meta:
         interfaces = (paginatorList, )
     problemList = graphene.List(ProblemType)
+
+
+class UpdateProblem(graphene.Mutation):
+
+    class Arguments:
+        title = graphene.String( required = True )
+        content = graphene.String( required = True )
+        standard_input = graphene.String( required = True )
+        standard_output = graphene.String( required = True )
+        constraints = graphene.String( required = True )
+        resource = graphene.String( required = True )
+        note = graphene.String( required = True )
+        time_limit = graphene.Int( required = True )
+        memory_limit = graphene.Int( required = True )
+        visible = graphene.Boolean( required = True )
+        discussionvisible = graphene.Boolean( required = True )
+        slug = graphene.String( required = True )
+        samples = graphene.String( required = True )
+    
+    state = graphene.Boolean()
+
+    # @permission_required( 'problem.change_problem' )
+    def mutate(self, info, ** kwargs ):
+        from json import loads
+        updateProblemForm = UpdateProblemForm( kwargs )
+        if updateProblemForm.is_valid():
+            values = updateProblemForm.cleaned_data
+            slug , samples = kwargs['slug'] , loads(kwargs['samples'])
+            kwargs.pop( 'slug' )
+            kwargs.pop( 'samples' )
+            Problem.objects.filter( slug = slug ).update( ** kwargs )
+            prob = Problem.objects.get( slug = slug )
+            prob.sample_set.all().delete()
+            for x in samples:
+                Sample(
+                    input_content = x['input'],
+                    output_content = x['output'],
+                    problem = prob
+                ).save()
+            return UpdateProblem( state = True )
+        else:
+            raise RuntimeError(updateProblemForm.errors.as_json())
+
 
 
 class Query(object):
@@ -54,4 +100,4 @@ class Query(object):
 
 
 class Mutation(graphene.AbstractType):
-    pass
+    UpdateProblem = UpdateProblem.Field()

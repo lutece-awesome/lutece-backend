@@ -82,7 +82,7 @@
 
                     <v-btn> ADD SAMPLE </v-btn>
 
-                    <v-btn> SUBMIT </v-btn>
+                    <v-btn @click = "submit" > SUBMIT </v-btn>
 
                 </v-flex>
             </v-layout>
@@ -92,6 +92,10 @@
 
 
 <script>
+
+import UpdateProblem from '@/graphql/problem/edit.gql';
+
+
 export default {
 	props: {
 		title: {
@@ -142,12 +146,37 @@ export default {
 			type: String,
 			default: '',
 		},
+		slug: {
+			type: String,
+			default: '',
+		},
 	},
 
 	methods: {
 
 		submit() {
-
+			this.$apollo.mutate({
+				mutation: UpdateProblem,
+				variables: {
+					title: this.title,
+					content: this.content,
+					note: this.note,
+					timeLimit: this.timeLimit,
+					memoryLimit: this.memoryLimit,
+					constraints: this.constraints,
+					resource: this.resource,
+					standardInput: this.standardInput,
+					standardOutput: this.standardOutput,
+					slug: this.slug,
+					samples: JSON.stringify(this.samples),
+					discussionvisible: this.discussionvisible,
+					visible: this.visible,
+				},
+			})
+				.then(() => {
+					location.reload();
+				})
+				.catch(error => alert(error));
 		},
 
 	},
