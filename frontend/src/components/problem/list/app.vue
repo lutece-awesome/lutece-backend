@@ -34,6 +34,7 @@ import ProblemListGQL from '@/graphql/problem/list.gql';
 const debounce = require('lodash.debounce');
 
 export default {
+	name: 'Problem',
 	metaInfo() { return { title: 'Problem' }; },
 	components: {
 		ProblemList,
