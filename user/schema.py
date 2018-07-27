@@ -6,6 +6,7 @@ from graphql_jwt.shortcuts import get_token, get_payload
 from .group import Group
 from utils.schema import paginatorList
 from json import dumps
+from graphene.types.generic import GenericScalar
 
 
 class UserType(DjangoObjectType):
@@ -36,7 +37,7 @@ class UserLogin(graphene.Mutation):
         password = graphene.String(required=True)
 
     token = graphene.String()
-    payload = graphene.JSONString()
+    payload = GenericScalar()
 
     def mutate(self, info, ** kwargs):
         from .form import UserLoginForm
@@ -46,7 +47,7 @@ class UserLogin(graphene.Mutation):
             user = User.objects.get(username=values['username'])
             token = get_token(user)
             payload = get_payload(token, info.context)
-            return UserLogin(payload=dumps(payload), token=token)
+            return UserLogin(payload=payload, token=token)
         else:
             raise RuntimeError(LoginForm.errors.as_json())
 
@@ -62,7 +63,7 @@ class Register(graphene.Mutation):
         location = graphene.String()
 
     token = graphene.String()
-    payload = graphene.JSONString()
+    payload = GenericScalar()
 
     def mutate(self, info, ** kwargs):
         from .form import UserSignupForm
@@ -83,7 +84,7 @@ class Register(graphene.Mutation):
             new_user.set_group(Group.NORMAL_USER)
             token = get_token(new_user)
             payload = get_payload(token, info.context)
-            return Register(payload=dumps(get_payload), token=token)
+            return Register(payload=payload, token=token)
         else:
             raise RuntimeError(SignupForm.errors.as_json())
 
