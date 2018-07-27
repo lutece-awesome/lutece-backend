@@ -32,6 +32,7 @@ import StatusListGQL from '@/graphql/submission/list.gql';
 
 const debounce = require('lodash.debounce');
 
+
 export default {
 	metaInfo() { return { title: 'Status' }; },
 
@@ -57,7 +58,7 @@ export default {
 		filter: {
 			handler() {
 				this.isLoading = true;
-				debounce(this.request, 250, { maxWait: 1000 })();
+				this.debouncedRequest();
 			},
 			deep: true,
 		},
@@ -93,6 +94,9 @@ export default {
 				})
 				.then(() => { this.isLoading = false; });
 		},
+		debouncedRequest: debounce(function _debouncedRequest() {
+			this.request();
+		}, 250),
 	},
 };
 </script>
