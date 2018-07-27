@@ -9,7 +9,7 @@
 			<v-card>
 				<StatusList
 					:status-item="submissionList"
-					:filter="filter"
+					:filters="filters"
 					:is-loading="isLoading" />
 			</v-card>
 			<div
@@ -46,8 +46,7 @@ export default {
 			page: 1,
 			maxpage: 0,
 			submissionList: [],
-			filter: {
-			},
+			filters: { },
 		};
 	},
 
@@ -55,7 +54,7 @@ export default {
 		page() {
 			this.request();
 		},
-		filter: {
+		filters: {
 			handler() {
 				this.isLoading = true;
 				this.debouncedRequest();
@@ -73,14 +72,8 @@ export default {
 			const variables = {
 				page: this.page,
 				date: new Date().getTime(),
+				...this.filters,
 			};
-			if (this.filter.pk) {
-				variables.pk = parseInt(this.filter.pk, 10);
-			}
-			variables.user = this.filter.user;
-			variables.problem = this.filter.problem;
-			variables.judgeStatus = this.filter.judgeStatus;
-			variables.language = this.filter.language;
 			this.isLoading = true;
 			this.$apollo.query({
 				query: StatusListGQL,

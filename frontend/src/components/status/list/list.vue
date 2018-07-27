@@ -46,11 +46,15 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
-						v-model="filter.pk"
+						v-model="filters.pk"
 						label="#"
 						single-line
 						hide-details
-						style="width: 40px"
+						type="number"
+						min="1"
+						step="1"
+						onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+						style="width: 50px"
 					/>
 				</th>
 				<th
@@ -58,7 +62,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
-						v-model="filter.user"
+						v-model="filters.user"
 						label="User"
 						single-line
 						hide-details
@@ -70,7 +74,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
-						v-model="filter.problem"
+						v-model="filters.problem"
 						label="Problem"
 						single-line
 						hide-details
@@ -82,7 +86,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-select
-						v-model="filter.judgeStatus"
+						v-model="filters.judgeStatus"
 						:items="verdictItems"
 						label="Verdict"
 						single-line
@@ -110,7 +114,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-select
-						v-model="filter.language"
+						v-model="filters.language"
 						:items="languageItems"
 						label="Language"
 						single-line
@@ -139,7 +143,7 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		filter: {
+		filters: {
 			type: Object,
 			default: () => {},
 		},
