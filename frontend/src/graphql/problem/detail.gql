@@ -11,5 +11,7 @@ query ProblemDetailGQL($slug: String!) {
 		timeLimit
 		memoryLimit
 		sample
+		visible
+		discussionvisible
 	}
 }

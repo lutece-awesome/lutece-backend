@@ -5,6 +5,7 @@ import Vue from 'vue';
 import {
 	Vuetify, // required
 	VApp, // required
+	VTextarea,
 	VSwitch,
 	VNavigationDrawer,
 	VGrid,
@@ -50,6 +51,7 @@ Vue.use(mixrend);
 Vue.use(lineClamp);
 Vue.use(Vuetify, {
 	components: {
+		VTextarea,
 		VSwitch,
 		VApp,
 		VNavigationDrawer,

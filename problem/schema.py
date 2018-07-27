@@ -7,7 +7,7 @@ from utils.schema import paginatorList
 class ProblemType(DjangoObjectType):
     class Meta:
         model = Problem
-        only_fields = ('problem_id', 'title', 'content', 'standard_input', 'standard_output',
+        only_fields = ('problem_id', 'title', 'content', 'standard_input', 'standard_output', 'visible' , 'discussionvisible',
                        'constraints', 'resource', 'note', 'time_limit', 'memory_limit', 'submit', 'accept', 'slug')
     sample = graphene.JSONString()
 

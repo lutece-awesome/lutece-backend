@@ -17,6 +17,7 @@ import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
 import ProblemSubmission from '@/components/problem/detail/submission';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
+import ProblemEdit from '@/components/problem/detail/edit';
 
 Vue.use(Router);
 
@@ -113,6 +114,11 @@ export default new Router({
 					path: 'discussion',
 					name: 'ProblemDetailDiscussion',
 					component: ProblemDiscussion,
+				},
+				{
+					path: 'edit',
+					name: 'ProblemEdit',
+					component: ProblemEdit,
 				},
 			],
 		},

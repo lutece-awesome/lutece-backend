@@ -20,10 +20,11 @@
 						to="editor">Editor</v-tab>
 					<v-tab
 						:ripple="false"
-						to="submission">Submission</v-tab>
+						to="discussion">Disscussion</v-tab>
 					<v-tab
+						v-if="has_permission('problem.change_problem')"
 						:ripple="false"
-						to="discussion">Discussion</v-tab>
+						to="edit">Edit</v-tab>
 				</v-tabs>
 				<v-tabs-items
 					v-if="title"
@@ -46,11 +47,24 @@
 					<v-tab-item id="editor">
 						<ProblemEditor :problemslug = "slug" />
 					</v-tab-item>
-					<v-tab-item id="submission">
-						<ProblemSubmission :problemslug = "slug" />
-					</v-tab-item>
 					<v-tab-item id="discussion">
 						<ProblemDiscussion/>
+					</v-tab-item>
+					<v-tab-item id="edit">
+						<ProblemEdit
+							:title = "title"
+							:visible = "visible"
+							:discussionvisible = "discussionvisible"
+							:content = "content"
+							:standard-input = "standardInput"
+							:standard-output = "standardOutput"
+							:constraints = "constraints"
+							:note = "note"
+							:time-limit = "timeLimit"
+							:memory-limit = "memoryLimit"
+							:samples = "samples"
+							:resource = "resource"
+						/>
 					</v-tab-item>
 				</v-tabs-items>
 			</v-card>
@@ -63,6 +77,7 @@ import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
 import ProblemSubmission from '@/components/problem/detail/submission';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
+import ProblemEdit from '@/components/problem/detail/edit';
 import ProblemDetailGQL from '@/graphql/problem/detail.gql';
 
 export default {
@@ -72,6 +87,7 @@ export default {
 		ProblemEditor,
 		ProblemDiscussion,
 		ProblemSubmission,
+		ProblemEdit,
 	},
 	data: () => ({
 		slug: '',
@@ -87,11 +103,15 @@ export default {
 		problemId: null,
 		timeLimit: null,
 		memoryLimit: null,
+		visible: null,
+		discussionvisible: null,
 		samples: [],
+		has_permission: null,
 	}),
 
 	mounted() {
 		this.slug = this.$route.params.slug;
+		this.has_permission = this.$store.getters['user/has_permission'];
 		this.request();
 	},
 

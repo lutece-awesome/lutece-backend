@@ -8,10 +8,12 @@ const state = {
 	username: '',
 	displayname: '',
 	gravataremail: '',
+	permission: [],
 };
 
 const getters = {
 	authed: state => state.authed,
+	has_permission: state => permission => (state.permission.indexOf(permission) !== -1),
 };
 
 const mutations = {
@@ -20,6 +22,7 @@ const mutations = {
 		state.username = data.payload.username;
 		state.displayname = data.payload.displayname;
 		state.gravataremail = data.payload.gravataremail;
+		state.permission = data.payload.permission;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
@@ -27,6 +30,7 @@ const mutations = {
 		state.username = '';
 		state.displayname = '';
 		state.gravataremail = '';
+		state.permission = [];
 		localStorage.removeItem('USER_TOKEN');
 	},
 };
