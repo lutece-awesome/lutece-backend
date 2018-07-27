@@ -74,6 +74,7 @@ export default {
 				date: new Date().getTime(),
 				...this.filters,
 			};
+			variables.pk = parseInt(variables.pk, 10);
 			this.isLoading = true;
 			this.$apollo.query({
 				query: StatusListGQL,

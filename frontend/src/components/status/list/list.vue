@@ -53,7 +53,6 @@
 						type="number"
 						min="1"
 						step="1"
-						onkeypress="return event.charCode >= 48 && event.charCode <= 57"
 						style="width: 50px"
 					/>
 				</th>

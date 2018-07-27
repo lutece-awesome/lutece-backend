@@ -6,13 +6,6 @@
 			md6
 			xl4>
 			<v-card>
-				<v-card-title>
-					<v-layout
-						justify-center
-						mt-3>
-						<span class="headline">SIGN IN</span>
-					</v-layout>
-				</v-card-title>
 				<v-card-text>
 					<v-form @submit.prevent="login">
 						<v-layout column>
@@ -21,6 +14,10 @@
 									v-model="username"
 									:error-messages="geterror('username')"
 									label="Username"
+									autocomplete="off"
+									autocorrect="off"
+									autocapitalize="off"
+									spellcheck="false"
 									required />
 							</v-flex>
 							<v-flex>

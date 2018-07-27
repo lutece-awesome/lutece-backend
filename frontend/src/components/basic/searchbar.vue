@@ -5,6 +5,7 @@
 		hide-details
 		append-icon="mdi-magnify"
 		solo
+		type="search"
 		@input="$emit('input', $event)"/>
 </template>
 
