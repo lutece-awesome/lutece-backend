@@ -30,6 +30,7 @@
 import StatusList from '@/components/status/list/list';
 import StatusListGQL from '@/graphql/submission/list.gql';
 
+const debounce = require('lodash.debounce');
 
 export default {
 	metaInfo() { return { title: 'Status' }; },
@@ -51,11 +52,12 @@ export default {
 
 	watch: {
 		page() {
-			this.request(this.page);
+			this.request();
 		},
 		filter: {
 			handler() {
-				this.request(this.page);
+				this.isLoading = true;
+				debounce(this.request, 250, { maxWait: 1000 })();
 			},
 			deep: true,
 		},
@@ -66,7 +68,7 @@ export default {
 	},
 
 	methods: {
-		request(page) {
+		request() {
 			const filter = {};
 			if (this.filter.pk) {
 				filter.pk = parseInt(this.filter.pk, 10);
@@ -79,7 +81,7 @@ export default {
 			this.$apollo.query({
 				query: StatusListGQL,
 				variables: {
-					page,
+					page: this.page,
 					date: new Date().getTime(),
 					...filter,
 				},
