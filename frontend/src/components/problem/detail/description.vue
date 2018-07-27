@@ -61,7 +61,7 @@
 export default {
 	props: {
 		problemId: {
-			type: Number,
+			type: String,
 			required: true,
 		},
 		content: {
