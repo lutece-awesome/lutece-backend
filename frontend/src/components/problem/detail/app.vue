@@ -1,75 +1,70 @@
 <template>
-	<v-layout
-		row
-		wrap
-		justify-center>
-		<v-flex
-			xs12
-			md10
-			xl8>
-			<v-card>
-				<v-tabs
-					v-if="title"
-					v-model="tabs"
-					fixed-tabs>
-					<v-tab
-						:ripple="false"
-						to="description">Description</v-tab>
-					<v-tab
-						:ripple="false"
-						to="editor">Editor</v-tab>
-					<v-tab
-						:ripple="false"
-						to="discussion">Disscussion</v-tab>
-					<v-tab
-						v-if="has_permission('problem.change_problem')"
-						:ripple="false"
-						to="edit">Edit</v-tab>
-				</v-tabs>
-				<v-tabs-items
-					v-if="title"
-					v-model="tabs"
-					touchless>
-					<v-tab-item id="description">
-						<ProblemDescription
-							:problem-id = "problemId"
-							:content = "content"
-							:standard-input = "standardInput"
-							:standard-output = "standardOutput"
-							:constraints = "constraints"
-							:note = "note"
-							:time-limit = "timeLimit"
-							:memory-limit = "memoryLimit"
-							:samples = "samples"
-							:resource = "resource"
-						/>
-					</v-tab-item>
-					<v-tab-item id="editor">
-						<ProblemEditor :problemslug = "slug" />
-					</v-tab-item>
-					<v-tab-item id="discussion">
-						<ProblemDiscussion/>
-					</v-tab-item>
-					<v-tab-item id="edit">
-						<ProblemEdit
-							:title = "title"
-							:visible = "visible"
-							:discussionvisible = "discussionvisible"
-							:content = "content"
-							:standard-input = "standardInput"
-							:standard-output = "standardOutput"
-							:constraints = "constraints"
-							:note = "note"
-							:time-limit = "timeLimit"
-							:memory-limit = "memoryLimit"
-							:samples = "samples"
-							:resource = "resource"
-						/>
-					</v-tab-item>
-				</v-tabs-items>
-			</v-card>
-		</v-flex>
-	</v-layout>
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+		fluid>
+		<v-layout
+			row
+			wrap
+			justify-center>
+			<v-flex
+				xs12
+				md10
+				xl8>
+				<v-btn
+					v-if="has_permission('problem.change_problem')"
+					:to="{name: 'ProblemEdit', params: {slug: slug}}"
+					color="accent"
+					dark
+					fab
+					fixed
+					bottom
+					right>
+					<v-icon>mdi-pencil</v-icon>
+				</v-btn>
+				<v-card>
+					<v-tabs
+						v-if="title"
+						v-model="tabs"
+						fixed-tabs>
+						<v-tab
+							:ripple="false"
+							to="description">Description</v-tab>
+						<v-tab
+							:ripple="false"
+							to="editor">Editor</v-tab>
+						<v-tab
+							:ripple="false"
+							to="discussion">Disscussion</v-tab>
+					</v-tabs>
+					<v-tabs-items
+						v-if="title"
+						v-model="tabs"
+						touchless>
+						<v-tab-item id="description">
+							<ProblemDescription
+								:problem-id = "problemId"
+								:content = "content"
+								:standard-input = "standardInput"
+								:standard-output = "standardOutput"
+								:constraints = "constraints"
+								:note = "note"
+								:time-limit = "timeLimit"
+								:memory-limit = "memoryLimit"
+								:samples = "samples"
+								:resource = "resource"
+							/>
+						</v-tab-item>
+						<v-tab-item id="editor">
+							<ProblemEditor :problemslug = "slug" />
+						</v-tab-item>
+						<v-tab-item id="discussion">
+							<ProblemDiscussion/>
+						</v-tab-item>
+					</v-tabs-items>
+				</v-card>
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 <script>

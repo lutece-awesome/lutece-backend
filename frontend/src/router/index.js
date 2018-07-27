@@ -92,6 +92,11 @@ export default new Router({
 			},
 		},
 		{
+			path: '/problem/:slug/edit',
+			name: 'ProblemEdit',
+			component: ProblemEdit,
+		},
+		{
 			path: '/problem/:slug',
 			component: ProblemDetail,
 			children: [
@@ -114,11 +119,6 @@ export default new Router({
 					path: 'discussion',
 					name: 'ProblemDetailDiscussion',
 					component: ProblemDiscussion,
-				},
-				{
-					path: 'edit',
-					name: 'ProblemEdit',
-					component: ProblemEdit,
 				},
 			],
 		},

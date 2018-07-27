@@ -2,15 +2,11 @@
 	<v-app>
 		<Navbar/>
 		<v-content>
-			<v-container
-				:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
-				fluid>
-				<transition name="fade">
-					<keep-alive include="Problem,Status,User">
-						<router-view/>
-					</keep-alive>
-				</transition>
-			</v-container>
+			<transition name="fade">
+				<keep-alive include="Problem,Status,User">
+					<router-view/>
+				</keep-alive>
+			</transition>
 		</v-content>
 		<Snackbar/>
 	</v-app>

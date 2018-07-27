@@ -1,27 +1,29 @@
 <template>
-
-	<v-layout
-		row
-		justify-center>
-		<v-flex
-			xs12
-			xl10>
-			<v-card>
-				<StatusList
-					:status-item="submissionList"
-					:filters="filters"
-					:is-loading="isLoading" />
-			</v-card>
-			<div
-				:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-				class="text-xs-center mt-2">
-				<v-pagination
-					v-model="page"
-					:length="maxpage"/>
-			</div>
-		</v-flex>
-	</v-layout>
-
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+		fluid>
+		<v-layout
+			row
+			justify-center>
+			<v-flex
+				xs12
+				xl10>
+				<v-card>
+					<StatusList
+						:status-item="submissionList"
+						:filters="filters"
+						:is-loading="isLoading" />
+				</v-card>
+				<div
+					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+					class="text-xs-center mt-2">
+					<v-pagination
+						v-model="page"
+						:length="maxpage"/>
+				</div>
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 

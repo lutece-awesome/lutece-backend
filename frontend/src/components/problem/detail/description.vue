@@ -1,6 +1,5 @@
 <template>
-	<div
-		class="ma-4">
+	<v-container fiuld>
 		<div
 			v-mixrend = "content"
 			class="mb-3" />
@@ -54,7 +53,7 @@
 				<td>{{ resource }}</td>
 			</tr>
 		</table>
-	</div>
+	</v-container>
 </template>
 
 <script>
@@ -62,7 +61,8 @@ export default {
 	props: {
 		problemId: {
 			type: String,
-			required: true,
+			required: false,
+			default: '',
 		},
 		content: {
 			type: String,
@@ -96,15 +96,18 @@ export default {
 		},
 		timeLimit: {
 			type: Number,
-			required: true,
+			required: false,
+			default: 0,
 		},
 		memoryLimit: {
 			type: Number,
-			required: true,
+			required: false,
+			default: 0,
 		},
 		samples: {
 			type: Array,
-			required: true,
+			required: false,
+			default: () => [],
 		},
 	},
 

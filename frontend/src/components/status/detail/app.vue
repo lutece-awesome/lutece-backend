@@ -1,84 +1,88 @@
 <template>
-
-	<v-layout
-		row
-		justify-center>
-		<v-flex
-			xs12
-			md8>
-			<v-card>
-				<v-card-title primary-title>
-					<h3
-						:class="result_color + '--text'"
-						class="headline mb-0">{{ result }}</h3>
-				</v-card-title>
-				<v-progress-linear
-					:indeterminate="!completed && judge.length == 0"
-					v-model="progress"
-					:color="result_color"
-					height="2"
-					class="ma-0"/>
-				<table class="submission-table output-code mt-2">
-					<tr>
-						<td><pre>Problem:</pre></td>
-						<td>
-							<router-link :to="{name: 'ProblemDetailDescription', params: {slug: problem__slug}}">
-								<pre>{{ problem__title }}</pre>
-							</router-link>
-						</td>
-					</tr>
-					<tr>
-						<td><pre>User:</pre></td>
-						<td>
-							<router-link :to="{name: 'UserDetail', params: {username: user__username}}">
-								<pre>{{ user__display_name }}</pre>
-							</router-link>
-						</td>
-					</tr>
-					<tr>
-						<td><pre>Time:</pre></td>
-						<td><pre>{{ submit_time }}</pre></td>
-					</tr>
-				</table>
-				<codemirror
-					v-if="code"
-					v-model="code"
-					:options="cmOptions"
-				/>
-				<div
-					v-if="judgererror_msg"
-					class="output-code">
-					<pre>{{ judgererror_msg }}</pre>
-				</div>
-				<div
-					v-if="compileerror_msg"
-					class="output-code">
-					<pre>{{ compileerror_msg }}</pre>
-				</div>
-				<div class="py-1"/>
-				<div v-if="judge.length > 0">
-					<v-divider/>
-					<v-data-table
-						:items="judge"
-						:headers="headers"
-						dense
-						hide-actions>
-						<template
-							slot="items"
-							slot-scope="props">
-							<tr>
-								<td class="text-xs-center">{{ props.item.case }}</td>
-								<td class="text-xs-center">{{ props.item.result }}</td>
-								<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
-								<td class="text-xs-center">{{ props.item.memory_cost }} KiB</td>
-							</tr>
-						</template>
-					</v-data-table>
-				</div>
-			</v-card>
-		</v-flex>
-	</v-layout>
-
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+		fluid>
+		<v-layout
+			row
+			justify-center>
+			<v-flex
+				xs12
+				md8>
+				<v-card>
+					<v-card-title primary-title>
+						<h3
+							:class="result_color + '--text'"
+							class="headline mb-0">{{ result }}</h3>
+					</v-card-title>
+					<v-progress-linear
+						:indeterminate="!completed && judge.length == 0"
+						v-model="progress"
+						:color="result_color"
+						height="2"
+						class="ma-0"/>
+					<table class="submission-table output-code mt-2">
+						<tr>
+							<td><pre>Problem:</pre></td>
+							<td>
+								<router-link
+									:to="{name: 'ProblemDetailDescription',
+										params: {slug: problem__slug}}">
+									<pre>{{ problem__title }}</pre>
+								</router-link>
+							</td>
+						</tr>
+						<tr>
+							<td><pre>User:</pre></td>
+							<td>
+								<router-link :to="{name: 'UserDetail', params: {username: user__username}}">
+									<pre>{{ user__display_name }}</pre>
+								</router-link>
+							</td>
+						</tr>
+						<tr>
+							<td><pre>Time:</pre></td>
+							<td><pre>{{ submit_time }}</pre></td>
+						</tr>
+					</table>
+					<codemirror
+						v-if="code"
+						v-model="code"
+						:options="cmOptions"
+					/>
+					<div
+						v-if="judgererror_msg"
+						class="output-code">
+						<pre>{{ judgererror_msg }}</pre>
+					</div>
+					<div
+						v-if="compileerror_msg"
+						class="output-code">
+						<pre>{{ compileerror_msg }}</pre>
+					</div>
+					<div class="py-1"/>
+					<div v-if="judge.length > 0">
+						<v-divider/>
+						<v-data-table
+							:items="judge"
+							:headers="headers"
+							dense
+							hide-actions>
+							<template
+								slot="items"
+								slot-scope="props">
+								<tr>
+									<td class="text-xs-center">{{ props.item.case }}</td>
+									<td class="text-xs-center">{{ props.item.result }}</td>
+									<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
+									<td class="text-xs-center">{{ props.item.memory_cost }} KiB</td>
+								</tr>
+							</template>
+						</v-data-table>
+					</div>
+				</v-card>
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 

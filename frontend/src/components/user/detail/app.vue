@@ -1,19 +1,21 @@
 <template>
-
-	<v-layout
-		row
-		justify-center>
-		<v-flex
-			xs12
-			md8>
-			<v-card>
-				<v-card-title primary-title>
-					<h3 class="headline">{{ username }}</h3>
-				</v-card-title>
-			</v-card>
-		</v-flex>
-	</v-layout>
-
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+		fluid>
+		<v-layout
+			row
+			justify-center>
+			<v-flex
+				xs12
+				md8>
+				<v-card>
+					<v-card-title primary-title>
+						<h3 class="headline">{{ username }}</h3>
+					</v-card-title>
+				</v-card>
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 

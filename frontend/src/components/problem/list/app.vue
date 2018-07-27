@@ -1,29 +1,33 @@
 <template>
-	<v-layout
-		row
-		justify-center>
-		<v-flex
-			xs12
-			md10
-			lg8>
-			<Searchbar
-				v-model="filter"
-				label="E.g. &quot;A+B&quot;, &quot;#123&quot;, &quot;#1230-1235&quot;"
-				class="mb-2" />
-			<v-card>
-				<ProblemList
-					:problem-item="problemList"
-					:is-loading="isLoading"/>
-			</v-card>
-			<div
-				:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-				class="text-xs-center mt-2">
-				<v-pagination
-					v-model="page"
-					:length="maxpage"/>
-			</div>
-		</v-flex>
-	</v-layout>
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+		fluid>
+		<v-layout
+			row
+			justify-center>
+			<v-flex
+				xs12
+				md10
+				lg8>
+				<Searchbar
+					v-model="filter"
+					label="E.g. &quot;A+B&quot;, &quot;#123&quot;, &quot;#1230-1235&quot;"
+					class="mb-2" />
+				<v-card>
+					<ProblemList
+						:problem-item="problemList"
+						:is-loading="isLoading"/>
+				</v-card>
+				<div
+					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+					class="text-xs-center mt-2">
+					<v-pagination
+						v-model="page"
+						:length="maxpage"/>
+				</div>
+			</v-flex>
+		</v-layout>
+	</v-container>
 </template>
 
 <script>
