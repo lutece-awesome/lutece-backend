@@ -29,6 +29,7 @@ import UserListGQL from '@/graphql/user/list.gql';
 const debounce = require('lodash.debounce');
 
 export default {
+	name: 'User',
 	metaInfo() { return { title: 'User' }; },
 	components: {
 		UserList,

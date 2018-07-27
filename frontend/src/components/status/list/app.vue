@@ -34,6 +34,7 @@ const debounce = require('lodash.debounce');
 
 
 export default {
+	name: 'Status',
 	metaInfo() { return { title: 'Status' }; },
 
 	components: {
