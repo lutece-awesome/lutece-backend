@@ -15,7 +15,8 @@
 				md4
 				xl3>
 				<v-card :to="{name: 'UserDetail', params: {username: each.username}}">
-					<v-layout>
+					<v-layout
+						class="ma-0">
 						<v-flex
 							xs5>
 							<v-card-media
