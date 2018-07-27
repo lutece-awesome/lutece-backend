@@ -92,16 +92,19 @@ class Register(graphene.Mutation):
 class Query(object):
 
     user = graphene.Field(UserType, pk=graphene.ID())
-    userList = graphene.Field(UserListType, page=graphene.Int())
+    userList = graphene.Field(
+        UserListType, page=graphene.Int(), filter=graphene.String())
 
     def resolve_user(self, info, pk):
         return User.objects.get(pk=pk)
 
-    def resolve_userList(self, info, page):
+    def resolve_userList(self, info, page, filter=None):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
-        userlist = User.objects.all().order_by('-solved').filter(show=True)
-        paginator = Paginator(userlist, PER_PAGE_COUNT)
+        user_list = User.objects.all().order_by('-solved').filter(show=True)
+        if filter:
+            user_list = user_list.filter(display_name__icontains=filter)
+        paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
 
 

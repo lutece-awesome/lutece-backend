@@ -1,5 +1,5 @@
-query UserListGQL($page: Int!) {
-	userList(page: $page) {
+query UserListGQL($page: Int!, $filter: String) {
+	userList(page: $page, filter: $filter) {
 		maxpage
 		userList {
 			username

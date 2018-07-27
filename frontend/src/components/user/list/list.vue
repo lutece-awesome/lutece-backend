@@ -1,6 +1,5 @@
 <template>
 	<v-container
-		:class="{'pa-3': $vuetify.breakpoint.xsOnly}"
 		class="pa-0"
 		fluid
 		grid-list-lg>

@@ -1,8 +1,12 @@
 <template>
 	<v-layout
 		row
+		wrap
 		justify-center>
 		<v-flex xs12>
+			<Searchbar
+				v-model="filter"
+				class="mb-3" />
 			<UserList
 				:user-item="userList"
 				:is-loading="isLoading"/>
@@ -19,41 +23,53 @@
 
 <script>
 import UserList from '@/components/user/list/list';
+import Searchbar from '@/components/basic/searchbar';
 import UserListGQL from '@/graphql/user/list.gql';
+
+const debounce = require('lodash.debounce');
 
 export default {
 	metaInfo() { return { title: 'User' }; },
 	components: {
 		UserList,
+		Searchbar,
 	},
 
 	data() {
 		return {
 			isLoading: true,
-			page: 0,
+			page: 1,
 			maxpage: 0,
 			userList: [],
+			filter: '',
 		};
 	},
 
 	watch: {
 		page() {
-			this.request(this.page);
+			this.request();
+		},
+		filter() {
+			this.isLoading = true;
+			this.debouncedRequest();
 		},
 	},
 
 	mounted() {
 		this.page = parseInt(localStorage.getItem('USER_LIST'), 10) || 1;
+		this.request();
 	},
 
 	methods: {
-		request(page) {
+		request() {
+			const variables = {
+				page: this.page,
+				filter: this.filter,
+			};
 			this.isLoading = true;
 			this.$apollo.query({
 				query: UserListGQL,
-				variables: {
-					page,
-				},
+				variables,
 			})
 				.then(response => response.data.userList)
 				.then((data) => {
@@ -63,6 +79,9 @@ export default {
 				.then(() => { this.isLoading = false; });
 			localStorage.setItem('USER_LIST', this.page);
 		},
+		debouncedRequest: debounce(function _debouncedRequest() {
+			this.request();
+		}, 250),
 	},
 };
 </script>
