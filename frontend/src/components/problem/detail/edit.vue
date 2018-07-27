@@ -46,6 +46,7 @@
 import ProblemDescription from '@/components/problem/detail/description';
 import ProblemSetting from '@/components/problem/detail/setting';
 import ProblemDetailGQL from '@/graphql/problem/detail.gql';
+import UpdateProblem from '@/graphql/problem/edit.gql';
 
 export default {
 	metaInfo() { return { title: this.problem.title || 'Loading...' }; },
@@ -66,6 +67,30 @@ export default {
 	},
 
 	methods: {
+		submit() {
+			this.$apollo.mutate({
+				mutation: UpdateProblem,
+				variables: {
+					title: this.title,
+					content: this.content,
+					note: this.note,
+					timeLimit: this.timeLimit,
+					memoryLimit: this.memoryLimit,
+					constraints: this.constraints,
+					resource: this.resource,
+					standardInput: this.standardInput,
+					standardOutput: this.standardOutput,
+					slug: this.slug,
+					samples: JSON.stringify(this.samples),
+					discussionvisible: this.discussionvisible,
+					visible: this.visible,
+				},
+			})
+				.then(() => {
+					// location.reload();
+				})
+				.catch(error => alert(error));
+		},
 		request() {
 			this.$apollo.query({
 				query: ProblemDetailGQL,

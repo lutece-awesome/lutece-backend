@@ -31,6 +31,7 @@ class UserListType(graphene.ObjectType):
     userList = graphene.List(UserType)
 
 
+
 class UserLogin(graphene.Mutation):
     class Arguments:
         username = graphene.String(required=True)
@@ -94,6 +95,7 @@ class Query(object):
     user = graphene.Field(UserType, pk=graphene.ID())
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
+    userHeatmapData = graphene.String( username = graphene.String() )
 
     def resolve_user(self, info, pk):
         return User.objects.get(pk=pk)
@@ -106,7 +108,24 @@ class Query(object):
             user_list = user_list.filter(display_name__icontains=filter)
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
-
+    
+    def resolve_userHeatmapData( self , info , username ):
+        import datetime, time
+        from json import dumps
+        from submission.models import Submission
+        from user.models import User
+        now = datetime.datetime.now()
+        start_date =  now - datetime.timedelta(days=366)
+        user = User.objects.get( username = username )
+        s = Submission.objects.filter( user = user , submit_time__date__gt = start_date )
+        ret = dict()
+        for each in s:
+            key = str( each.submit_time.strftime( "%Y-%m-%d" ) )
+            if key not in ret:
+                ret[key] = 0
+            ret[key] += 1
+        return dumps( [ { 'date' : key , 'count' : value } for key , value in ret.items() ] )
+        
 
 class Mutation(graphene.AbstractType):
     register = Register.Field()
