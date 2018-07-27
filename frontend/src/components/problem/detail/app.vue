@@ -31,6 +31,7 @@
 					touchless>
 					<v-tab-item id="description">
 						<ProblemDescription
+							:problem-id = "problemId"
 							:content = "content"
 							:standard-input = "standardInput"
 							:standard-output = "standardOutput"
@@ -83,8 +84,9 @@ export default {
 		constraints: '',
 		resource: '',
 		note: '',
-		timeLimit: 0,
-		memoryLimit: 0,
+		problemId: null,
+		timeLimit: null,
+		memoryLimit: null,
 		samples: [],
 	}),
 

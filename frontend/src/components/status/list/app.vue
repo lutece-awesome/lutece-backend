@@ -9,6 +9,7 @@
 			<v-card>
 				<StatusList
 					:status-item="submissionList"
+					:filters="filters"
 					:is-loading="isLoading" />
 			</v-card>
 			<div
@@ -29,6 +30,8 @@
 import StatusList from '@/components/status/list/list';
 import StatusListGQL from '@/graphql/submission/list.gql';
 
+const debounce = require('lodash.debounce');
+
 
 export default {
 	metaInfo() { return { title: 'Status' }; },
@@ -40,31 +43,42 @@ export default {
 	data() {
 		return {
 			isLoading: false,
-			page: 0,
+			page: 1,
 			maxpage: 0,
 			submissionList: [],
+			filters: { },
 		};
 	},
 
 	watch: {
 		page() {
-			this.request(this.page);
+			this.request();
+		},
+		filters: {
+			handler() {
+				this.isLoading = true;
+				this.debouncedRequest();
+			},
+			deep: true,
 		},
 	},
 
 	mounted() {
-		if (this.page === 0) { this.page = 1; }
+		this.request();
 	},
 
 	methods: {
-		request(page) {
+		request() {
+			const variables = {
+				page: this.page,
+				date: new Date().getTime(),
+				...this.filters,
+			};
+			variables.pk = parseInt(variables.pk, 10);
 			this.isLoading = true;
 			this.$apollo.query({
 				query: StatusListGQL,
-				variables: {
-					page,
-					date: new Date().getTime(),
-				},
+				variables,
 			})
 				.then(response => response.data.submissionList)
 				.then((data) => {
@@ -73,6 +87,9 @@ export default {
 				})
 				.then(() => { this.isLoading = false; });
 		},
+		debouncedRequest: debounce(function _debouncedRequest() {
+			this.request();
+		}, 250),
 	},
 };
 </script>

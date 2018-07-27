@@ -46,10 +46,14 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
+						v-model="filters.pk"
 						label="#"
 						single-line
 						hide-details
-						style="width: 40px"
+						type="number"
+						min="1"
+						step="1"
+						style="width: 50px"
 					/>
 				</th>
 				<th
@@ -57,6 +61,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
+						v-model="filters.user"
 						label="User"
 						single-line
 						hide-details
@@ -68,6 +73,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-text-field
+						v-model="filters.problem"
 						label="Problem"
 						single-line
 						hide-details
@@ -79,6 +85,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-select
+						v-model="filters.judgeStatus"
 						:items="verdictItems"
 						label="Verdict"
 						single-line
@@ -106,6 +113,7 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-select
+						v-model="filters.language"
 						:items="languageItems"
 						label="Language"
 						single-line
@@ -134,16 +142,34 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		filters: {
+			type: Object,
+			default: () => {},
+		},
 	},
 	data: () => ({
-		hidden: false,
 		verdictItems: [
-			'Compile Error',
+			'Pending',
+			'Preparing',
 			'Accepted',
+			'Running',
+			'Compile Error',
+			'Wrong Answer',
+			'Runtime Error',
+			'Time Limit Exceeded',
+			'Output Limit Exceeded',
 			'Memory Limit Exceeded',
+			'Judger Error',
 		],
 		languageItems: [
-			'Xiper++',
+			'GNU G++',
+			'GNU GCC',
+			'Clang',
+			'Python',
+			'Java',
+			'Go',
+			'Ruby',
+			'Rust',
 		],
 	}),
 };

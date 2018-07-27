@@ -6,6 +6,7 @@ from graphql_jwt.shortcuts import get_token, get_payload
 from .group import Group
 from utils.schema import paginatorList
 from json import dumps
+from graphene.types.generic import GenericScalar
 
 
 class UserType(DjangoObjectType):
@@ -36,7 +37,7 @@ class UserLogin(graphene.Mutation):
         password = graphene.String(required=True)
 
     token = graphene.String()
-    payload = graphene.JSONString()
+    payload = GenericScalar()
 
     def mutate(self, info, ** kwargs):
         from .form import UserLoginForm
@@ -46,7 +47,7 @@ class UserLogin(graphene.Mutation):
             user = User.objects.get(username=values['username'])
             token = get_token(user)
             payload = get_payload(token, info.context)
-            return UserLogin(payload=dumps(payload), token=token)
+            return UserLogin(payload=payload, token=token)
         else:
             raise RuntimeError(LoginForm.errors.as_json())
 
@@ -62,7 +63,7 @@ class Register(graphene.Mutation):
         location = graphene.String()
 
     token = graphene.String()
-    payload = graphene.JSONString()
+    payload = GenericScalar()
 
     def mutate(self, info, ** kwargs):
         from .form import UserSignupForm
@@ -83,7 +84,7 @@ class Register(graphene.Mutation):
             new_user.set_group(Group.NORMAL_USER)
             token = get_token(new_user)
             payload = get_payload(token, info.context)
-            return Register(payload=dumps(get_payload), token=token)
+            return Register(payload=payload, token=token)
         else:
             raise RuntimeError(SignupForm.errors.as_json())
 
@@ -91,16 +92,19 @@ class Register(graphene.Mutation):
 class Query(object):
 
     user = graphene.Field(UserType, pk=graphene.ID())
-    userList = graphene.Field(UserListType, page=graphene.Int())
+    userList = graphene.Field(
+        UserListType, page=graphene.Int(), filter=graphene.String())
 
     def resolve_user(self, info, pk):
         return User.objects.get(pk=pk)
 
-    def resolve_userList(self, info, page):
+    def resolve_userList(self, info, page, filter=None):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
-        userlist = User.objects.all().order_by('-solved').filter(show=True)
-        paginator = Paginator(userlist, PER_PAGE_COUNT)
+        user_list = User.objects.all().order_by('-solved').filter(show=True)
+        if filter:
+            user_list = user_list.filter(display_name__icontains=filter)
+        paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
 
 

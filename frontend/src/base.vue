@@ -15,6 +15,7 @@
 				</transition>
 			</v-container>
 		</v-content>
+		<Snackbar/>
 	</v-app>
 </template>
 
@@ -22,11 +23,13 @@
 import Vue from 'vue';
 import Footer from '@/components/global/footer';
 import Navbar from '@/components/global/navbar';
+import Snackbar from '@/components/global/snackbar';
 
 export default {
 	components: {
 		Navbar,
 		Footer,
+		Snackbar,
 	},
 	metaInfo() {
 		return {

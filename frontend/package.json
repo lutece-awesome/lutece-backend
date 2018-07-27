@@ -23,6 +23,7 @@
     "js-cookie": "^2.2.0",
     "jwt-decode": "^2.2.0",
     "katex": "^0.10.0-beta",
+    "lodash.debounce": "^4.0.8",
     "markdown-it": "^8.4.2",
     "moment": "^2.22.2",
     "unfetch": "^3.1.0",

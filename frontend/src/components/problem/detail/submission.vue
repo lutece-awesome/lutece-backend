@@ -12,9 +12,9 @@
 				:label = "checkbox ? 'ME' : 'ALL'"
 			/>
 			<v-card>
-				<StatusList
+				<!-- <StatusList
 					:status-item="submissionList"
-					:is-loading="isLoading" />
+					:is-loading="isLoading" /> -->
 			</v-card>
 			<div
 				:class="{'mb-2': $vuetify.breakpoint.xsOnly}"

@@ -31,15 +31,6 @@
 					color="primary"
 					type="submit"
 					@click= "submitsolution" >Submit</v-btn>
-				<v-snackbar
-					v-model="snackbar"
-					:timeout="6000"
-					color="error">
-					{{ error_text }}
-					<v-btn
-						flat
-						@click="snackbar=false">Close</v-btn>
-				</v-snackbar>
 			</v-card-actions>
 		</v-flex>
 	</v-layout>
@@ -79,8 +70,6 @@ export default {
 		language: '',
 		items: [],
 		height: 0,
-		snackbar: false,
-		error_text: null,
 	}),
 	computed: {
 		cmHeight() {
@@ -145,8 +134,7 @@ export default {
 					});
 				})
 				.catch((error) => {
-					this.error_text = error.message;
-					this.snackbar = true;
+					this.$store.commit('snackbar/setSnack', error.message);
 				});
 		},
 	},

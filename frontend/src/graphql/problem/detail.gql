@@ -1,5 +1,6 @@
 query ProblemDetailGQL($slug: String!) {
 	problem(slug: $slug) {
+		problemId
 		title
 		content
 		standardInput

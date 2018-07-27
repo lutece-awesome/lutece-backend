@@ -110,13 +110,13 @@ class SubmitSolution(graphene.Mutation):
 
 class Query(object):
     submission = graphene.Field(SubmissionType, pk=graphene.ID())
-    submissionList = graphene.Field(
-        SubmissionListType , page = graphene.Int(), date = graphene.String() , pk = graphene.ID() , user = graphene.ID() , problem = graphene.String() , judge_status = graphene.String() , language = graphene.String() )
+    submissionList = graphene.Field(SubmissionListType, page=graphene.Int(), date=graphene.String(), pk=graphene.ID(
+    ), user=graphene.String(), problem=graphene.String(), judge_status=graphene.String(), language=graphene.String())
 
     def resolve_submission(self, info, pk):
         return Submission.objects.get(pk=pk)
 
-    def resolve_submissionList(self , info , page , date ,  ** kwargs):
+    def resolve_submissionList(self, info, page, date, pk=None, user=None, problem=None, judge_status=None, language=None):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
         statuslist = Submission.objects.all()
@@ -124,10 +124,16 @@ class Query(object):
             statuslist = statuslist.filter(problem__visible=True)
         if not info.context.user.has_perm('submission.view_all'):
             statuslist = statuslist.filter(user__show=True)
-        if 'problem' in kwargs:
-            statuslist = statuslist.filter( problem__title__icontains = kwargs['problem'] )
-            kwargs.pop( 'problem' )
-        statuslist = statuslist.filter( ** kwargs )
+        if pk:
+            statuslist = statuslist.filter(pk=pk)
+        if user:
+            statuslist = statuslist.filter(user__display_name__icontains=user)
+        if problem:
+            statuslist = statuslist.filter(problem__title__icontains=problem)
+        if judge_status:
+            statuslist = statuslist.filter(judge_status=judge_status)
+        if language:
+            statuslist = statuslist.filter(language=language)
         paginator = Paginator(statuslist, PER_PAGE_COUNT)
         return SubmissionListType(maxpage=paginator.num_pages, submissionList=paginator.get_page(page))
 

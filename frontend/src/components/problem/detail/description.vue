@@ -37,11 +37,15 @@
 			class="headline mb-3">Note</h2>
 		<div class="mb-3">{{ note }}</div>
 		<table class="guideline-table">
-			<tr>
+			<tr v-if="problemId">
+				<td>Problem ID</td>
+				<td>{{ problemId }}</td>
+			</tr>
+			<tr v-if="timeLimit">
 				<td>Time Limit</td>
 				<td>{{ timeLimit }} ms</td>
 			</tr>
-			<tr>
+			<tr v-if="memoryLimit">
 				<td>Memory Limit</td>
 				<td>{{ memoryLimit }} MiB</td>
 			</tr>
@@ -56,6 +60,10 @@
 <script>
 export default {
 	props: {
+		problemId: {
+			type: Number,
+			required: true,
+		},
 		content: {
 			type: String,
 			required: false,

@@ -6,7 +6,7 @@
 		hide-actions >
 		<template
 			slot="items"
-			slot-scope = "props">
+			slot-scope="props">
 			<router-link
 				:to="{name: &quot;ProblemDetailDescription&quot;, params: {slug: props.item.slug}}"
 				:style="{cursor: 'pointer'}"
