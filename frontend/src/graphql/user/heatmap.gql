@@ -1,0 +1,3 @@
+query HeatmapGQL($username: String!) {
+	userHeatmapData( username: $username) 
+}
