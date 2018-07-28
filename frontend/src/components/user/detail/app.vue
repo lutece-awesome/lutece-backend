@@ -10,7 +10,7 @@
 				md8>
 				<v-card>
 					<v-card-title primary-title>
-						<h3 class="headline">{{ username }}</h3>
+						<h3 class="headline">{{ getfield( 'username' ) }}</h3>
 					</v-card-title>
 					<v-card-text>
 						<div class="scroll text-xs-center">
@@ -31,7 +31,7 @@
 <script>
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
-import { HeatmapGQL } from '@/graphql/user/heatmap.gql';
+import { ProfileGQL } from '@/graphql/user/profile.gql';
 
 
 export default {
@@ -41,21 +41,32 @@ export default {
 		CalendarHeatmap,
 	},
 	data: () => ({
-		username: '',
 		HeatMapData: [],
 		endDate: Date.now(),
+		userdata: {},
 	}),
 
 	mounted() {
-		this.username = this.$route.params.username;
 		this.$apollo.query({
-			query: HeatmapGQL,
+			query: ProfileGQL,
 			variables: {
-				username: this.username,
+				username: this.$route.params.username,
 			},
 		})
-			.then(response => response.data.userHeatmapData)
-			.then((data) => { this.HeatMapData = JSON.parse(data); });
+			.then(response => response.data.userProfile)
+			.then((data) => {
+				this.HeatMapData = JSON.parse(data.heatmap);
+				this.userdata = data.user;
+			});
+	},
+
+	methods: {
+		getfield(field) {
+			if (Object.prototype.hasOwnProperty.call(this.userdata, field)) {
+				return this.userdata[field];
+			}
+			return '';
+		},
 	},
 };
 </script>
