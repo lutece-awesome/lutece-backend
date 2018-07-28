@@ -5,20 +5,22 @@ import apolloProvider from '@/apollo';
 
 const state = {
 	payload: null,
+	permission: [],
 };
 
 const getters = {
-	has_permission: state => permission => state.payload
-		&& state.payload.permissions.indexOf(permission) !== -1,
+	has_permission: state => permission => state.permission.indexOf(permission) !== -1,
 };
 
 const mutations = {
 	login(state, data) {
 		state.payload = data.payload;
+		state.permission = JSON.parse(data.permission);
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
 		state.payload = null;
+		state.permission = [];
 		localStorage.removeItem('USER_TOKEN');
 	},
 };

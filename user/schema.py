@@ -38,6 +38,7 @@ class UserLogin(graphene.Mutation):
         password = graphene.String(required=True)
 
     token = graphene.String()
+    permission = graphene.String()
     payload = GenericScalar()
 
     def mutate(self, info, ** kwargs):
@@ -48,7 +49,7 @@ class UserLogin(graphene.Mutation):
             user = User.objects.get(username=values['username'])
             token = get_token(user)
             payload = get_payload(token, info.context)
-            return UserLogin(payload=payload, token=token)
+            return UserLogin(payload=payload, token=token , permission =  dumps( list(user.get_all_permissions()) ) )
         else:
             raise RuntimeError(LoginForm.errors.as_json())
 

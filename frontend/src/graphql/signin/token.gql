@@ -2,6 +2,7 @@ mutation UserLogin($username: String!, $password: String!) {
 	userLogin(username: $username, password: $password) {
 		token
 		payload
+		permission
 	}
 }
 
