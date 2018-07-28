@@ -77,10 +77,13 @@
 						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
-						<v-list-tile @click="signout">
-							<v-icon class="mr-2">mdi-logout</v-icon>
+						<v-list-tile
+							v-for = "( each , index ) in dropdownItems"
+							:key = "index"
+							@click = "each.click" >
+							<v-icon class="mr-2"> {{ each.icon }} </v-icon>
 							<v-list-tile-content>
-								<v-list-tile-title>Sign Out</v-list-tile-title>
+								<v-list-tile-title>{{ each.label }} </v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
 					</v-list>
@@ -155,6 +158,23 @@ export default {
 				path: '/about',
 			},
 			],
+			dropdownItems: [
+				{
+					click: this.profile,
+					icon: 'mdi-account',
+					label: 'Profile',
+				},
+				{
+					click: this.settings,
+					icon: 'mdi-settings',
+					label: 'Settings',
+				},
+				{
+					click: this.signout,
+					icon: 'mdi-logout',
+					label: 'Sign Out',
+				},
+			],
 		};
 	},
 	computed: {
@@ -193,6 +213,17 @@ export default {
 				query: {
 					redirect: this.$route.path,
 				},
+			});
+		},
+		profile() {
+			this.$router.push({
+				name: 'UserDetail',
+				params: { username: this.$store.state.user.username },
+			});
+		},
+		settings() {
+			this.$router.push({
+				name: 'UserSettings',
 			});
 		},
 	},

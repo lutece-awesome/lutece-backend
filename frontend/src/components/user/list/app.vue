@@ -61,7 +61,7 @@ export default {
 	},
 
 	mounted() {
-		this.page = parseInt(localStorage.getItem('USER_LIST'), 10) || 1;
+		this.page = 1;
 		this.request();
 	},
 
@@ -82,7 +82,6 @@ export default {
 					this.page = Math.min(this.page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });
-			localStorage.setItem('USER_LIST', this.page);
 		},
 		debouncedRequest: debounce(function _debouncedRequest() {
 			this.request();
