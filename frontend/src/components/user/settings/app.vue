@@ -11,7 +11,7 @@
 					@submit.prevent="submit"
 				>
 					<v-text-field
-						v-model="displayName"
+						v-model="displayname"
 						:error-messages="geterror('displayname')"
 						label="Display name"
 						prepend-icon = "mdi-account"
@@ -64,13 +64,13 @@
 
 <script>
 
-import { UserProfileGQL, UserInfoUpdateGQL } from '@/graphql/user/settings.gql';
+import { UserInfoUpdateGQL } from '@/graphql/user/settings.gql';
 
 export default {
 	metaInfo() { return { title: 'Settings' }; },
 
 	data: () => ({
-		displayName: '',
+		displayname: '',
 		school: '',
 		company: '',
 		location: '',
@@ -82,7 +82,12 @@ export default {
 		errordetail: [],
 	}),
 	mounted() {
-		this.request();
+		this.displayname = this.$store.state.user.displayname;
+		this.school = this.$store.state.user.school;
+		this.company = this.$store.state.user.company;
+		this.location = this.$store.state.user.location;
+		this.about = this.$store.state.user.about;
+		this.group = this.$store.state.user.group;
 	},
 	methods: {
 		geterror(field) {
@@ -92,15 +97,6 @@ export default {
 			return '';
 		},
 
-		request() {
-			this.initialize = true;
-			this.$apollo.query({
-				query: UserProfileGQL,
-			})
-				.then(response => response.data.user)
-				.then((data) => { Object.assign(this, data); })
-				.finally(() => { this.initialize = false; });
-		},
 
 		submit() {
 			this.isloading = true;
@@ -110,13 +106,13 @@ export default {
 				mutation: UserInfoUpdateGQL,
 				variables: {
 					company: this.company,
-					displayname: this.displayName,
+					displayname: this.displayname,
 					about: this.about,
 					school: this.school,
 					location: this.location,
 				},
 			})
-				.then((response) => {
+				.then(() => {
 					this.$store.dispatch('user/refresh_token', true);
 					this.$router.push({
 						name: 'UserDetail',

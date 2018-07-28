@@ -8,6 +8,11 @@ const state = {
 	permission: [],
 	displayname: '',
 	gravataremail: '',
+	school: '',
+	company: '',
+	location: '',
+	about: '',
+	group: '',
 };
 
 const getters = {
@@ -20,6 +25,11 @@ const mutations = {
 		state.permission = JSON.parse(data.permission);
 		state.displayname = data.user.displayName;
 		state.gravataremail = data.user.gravataremail;
+		state.school = data.user.school;
+		state.company = data.user.company;
+		state.location = data.user.location;
+		state.about = data.user.about;
+		state.group = data.user.group;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
@@ -27,6 +37,11 @@ const mutations = {
 		state.permission = [];
 		state.displayname = '';
 		state.gravataremail = '';
+		state.school = '';
+		state.company = '';
+		state.location = '';
+		state.about = '';
+		state.group = '';
 		localStorage.removeItem('USER_TOKEN');
 	},
 };
