@@ -116,6 +116,13 @@ export default {
 					location: this.location,
 				},
 			})
+				.then((response) => {
+					this.$store.dispatch('user/refresh_token', true);
+					this.$router.push({
+						name: 'UserDetail',
+						params: { username: this.$store.state.user.payload.username },
+					});
+				})
 				.finally(() => { this.isloading = false; })
 				.catch((error) => {
 					this.errordetail = JSON.parse(error.graphQLErrors[0].message);

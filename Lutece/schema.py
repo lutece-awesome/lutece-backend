@@ -12,7 +12,6 @@ class Query(UserSchema.Query, ProblemSchema.Query, UtilsSchema.Query, Submission
 
 class Mutations(UserSchema.Mutation, ProblemSchema.Mutation, UtilsSchema.Mutation, SubmissionSchema.Mutation, graphene.ObjectType):
     verify_token = graphql_jwt.Verify.Field()
-    refresh_token = graphql_jwt.Refresh.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations)

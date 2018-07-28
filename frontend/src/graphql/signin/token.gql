@@ -17,8 +17,13 @@ mutation VerifyToken($token: String!) {
 }
 
 mutation RefreshToken($token: String!) {
-	refreshToken(token: $token) {
+	UserTokenRefresh(token: $token) {
 		token
 		payload
+		permission
+		user{
+			displayName,
+			gravataremail
+		}
 	}
 }

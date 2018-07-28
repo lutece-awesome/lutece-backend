@@ -47,7 +47,7 @@ const actions = {
 						token,
 					},
 				})
-					.then(response => response.data.refreshToken)
+					.then(response => response.data.UserTokenRefresh)
 					.then((data) => {
 						commit('login', data);
 					})

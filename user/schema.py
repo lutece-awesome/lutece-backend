@@ -51,6 +51,38 @@ class UserLogin(graphene.Mutation):
         else:
             raise RuntimeError(LoginForm.errors.as_json())
 
+class UserTokenRefresh(graphene.Mutation):
+
+    class Arguments:
+        token = graphene.String()
+    
+    payload = GenericScalar()
+    token = graphene.String()
+    permission = graphene.String()
+    user = graphene.Field( UserType )
+
+    def mutate( self , info , token, **kwargs):
+        from graphql_jwt.shortcuts import get_user_by_token, get_user_by_payload
+        from graphql_jwt.settings import jwt_settings
+        from calendar import timegm
+        from datetime import datetime
+
+        payload = get_payload(token, info.context)
+        user = get_user_by_payload(payload)
+        orig_iat = payload.get('orig_iat')
+
+        if orig_iat:
+            utcnow = timegm(datetime.utcnow().utctimetuple())
+            expiration = orig_iat +\
+                jwt_settings.JWT_REFRESH_EXPIRATION_DELTA.total_seconds()
+
+            if utcnow > expiration:
+                raise exceptions.GraphQLJWTError(_('Refresh has expired'))
+        else:
+            raise exceptions.GraphQLJWTError(_('orig_iat field is required'))
+
+        token = get_token(user, orig_iat=orig_iat)
+        return UserTokenRefresh(token=token, payload=payload, permission =  dumps( list(user.get_all_permissions()) ) , user = user )
 
 class UserInfoUpdate(graphene.Mutation):
     class Arguments:
@@ -166,3 +198,4 @@ class Mutation(graphene.AbstractType):
     register = Register.Field()
     user_login = UserLogin.Field()
     UserInfoUpdate = UserInfoUpdate.Field()
+    UserTokenRefresh = UserTokenRefresh.Field()
