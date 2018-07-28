@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container v-if = "!isloading">
 		<v-layout
 			justify-center
 			row
@@ -9,7 +9,7 @@
 				md6>
 				<v-form>
 					<v-text-field
-						v-model="payload.displayname"
+						v-model="displayName"
 						label="Display name"
 					/>
 				</v-form>
@@ -20,17 +20,34 @@
 
 
 <script>
+
+import UserProfileGQL from '@/graphql/user/settings.gql';
+
 export default {
 	data: () => ({
-		payload: {},
+		displayName: '',
+		school: '',
+		company: '',
+		location: '',
+		about: '',
+		group: '',
+		isloading: false,
 	}),
-	created() {
-		this.updatePayload();
-		this.$store.watch(state => state.user.payload, this.updatePayload);
+	mounted() {
+		this.request();
 	},
 	methods: {
-		updatePayload() {
-			this.payload = Object.assign({}, this.$store.state.user.payload);
+		request() {
+			this.isloading = true;
+			this.$apollo.query({
+				query: UserProfileGQL,
+				variables: {
+					username: this.$store.state.user.payload.username,
+				},
+			})
+				.then(response => response.data.user)
+				.then((data) => { this.data = data; })
+				.finally(() => { this.isloading = false; });
 		},
 	},
 };

@@ -89,13 +89,13 @@ class Register(graphene.Mutation):
 
 class Query(object):
 
-    user = graphene.Field(UserType, pk=graphene.ID())
+    user = graphene.Field(UserType, username=graphene.String())
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
     userHeatmapData = graphene.String(username=graphene.String())
 
-    def resolve_user(self, info, pk):
-        return User.objects.get(pk=pk)
+    def resolve_user(self, info, username):
+        return User.objects.get( username = username )
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator

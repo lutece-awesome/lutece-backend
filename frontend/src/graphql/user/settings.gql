@@ -1,0 +1,10 @@
+query UserProfileGQL($username: String!) {
+	user(username: $username) {
+        displayName,
+        school,
+        company,
+        location,
+        about,
+        group,
+	}
+}
