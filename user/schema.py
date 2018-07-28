@@ -29,6 +29,10 @@ class UserListType(graphene.ObjectType):
     userList = graphene.List(UserType)
 
 
+class UserProfileType( graphene.ObjectType ):
+    user = graphene.Field( UserType )
+    heatmap = graphene.JSONString()
+
 class UserLogin(graphene.Mutation):
     class Arguments:
         username = graphene.String(required=True)
@@ -156,13 +160,10 @@ class Register(graphene.Mutation):
 
 class Query(object):
 
-    user = graphene.Field( UserType )
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
-    userHeatmapData = graphene.String(username=graphene.String())
-
-    def resolve_user(self, info):
-        return info.context.user
+    userProfile = graphene.Field(
+        UserProfileType , username = graphene.String())
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
@@ -173,16 +174,15 @@ class Query(object):
             user_list = user_list.filter(display_name__icontains=filter)
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
-
-    def resolve_userHeatmapData(self, info, username):
+    
+    def resolve_userProfile( self , info , username ):
         import datetime
         import time
-        from json import dumps
         from submission.models import Submission
         from user.models import User
         now = datetime.datetime.now()
         start_date = now - datetime.timedelta(days=366)
-        user = User.objects.get(username=username)
+        user = User.objects.get( username = username )
         s = Submission.objects.filter(
             user=user, submit_time__date__gt=start_date)
         ret = dict()
@@ -191,8 +191,10 @@ class Query(object):
             if key not in ret:
                 ret[key] = 0
             ret[key] += 1
-        return dumps([{'date': key, 'count': value} for key, value in ret.items()])
-
+        return UserProfileType( 
+            user = User.objects.get( username = username ),
+            heatmap = [{'date': key, 'count': value} for key, value in ret.items()]
+        )
 
 class Mutation(graphene.AbstractType):
     register = Register.Field()
