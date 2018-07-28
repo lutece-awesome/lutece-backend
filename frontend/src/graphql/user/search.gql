@@ -1,0 +1,7 @@
+query UserSearchGQL($filter: String) {
+	userSearch(filter: $filter) {
+		userList {
+			displayName
+		}
+	}
+}

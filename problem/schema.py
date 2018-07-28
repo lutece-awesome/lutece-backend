@@ -71,6 +71,7 @@ class Query(object):
     problem = graphene.Field(ProblemType, slug=graphene.String())
     problemList = graphene.Field(
         ProblemListType, page=graphene.Int(), filter=graphene.String())
+    problemSearch = graphene.Field(ProblemListType, filter=graphene.String())
 
     def resolve_problem(self, info, slug):
         _all = Problem.objects.all()
@@ -99,6 +100,15 @@ class Query(object):
                 problem_list = problem_list.filter(title__icontains=filter)
         paginator = Paginator(problem_list, PER_PAGE_COUNT)
         return ProblemListType(maxpage=paginator.num_pages, problemList=paginator.get_page(page))
+
+    def resolve_problemSearch(self, info, **kwargs):
+        filter = kwargs.get('filter')
+        problem_list = Problem.objects.all()
+        if not info.context.user.has_perm('problem.view_all'):
+            problem_list = problem_list.filter(visible=True)
+        if filter is not None:
+            problem_list = problem_list.filter(title__icontains=filter)
+        return ProblemListType(maxpage=1, problemList=problem_list[:5])
 
 
 class Mutation(graphene.AbstractType):

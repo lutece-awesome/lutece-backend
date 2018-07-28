@@ -46,7 +46,7 @@ const actions = {
 						commit('login', data);
 					})
 					.catch((error) => {
-						commit('snackbar/setSnack', error.networkError.result.errors[0].message, { root: true });
+						commit('snackbar/setSnack', error.message, { root: true });
 						commit('logout');
 					});
 			}

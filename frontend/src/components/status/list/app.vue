@@ -12,6 +12,8 @@
 					<StatusList
 						:status-item="submissionList"
 						:filters="filters"
+						:user-search="userSearch"
+						:problem-search="problemSearch"
 						:is-loading="isLoading" />
 				</v-card>
 				<div
@@ -31,6 +33,8 @@
 
 import StatusList from '@/components/status/list/list';
 import StatusListGQL from '@/graphql/submission/list.gql';
+import UserSearchGQL from '@/graphql/user/search.gql';
+import ProblemSearchGQL from '@/graphql/problem/search.gql';
 
 const debounce = require('lodash.debounce');
 
@@ -42,7 +46,6 @@ export default {
 	components: {
 		StatusList,
 	},
-
 	data() {
 		return {
 			isLoading: false,
@@ -50,9 +53,26 @@ export default {
 			maxpage: 0,
 			submissionList: [],
 			filters: { },
+			userSearch: {
+				items: [],
+				isLoading: false,
+				filter: null,
+			},
+			problemSearch: {
+				items: [],
+				isLoading: false,
+				filter: null,
+			},
 		};
 	},
-
+	computed: {
+		userSearchFilter() {
+			return this.userSearch.filter;
+		},
+		problemSearchFilter() {
+			return this.problemSearch.filter;
+		},
+	},
 	watch: {
 		page() {
 			this.request();
@@ -63,6 +83,36 @@ export default {
 				this.debouncedRequest();
 			},
 			deep: true,
+		},
+		userSearchFilter() {
+			const variables = {
+				filter: this.userSearchFilter,
+			};
+			this.userSearch.isLoading = true;
+			this.$apollo.query({
+				query: UserSearchGQL,
+				variables,
+			})
+				.then(response => response.data.userSearch)
+				.then((data) => {
+					this.userSearch.items = data.userList.map(val => val.displayName);
+				})
+				.then(() => { this.userSearch.isLoading = false; });
+		},
+		problemSearchFilter() {
+			const variables = {
+				filter: this.problemSearchFilter,
+			};
+			this.problemSearch.isLoading = true;
+			this.$apollo.query({
+				query: ProblemSearchGQL,
+				variables,
+			})
+				.then(response => response.data.problemSearch)
+				.then((data) => {
+					this.problemSearch.items = data.problemList.map(val => val.title);
+				})
+				.then(() => { this.problemSearch.isLoading = false; });
 		},
 	},
 

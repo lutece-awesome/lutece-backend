@@ -13,11 +13,8 @@ class SubmissionType(DjangoObjectType):
     class Meta:
         model = Submission
         only_fields = ('user', 'problem', 'submission_id', 'language', 'judge_status', 'submit_time',
-                       'case_number', 'completed', 'time_cost', 'memory_cost')
+                       'case_number', 'completed', 'time_cost', 'memory_cost', 'code', 'judgererror_msg', 'compileerror_msg')
 
-    code = graphene.String()
-    judgererror_msg = graphene.String()
-    compileerror_msg = graphene.String()
     color = graphene.String()
     failed_case = graphene.Int()
 
@@ -112,9 +109,9 @@ class Query(object):
         if pk is not None:
             statuslist = statuslist.filter(pk=pk)
         if user is not None:
-            statuslist = statuslist.filter(user__display_name__icontains=user)
+            statuslist = statuslist.filter(user__display_name=user)
         if problem is not None:
-            statuslist = statuslist.filter(problem__title__icontains=problem)
+            statuslist = statuslist.filter(problem__title=problem)
         if judge_status is not None:
             statuslist = statuslist.filter(judge_status=judge_status)
         if language is not None:

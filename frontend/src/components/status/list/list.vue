@@ -60,24 +60,39 @@
 					role="columnheader"
 					scope="col"
 					class="column text-xs-center">
-					<v-text-field
+					<v-autocomplete
 						v-model="filters.user"
-						label="User"
+						:items="userSearch.items"
+						:loading="userSearch.isLoading"
+						:search-input.sync="userSearch.filter"
+						:append-icon="null"
 						single-line
 						hide-details
+						clearable
+						label="User"
 						style="width: 80px"
+						item-text="name"
+						dense
 					/>
+
 				</th>
 				<th
 					role="columnheader"
 					scope="col"
 					class="column text-xs-center">
-					<v-text-field
+					<v-autocomplete
 						v-model="filters.problem"
-						label="Problem"
+						:items="problemSearch.items"
+						:loading="problemSearch.isLoading"
+						:search-input.sync="problemSearch.filter"
+						:append-icon="null"
 						single-line
 						hide-details
-						style="width: 100px"
+						clearable
+						label="Problem"
+						style="width: 120px"
+						item-text="name"
+						dense
 					/>
 				</th>
 				<th
@@ -127,7 +142,6 @@
 			</tr>
 		</template>
 	</v-data-table>
-
 </template>
 
 
@@ -143,6 +157,14 @@ export default {
 			default: false,
 		},
 		filters: {
+			type: Object,
+			default: () => {},
+		},
+		userSearch: {
+			type: Object,
+			default: () => {},
+		},
+		problemSearch: {
 			type: Object,
 			default: () => {},
 		},
