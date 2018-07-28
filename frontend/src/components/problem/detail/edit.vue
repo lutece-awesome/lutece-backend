@@ -49,7 +49,7 @@ import ProblemDetailGQL from '@/graphql/problem/detail.gql';
 import UpdateProblem from '@/graphql/problem/edit.gql';
 
 export default {
-	metaInfo() { return { title: this.problem.title || 'Loading...' }; },
+	metaInfo() { return { title: `Edit ${this.problem.title}` || 'Loading...' }; },
 	components: {
 		ProblemDescription,
 		ProblemSetting,
@@ -57,12 +57,10 @@ export default {
 	data: () => ({
 		slug: '',
 		problem: {},
-		has_permission: null,
 	}),
 
 	mounted() {
 		this.slug = this.$route.params.slug;
-		this.has_permission = this.$store.getters['user/has_permission'];
 		this.request();
 	},
 
@@ -89,7 +87,7 @@ export default {
 				.then(() => {
 					// location.reload();
 				})
-				.catch(error => alert(error));
+				.catch(error => this.$store.commit('snackbar/setSnack', error.message));
 		},
 		request() {
 			this.$apollo.query({
@@ -102,6 +100,9 @@ export default {
 				.then((data) => {
 					this.problem = Object.assign({}, data, { samples: JSON.parse(data.sample) });
 				});
+		},
+		has_permission(permission) {
+			return this.$store.getters['user/has_permission'](permission);
 		},
 	},
 };

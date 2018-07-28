@@ -11,7 +11,7 @@ def lutece_payload(user, context=None):
     payload['displayname'] = user.display_name
     payload['gravataremail'] = user.gravataremail
     payload['password'] = user.password[-8:]
-    payload['permission'] = list(user.get_all_permissions())
+    payload['permissions'] = list(user.get_all_permissions())
     return payload
 
 

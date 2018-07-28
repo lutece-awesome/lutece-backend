@@ -9,7 +9,7 @@
 				md6>
 				<v-form>
 					<v-text-field
-						v-model="displayname"
+						v-model="payload.displayname"
 						label="Display name"
 					/>
 				</v-form>
@@ -22,11 +22,16 @@
 <script>
 export default {
 	data: () => ({
-		displayname: '',
+		payload: {},
 	}),
-
-	mounted() {
-		this.displayname = this.$store.state.user.displayname;
+	created() {
+		this.updatePayload();
+		this.$store.watch(state => state.user.payload, this.updatePayload);
+	},
+	methods: {
+		updatePayload() {
+			this.payload = Object.assign({}, this.$store.state.user.payload);
+		},
 	},
 };
 </script>

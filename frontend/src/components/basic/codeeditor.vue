@@ -108,7 +108,7 @@ export default {
 			this.height = Math.max(window.innerHeight - 300, 300);
 		},
 		submitsolution() {
-			if (this.$store.state.user.authed === false) {
+			if (!this.$store.state.user.payload) {
 				this.$router.push({
 					name: 'Login',
 					query: {

@@ -4,33 +4,21 @@ import jwtDecode from 'jwt-decode';
 import apolloProvider from '@/apollo';
 
 const state = {
-	authed: false,
-	username: '',
-	displayname: '',
-	gravataremail: '',
-	permission: [],
+	payload: null,
 };
 
 const getters = {
-	authed: state => state.authed,
-	has_permission: state => permission => (state.permission.indexOf(permission) !== -1),
+	has_permission: state => permission => state.payload
+		&& state.payload.permissions.indexOf(permission) !== -1,
 };
 
 const mutations = {
 	login(state, data) {
-		state.authed = true;
-		state.username = data.payload.username;
-		state.displayname = data.payload.displayname;
-		state.gravataremail = data.payload.gravataremail;
-		state.permission = data.payload.permission;
+		state.payload = data.payload;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
-		state.authed = false;
-		state.username = '';
-		state.displayname = '';
-		state.gravataremail = '';
-		state.permission = [];
+		state.payload = null;
 		localStorage.removeItem('USER_TOKEN');
 	},
 };

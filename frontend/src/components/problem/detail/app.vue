@@ -101,12 +101,10 @@ export default {
 		visible: null,
 		discussionvisible: null,
 		samples: [],
-		has_permission: null,
 	}),
 
 	mounted() {
 		this.slug = this.$route.params.slug;
-		this.has_permission = this.$store.getters['user/has_permission'];
 		this.request();
 	},
 
@@ -123,6 +121,9 @@ export default {
 					Object.assign(this, data);
 					this.samples = JSON.parse(this.sample);
 				});
+		},
+		has_permission(permission) {
+			return this.$store.getters['user/has_permission'](permission);
 		},
 	},
 };

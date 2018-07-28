@@ -54,26 +54,25 @@
 			<v-spacer/>
 			<v-toolbar-items class="hidden-sm-and-down">
 				<v-btn
-					v-if="!logging && !authed"
+					v-if="!payload"
 					flat
 					@click="login">
 					<v-icon class="mr-2">mdi-login</v-icon>
 					SIGN IN
 				</v-btn>
 				<v-menu
-					v-if="authed"
+					v-if="payload"
 					open-on-hover
 					offset-y>
 					<v-btn
 						slot="activator"
 						flat>
 						<v-avatar
-							v-if="authed"
 							size="36"
 							class="mr-2" >
-							<img :src="gravataremail" >
+							<img :src="payload.gravataremail" >
 						</v-avatar>
-						{{ displayname }}
+						{{ payload.displayname }}
 						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
@@ -90,22 +89,22 @@
 				</v-menu>
 			</v-toolbar-items>
 			<v-btn
-				v-if="authed"
+				v-if="payload"
 				icon
 				class="hidden-md-and-up">
 				<v-avatar size="36">
-					<img :src="gravataremail" >
+					<img :src="payload.gravataremail" >
 				</v-avatar>
 			</v-btn>
 			<v-btn
-				v-if="authed"
+				v-if="payload"
 				icon
 				class="hidden-md-and-up"
 				@click="signout">
 				<v-icon>mdi-logout</v-icon>
 			</v-btn>
 			<v-btn
-				v-if="!logging && !authed"
+				v-if="!payload"
 				icon
 				class="hidden-md-and-up"
 				@click="login">
@@ -126,7 +125,6 @@ export default {
 		return {
 			drawer: null,
 			signin: false,
-			logging: false,
 			items: [{
 				icon: 'mdi-home',
 				title: 'Home',
@@ -178,14 +176,8 @@ export default {
 		};
 	},
 	computed: {
-		authed() {
-			return this.$store.state.user.authed;
-		},
-		gravataremail() {
-			return this.$store.state.user.gravataremail;
-		},
-		displayname() {
-			return this.$store.state.user.displayname;
+		payload() {
+			return this.$store.state.user.payload;
 		},
 		title() {
 			return this.$root.title;
@@ -218,7 +210,7 @@ export default {
 		profile() {
 			this.$router.push({
 				name: 'UserDetail',
-				params: { username: this.$store.state.user.username },
+				params: { username: this.$store.state.user.payload.username },
 			});
 		},
 		settings() {
