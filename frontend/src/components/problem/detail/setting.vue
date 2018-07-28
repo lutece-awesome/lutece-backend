@@ -1,5 +1,7 @@
 <template>
-	<v-container fiuld>
+	<v-container
+		v-if="value"
+		fiuld>
 		<v-form>
 			<v-text-field
 				v-model="value.title"
@@ -34,13 +36,13 @@
 				label="resource"
 			/>
 			<div
-				v-for = "(each , index) in value.samples"
+				v-for = "(each , index) in value.sampleSet"
 				:key = "index">
 				<span>
-					{{ each.input }}
+					{{ each.inputContent }}
 				</span>
 				<span>
-					{{ each.output }}
+					{{ each.outputContent }}
 				</span>
 			</div>
 			<v-btn> ADD SAMPLE </v-btn>
@@ -71,7 +73,7 @@ export default {
 	props: {
 		value: {
 			type: Object,
-			required: true,
+			default: null,
 		},
 	},
 

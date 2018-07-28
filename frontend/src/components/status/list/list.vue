@@ -17,11 +17,11 @@
 					<v-avatar
 						size="32"
 						class="mr-1" >
-						<img :src="props.item.userGravataremail" >
+						<img :src="props.item.user.gravataremail" >
 					</v-avatar>
-					{{ props.item.user }}
+					{{ props.item.user.displayName }}
 				</td>
-				<td class="text-xs-center">{{ props.item.problem }}</td>
+				<td class="text-xs-center">{{ props.item.problem.title }}</td>
 				<td
 					:class="props.item.color + '--text'"
 					class="text-xs-center">

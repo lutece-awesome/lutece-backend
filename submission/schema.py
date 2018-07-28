@@ -12,33 +12,19 @@ from submission.judge_result import Judge_result, Query_field
 class SubmissionType(DjangoObjectType):
     class Meta:
         model = Submission
-        only_fields = ('submission_id', 'language', 'judge_status', 'submit_time',
+        only_fields = ('user', 'problem', 'submission_id', 'language', 'judge_status', 'submit_time',
                        'case_number', 'completed', 'time_cost', 'memory_cost')
 
-    problem = graphene.String()
     code = graphene.String()
-    user = graphene.String()
-    user_gravataremail = graphene.String()
     judgererror_msg = graphene.String()
     compileerror_msg = graphene.String()
     color = graphene.String()
     failed_case = graphene.Int()
-    time_cost = graphene.Int()
-    memory_cost = graphene.Int()
-
-    def resolve_problem(self, info, * args, ** kwargs):
-        return self.problem.title
 
     def resolve_code(self, info, * args, ** kwargs):
         if self.user == info.context.user or info.context.user.has_perm('submission.view_all'):
             return self.code
         return ''
-
-    def resolve_user(self, info, * args, ** kwargs):
-        return self.user.display_name
-
-    def resolve_user_gravataremail(self, info, * args, ** kwargs):
-        return self.user.gravataremail
 
     def resolve_judgererror_msg(self, info, * args, ** kwargs):
         if info.context.user.has_perm('submission.view_all'):
@@ -57,12 +43,6 @@ class SubmissionType(DjangoObjectType):
         if Judge_result.get_judge_result(self.judge_status) in Query_field.failedcase_field.value:
             return Judgeinfo.objects.filter(submission=self).count()
         return None
-
-    def resolve_time_cost(self, info, * args, ** kwargs):
-        return self.time_cost
-
-    def resolve_memory_cost(self, info, * args, ** kwargs):
-        return self.memory_cost
 
 
 class SubmissionListType(graphene.ObjectType):

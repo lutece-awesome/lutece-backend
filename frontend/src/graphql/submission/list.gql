@@ -21,9 +21,13 @@ query SubmissionListGQL(
 			submissionId
 			failedCase
 			submitTime
-			user
-			userGravataremail
-			problem
+			user {
+				gravataremail
+				displayName
+			}
+			problem {
+				title
+			}
 			judgeStatus
 			language
 			color

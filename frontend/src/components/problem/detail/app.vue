@@ -23,7 +23,7 @@
 				</v-btn>
 				<v-card>
 					<v-tabs
-						v-if="title"
+						v-if="problem"
 						v-model="tabs"
 						fixed-tabs>
 						<v-tab
@@ -37,22 +37,11 @@
 							to="discussion">Disscussion</v-tab>
 					</v-tabs>
 					<v-tabs-items
-						v-if="title"
+						v-if="problem"
 						v-model="tabs"
 						touchless>
 						<v-tab-item id="description">
-							<ProblemDescription
-								:problem-id = "problemId"
-								:content = "content"
-								:standard-input = "standardInput"
-								:standard-output = "standardOutput"
-								:constraints = "constraints"
-								:note = "note"
-								:time-limit = "timeLimit"
-								:memory-limit = "memoryLimit"
-								:samples = "samples"
-								:resource = "resource"
-							/>
+							<ProblemDescription :problem = "problem"/>
 						</v-tab-item>
 						<v-tab-item id="editor">
 							<ProblemEditor :problemslug = "slug" />
@@ -70,37 +59,21 @@
 <script>
 import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
-import ProblemSubmission from '@/components/problem/detail/submission';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
-import ProblemEdit from '@/components/problem/detail/edit';
 import ProblemDetailGQL from '@/graphql/problem/detail.gql';
 
 export default {
-	metaInfo() { return { title: this.title || 'Loading...' }; },
+	metaInfo() { return { title: this.problem ? this.problem.title : 'Loading...' }; },
 	components: {
 		ProblemDescription,
 		ProblemEditor,
 		ProblemDiscussion,
-		ProblemSubmission,
-		ProblemEdit,
 	},
 	data: () => ({
 		slug: '',
 		isLoading: false,
 		tabs: null,
-		title: '',
-		content: '',
-		standardInput: '',
-		standardOutput: '',
-		constraints: '',
-		resource: '',
-		note: '',
-		problemId: null,
-		timeLimit: null,
-		memoryLimit: null,
-		visible: null,
-		discussionvisible: null,
-		samples: [],
+		problem: null,
 	}),
 
 	mounted() {
@@ -118,8 +91,7 @@ export default {
 			})
 				.then(response => response.data.problem)
 				.then((data) => {
-					Object.assign(this, data);
-					this.samples = JSON.parse(this.sample);
+					this.problem = data;
 				});
 		},
 		has_permission(permission) {

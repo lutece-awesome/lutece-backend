@@ -10,7 +10,10 @@ query ProblemDetailGQL($slug: String!) {
 		note
 		timeLimit
 		memoryLimit
-		sample
+		sampleSet {
+			inputContent
+			outputContent
+		}
 		visible
 		discussionvisible
 	}
