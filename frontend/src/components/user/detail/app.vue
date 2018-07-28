@@ -12,11 +12,15 @@
 					<v-card-title primary-title>
 						<h3 class="headline">{{ username }}</h3>
 					</v-card-title>
+					<v-card-text>
+						<div class="scroll text-xs-center">
+							<CalendarHeatmap
+								:values = "HeatMapData"
+								:end-date = "endDate"
+								tooltip-unit = "submissions" />
+						</div>
+					</v-card-text>
 				</v-card>
-				<CalendarHeatmap
-					:values = "HeatMapData"
-					:end-date = "endDate"
-					tooltip-unit = "submissions" />
 			</v-flex>
 
 		</v-layout>
