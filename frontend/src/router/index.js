@@ -7,6 +7,7 @@ import StatusDetail from '@/components/status/detail/app';
 import Contest from '@/components/contest/contest';
 import UserList from '@/components/user/list/app';
 import UserDetail from '@/components/user/detail/app';
+import UserSettings from '@/components/user/settings/app';
 import Login from '@/components/signin/login';
 import Signup from '@/components/signin/signup';
 import Signout from '@/components/signin/signout';
@@ -62,6 +63,11 @@ export default new Router({
 			path: '/user',
 			name: 'User',
 			component: UserList,
+		},
+		{
+			path: '/user/settings',
+			name: 'UserSettings',
+			component: UserSettings,
 		},
 		{
 			path: '/user/:username',
