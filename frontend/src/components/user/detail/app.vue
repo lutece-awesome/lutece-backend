@@ -9,6 +9,11 @@
 				xs12
 				md8>
 				<v-card>
+					<v-avatar
+						size="128"
+						class="mr-2" >
+						<img :src="getfield('gravataremail')" >
+					</v-avatar>
 					<v-card-title primary-title>
 						<h3 class="headline">{{ getfield( 'username' ) }}</h3>
 					</v-card-title>
@@ -35,7 +40,7 @@ import { ProfileGQL } from '@/graphql/user/profile.gql';
 
 
 export default {
-	metaInfo() { return { title: this.username }; },
+	metaInfo() { return { title: this.$route.params.username }; },
 
 	components: {
 		CalendarHeatmap,
