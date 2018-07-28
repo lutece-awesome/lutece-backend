@@ -1,5 +1,5 @@
-query UserProfileGQL($username: String!) {
-	user(username: $username) {
+query UserProfileGQL{
+	user{
         displayName,
         school,
         company,
@@ -7,4 +7,10 @@ query UserProfileGQL($username: String!) {
         about,
         group,
 	}
+}
+
+mutation UserInfoUpdateGQL( $company: String! , $displayname: String! , $about: String! , $school: String!, $location: String!){
+        UserInfoUpdate( company: $company , displayname: $displayname , about: $about , school: $school, location: $location){
+                state
+        }
 }

@@ -55,4 +55,3 @@ class UserinfoForm( forms.Form ):
             self.add_error( 'displayname' , 'Display name already exists.' )
             return False
         return True
-

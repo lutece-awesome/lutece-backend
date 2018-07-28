@@ -6,6 +6,13 @@ import apolloProvider from '@/apollo';
 const state = {
 	payload: null,
 	permission: [],
+	displayname: '',
+	gravataremail: '',
+	school: '',
+	company: '',
+	location: '',
+	about: '',
+	group: '',
 };
 
 const getters = {
@@ -16,11 +23,25 @@ const mutations = {
 	login(state, data) {
 		state.payload = data.payload;
 		state.permission = JSON.parse(data.permission);
+		state.displayname = data.user.displayName;
+		state.gravataremail = data.user.gravataremail;
+		state.school = data.user.school;
+		state.company = data.user.company;
+		state.location = data.user.location;
+		state.about = data.user.about;
+		state.group = data.user.group;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
 		state.payload = null;
 		state.permission = [];
+		state.displayname = '';
+		state.gravataremail = '';
+		state.school = '';
+		state.company = '';
+		state.location = '';
+		state.about = '';
+		state.group = '';
 		localStorage.removeItem('USER_TOKEN');
 	},
 };
@@ -41,7 +62,7 @@ const actions = {
 						token,
 					},
 				})
-					.then(response => response.data.refreshToken)
+					.then(response => response.data.UserTokenRefresh)
 					.then((data) => {
 						commit('login', data);
 					})

@@ -3,6 +3,15 @@ mutation UserLogin($username: String!, $password: String!) {
 		token
 		payload
 		permission
+		user{
+			displayName
+			gravataremail
+			school
+			company
+			location
+			about
+			group
+		}
 	}
 }
 
@@ -13,8 +22,18 @@ mutation VerifyToken($token: String!) {
 }
 
 mutation RefreshToken($token: String!) {
-	refreshToken(token: $token) {
+	UserTokenRefresh(token: $token) {
 		token
 		payload
+		permission
+		user{
+			displayName
+			gravataremail
+			school
+			company
+			location
+			about
+			group
+		}
 	}
 }
