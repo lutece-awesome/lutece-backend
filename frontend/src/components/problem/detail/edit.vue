@@ -24,18 +24,7 @@
 					<v-card-title primary-title>
 						<h3 class="headline">Preview</h3>
 					</v-card-title>
-					<ProblemDescription
-						:problem-id = "problem.problemId"
-						:content = "problem.content"
-						:standard-input = "problem.standardInput"
-						:standard-output = "problem.standardOutput"
-						:constraints = "problem.constraints"
-						:note = "problem.note"
-						:time-limit = "problem.timeLimit"
-						:memory-limit = "problem.memoryLimit"
-						:samples = "problem.samples"
-						:resource = "problem.resource"
-					/>
+					<ProblemDescription :problem = "problem" />
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -49,14 +38,14 @@ import ProblemDetailGQL from '@/graphql/problem/detail.gql';
 import UpdateProblem from '@/graphql/problem/edit.gql';
 
 export default {
-	metaInfo() { return { title: `Edit ${this.problem.title}` || 'Loading...' }; },
+	metaInfo() { return { title: this.problem ? `Edit ${this.problem.title}` : 'Loading...' }; },
 	components: {
 		ProblemDescription,
 		ProblemSetting,
 	},
 	data: () => ({
 		slug: '',
-		problem: {},
+		problem: null,
 	}),
 
 	mounted() {
@@ -98,7 +87,7 @@ export default {
 			})
 				.then(response => response.data.problem)
 				.then((data) => {
-					this.problem = Object.assign({}, data, { samples: JSON.parse(data.sample) });
+					this.problem = Object.assign({}, data);
 				});
 		},
 		has_permission(permission) {

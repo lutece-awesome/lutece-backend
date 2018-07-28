@@ -12,33 +12,19 @@ from submission.judge_result import Judge_result, Query_field
 class SubmissionType(DjangoObjectType):
     class Meta:
         model = Submission
-        only_fields = ('submission_id', 'language', 'judge_status', 'submit_time',
+        only_fields = ('user', 'problem', 'submission_id', 'language', 'judge_status', 'submit_time',
                        'case_number', 'completed', 'time_cost', 'memory_cost')
 
-    problem = graphene.String()
     code = graphene.String()
-    user = graphene.String()
-    user_gravataremail = graphene.String()
     judgererror_msg = graphene.String()
     compileerror_msg = graphene.String()
     color = graphene.String()
     failed_case = graphene.Int()
-    time_cost = graphene.Int()
-    memory_cost = graphene.Int()
-
-    def resolve_problem(self, info, * args, ** kwargs):
-        return self.problem.title
 
     def resolve_code(self, info, * args, ** kwargs):
         if self.user == info.context.user or info.context.user.has_perm('submission.view_all'):
             return self.code
         return ''
-
-    def resolve_user(self, info, * args, ** kwargs):
-        return self.user.display_name
-
-    def resolve_user_gravataremail(self, info, * args, ** kwargs):
-        return self.user.gravataremail
 
     def resolve_judgererror_msg(self, info, * args, ** kwargs):
         if info.context.user.has_perm('submission.view_all'):
@@ -57,12 +43,6 @@ class SubmissionType(DjangoObjectType):
         if Judge_result.get_judge_result(self.judge_status) in Query_field.failedcase_field.value:
             return Judgeinfo.objects.filter(submission=self).count()
         return None
-
-    def resolve_time_cost(self, info, * args, ** kwargs):
-        return self.time_cost
-
-    def resolve_memory_cost(self, info, * args, ** kwargs):
-        return self.memory_cost
 
 
 class SubmissionListType(graphene.ObjectType):
@@ -116,23 +96,28 @@ class Query(object):
     def resolve_submission(self, info, pk):
         return Submission.objects.get(pk=pk)
 
-    def resolve_submissionList(self, info, page, date, pk=None, user=None, problem=None, judge_status=None, language=None):
+    def resolve_submissionList(self, info, page, date, **kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
+        pk = kwargs.get('pk')
+        user = kwargs.get('user')
+        problem = kwargs.get('problem')
+        judge_status = kwargs.get('judge_status')
+        language = kwargs.get('language')
         statuslist = Submission.objects.all()
         if not info.context.user.has_perm('problem.view_all'):
             statuslist = statuslist.filter(problem__visible=True)
         if not info.context.user.has_perm('submission.view_all'):
             statuslist = statuslist.filter(user__show=True)
-        if pk:
+        if pk is not None:
             statuslist = statuslist.filter(pk=pk)
-        if user:
+        if user is not None:
             statuslist = statuslist.filter(user__display_name__icontains=user)
-        if problem:
+        if problem is not None:
             statuslist = statuslist.filter(problem__title__icontains=problem)
-        if judge_status:
+        if judge_status is not None:
             statuslist = statuslist.filter(judge_status=judge_status)
-        if language:
+        if language is not None:
             statuslist = statuslist.filter(language=language)
         paginator = Paginator(statuslist, PER_PAGE_COUNT)
         return SubmissionListType(maxpage=paginator.num_pages, submissionList=paginator.get_page(page))

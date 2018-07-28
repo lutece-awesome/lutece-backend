@@ -18,9 +18,6 @@ class UserType(DjangoObjectType):
     gravataremail = graphene.String()
     group = graphene.String()
 
-    def resolve_gravataremail(self, info, * args, ** kwargs):
-        return self.gravataremail
-
     def resolve_group(self, info, * args,  ** kwargs):
         return Group.get_user_group(self.group).value.display
 
@@ -29,7 +26,6 @@ class UserListType(graphene.ObjectType):
     class Meta:
         interfaces = (paginatorList, )
     userList = graphene.List(UserType)
-
 
 
 class UserLogin(graphene.Mutation):
@@ -96,37 +92,40 @@ class Query(object):
     user = graphene.Field(UserType, pk=graphene.ID())
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
-    userHeatmapData = graphene.String( username = graphene.String() )
+    userHeatmapData = graphene.String(username=graphene.String())
 
     def resolve_user(self, info, pk):
         return User.objects.get(pk=pk)
 
-    def resolve_userList(self, info, page, filter=None):
+    def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
+        filter = kwargs.get('filter')
         user_list = User.objects.all().order_by('-solved').filter(show=True)
-        if filter:
+        if filter is not None:
             user_list = user_list.filter(display_name__icontains=filter)
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
-    
-    def resolve_userHeatmapData( self , info , username ):
-        import datetime, time
+
+    def resolve_userHeatmapData(self, info, username):
+        import datetime
+        import time
         from json import dumps
         from submission.models import Submission
         from user.models import User
         now = datetime.datetime.now()
-        start_date =  now - datetime.timedelta(days=366)
-        user = User.objects.get( username = username )
-        s = Submission.objects.filter( user = user , submit_time__date__gt = start_date )
+        start_date = now - datetime.timedelta(days=366)
+        user = User.objects.get(username=username)
+        s = Submission.objects.filter(
+            user=user, submit_time__date__gt=start_date)
         ret = dict()
         for each in s:
-            key = str( each.submit_time.strftime( "%Y-%m-%d" ) )
+            key = str(each.submit_time.strftime("%Y-%m-%d"))
             if key not in ret:
                 ret[key] = 0
             ret[key] += 1
-        return dumps( [ { 'date' : key , 'count' : value } for key , value in ret.items() ] )
-        
+        return dumps([{'date': key, 'count': value} for key, value in ret.items()])
+
 
 class Mutation(graphene.AbstractType):
     register = Register.Field()

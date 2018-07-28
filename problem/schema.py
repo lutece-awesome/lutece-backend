@@ -10,12 +10,13 @@ from annoying.functions import get_object_or_None
 class ProblemType(DjangoObjectType):
     class Meta:
         model = Problem
-        only_fields = ('problem_id', 'title', 'content', 'standard_input', 'standard_output', 'visible' , 'discussionvisible',
-                       'constraints', 'resource', 'note', 'time_limit', 'memory_limit', 'submit', 'accept', 'slug')
-    sample = graphene.JSONString()
+        only_fields = ('problem_id', 'title', 'content', 'standard_input', 'standard_output', 'visible', 'discussionvisible',
+                       'constraints', 'resource', 'note', 'time_limit', 'memory_limit', 'submit', 'accept', 'slug', 'sample_set')
 
-    def resolve_sample(self, info, * args, ** kwargs):
-        return [{'input': x.input_content, 'output': x.output_content} for x in self.sample_set.all()]
+
+class SampleType(DjangoObjectType):
+    class Meta:
+        model = Sample
 
 
 class ProblemListType(graphene.ObjectType):
@@ -27,44 +28,43 @@ class ProblemListType(graphene.ObjectType):
 class UpdateProblem(graphene.Mutation):
 
     class Arguments:
-        title = graphene.String( required = True )
-        content = graphene.String( required = True )
-        standard_input = graphene.String( required = True )
-        standard_output = graphene.String( required = True )
-        constraints = graphene.String( required = True )
-        resource = graphene.String( required = True )
-        note = graphene.String( required = True )
-        time_limit = graphene.Int( required = True )
-        memory_limit = graphene.Int( required = True )
-        visible = graphene.Boolean( required = True )
-        discussionvisible = graphene.Boolean( required = True )
-        slug = graphene.String( required = True )
-        samples = graphene.String( required = True )
-    
+        title = graphene.String(required=True)
+        content = graphene.String(required=True)
+        standard_input = graphene.String(required=True)
+        standard_output = graphene.String(required=True)
+        constraints = graphene.String(required=True)
+        resource = graphene.String(required=True)
+        note = graphene.String(required=True)
+        time_limit = graphene.Int(required=True)
+        memory_limit = graphene.Int(required=True)
+        visible = graphene.Boolean(required=True)
+        discussionvisible = graphene.Boolean(required=True)
+        slug = graphene.String(required=True)
+        samples = graphene.String(required=True)
+
     state = graphene.Boolean()
 
     # @permission_required( 'problem.change_problem' )
-    def mutate(self, info, ** kwargs ):
+    def mutate(self, info, ** kwargs):
         from json import loads
-        updateProblemForm = UpdateProblemForm( kwargs )
+        updateProblemForm = UpdateProblemForm(kwargs)
         if updateProblemForm.is_valid():
             values = updateProblemForm.cleaned_data
-            slug , samples = kwargs['slug'] , loads(kwargs['samples'])
-            kwargs.pop( 'slug' )
-            kwargs.pop( 'samples' )
-            Problem.objects.filter( slug = slug ).update( ** kwargs )
-            prob = Problem.objects.get( slug = slug )
+            slug, samples = kwargs['slug'], loads(kwargs['samples'])
+            kwargs.pop('slug')
+            kwargs.pop('samples')
+            Problem.objects.filter(slug=slug).update(** kwargs)
+            prob = Problem.objects.get(slug=slug)
             prob.sample_set.all().delete()
             for x in samples:
                 Sample(
-                    input_content = x['input'],
-                    output_content = x['output'],
-                    problem = prob
+                    input_content=x['input'],
+                    output_content=x['output'],
+                    problem=prob
                 ).save()
-            return UpdateProblem( state = True )
+            return UpdateProblem(state=True)
         else:
             raise RuntimeError(updateProblemForm.errors.as_json())
-
 
 
 class Query(object):
@@ -78,19 +78,21 @@ class Query(object):
             _all = _all.filter(visible=True)
         return _all.get(slug=slug)
 
-    def resolve_problemList(self, info, page, filter=None):
+    def resolve_problemList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
+        filter = kwargs.get('filter')
         problem_list = Problem.objects.all()
         if not info.context.user.has_perm('problem.view_all'):
             problem_list = problem_list.filter(visible=True)
-        if filter:
+        if filter is not None:
             if filter.startswith('#'):
                 nums = filter[1:].split('-')
                 if len(nums) == 1 and nums[0].isdigit():
                     problem_list = problem_list.filter(problem_id=nums[0])
                 elif len(nums) == 2 and nums[0].isdigit() and nums[1].isdigit():
-                    problem_list = problem_list.filter(problem_id__gte=nums[0]).filter(problem_id__lte=nums[1])
+                    problem_list = problem_list.filter(
+                        problem_id__gte=nums[0]).filter(problem_id__lte=nums[1])
                 else:
                     problem_list = problem_list.filter(title__icontains=filter)
             else:
