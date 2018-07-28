@@ -96,11 +96,12 @@ class Query(object):
     def resolve_user(self, info, pk):
         return User.objects.get(pk=pk)
 
-    def resolve_userList(self, info, page, filter=None):
+    def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
+        filter = kwargs.get('filter')
         user_list = User.objects.all().order_by('-solved').filter(show=True)
-        if filter:
+        if filter is not None:
             user_list = user_list.filter(display_name__icontains=filter)
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))

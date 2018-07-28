@@ -78,13 +78,14 @@ class Query(object):
             _all = _all.filter(visible=True)
         return _all.get(slug=slug)
 
-    def resolve_problemList(self, info, page, filter=None):
+    def resolve_problemList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
         from Lutece.config import PER_PAGE_COUNT
+        filter = kwargs.get('filter')
         problem_list = Problem.objects.all()
         if not info.context.user.has_perm('problem.view_all'):
             problem_list = problem_list.filter(visible=True)
-        if filter:
+        if filter is not None:
             if filter.startswith('#'):
                 nums = filter[1:].split('-')
                 if len(nums) == 1 and nums[0].isdigit():
