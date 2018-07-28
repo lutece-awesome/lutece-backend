@@ -70,9 +70,9 @@
 						<v-avatar
 							size="36"
 							class="mr-2" >
-							<img :src="payload.gravataremail" >
+							<img :src="gravataremail" >
 						</v-avatar>
-						{{ payload.displayname }}
+						{{ displayname }}
 						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
@@ -93,7 +93,7 @@
 				icon
 				class="hidden-md-and-up">
 				<v-avatar size="36">
-					<img :src="payload.gravataremail" >
+					<img :src="gravataremail" >
 				</v-avatar>
 			</v-btn>
 			<v-btn
@@ -178,6 +178,12 @@ export default {
 	computed: {
 		payload() {
 			return this.$store.state.user.payload;
+		},
+		gravataremail() {
+			return this.$store.state.user.gravataremail;
+		},
+		displayname() {
+			return this.$store.state.user.displayname;
 		},
 		title() {
 			return this.$root.title;

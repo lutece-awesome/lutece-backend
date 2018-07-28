@@ -8,8 +8,6 @@ from graphql_jwt.exceptions import GraphQLJWTError
 
 def lutece_payload(user, context=None):
     payload = jwt_payload(user)
-    payload['displayname'] = user.display_name
-    payload['gravataremail'] = user.gravataremail
     payload['password'] = user.password[-8:]
     return payload
 

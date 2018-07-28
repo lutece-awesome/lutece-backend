@@ -7,6 +7,7 @@ from .group import Group
 from utils.schema import paginatorList
 from json import dumps
 from graphene.types.generic import GenericScalar
+from graphql_jwt.decorators import login_required
 
 
 class UserType(DjangoObjectType):
@@ -34,8 +35,9 @@ class UserLogin(graphene.Mutation):
         password = graphene.String(required=True)
 
     token = graphene.String()
-    permission = graphene.String()
     payload = GenericScalar()
+    permission = graphene.String()
+    user = graphene.Field( UserType )
 
     def mutate(self, info, ** kwargs):
         from .form import UserLoginForm
@@ -45,9 +47,42 @@ class UserLogin(graphene.Mutation):
             user = User.objects.get(username=values['username'])
             token = get_token(user)
             payload = get_payload(token, info.context)
-            return UserLogin(payload=payload, token=token , permission =  dumps( list(user.get_all_permissions()) ) )
+            return UserLogin(payload=payload, token=token , permission =  dumps( list(user.get_all_permissions()) ) , user = user )
         else:
             raise RuntimeError(LoginForm.errors.as_json())
+
+
+class UserInfoUpdate(graphene.Mutation):
+    class Arguments:
+        displayname = graphene.String( required = True )
+        school = graphene.String()
+        company = graphene.String()
+        location = graphene.String()
+        about = graphene.String()
+
+    state = graphene.Boolean()
+
+    @login_required
+    def mutate(self, info, ** kwargs):
+        from .form import UserinfoForm
+        userinfoForm = UserinfoForm(kwargs)
+        user = info.context.user
+        if userinfoForm.is_valid() and userinfoForm._clean( user.display_name ):
+            values = userinfoForm.cleaned_data
+            displayname = values['displayname']
+            school = values['school']
+            company = values['company']
+            location = values['location']
+            about = values['about']
+            user.display_name = displayname
+            user.school = school
+            user.company = company
+            user.location = location
+            user.about = about
+            user.save()
+            return UserInfoUpdate( state = True )
+        else:
+            raise RuntimeError(userinfoForm.errors.as_json())
 
 
 class Register(graphene.Mutation):
@@ -89,13 +124,13 @@ class Register(graphene.Mutation):
 
 class Query(object):
 
-    user = graphene.Field(UserType, username=graphene.String())
+    user = graphene.Field( UserType )
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
     userHeatmapData = graphene.String(username=graphene.String())
 
-    def resolve_user(self, info, username):
-        return User.objects.get( username = username )
+    def resolve_user(self, info):
+        return info.context.user
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
@@ -130,3 +165,4 @@ class Query(object):
 class Mutation(graphene.AbstractType):
     register = Register.Field()
     user_login = UserLogin.Field()
+    UserInfoUpdate = UserInfoUpdate.Field()

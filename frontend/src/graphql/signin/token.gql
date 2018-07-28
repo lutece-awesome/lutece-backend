@@ -3,6 +3,10 @@ mutation UserLogin($username: String!, $password: String!) {
 		token
 		payload
 		permission
+		user{
+			displayName,
+			gravataremail
+		}
 	}
 }
 
