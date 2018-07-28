@@ -11,8 +11,8 @@
 					@submit.prevent="submit"
 				>
 					<v-text-field
-						v-model="displayname"
-						:error-messages="geterror('displayname')"
+						v-model="displayName"
+						:error-messages="geterror('displayName')"
 						label="Display name"
 						prepend-icon = "mdi-account"
 					/>
@@ -70,7 +70,7 @@ export default {
 	metaInfo() { return { title: 'Settings' }; },
 
 	data: () => ({
-		displayname: '',
+		displayName: '',
 		school: '',
 		company: '',
 		location: '',
@@ -82,7 +82,7 @@ export default {
 		errordetail: [],
 	}),
 	mounted() {
-		this.displayname = this.$store.state.user.displayname;
+		this.displayName = this.$store.state.user.displayName;
 		this.school = this.$store.state.user.school;
 		this.company = this.$store.state.user.company;
 		this.location = this.$store.state.user.location;
@@ -106,7 +106,7 @@ export default {
 				mutation: UserInfoUpdateGQL,
 				variables: {
 					company: this.company,
-					displayname: this.displayname,
+					displayName: this.displayName,
 					about: this.about,
 					school: this.school,
 					location: this.location,

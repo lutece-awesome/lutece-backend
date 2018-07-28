@@ -20,7 +20,7 @@ class UserSignupForm( forms.Form ):
     username = forms.CharField( required = True , max_length = 16 , min_length = 4 )
     password = forms.CharField( required = True , max_length = 20 , min_length = 6 )
     email = forms.EmailField( required = True )
-    displayname = forms.CharField( required = True , max_length = 12 )
+    display_name = forms.CharField( required = True , max_length = 12 )
     school = forms.CharField( required = False , max_length = 60 )
     company = forms.CharField( required = False , max_length = 32 )
     location = forms.CharField( required = False , max_length = 32 )
@@ -31,27 +31,27 @@ class UserSignupForm( forms.Form ):
         email = cleaned_data.get( 'email' )
         username = cleaned_data.get( 'username' )
         password = cleaned_data.get( 'password' )
-        displayname = cleaned_data.get( 'displayname' )
+        display_name = cleaned_data.get( 'display_name' )
         if username and get_object_or_None( User , username = username ) is not None:
             self.add_error( 'username' , 'Username already exists.' )
         if password and compile( '[a-zA-Z]' ).search( password ) is None:
             self.add_error( 'password' , 'Password should contain at least one lowercase or uppercase letter.' )
         if email and get_object_or_None( User , email = email ) is not None:
             self.add_error( 'email' , 'Email already exists.' )
-        if displayname and get_object_or_None( User , display_name = displayname ) is not None:
-            self.add_error( 'displayname' , 'Display name already exists.' )
+        if display_name and get_object_or_None( User , display_name = display_name ) is not None:
+            self.add_error( 'display_name' , 'Display name already exists.' )
 
 class UserinfoForm( forms.Form ):
     about = forms.CharField( required = False , max_length = 256 )
     school = forms.CharField( required = False , max_length = 60 )
     company = forms.CharField( required = False , max_length = 32 )
     location = forms.CharField( required = False , max_length = 32 )
-    displayname = forms.CharField( required = True , max_length = 16 )
+    display_name = forms.CharField( required = True , max_length = 16 )
 
-    def _clean( self , PreDisplayname ):
+    def _clean( self , pre_display_name ):
         cleaned_data = super().clean()
-        displayname = cleaned_data.get( 'displayname' )
-        if displayname and displayname != PreDisplayname and get_object_or_None( User , display_name = displayname ) is not None:
-            self.add_error( 'displayname' , 'Display name already exists.' )
+        display_name = cleaned_data.get( 'display_name' )
+        if display_name and display_name != pre_display_name and get_object_or_None( User , display_name = display_name ) is not None:
+            self.add_error( 'display_name' , 'Display name already exists.' )
             return False
         return True

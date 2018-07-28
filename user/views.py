@@ -45,7 +45,7 @@ def user_signup(request):
         new_user = User(
             username = values['username'],
             email = values['email'],
-            display_name = values['displayname'],
+            display_name = values['display_name'],
             is_staff = False,
             is_superuser = False,)
         new_user.set_password( values['password'] )
@@ -72,7 +72,7 @@ def user_infomodify( request ):
         request.user.school = values['school']
         request.user.company = values['company']
         request.user.location = values['location']
-        request.user.display_name = values['displayname']
+        request.user.display_name = values['display_name']
         request.user.save()
         status['status'] = True
     else:
@@ -86,8 +86,8 @@ def user_detail( request , user_id ):
         ** get_user_report( user = target_user , has_perm = request.user.has_perm( 'problem.view_all' ) ),
         'recently' : get_recently( user = target_user , number = RECENT_NUMBER , has_perm = request.user.has_perm( 'problem.view_all' ) ) })
 
-def user_search( request , displayname ):
-    ret = User.objects.filter(display_name__contains = displayname)[:5]
+def user_search( request , display_name ):
+    ret = User.objects.filter(display_name__contains = display_name)[:5]
     return HttpResponse(dumps( { 'items' : [ { 'title': x.display_name , 'html_url' : reverse( 'user-detail' , args = ( x.pk, ) ) } for x in ret ] } ), content_type='application/json')
 
 def user_list( request , page ):

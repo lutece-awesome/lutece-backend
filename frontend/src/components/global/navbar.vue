@@ -72,7 +72,7 @@
 							class="mr-2" >
 							<img :src="gravataremail" >
 						</v-avatar>
-						{{ displayname }}
+						{{ displayName }}
 						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
@@ -182,8 +182,8 @@ export default {
 		gravataremail() {
 			return this.$store.state.user.gravataremail;
 		},
-		displayname() {
-			return this.$store.state.user.displayname;
+		displayName() {
+			return this.$store.state.user.displayName;
 		},
 		title() {
 			return this.$root.title;

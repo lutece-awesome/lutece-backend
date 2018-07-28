@@ -2,7 +2,7 @@ mutation RegisterGQL(
 	$username: String!
 	$password: String!
 	$email: String!
-	$displayname: String!
+	$displayName: String!
 	$school: String
 	$company: String
 	$location: String
@@ -11,7 +11,7 @@ mutation RegisterGQL(
 		username: $username
 		password: $password
 		email: $email
-		displayname: $displayname
+		displayName: $displayName
 		school: $school
 		company: $company
 		location: $location

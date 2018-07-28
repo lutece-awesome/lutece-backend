@@ -56,12 +56,12 @@ export default {
 			userSearch: {
 				items: [],
 				isLoading: false,
-				filter: null,
+				filter: '',
 			},
 			problemSearch: {
 				items: [],
 				isLoading: false,
-				filter: null,
+				filter: '',
 			},
 		};
 	},
@@ -71,6 +71,9 @@ export default {
 		},
 		problemSearchFilter() {
 			return this.problemSearch.filter;
+		},
+		payload() {
+			return this.$store.state.user.payload;
 		},
 	},
 	watch: {
@@ -85,34 +88,13 @@ export default {
 			deep: true,
 		},
 		userSearchFilter() {
-			const variables = {
-				filter: this.userSearchFilter,
-			};
-			this.userSearch.isLoading = true;
-			this.$apollo.query({
-				query: UserSearchGQL,
-				variables,
-			})
-				.then(response => response.data.userSearch)
-				.then((data) => {
-					this.userSearch.items = data.userList.map(val => val.displayName);
-				})
-				.then(() => { this.userSearch.isLoading = false; });
+			this.updateUserSearch();
 		},
 		problemSearchFilter() {
-			const variables = {
-				filter: this.problemSearchFilter,
-			};
-			this.problemSearch.isLoading = true;
-			this.$apollo.query({
-				query: ProblemSearchGQL,
-				variables,
-			})
-				.then(response => response.data.problemSearch)
-				.then((data) => {
-					this.problemSearch.items = data.problemList.map(val => val.title);
-				})
-				.then(() => { this.problemSearch.isLoading = false; });
+			this.updateProblemSearch();
+		},
+		payload() {
+			this.updateUserSearch();
 		},
 	},
 
@@ -138,11 +120,55 @@ export default {
 					Object.assign(this, data);
 					this.page = Math.min(this.page, this.maxpage);
 				})
-				.then(() => { this.isLoading = false; });
+				.then(() => {
+					this.isLoading = false;
+				});
 		},
 		debouncedRequest: debounce(function _debouncedRequest() {
 			this.request();
 		}, 250),
+		updateUserSearch() {
+			if (!this.userSearchFilter) {
+				if (this.payload) {
+					this.userSearch.items = [this.$store.state.user.displayName];
+				} else {
+					this.userSearch.items = [];
+				}
+				return;
+			}
+			const variables = {
+				filter: this.userSearchFilter,
+			};
+			this.userSearch.isLoading = true;
+			this.$apollo.query({
+				query: UserSearchGQL,
+				variables,
+			})
+				.then(response => response.data.userSearch)
+				.then((data) => {
+					this.userSearch.items = data.userList.map(val => val.displayName);
+				})
+				.then(() => { this.userSearch.isLoading = false; });
+		},
+		updateProblemSearch() {
+			if (!this.problemSearchFilter) {
+				this.problemSearch.items = [];
+				return;
+			}
+			const variables = {
+				filter: this.problemSearchFilter,
+			};
+			this.problemSearch.isLoading = true;
+			this.$apollo.query({
+				query: ProblemSearchGQL,
+				variables,
+			})
+				.then(response => response.data.problemSearch)
+				.then((data) => {
+					this.problemSearch.items = data.problemList.map(val => val.title);
+				})
+				.then(() => { this.problemSearch.isLoading = false; });
+		},
 	},
 };
 </script>

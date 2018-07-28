@@ -42,8 +42,8 @@
 								</v-flex>
 								<v-flex>
 									<v-text-field
-										v-model="displayname"
-										:error-messages="geterror('displayname')"
+										v-model="displayName"
+										:error-messages="geterror('displayName')"
 										label="Display name *"
 										required />
 								</v-flex>
@@ -92,7 +92,7 @@ export default {
 			username: '',
 			password: '',
 			email: '',
-			displayname: '',
+			displayName: '',
 			school: '',
 			company: '',
 			location: '',
@@ -121,7 +121,7 @@ export default {
 					username: this.username,
 					password: this.password,
 					email: this.email,
-					displayname: this.displayname,
+					displayName: this.displayName,
 					school: this.school,
 					company: this.company,
 					location: this.location,

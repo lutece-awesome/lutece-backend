@@ -6,7 +6,7 @@ import apolloProvider from '@/apollo';
 const state = {
 	payload: null,
 	permission: [],
-	displayname: '',
+	displayName: '',
 	gravataremail: '',
 	school: '',
 	company: '',
@@ -23,7 +23,7 @@ const mutations = {
 	login(state, data) {
 		state.payload = data.payload;
 		state.permission = JSON.parse(data.permission);
-		state.displayname = data.user.displayName;
+		state.displayName = data.user.displayName;
 		state.gravataremail = data.user.gravataremail;
 		state.school = data.user.school;
 		state.company = data.user.company;
@@ -35,7 +35,7 @@ const mutations = {
 	logout(state) {
 		state.payload = null;
 		state.permission = [];
-		state.displayname = '';
+		state.displayName = '';
 		state.gravataremail = '';
 		state.school = '';
 		state.company = '';

@@ -86,7 +86,7 @@ class UserTokenRefresh(graphene.Mutation):
 
 class UserInfoUpdate(graphene.Mutation):
     class Arguments:
-        displayname = graphene.String( required = True )
+        display_name = graphene.String( required = True )
         school = graphene.String()
         company = graphene.String()
         location = graphene.String()
@@ -101,12 +101,12 @@ class UserInfoUpdate(graphene.Mutation):
         user = info.context.user
         if userinfoForm.is_valid() and userinfoForm._clean( user.display_name ):
             values = userinfoForm.cleaned_data
-            displayname = values['displayname']
+            display_name = values['display_name']
             school = values['school']
             company = values['company']
             location = values['location']
             about = values['about']
-            user.display_name = displayname
+            user.display_name = display_name
             user.school = school
             user.company = company
             user.location = location
@@ -122,7 +122,7 @@ class Register(graphene.Mutation):
         username = graphene.String(required=True)
         password = graphene.String(required=True)
         email = graphene.String(required=True)
-        displayname = graphene.String(required=True)
+        display_name = graphene.String(required=True)
         school = graphene.String()
         company = graphene.String()
         location = graphene.String()
@@ -138,7 +138,7 @@ class Register(graphene.Mutation):
             new_user = User(
                 username=values['username'],
                 email=values['email'],
-                display_name=values['displayname'],
+                display_name=values['display_name'],
                 school=values['school'],
                 company=values['company'],
                 location=values['location'],
