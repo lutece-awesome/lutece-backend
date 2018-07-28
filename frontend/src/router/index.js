@@ -65,7 +65,7 @@ export default new Router({
 			component: UserList,
 		},
 		{
-			path: 'user/settings',
+			path: '/user/settings',
 			name: 'UserSettings',
 			component: UserSettings,
 		},
