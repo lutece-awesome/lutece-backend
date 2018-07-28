@@ -164,6 +164,7 @@ class Query(object):
         UserListType, page=graphene.Int(), filter=graphene.String())
     userProfile = graphene.Field(
         UserProfileType , username = graphene.String())
+    userSearch = graphene.Field(UserListType, filter=graphene.String())
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
@@ -175,6 +176,13 @@ class Query(object):
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
     
+    def resolve_userSearch(self, info, **kwargs):
+        filter = kwargs.get('filter')
+        user_list = User.objects.all().filter(show=True)
+        if filter is not None:
+            user_list = user_list.filter(display_name__icontains=filter)
+        return UserListType(maxpage=1, userList=user_list[:5])
+
     def resolve_userProfile( self , info , username ):
         import datetime
         import time
