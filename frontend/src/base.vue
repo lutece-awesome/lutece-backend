@@ -3,9 +3,9 @@
 		<Navbar/>
 		<v-content>
 			<keep-alive include="Problem,Status,User">
-				<v-slide-y-transition mode="out-in">
+				<v-fade-transition mode="out-in">
 					<router-view/>
-				</v-slide-y-transition>
+				</v-fade-transition>
 			</keep-alive>
 		</v-content>
 		<Snackbar/>
