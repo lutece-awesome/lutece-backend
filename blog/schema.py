@@ -52,8 +52,17 @@ class Query(object):
 
     def resolve_blog( self , info , slug ):
         return Blog.objects.get( slug = slug )
+
+    def resolve_blogList( self , info , page ):
+        from django.core.paginator import Paginator
+        from Lutece.config import PER_PAGE_COUNT
+        blog_list = Blog.objects.all()
+        if not info.context.user.has_perm('blog.view_all'):
+            blog_list = blog_list.filter( disable = False )
+        paginator = Paginator(blog_list, PER_PAGE_COUNT)
+        return BlogListType( maxpage = paginator.num_pages , blogList = paginator.get_page( page ) )
     
 
 
 class Mutation(graphene.AbstractType):
-    pass
+    CreateBlog = CreateBlog.Field()
