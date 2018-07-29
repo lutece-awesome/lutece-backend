@@ -13,7 +13,14 @@
 				tile
 				tag="tr">
 				<td class="text-xs-center">{{ props.item.problemId }}</td>
-				<td class="text-xs-center">{{ props.item.title }}</td>
+				<td class="text-xs-center">
+					<span>{{ props.item.title }}</span>
+					<span
+						v-if="props.item.resource"
+						class="caption grey--text">
+						{{ props.item.resource }}
+					</span>
+				</td>
 				<td class="text-xs-center">{{ props.item.accept }}/{{ props.item.submit }}</td>
 				<td class="text-xs-center">
 					{{ (props.item.submit ? (props.item.accept / props.item.submit) * 100 : 0).toFixed(2) }}%

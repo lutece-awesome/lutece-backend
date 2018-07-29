@@ -5,6 +5,7 @@ from utils.schema import paginatorList
 from graphql_jwt.decorators import permission_required
 from .form import UpdateProblemForm
 from annoying.functions import get_object_or_None
+from django.db.models import Q
 
 
 class ProblemType(DjangoObjectType):
@@ -95,9 +96,11 @@ class Query(object):
                     problem_list = problem_list.filter(
                         problem_id__gte=nums[0]).filter(problem_id__lte=nums[1])
                 else:
-                    problem_list = problem_list.filter(title__icontains=filter)
+                    problem_list = problem_list.filter(
+                        Q(title__icontains=filter) | Q(resource__icontains=filter))
             else:
-                problem_list = problem_list.filter(title__icontains=filter)
+                problem_list = problem_list.filter(
+                    Q(title__icontains=filter) | Q(resource__icontains=filter))
         paginator = Paginator(problem_list, PER_PAGE_COUNT)
         return ProblemListType(maxpage=paginator.num_pages, problemList=paginator.get_page(page))
 

@@ -7,6 +7,7 @@ query ProblemListGQL($page: Int!, $filter: String) {
 			submit
 			accept
 			slug
+			resource
 		}
 	}
 }
