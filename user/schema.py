@@ -8,6 +8,7 @@ from utils.schema import paginatorList
 from json import dumps
 from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
+from django.db.models import Q
 
 
 class UserType(DjangoObjectType):
@@ -29,9 +30,10 @@ class UserListType(graphene.ObjectType):
     userList = graphene.List(UserType)
 
 
-class UserProfileType( graphene.ObjectType ):
-    user = graphene.Field( UserType )
+class UserProfileType(graphene.ObjectType):
+    user = graphene.Field(UserType)
     heatmap = graphene.JSONString()
+
 
 class UserLogin(graphene.Mutation):
     class Arguments:
@@ -41,7 +43,7 @@ class UserLogin(graphene.Mutation):
     token = graphene.String()
     payload = GenericScalar()
     permission = graphene.String()
-    user = graphene.Field( UserType )
+    user = graphene.Field(UserType)
 
     def mutate(self, info, ** kwargs):
         from .form import UserLoginForm
@@ -51,21 +53,22 @@ class UserLogin(graphene.Mutation):
             user = User.objects.get(username=values['username'])
             token = get_token(user)
             payload = get_payload(token, info.context)
-            return UserLogin(payload=payload, token=token , permission =  dumps( list(user.get_all_permissions()) ) , user = user )
+            return UserLogin(payload=payload, token=token, permission=dumps(list(user.get_all_permissions())), user=user)
         else:
             raise RuntimeError(LoginForm.errors.as_json())
+
 
 class UserTokenRefresh(graphene.Mutation):
 
     class Arguments:
         token = graphene.String()
-    
+
     payload = GenericScalar()
     token = graphene.String()
     permission = graphene.String()
-    user = graphene.Field( UserType )
+    user = graphene.Field(UserType)
 
-    def mutate( self , info , token, **kwargs):
+    def mutate(self, info, token, **kwargs):
         from graphql_jwt.shortcuts import get_user_by_token, get_user_by_payload
         from graphql_jwt.settings import jwt_settings
         from calendar import timegm
@@ -86,11 +89,12 @@ class UserTokenRefresh(graphene.Mutation):
             raise exceptions.GraphQLJWTError(_('orig_iat field is required'))
 
         token = get_token(user, orig_iat=orig_iat)
-        return UserTokenRefresh(token=token, payload=payload, permission =  dumps( list(user.get_all_permissions()) ) , user = user )
+        return UserTokenRefresh(token=token, payload=payload, permission=dumps(list(user.get_all_permissions())), user=user)
+
 
 class UserInfoUpdate(graphene.Mutation):
     class Arguments:
-        display_name = graphene.String( required = True )
+        display_name = graphene.String(required=True)
         school = graphene.String()
         company = graphene.String()
         location = graphene.String()
@@ -103,7 +107,7 @@ class UserInfoUpdate(graphene.Mutation):
         from .form import UserinfoForm
         userinfoForm = UserinfoForm(kwargs)
         user = info.context.user
-        if userinfoForm.is_valid() and userinfoForm._clean( user.display_name ):
+        if userinfoForm.is_valid() and userinfoForm._clean(user.display_name):
             values = userinfoForm.cleaned_data
             display_name = values['display_name']
             school = values['school']
@@ -116,7 +120,7 @@ class UserInfoUpdate(graphene.Mutation):
             user.location = location
             user.about = about
             user.save()
-            return UserInfoUpdate( state = True )
+            return UserInfoUpdate(state=True)
         else:
             raise RuntimeError(userinfoForm.errors.as_json())
 
@@ -163,7 +167,7 @@ class Query(object):
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
     userProfile = graphene.Field(
-        UserProfileType , username = graphene.String())
+        UserProfileType, username=graphene.String())
     userSearch = graphene.Field(UserListType, filter=graphene.String())
 
     def resolve_userList(self, info, page, **kwargs):
@@ -172,10 +176,11 @@ class Query(object):
         filter = kwargs.get('filter')
         user_list = User.objects.all().order_by('-solved').filter(show=True)
         if filter is not None:
-            user_list = user_list.filter(display_name__icontains=filter)
+            user_list = user_list.filter(Q(display_name__icontains=filter) | Q(
+                school__icontains=filter) | Q(company__icontains=filter) | Q(location__icontains=filter))
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
-    
+
     def resolve_userSearch(self, info, **kwargs):
         filter = kwargs.get('filter')
         user_list = User.objects.all().filter(show=True)
@@ -183,14 +188,14 @@ class Query(object):
             user_list = user_list.filter(display_name__icontains=filter)
         return UserListType(maxpage=1, userList=user_list[:5])
 
-    def resolve_userProfile( self , info , username ):
+    def resolve_userProfile(self, info, username):
         import datetime
         import time
         from submission.models import Submission
         from user.models import User
         now = datetime.datetime.now()
         start_date = now - datetime.timedelta(days=366)
-        user = User.objects.get( username = username )
+        user = User.objects.get(username=username)
         s = Submission.objects.filter(
             user=user, submit_time__date__gt=start_date)
         ret = dict()
@@ -199,10 +204,12 @@ class Query(object):
             if key not in ret:
                 ret[key] = 0
             ret[key] += 1
-        return UserProfileType( 
-            user = User.objects.get( username = username ),
-            heatmap = [{'date': key, 'count': value} for key, value in ret.items()]
+        return UserProfileType(
+            user=User.objects.get(username=username),
+            heatmap=[{'date': key, 'count': value}
+                     for key, value in ret.items()]
         )
+
 
 class Mutation(graphene.AbstractType):
     register = Register.Field()

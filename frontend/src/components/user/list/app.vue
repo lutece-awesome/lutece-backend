@@ -9,6 +9,7 @@
 			<v-flex xs12>
 				<Searchbar
 					v-model="filter"
+					label="Search user by display name, school, company or location"
 					class="mb-3 elevation-1" />
 				<UserList
 					:user-item="userList"
