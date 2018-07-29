@@ -13,4 +13,10 @@ import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'codemirror/addon/display/autorefresh';
 
+Object.assign(codemirror, {
+	beforeDestroy() {
+		// TODO: garbage cleanup after transition
+	},
+});
+
 export default codemirror;
