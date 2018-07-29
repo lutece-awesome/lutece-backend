@@ -2,7 +2,6 @@ query ProfileGQL($username: String!) {
 	user( username: $username){
 		heatmap
 		analysis
-		username
 		displayName
 		gravataremail
 		group

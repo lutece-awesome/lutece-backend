@@ -67,7 +67,6 @@ export default {
 		endDate: Date.now(),
 		heatmap: [],
 		analysis: [],
-		username: '',
 		displayName: '',
 		gravataremail: '',
 		group: '',
@@ -77,19 +76,37 @@ export default {
 		about: '',
 	}),
 
+	computed: {
+		username() {
+			return this.$route.params.username;
+		},
+	},
+
+	watch: {
+		username() {
+			this.request();
+		},
+	},
+
 	mounted() {
-		this.$apollo.query({
-			query: ProfileGQL,
-			variables: {
-				username: this.$route.params.username,
-			},
-		})
-			.then(response => response.data.user)
-			.then((data) => {
-				Object.assign(this, data);
-				this.heatmap = JSON.parse(this.heatmap);
-				this.analysis = JSON.parse(this.analysis);
-			});
+		this.request();
+	},
+
+	methods: {
+		request() {
+			this.$apollo.query({
+				query: ProfileGQL,
+				variables: {
+					username: this.username,
+				},
+			})
+				.then(response => response.data.user)
+				.then((data) => {
+					Object.assign(this, data);
+					this.heatmap = JSON.parse(this.heatmap);
+					this.analysis = JSON.parse(this.analysis);
+				});
+		},
 	},
 
 };
