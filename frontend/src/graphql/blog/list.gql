@@ -4,9 +4,6 @@ query BLogListGQL($page: Int!) {
 		blogList {
             id
             title
-            user{
-                username
-            }
             vote
             view
 		}

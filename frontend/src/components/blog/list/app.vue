@@ -11,7 +11,7 @@
 				lg8>
 				<v-card>
 					<BlogList
-						:item = "items"
+						:items = "items"
 						:is-loading="isLoading"/>
 				</v-card>
 				<div
@@ -22,6 +22,16 @@
 						v-model="page"
 						:length="maxpage"/>
 				</div>
+				<v-btn
+					:to="{name: 'BlogCreate'}"
+					color="accent"
+					dark
+					fab
+					fixed
+					bottom
+					right>
+					<v-icon>mdi-pencil</v-icon>
+				</v-btn>
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -53,6 +63,13 @@ export default {
 		},
 	},
 
+	activated() {
+		this.$refs.pagination.init();
+	},
+
+	mounted() {
+		this.request();
+	},
 
 	methods: {
 		request() {
@@ -64,9 +81,10 @@ export default {
 				query: BLogListGQL,
 				variables,
 			})
-				.then(response => response.data.problemList)
+				.then(response => response.data.blogList)
 				.then((data) => {
-					Object.assign(this, data);
+					this.items = data.blogList;
+					this.maxpage = data.maxpage;
 					this.page = Math.min(this.page, this.maxpage);
 				})
 				.then(() => { this.isLoading = false; });

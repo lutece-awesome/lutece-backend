@@ -34,7 +34,7 @@ class CreateBlog( graphene.Mutation ):
 
     @login_required
     def mutate( self , info , * args , ** kwargs ):
-        BlogForm = BasicBlogForm( ** kwargs )
+        BlogForm = BasicBlogForm( kwargs )
         if BlogForm.is_valid():
             values = BlogForm.cleaned_data
             Blog(

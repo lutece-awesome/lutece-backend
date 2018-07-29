@@ -1,6 +1,6 @@
 <template>
 	<v-data-table
-		:items = "Item"
+		:items = "items"
 		:headers = "headers"
 		:loading="isLoading"
 		hide-actions
@@ -20,7 +20,7 @@
 <script>
 export default {
 	props: {
-		Item: {
+		items: {
 			type: Array,
 			default: () => [],
 		},
