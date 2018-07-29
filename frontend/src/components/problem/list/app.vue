@@ -12,7 +12,7 @@
 				<v-card>
 					<Searchbar
 						v-model="filter"
-						label="E.g. &quot;A+B&quot;, &quot;#123&quot;, &quot;#1230-1235&quot;" />
+						label="Search problem by id, title or source" />
 					<v-divider/>
 					<ProblemList
 						:problem-item="problemList"

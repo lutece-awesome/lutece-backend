@@ -88,19 +88,8 @@ class Query(object):
         if not info.context.user.has_perm('problem.view_all'):
             problem_list = problem_list.filter(visible=True)
         if filter is not None:
-            if filter.startswith('#'):
-                nums = filter[1:].split('-')
-                if len(nums) == 1 and nums[0].isdigit():
-                    problem_list = problem_list.filter(problem_id=nums[0])
-                elif len(nums) == 2 and nums[0].isdigit() and nums[1].isdigit():
-                    problem_list = problem_list.filter(
-                        problem_id__gte=nums[0]).filter(problem_id__lte=nums[1])
-                else:
-                    problem_list = problem_list.filter(
-                        Q(title__icontains=filter) | Q(resource__icontains=filter))
-            else:
-                problem_list = problem_list.filter(
-                    Q(title__icontains=filter) | Q(resource__icontains=filter))
+            problem_list = problem_list.filter(Q(problem_id__contains=filter) | Q(
+                title__icontains=filter) | Q(resource__icontains=filter))
         paginator = Paginator(problem_list, PER_PAGE_COUNT)
         return ProblemListType(maxpage=paginator.num_pages, problemList=paginator.get_page(page))
 
