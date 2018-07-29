@@ -8,7 +8,7 @@
 			<v-flex
 				xs12
 				md8>
-				<v-card>
+				<v-card v-if="result">
 					<v-card-title primary-title>
 						<h3
 							:class="result_color + '--text'"
