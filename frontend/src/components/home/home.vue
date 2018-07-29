@@ -14,7 +14,11 @@
 					<h1
 						class="display-3"
 						style = "text-align:center;" >Lutece </h1>
-					<span class="subheading">Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+					<span class="subheading">Lorem ipsum dolor sit amet, pri veniam forensibus id.
+					Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorru
+					pte usu, repudiare assueverit ex eum, ne
+					nam essent vocent admodum.
+					</span>
 					<v-divider class="my-3"/>
 					<div class="title mb-3">Star Lutece project in Github!</div>
 					<v-btn
@@ -28,7 +32,7 @@
 							dark>mdi-github-circle</v-icon>
 						Github
 					</v-btn>
-				</h1></div>
+				</div>
 			</v-flex>
 		</v-layout>
 	</v-container>
