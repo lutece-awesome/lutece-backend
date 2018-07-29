@@ -2,11 +2,13 @@
 	<v-app>
 		<Navbar/>
 		<v-content>
-			<transition name="fade">
-				<keep-alive include="Problem,Status,User">
+			<keep-alive include="Problem,Status,User">
+				<transition
+					name="component-fade"
+					mode="out-in">
 					<router-view/>
-				</keep-alive>
-			</transition>
+				</transition>
+			</keep-alive>
 		</v-content>
 		<Snackbar/>
 	</v-app>
@@ -37,17 +39,12 @@ export default {
 </script>
 
 <style>
-.fade-enter-active, .fade-leave-active {
-	transition-property: opacity;
-	transition-duration: .1s;
+.component-fade-enter-active, .component-fade-leave-active {
+	transition: opacity .1s ease;
 }
 
-.fade-enter-active {
-	transition-delay: .1s;
-}
-
-.fade-enter, .fade-leave-active {
-	opacity: 0
+.component-fade-enter, .component-fade-leave-to {
+	opacity: 0;
 }
 
 span.mord {
