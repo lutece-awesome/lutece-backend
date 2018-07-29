@@ -3,24 +3,34 @@
 -->
 <template>
 	<v-container fluid>
-		<div>
-			<h1 class="display-3">Lutece</h1>
-
-			<span class="display-1">Meet the future</span>
-
-			<v-divider class="my-3"/>
-			<v-btn
-				class="mx-0"
-				color="primary"
-				large
-				href="https://github.com/LaPluses/Lutece"
-			>
-				<v-icon
-					left
-					dark>mdi-github-circle</v-icon>
-				Github
-			</v-btn>
-		</div>
+		<v-layout
+			row
+			justify-center
+			wrap>
+			<v-flex
+				xs12
+				sm8>
+				<div>
+					<h1
+						class="display-3"
+						style = "text-align:center;" >Lutece </h1>
+					<span class="subheading">Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+					<v-divider class="my-3"/>
+					<div class="title mb-3">Star Lutece project in Github!</div>
+					<v-btn
+						class="mx-0"
+						color="primary"
+						large
+						href="https://github.com/LaPluses/Lutece"
+					>
+						<v-icon
+							left
+							dark>mdi-github-circle</v-icon>
+						Github
+					</v-btn>
+				</h1></div>
+			</v-flex>
+		</v-layout>
 	</v-container>
 </template>
 
