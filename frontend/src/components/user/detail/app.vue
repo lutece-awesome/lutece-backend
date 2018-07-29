@@ -12,19 +12,26 @@
 					<v-avatar
 						size="128"
 						class="mr-2" >
-						<img :src="getfield('gravataremail')" >
+						<img :src = "gravataremail" >
 					</v-avatar>
 					<v-card-title primary-title>
-						<h3 class="headline">{{ getfield( 'username' ) }}</h3>
+						<h3 class="headline">{{ username }}</h3>
 					</v-card-title>
 					<v-card-text>
 						<div class="scroll text-xs-center">
 							<CalendarHeatmap
-								:values = "HeatMapData"
+								:values = "heatmap"
 								:end-date = "endDate"
 								tooltip-unit = "submissions" />
 						</div>
 					</v-card-text>
+					<v-btn
+						v-for = "each in analysis"
+						:key = "each[0]"
+					>
+						{{ each[0] }}
+						{{ each[1] }}
+					</v-btn>
 				</v-card>
 			</v-flex>
 
@@ -46,9 +53,17 @@ export default {
 		CalendarHeatmap,
 	},
 	data: () => ({
-		HeatMapData: [],
 		endDate: Date.now(),
-		userdata: {},
+		heatmap: [],
+		analysis: [],
+		username: '',
+		displayName: '',
+		gravataremail: '',
+		group: '',
+		school: '',
+		company: '',
+		location: '',
+		about: '',
 	}),
 
 	mounted() {
@@ -58,20 +73,13 @@ export default {
 				username: this.$route.params.username,
 			},
 		})
-			.then(response => response.data.userProfile)
+			.then(response => response.data.user)
 			.then((data) => {
-				this.HeatMapData = JSON.parse(data.heatmap);
-				this.userdata = data.user;
+				Object.assign(this, data);
+				this.heatmap = JSON.parse(this.heatmap);
+				this.analysis = JSON.parse(this.analysis);
 			});
 	},
 
-	methods: {
-		getfield(field) {
-			if (Object.prototype.hasOwnProperty.call(this.userdata, field)) {
-				return this.userdata[field];
-			}
-			return '';
-		},
-	},
 };
 </script>

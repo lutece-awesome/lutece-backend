@@ -1,15 +1,14 @@
 query ProfileGQL($username: String!) {
-	userProfile( username: $username){
+	user( username: $username){
 		heatmap
-		user{
-			username
-			displayName
-			gravataremail
-			group
-			school
-			company
-			location
-			about
-		}
+		analysis
+		username
+		displayName
+		gravataremail
+		group
+		school
+		company
+		location
+		about
 	}
 }
