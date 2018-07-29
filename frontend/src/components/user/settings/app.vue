@@ -1,61 +1,70 @@
 <template>
-	<v-container v-if = "!initialize">
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+		fluid>
 		<v-layout
 			justify-center
 			row
 			wrap>
 			<v-flex
 				xs12
-				md6>
-				<v-form
-					@submit.prevent="submit"
-				>
-					<v-text-field
-						v-model="displayName"
-						:error-messages="geterror('displayName')"
-						label="Display name"
-						prepend-icon = "mdi-account"
-					/>
-					<v-text-field
-						v-model="group"
-						:error-messages="geterror('group')"
-						label="Group"
-						prepend-icon = "mdi-account-group"
-						disabled
-					/>
-					<v-text-field
-						v-model="school"
-						:error-messages="geterror('school')"
-						label="School"
-						prepend-icon = "mdi-school"
-					/>
-					<v-text-field
-						v-model="company"
-						:error-messages="geterror('company')"
-						label="Company"
-						prepend-icon = "mdi-briefcase"
-					/>
-					<v-text-field
-						v-model="location"
-						:error-messages="geterror('location')"
-						label="Location"
-						prepend-icon = "mdi-map-marker"
-					/>
+				sm10
+				md8
+				lg6
+				xl4>
+				<v-card>
+					<v-card-text>
+						<v-form
+							@submit.prevent="submit"
+						>
+							<v-text-field
+								v-model="displayName"
+								:error-messages="geterror('displayName')"
+								label="Display name"
+								prepend-icon = "mdi-account"
+							/>
+							<v-text-field
+								v-model="group"
+								:error-messages="geterror('group')"
+								label="Group"
+								prepend-icon = "mdi-account-group"
+								disabled
+							/>
+							<v-text-field
+								v-model="school"
+								:error-messages="geterror('school')"
+								label="School"
+								prepend-icon = "mdi-school"
+							/>
+							<v-text-field
+								v-model="company"
+								:error-messages="geterror('company')"
+								label="Company"
+								prepend-icon = "mdi-briefcase"
+							/>
+							<v-text-field
+								v-model="location"
+								:error-messages="geterror('location')"
+								label="Location"
+								prepend-icon = "mdi-map-marker"
+							/>
 
-					<v-textarea
-						v-model="about"
-						:error-messages="geterror('about')"
-						label="About"
-						auto-grow
-					/>
+							<v-textarea
+								v-model="about"
+								:error-messages="geterror('about')"
+								label="About"
+								auto-grow
+							/>
 
-					<v-btn
-						:loading = "isloading"
-						:color="error ? &quot;error&quot; : &quot;primary&quot;"
-						block
-						type = "submit"
-					> Submit </v-btn>
-				</v-form>
+							<v-btn
+								:loading = "isloading"
+								:color="error ? &quot;error&quot; : &quot;primary&quot;"
+								block
+								type = "submit"
+							> Submit </v-btn>
+						</v-form>
+					</v-card-text>
+				</v-card>
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -77,7 +86,6 @@ export default {
 		about: '',
 		group: '',
 		isloading: false,
-		initialize: false,
 		error: false,
 		errordetail: [],
 	}),
