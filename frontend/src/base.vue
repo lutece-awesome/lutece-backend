@@ -35,7 +35,7 @@ export default {
 	},
 	metaInfo() {
 		return {
-			title: 'Lutece',
+			title: this.$root.title || 'Lutece',
 			titleTemplate: '%s | Lutece',
 			meta: [
 				{ name: 'theme-color', content: Vue.prototype.$vuetify.theme.primary },
