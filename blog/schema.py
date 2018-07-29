@@ -11,7 +11,7 @@ from utils.schema import paginatorList
 class BlogType( DjangoObjectType ):
     class Meta:
         model = Blog
-        only_fields = ( 'id' , 'title' , 'content' , 'create_time' , 'slug' )
+        only_fields = ( 'id' , 'title' , 'content' , 'create_time' , 'slug' , 'view' , 'vote' , 'disable' )
     
     user = graphene.Field( UserType )
 
@@ -51,7 +51,10 @@ class Query(object):
     blogList = graphene.Field( BlogListType, page = graphene.Int() )
 
     def resolve_blog( self , info , slug ):
-        return Blog.objects.get( slug = slug )
+        s = Blog.objects.get( slug = slug )
+        if s.disable and not info.context.user.has_perm('blog.view_all'):
+            return None
+        return s
 
     def resolve_blogList( self , info , page ):
         from django.core.paginator import Paginator
