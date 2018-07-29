@@ -152,6 +152,11 @@ export default {
 				path: '/user',
 			},
 			{
+				icon: 'mdi-book-open',
+				title: 'Blog',
+				path: '/blog',
+			},
+			{
 				icon: 'mdi-information',
 				title: 'About',
 				path: '/about',
