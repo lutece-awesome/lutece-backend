@@ -8,6 +8,17 @@
 			<v-flex
 				xs12
 				md8>
+				<v-btn
+					v-if="$store.state.user.payload && username == $store.state.user.payload.username"
+					:to="{name: 'UserSettings'}"
+					color="accent"
+					dark
+					fab
+					fixed
+					bottom
+					right>
+					<v-icon>mdi-pencil</v-icon>
+				</v-btn>
 				<v-card>
 					<v-avatar
 						size="128"
@@ -47,7 +58,7 @@ import { ProfileGQL } from '@/graphql/user/profile.gql';
 
 
 export default {
-	metaInfo() { return { title: this.$route.params.username }; },
+	metaInfo() { return { title: this.username }; },
 
 	components: {
 		CalendarHeatmap,

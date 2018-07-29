@@ -61,7 +61,7 @@
 					SIGN IN
 				</v-btn>
 				<v-menu
-					v-if="payload"
+					v-show="payload"
 					open-on-hover
 					offset-y>
 					<v-btn
@@ -80,7 +80,7 @@
 							v-for = "( each , index ) in dropdownItems"
 							:key = "index"
 							@click = "each.click" >
-							<v-icon class="mr-2"> {{ each.icon }} </v-icon>
+							<v-icon class="mr-2">{{ each.icon }}</v-icon>
 							<v-list-tile-content>
 								<v-list-tile-title>{{ each.label }} </v-list-tile-title>
 							</v-list-tile-content>
@@ -90,6 +90,7 @@
 			</v-toolbar-items>
 			<v-btn
 				v-if="payload"
+				:to="{name: 'UserDetail', params: {username: payload.username}}"
 				icon
 				class="hidden-md-and-up">
 				<v-avatar size="36">
@@ -201,7 +202,7 @@ export default {
 			this.$router.push({
 				name: 'Login',
 				query: {
-					redirect: this.$route.path,
+					redirect: this.$route.query.redirect || this.$route.path,
 				},
 			});
 		},
@@ -216,7 +217,7 @@ export default {
 		profile() {
 			this.$router.push({
 				name: 'UserDetail',
-				params: { username: this.$store.state.user.payload.username },
+				params: { username: this.payload.username },
 			});
 		},
 		settings() {
