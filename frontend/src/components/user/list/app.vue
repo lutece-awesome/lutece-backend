@@ -18,6 +18,7 @@
 					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
 					class="text-xs-center mt-2">
 					<v-pagination
+						ref="pagination"
 						v-model="page"
 						:length="maxpage"/>
 				</div>
@@ -58,6 +59,9 @@ export default {
 		filter() {
 			this.isLoading = true;
 			this.debouncedRequest();
+		},
+		$route() {
+			this.$refs.pagination.init();
 		},
 	},
 
