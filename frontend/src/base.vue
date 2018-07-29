@@ -3,11 +3,9 @@
 		<Navbar/>
 		<v-content>
 			<keep-alive include="Problem,Status,User">
-				<transition
-					name="component-fade"
-					mode="out-in">
+				<v-slide-y-transition mode="out-in">
 					<router-view/>
-				</transition>
+				</v-slide-y-transition>
 			</keep-alive>
 		</v-content>
 		<Snackbar/>
@@ -39,14 +37,6 @@ export default {
 </script>
 
 <style>
-.component-fade-enter-active, .component-fade-leave-active {
-	transition: opacity .1s ease;
-}
-
-.component-fade-enter, .component-fade-leave-to {
-	opacity: 0;
-}
-
 span.mord {
 	background-color: transparent !important;
     border-color: transparent !important;
