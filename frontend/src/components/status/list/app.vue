@@ -97,9 +97,10 @@ export default {
 		payload() {
 			this.updateUserSearch();
 		},
-		$route() {
-			this.$refs.pagination.init();
-		},
+	},
+
+	activated() {
+		this.$refs.pagination.init();
 	},
 
 	mounted() {

@@ -60,9 +60,10 @@ export default {
 			this.isLoading = true;
 			this.debouncedRequest();
 		},
-		$route() {
-			this.$refs.pagination.init();
-		},
+	},
+
+	activated() {
+		this.$refs.pagination.init();
 	},
 
 	mounted() {

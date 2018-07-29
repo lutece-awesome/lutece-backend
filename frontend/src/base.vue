@@ -2,11 +2,11 @@
 	<v-app>
 		<Navbar/>
 		<v-content>
-			<keep-alive include="Problem,Status,User">
-				<v-fade-transition mode="out-in">
+			<v-fade-transition mode="out-in">
+				<keep-alive include="Problem,Status,User">
 					<router-view/>
-				</v-fade-transition>
-			</keep-alive>
+				</keep-alive>
+			</v-fade-transition>
 		</v-content>
 		<Snackbar/>
 	</v-app>
