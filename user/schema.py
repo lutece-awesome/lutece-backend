@@ -9,6 +9,7 @@ from json import dumps
 from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
 from django.db.models import Q
+from json import dumps
 
 
 class UserType(DjangoObjectType):
@@ -19,20 +20,46 @@ class UserType(DjangoObjectType):
 
     gravataremail = graphene.String()
     group = graphene.String()
+    heatmap = graphene.String()
+    analysis = graphene.String()
 
-    def resolve_group(self, info, * args,  ** kwargs):
+    def resolve_group( self , info , * args ,  ** kwargs):
         return Group.get_user_group(self.group).value.display
+
+    def resolve_heatmap( self , info , * args , ** kwargs ):
+        import datetime
+        import time
+        from submission.models import Submission
+        from user.models import User
+        now = datetime.datetime.now()
+        start_date = now - datetime.timedelta(days=366)
+        s = Submission.objects.filter(
+            user=self, submit_time__date__gt=start_date)
+        ret = dict()
+        for each in s:
+            key = str(each.submit_time.strftime("%Y-%m-%d"))
+            if key not in ret:
+                ret[key] = 0
+            ret[key] += 1
+        return dumps([{'date': key, 'count': value} for key, value in ret.items()])
+
+    def resolve_analysis( self , info , * args , ** kwargs ):
+        from submission.models import Submission
+        from submission.judge_result import Judge_result
+        s = Submission.objects.filter( user = self )
+        solved = set()
+        tried = set()
+        for each in s:
+            tried.add( each.problem_id )
+            if Judge_result.get_judge_result( each.judge_status ) is Judge_result.AC:
+                solved.add( each.problem_id )
+        return dumps(sorted( [ ( each , 'yes' if each in solved else 'no' ) for each in tried ] , key = lambda x : x[0] ))
 
 
 class UserListType(graphene.ObjectType):
     class Meta:
         interfaces = (paginatorList, )
     userList = graphene.List(UserType)
-
-
-class UserProfileType(graphene.ObjectType):
-    user = graphene.Field(UserType)
-    heatmap = graphene.JSONString()
 
 
 class UserLogin(graphene.Mutation):
@@ -166,19 +193,17 @@ class Query(object):
 
     userList = graphene.Field(
         UserListType, page=graphene.Int(), filter=graphene.String())
-    userProfile = graphene.Field(
-        UserProfileType, username=graphene.String())
     userSearch = graphene.Field(UserListType, filter=graphene.String())
+    user = graphene.Field( UserType , username = graphene.String() )
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
-        from Lutece.config import PER_PAGE_COUNT
         filter = kwargs.get('filter')
         user_list = User.objects.all().order_by('-solved').filter(show=True)
         if filter is not None:
             user_list = user_list.filter(Q(display_name__icontains=filter) | Q(
                 school__icontains=filter) | Q(company__icontains=filter) | Q(location__icontains=filter))
-        paginator = Paginator(user_list, PER_PAGE_COUNT)
+        paginator = Paginator( user_list, 12 )
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
 
     def resolve_userSearch(self, info, **kwargs):
@@ -187,28 +212,9 @@ class Query(object):
         if filter is not None:
             user_list = user_list.filter(display_name__icontains=filter)
         return UserListType(maxpage=1, userList=user_list[:5])
-
-    def resolve_userProfile(self, info, username):
-        import datetime
-        import time
-        from submission.models import Submission
-        from user.models import User
-        now = datetime.datetime.now()
-        start_date = now - datetime.timedelta(days=366)
-        user = User.objects.get(username=username)
-        s = Submission.objects.filter(
-            user=user, submit_time__date__gt=start_date)
-        ret = dict()
-        for each in s:
-            key = str(each.submit_time.strftime("%Y-%m-%d"))
-            if key not in ret:
-                ret[key] = 0
-            ret[key] += 1
-        return UserProfileType(
-            user=User.objects.get(username=username),
-            heatmap=[{'date': key, 'count': value}
-                     for key, value in ret.items()]
-        )
+    
+    def resolve_user( self , info , username ):
+        return User.objects.get( username = username )
 
 
 class Mutation(graphene.AbstractType):
