@@ -9,7 +9,7 @@
 			<v-flex xs12>
 				<Searchbar
 					v-model="filter"
-					class="mb-3" />
+					class="mb-3 elevation-1" />
 				<UserList
 					:user-item="userList"
 					:is-loading="isLoading"/>

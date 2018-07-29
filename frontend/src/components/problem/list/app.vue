@@ -9,11 +9,11 @@
 				xs12
 				md10
 				lg8>
-				<Searchbar
-					v-model="filter"
-					label="E.g. &quot;A+B&quot;, &quot;#123&quot;, &quot;#1230-1235&quot;"
-					class="mb-2" />
 				<v-card>
+					<Searchbar
+						v-model="filter"
+						label="E.g. &quot;A+B&quot;, &quot;#123&quot;, &quot;#1230-1235&quot;" />
+					<v-divider/>
 					<ProblemList
 						:problem-item="problemList"
 						:is-loading="isLoading"/>
