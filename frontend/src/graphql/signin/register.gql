@@ -7,7 +7,7 @@ mutation RegisterGQL(
 	$company: String
 	$location: String
 ) {
-	Register(
+	register(
 		username: $username
 		password: $password
 		email: $email
@@ -18,5 +18,15 @@ mutation RegisterGQL(
 	) {
 		token
 		payload
+		permission
+		user{
+			displayName
+			gravataremail
+			school
+			company
+			location
+			about
+			group
+		}
 	}
 }

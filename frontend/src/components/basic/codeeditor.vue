@@ -39,6 +39,7 @@
 <script>
 import { LanguageList } from '@/graphql/language/languagelist.gql';
 import { SubmitSolution } from '@/graphql/submission/submit.gql';
+import { mapGetters } from 'vuex';
 
 
 export default {
@@ -75,6 +76,9 @@ export default {
 		cmHeight() {
 			return `height: ${this.height}px`;
 		},
+		...mapGetters({
+			isAuthenticated: 'user/isAuthenticated',
+		}),
 	},
 	watch: {
 		language() {
@@ -108,7 +112,7 @@ export default {
 			this.height = Math.max(window.innerHeight - 300, 300);
 		},
 		submitsolution() {
-			if (!this.$store.state.user.payload) {
+			if (!this.isAuthenticated) {
 				this.$router.push({
 					name: 'Login',
 					query: {

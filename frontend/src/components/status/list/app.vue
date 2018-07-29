@@ -36,6 +36,7 @@ import StatusList from '@/components/status/list/list';
 import StatusListGQL from '@/graphql/submission/list.gql';
 import UserSearchGQL from '@/graphql/user/search.gql';
 import ProblemSearchGQL from '@/graphql/problem/search.gql';
+import { mapGetters } from 'vuex';
 
 const debounce = require('lodash.debounce');
 
@@ -73,9 +74,10 @@ export default {
 		problemSearchFilter() {
 			return this.problemSearch.filter;
 		},
-		payload() {
-			return this.$store.state.user.payload;
-		},
+		...mapGetters({
+			profile: 'user/profile',
+			isAuthenticated: 'user/isAuthenticated',
+		}),
 	},
 	watch: {
 		page() {
@@ -94,13 +96,11 @@ export default {
 		problemSearchFilter() {
 			this.updateProblemSearch();
 		},
-		payload() {
-			this.updateUserSearch();
-		},
 	},
 
 	activated() {
 		this.$refs.pagination.init();
+		this.request();
 	},
 
 	mounted() {
@@ -134,8 +134,8 @@ export default {
 		}, 250),
 		updateUserSearch() {
 			if (!this.userSearchFilter) {
-				if (this.payload) {
-					this.userSearch.items = [this.$store.state.user.displayName];
+				if (this.isAuthenticated) {
+					this.userSearch.items = [this.profile.displayName];
 				} else {
 					this.userSearch.items = [];
 				}

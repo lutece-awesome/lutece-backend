@@ -1,52 +1,80 @@
 /* eslint no-shadow: ["error", { "allow": ["state"] }] */
-import { RefreshToken } from '@/graphql/signin/token.gql';
+import { UserLogin, RefreshToken } from '@/graphql/signin/token.gql';
+import RegisterGQL from '@/graphql/signin/register.gql';
 import jwtDecode from 'jwt-decode';
 import apolloProvider from '@/apollo';
 
 const state = {
-	payload: null,
+	token: localStorage.getItem('USER_TOKEN') || '',
+	payload: {},
+	profile: {},
 	permission: [],
-	displayName: '',
-	gravataremail: '',
-	school: '',
-	company: '',
-	location: '',
-	about: '',
-	group: '',
 };
 
 const getters = {
-	has_permission: state => permission => state.permission.indexOf(permission) !== -1,
+	payload: state => state.payload,
+	profile: state => state.profile,
+	isProfileLoaded: state => !!state.profile.displayName,
+	isAuthenticated: state => !!state.token,
+	hasPermission: state => permission => state.permission.indexOf(permission) !== -1,
 };
 
 const mutations = {
 	login(state, data) {
+		state.token = data.token;
 		state.payload = data.payload;
+		state.profile = data.user;
 		state.permission = JSON.parse(data.permission);
-		state.displayName = data.user.displayName;
-		state.gravataremail = data.user.gravataremail;
-		state.school = data.user.school;
-		state.company = data.user.company;
-		state.location = data.user.location;
-		state.about = data.user.about;
-		state.group = data.user.group;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {
-		state.payload = null;
+		state.token = '';
+		state.payload = {};
+		state.profile = {};
 		state.permission = [];
-		state.displayName = '';
-		state.gravataremail = '';
-		state.school = '';
-		state.company = '';
-		state.location = '';
-		state.about = '';
-		state.group = '';
 		localStorage.removeItem('USER_TOKEN');
 	},
 };
 
 const actions = {
+	login: ({ commit }, variables) => new Promise((resolve, reject) => {
+		apolloProvider.defaultClient.mutate({
+			mutation: UserLogin,
+			variables,
+		})
+			.then(response => response.data.userLogin)
+			.then((data) => {
+				commit('login', data);
+				apolloProvider.defaultClient.resetStore().then(() => {
+					resolve(data);
+				});
+			})
+			.catch((error) => {
+				reject(error);
+			});
+	}),
+	signup: ({ commit }, variables) => new Promise((resolve, reject) => {
+		apolloProvider.defaultClient.mutate({
+			mutation: RegisterGQL,
+			variables,
+		})
+			.then(response => response.data.register)
+			.then((data) => {
+				commit('login', data);
+				apolloProvider.defaultClient.resetStore().then(() => {
+					resolve(data);
+				});
+			})
+			.catch((error) => {
+				reject(error);
+			});
+	}),
+	logout: ({ commit }) => new Promise((resolve, _reject) => {
+		commit('logout');
+		apolloProvider.defaultClient.resetStore().then(() => {
+			resolve();
+		});
+	}),
 	refresh_token({ commit }, force) {
 		const BEFORE_EXPIRATION_DELTA = 60 * 60;
 		const token = localStorage.getItem('USER_TOKEN');

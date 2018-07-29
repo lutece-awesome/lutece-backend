@@ -43,7 +43,7 @@
 								<v-flex>
 									<v-text-field
 										v-model="displayName"
-										:error-messages="geterror('displayName')"
+										:error-messages="geterror('display_name')"
 										label="Display name *"
 										required />
 								</v-flex>
@@ -83,7 +83,6 @@
 </template>
 
 <script>
-import RegisterGQL from '@/graphql/signin/register.gql';
 
 export default {
 	metaInfo() { return { title: 'Sign Up' }; },
@@ -115,28 +114,18 @@ export default {
 			this.errordetail = {};
 			this.error = false;
 			this.loading = true;
-			this.$apollo.mutate({
-				mutation: RegisterGQL,
-				variables: {
-					username: this.username,
-					password: this.password,
-					email: this.email,
-					displayName: this.displayName,
-					school: this.school,
-					company: this.company,
-					location: this.location,
-				},
+			const {
+				username, password, email, displayName, school, company, location,
+			} = this;
+			this.$store.dispatch('user/signup', {
+				username, password, email, displayName, school, company, location,
 			})
-				.then(response => response.data.Register)
-				.then((data) => {
-					this.$store.commit('user/login', data);
-					this.$apollo.provider.defaultClient.resetStore().then(() => {
-						this.$router.push(this.$route.query.redirect || '/');
-					});
+				.then(() => {
+					this.$router.push(this.$route.query.redirect || '/');
 				})
 				.catch((error) => {
-					this.error = true;
 					this.errordetail = JSON.parse(error.graphQLErrors[0].message);
+					this.error = true;
 				})
 				.finally(() => { this.loading = false; });
 		},

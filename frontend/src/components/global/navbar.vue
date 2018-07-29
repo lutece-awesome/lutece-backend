@@ -54,14 +54,14 @@
 			<v-spacer/>
 			<v-toolbar-items class="hidden-sm-and-down">
 				<v-btn
-					v-if="!payload"
-					flat
-					@click="login">
+					v-if="!isAuthenticated"
+					:to="login"
+					flat>
 					<v-icon class="mr-2">mdi-login</v-icon>
 					SIGN IN
 				</v-btn>
 				<v-menu
-					v-show="payload"
+					v-if="isProfileLoaded"
 					open-on-hover
 					offset-y>
 					<v-btn
@@ -70,45 +70,46 @@
 						<v-avatar
 							size="36"
 							class="mr-2" >
-							<img :src="gravataremail" >
+							<img :src="profile.gravataremail" >
 						</v-avatar>
-						{{ displayName }}
+						{{ profile.	displayName }}
 						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
 						<v-list-tile
-							v-for = "( each , index ) in dropdownItems"
-							:key = "index"
-							@click = "each.click" >
-							<v-icon class="mr-2">{{ each.icon }}</v-icon>
+							v-for="item in dropdownItems"
+							:key="item.label"
+							:to="item.route"
+							active-class="grey lighten-3">
+							<v-icon class="mr-2">{{ item.icon }}</v-icon>
 							<v-list-tile-content>
-								<v-list-tile-title>{{ each.label }} </v-list-tile-title>
+								<v-list-tile-title>{{ item.label }}</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
 					</v-list>
 				</v-menu>
 			</v-toolbar-items>
 			<v-btn
-				v-if="payload"
-				:to="{name: 'UserDetail', params: {username: payload.username}}"
+				v-if="isProfileLoaded"
+				:to="userDetail"
 				icon
 				class="hidden-md-and-up">
 				<v-avatar size="36">
-					<img :src="gravataremail" >
+					<img :src="profile.gravataremail" >
 				</v-avatar>
 			</v-btn>
 			<v-btn
-				v-if="payload"
+				v-if="isProfileLoaded"
+				:to="signOut"
 				icon
-				class="hidden-md-and-up"
-				@click="signout">
+				class="hidden-md-and-up">
 				<v-icon>mdi-logout</v-icon>
 			</v-btn>
 			<v-btn
-				v-if="!payload"
+				v-if="!isAuthenticated"
+				:to="login"
 				icon
-				class="hidden-md-and-up"
-				@click="login">
+				class="hidden-md-and-up">
 				<v-icon>mdi-login</v-icon>
 			</v-btn>
 		</v-toolbar>
@@ -116,6 +117,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Login from '@/components/signin/login';
 
 export default {
@@ -126,73 +128,98 @@ export default {
 		return {
 			drawer: null,
 			signin: false,
-			items: [{
-				icon: 'mdi-home',
-				title: 'Home',
-				path: '/home',
-			},
-			{
-				icon: 'mdi-view-list',
-				title: 'Problem',
-				path: '/problem',
-			},
-			{
-				icon: 'mdi-chart-bar',
-				title: 'Status',
-				path: '/status',
-			},
-			{
-				icon: 'mdi-trophy',
-				title: 'Contest',
-				path: '/contest',
-			},
-			{
-				icon: 'mdi-account-multiple',
-				title: 'User',
-				path: '/user',
-			},
-			{
-				icon: 'mdi-book-open',
-				title: 'Blog',
-				path: '/blog',
-			},
-			{
-				icon: 'mdi-information',
-				title: 'About',
-				path: '/about',
-			},
-			],
-			dropdownItems: [
+			items: [
 				{
-					click: this.profile,
-					icon: 'mdi-account',
-					label: 'Profile',
+					icon: 'mdi-home',
+					title: 'Home',
+					path: '/home',
 				},
 				{
-					click: this.settings,
-					icon: 'mdi-settings',
-					label: 'Settings',
+					icon: 'mdi-view-list',
+					title: 'Problem',
+					path: '/problem',
 				},
 				{
-					click: this.signout,
-					icon: 'mdi-logout',
-					label: 'Sign Out',
+					icon: 'mdi-chart-bar',
+					title: 'Status',
+					path: '/status',
+				},
+				{
+					icon: 'mdi-trophy',
+					title: 'Contest',
+					path: '/contest',
+				},
+				{
+					icon: 'mdi-account-multiple',
+					title: 'User',
+					path: '/user',
+				},
+				{
+					icon: 'mdi-book-open',
+					title: 'Blog',
+					path: '/blog',
+				},
+				{
+					icon: 'mdi-information',
+					title: 'About',
+					path: '/about',
 				},
 			],
 		};
 	},
 	computed: {
-		payload() {
-			return this.$store.state.user.payload;
-		},
-		gravataremail() {
-			return this.$store.state.user.gravataremail;
-		},
-		displayName() {
-			return this.$store.state.user.displayName;
-		},
+		...mapGetters({
+			profile: 'user/profile',
+			payload: 'user/payload',
+			isAuthenticated: 'user/isAuthenticated',
+			isProfileLoaded: 'user/isProfileLoaded',
+		}),
 		title() {
 			return this.$root.title;
+		},
+		login() {
+			return {
+				name: 'Login',
+				query: {
+					redirect: this.$route.query.redirect || this.$route.path,
+				},
+			};
+		},
+		userDetail() {
+			return {
+				name: 'UserDetail',
+				params: { username: this.payload.username },
+			};
+		},
+		userSettings() {
+			return { name: 'UserSettings' };
+		},
+		signOut() {
+			return {
+				name: 'Signout',
+				query: {
+					redirect: this.$route.path,
+				},
+			};
+		},
+		dropdownItems() {
+			return [
+				{
+					route: this.userDetail,
+					icon: 'mdi-account',
+					label: 'Profile',
+				},
+				{
+					route: this.userSettings,
+					icon: 'mdi-settings',
+					label: 'Settings',
+				},
+				{
+					route: this.signOut,
+					icon: 'mdi-logout',
+					label: 'Sign Out',
+				},
+			];
 		},
 	},
 	metaInfo: {
@@ -200,35 +227,6 @@ export default {
 			if (typeof newInfo.titleChunk !== 'undefined') {
 				this.$root.title = newInfo.titleChunk;
 			}
-		},
-	},
-	methods: {
-		login() {
-			this.$router.push({
-				name: 'Login',
-				query: {
-					redirect: this.$route.query.redirect || this.$route.path,
-				},
-			});
-		},
-		signout() {
-			this.$router.push({
-				name: 'Signout',
-				query: {
-					redirect: this.$route.path,
-				},
-			});
-		},
-		profile() {
-			this.$router.push({
-				name: 'UserDetail',
-				params: { username: this.payload.username },
-			});
-		},
-		settings() {
-			this.$router.push({
-				name: 'UserSettings',
-			});
 		},
 	},
 };

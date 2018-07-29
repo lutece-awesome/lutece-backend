@@ -68,6 +68,7 @@ export default {
 
 	activated() {
 		this.$refs.pagination.init();
+		this.request();
 	},
 
 	mounted() {

@@ -11,7 +11,7 @@
 				md10
 				xl8>
 				<v-btn
-					v-if="has_permission('problem.change_problem')"
+					v-if="hasPermission('problem.change_problem')"
 					:to="{name: 'ProblemEdit', params: {slug: slug}}"
 					color="accent"
 					dark
@@ -61,6 +61,7 @@ import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
 import ProblemDetailGQL from '@/graphql/problem/detail.gql';
+import { mapGetters } from 'vuex';
 
 export default {
 	metaInfo() { return { title: this.problem ? this.problem.title : 'Loading...' }; },
@@ -76,7 +77,13 @@ export default {
 		problem: null,
 	}),
 
-	mounted() {
+	computed: {
+		...mapGetters({
+			hasPermission: 'user/hasPermission',
+		}),
+	},
+
+	created() {
 		this.slug = this.$route.params.slug;
 		this.request();
 	},
@@ -93,9 +100,6 @@ export default {
 				.then((data) => {
 					this.problem = data;
 				});
-		},
-		has_permission(permission) {
-			return this.$store.getters['user/has_permission'](permission);
 		},
 	},
 };

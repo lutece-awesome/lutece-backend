@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import { UserLogin } from '@/graphql/signin/token.gql';
 
 export default {
 	metaInfo() { return { title: 'Login' }; },
@@ -78,18 +77,10 @@ export default {
 			this.loading = true;
 			this.error = false;
 			this.errordetail = {};
-			this.$apollo
-				.mutate({
-					mutation: UserLogin,
-					variables: {
-						username: this.username,
-						password: this.password,
-					},
-				})
-				.then(response => response.data.userLogin)
-				.then((data) => {
-					this.$store.commit('user/login', data);
-					this.redirect();
+			const { username, password } = this;
+			this.$store.dispatch('user/login', { username, password })
+				.then(() => {
+					this.$router.push(this.$route.query.redirect || '/');
 				})
 				.catch((error) => {
 					this.errordetail = JSON.parse(error.graphQLErrors[0].message);
@@ -99,9 +90,6 @@ export default {
 		},
 
 		redirect() {
-			this.$apollo.provider.defaultClient.resetStore().then(() => {
-				this.$router.push(this.$route.query.redirect || '/');
-			});
 		},
 
 		signup() {

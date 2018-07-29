@@ -40,7 +40,7 @@
 
 <script>
 import BLogListGQL from '@/graphql/blog/list.gql';
-import BlogList from '@/components/blog/list/list.vue';
+import BlogList from '@/components/blog/list/list';
 
 export default {
 	name: 'Blog',
@@ -65,6 +65,7 @@ export default {
 
 	activated() {
 		this.$refs.pagination.init();
+		this.request();
 	},
 
 	mounted() {

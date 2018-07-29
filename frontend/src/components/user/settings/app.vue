@@ -73,7 +73,9 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
 import { UserInfoUpdateGQL } from '@/graphql/user/settings.gql';
+import { ProfileGQL } from '@/graphql/user/profile.gql';
 
 export default {
 	metaInfo() { return { title: 'Settings' }; },
@@ -89,22 +91,40 @@ export default {
 		error: false,
 		errordetail: [],
 	}),
+	computed: {
+		...mapGetters({
+			profile: 'user/profile',
+		}),
+	},
 	mounted() {
-		this.displayName = this.$store.state.user.displayName;
-		this.school = this.$store.state.user.school;
-		this.company = this.$store.state.user.company;
-		this.location = this.$store.state.user.location;
-		this.about = this.$store.state.user.about;
-		this.group = this.$store.state.user.group;
+		this.displayName = this.profile.displayName;
+		this.school = this.profile.school;
+		this.company = this.profile.company;
+		this.location = this.profile.location;
+		this.about = this.profile.about;
+		this.group = this.profile.group;
 	},
 	methods: {
+		request() {
+			this.$apollo.query({
+				query: ProfileGQL,
+				variables: {
+					username: this.username,
+				},
+			})
+				.then(response => response.data.user)
+				.then((data) => {
+					Object.assign(this, data);
+					this.heatmap = JSON.parse(this.heatmap);
+					this.analysis = JSON.parse(this.analysis);
+				});
+		},
 		geterror(field) {
 			if (Object.prototype.hasOwnProperty.call(this.errordetail, field)) {
 				return this.errordetail[field][0].message;
 			}
 			return '';
 		},
-
 
 		submit() {
 			this.isloading = true;

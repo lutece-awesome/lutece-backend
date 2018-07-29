@@ -164,6 +164,8 @@ class Register(graphene.Mutation):
 
     token = graphene.String()
     payload = GenericScalar()
+    permission = graphene.String()
+    user = graphene.Field(UserType)
 
     def mutate(self, info, ** kwargs):
         from .form import UserSignupForm
@@ -184,7 +186,7 @@ class Register(graphene.Mutation):
             new_user.set_group(Group.NORMAL_USER)
             token = get_token(new_user)
             payload = get_payload(token, info.context)
-            return Register(payload=payload, token=token)
+            return Register(payload=payload, token=token, permission=dumps(list(new_user.get_all_permissions())), user=new_user)
         else:
             raise RuntimeError(SignupForm.errors.as_json())
 
