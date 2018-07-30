@@ -63,8 +63,9 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, './../src/**/*.js'),
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
 			]),
+			whitelist: ['.vch__wrapper', 'span.mord'],
 			whitelistPatterns: [/^v-progress-circular/, /transition/],
-			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/],
+			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/, /v-input/],
 		}),
 		// Compress extracted CSS. We are using this plugin so that possible
 		// duplicated CSS from different components can be deduped.

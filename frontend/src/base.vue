@@ -44,10 +44,3 @@ export default {
 	},
 };
 </script>
-
-<style>
-span.mord {
-	background-color: transparent !important;
-    border-color: transparent !important;
-}
-</style>
