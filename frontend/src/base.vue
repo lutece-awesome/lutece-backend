@@ -2,7 +2,9 @@
 	<v-app>
 		<Navbar/>
 		<v-content>
-			<v-fade-transition mode="out-in">
+			<v-fade-transition
+				:duration="100"
+				mode="out-in">
 				<keep-alive
 					v-if="!isAuthenticated || isProfileLoaded"
 					include="Problem,Status,User,Blog">

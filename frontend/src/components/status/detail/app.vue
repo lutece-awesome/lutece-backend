@@ -88,6 +88,7 @@
 
 <script>
 import { getWebSocketUri } from '@/utils';
+import { mapGetters } from 'vuex';
 
 
 export default {
@@ -148,6 +149,9 @@ export default {
 		progress() {
 			return this.judge.length / this.casenumber * 100;
 		},
+		...mapGetters({
+			token: 'user/token',
+		}),
 	},
 
 	watch: {
@@ -168,7 +172,7 @@ export default {
 
 	mounted() {
 		this.pk = this.$route.params.pk;
-		this.ws = new WebSocket(`${getWebSocketUri()}/status/${String(this.pk)}/?${localStorage.getItem('USER_TOKEN') || ''}`);
+		this.ws = new WebSocket(`${getWebSocketUri()}/status/${String(this.pk)}/?${this.token}`);
 		this.ws.onmessage = (event) => {
 			let { data } = event;
 			data = JSON.parse(data);

@@ -58,7 +58,6 @@ export default {
 
 	mounted() {
 		this.page = 1;
-		// this.page = parseInt(localStorage.getItem('STATUS_LIST'), 10) || 1;
 	},
 
 	methods: {

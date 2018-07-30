@@ -1,7 +1,6 @@
 /* eslint no-shadow: ["error", { "allow": ["state"] }] */
 import { UserLogin, RefreshToken } from '@/graphql/signin/token.gql';
 import RegisterGQL from '@/graphql/signin/register.gql';
-import jwtDecode from 'jwt-decode';
 import apolloProvider from '@/apollo';
 
 const state = {
@@ -14,6 +13,7 @@ const state = {
 const getters = {
 	payload: state => state.payload,
 	profile: state => state.profile,
+	token: state => state.token,
 	isProfileLoaded: state => !!state.profile.displayName,
 	isAuthenticated: state => !!state.token,
 	hasPermission: state => permission => state.permission.indexOf(permission) !== -1,
@@ -75,19 +75,20 @@ const actions = {
 			resolve();
 		});
 	}),
-	refresh_token({ commit }, force) {
+	refresh_token({ state, commit }, force) {
 		const BEFORE_EXPIRATION_DELTA = 60 * 60;
-		const token = localStorage.getItem('USER_TOKEN');
-		if (token) {
-			const decoded = jwtDecode(token);
+		if (state.token) {
+			const { exp } = state.payload;
 			const now = Date.now() / 1000;
-			if (decoded.exp <= now) {
+			const expired = exp && exp <= now;
+			const needRefresh = force || !exp || exp - now < BEFORE_EXPIRATION_DELTA;
+			if (expired) {
 				commit('logout');
-			} else if (force || decoded.exp - now < BEFORE_EXPIRATION_DELTA) {
+			} else if (needRefresh) {
 				apolloProvider.defaultClient.mutate({
 					mutation: RefreshToken,
 					variables: {
-						token,
+						token: state.token,
 					},
 				})
 					.then(response => response.data.UserTokenRefresh)
