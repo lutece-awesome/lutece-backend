@@ -62,9 +62,10 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, './../src/**/*.vue'),
 				path.join(__dirname, './../src/**/*.js'),
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
+				path.join(__dirname, '..', 'node_modules', 'vue-calendar-heatmap', 'src', '**/*.@(js|vue)'),
 			]),
 			whitelist: ['mord'],
-			whitelistPatterns: [/^v-progress-circular/, /transition/, /^vch__/],
+			whitelistPatterns: [/^v-progress-circular/, /transition/],
 			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/, /v-input/],
 		}),
 		// Compress extracted CSS. We are using this plugin so that possible
