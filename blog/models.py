@@ -9,7 +9,7 @@ from uuslug import uuslug
 class Blog( models.Model ):
     content = models.TextField( default = '' )
     title = models.CharField( max_length = 128 , default = '' )
-    user = models.OneToOneField( User , null = True ,  on_delete = models.SET_NULL )
+    user = models.ForeignKey( User , null = True ,  on_delete = models.SET_NULL )
     create_time = models.DateTimeField ( default = timezone.now )
     slug = models.CharField( blank = True , max_length = 256 )
     view = models.IntegerField( default = 0 )

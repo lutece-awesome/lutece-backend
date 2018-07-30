@@ -32,6 +32,7 @@
 <script>
 
 import BlogEdit from '@/components/blog/basic/edit';
+import CreateBlogGQL from '@/graphql/blog/create.gql';
 
 export default {
 	components: {
@@ -48,8 +49,15 @@ export default {
 
 	methods: {
 		submit() {
-			alert(this.value.title);
-			alert(this.value.content);
+			this.$apollo.mutate({
+				mutation: CreateBlogGQL,
+				variables: {
+					title: this.value.title,
+					content: this.value.content,
+				},
+			})
+				.then(response => response.data.CreateBlog)
+				.then(data => console.log(data));
 		},
 	},
 

@@ -46,6 +46,7 @@ class CreateBlog( graphene.Mutation ):
         else:
             raise RuntimeError(BlogForm.errors.as_json())
 
+
 class Query(object):
     blog = graphene.Field( BlogType , slug = graphene.String() )
     blogList = graphene.Field( BlogListType, page = graphene.Int() )
