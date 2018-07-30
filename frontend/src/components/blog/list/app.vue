@@ -23,6 +23,7 @@
 						:length="maxpage"/>
 				</div>
 				<v-btn
+					v-if = "this.$store.getters['user/isAuthenticated']"
 					:to="{name: 'BlogCreate'}"
 					color="accent"
 					dark

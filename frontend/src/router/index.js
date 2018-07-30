@@ -7,7 +7,7 @@ import StatusList from '@/components/status/list/app';
 import StatusDetail from '@/components/status/detail/app';
 import Contest from '@/components/contest/contest';
 import BlogList from '@/components/blog/list/app';
-import BlogEditor from '@/components/blog/basic/edit';
+import BlogEditor from '@/components/blog/basic/app';
 import UserList from '@/components/user/list/app';
 import UserDetail from '@/components/user/detail/app';
 import UserSettings from '@/components/user/settings/app';
@@ -100,6 +100,7 @@ export default new Router({
 			path: '/blog/create',
 			name: 'BlogCreate',
 			component: BlogEditor,
+			beforeEnter: ifAuthenticated,
 		},
 		{
 			path: '/about',

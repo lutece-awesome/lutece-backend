@@ -1,66 +1,30 @@
 <template>
-	<v-container>
-		<v-layout
-			row
-			justify-center
-			wrap>
-			<v-flex
-				xs12
-				md8>
-				<v-form
-					@submit.prevent="submit"
-				>
-					<v-text-field
-						v-model = "title_"
-						:error-messages="geterror('title')"
-						label="Title"
-					/>
-					<v-textarea
-						v-model = "content_"
-						:error-messages="geterror('content')"
-						label="Content"
-						auto-grow
-					/>
-					<v-btn
-						:loading = "isloading"
-						:color="error ? &quot;error&quot; : &quot;primary&quot;"
-						block
-						type = "submit"
-					> Submit </v-btn>
-				</v-form>
-			</v-flex>
-		</v-layout
-	></v-container>
+	<v-form>
+		<v-text-field
+			v-model = "value.title"
+			:error-messages="geterror('title')"
+			label="Title"
+		/>
+		<v-textarea
+			v-model = "value.content"
+			:error-messages="geterror('content')"
+			label="Content"
+			auto-grow
+		/>
+	</v-form>
 </template>
 
 <script>
 export default {
 	props: {
-		slug: {
-			type: String,
-			default: '',
+		value: {
+			type: Object,
+			default: null,
 		},
-		title: {
-			type: String,
-			default: '',
+		errordetail: {
+			type: Object,
+			default: () => ({}),
 		},
-		content: {
-			type: String,
-			default: '',
-		},
-	},
-
-	data: () => ({
-		error: false,
-		isloading: false,
-		errordetail: {},
-		title_: '',
-		content_: '',
-	}),
-
-	mounted() {
-		this.title_ = this.title;
-		this.content_ = this.content;
 	},
 
 	methods: {
@@ -69,9 +33,6 @@ export default {
 				return this.errordetail[field][0].message;
 			}
 			return '';
-		},
-		submit() {
-
 		},
 	},
 };
