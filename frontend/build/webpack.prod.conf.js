@@ -63,7 +63,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, './../src/**/*.js'),
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
 			]),
-			whitelist: ['.vch__wrapper', 'span.mord'],
+			whitelist: ['vch__wrapper', 'mord'],
 			whitelistPatterns: [/^v-progress-circular/, /transition/],
 			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/, /v-input/],
 		}),
