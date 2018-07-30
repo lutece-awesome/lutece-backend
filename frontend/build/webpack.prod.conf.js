@@ -63,8 +63,8 @@ const webpackConfig = merge(baseWebpackConfig, {
 				path.join(__dirname, './../src/**/*.js'),
 				path.join(__dirname, '..', 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
 			]),
-			whitelist: ['vch__wrapper', 'mord'],
-			whitelistPatterns: [/^v-progress-circular/, /transition/],
+			whitelist: ['mord'],
+			whitelistPatterns: [/^v-progress-circular/, /transition/, /^vch__/],
 			whitelistPatternsChildren: [/katex/, /CodeMirror/, /codemirror/, /cm-/, /v-input/],
 		}),
 		// Compress extracted CSS. We are using this plugin so that possible
