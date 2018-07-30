@@ -8,10 +8,16 @@
 		<template
 			slot="items"
 			slot-scope="props">
-			<td class="text-xs-center">{{ props.item.id }}</td>
-			<td class="text-xs-center">{{ props.item.title }}</td>
-			<td class="text-xs-center">{{ props.item.vote }}</td>
-			<td class="text-xs-center">{{ props.item.view }}</td>
+			<router-link
+				:to="{name: 'BlogDetail', params: {slug: props.item.slug}}"
+				:style="{cursor: 'pointer'}"
+				tile
+				tag="tr">
+				<td class="text-xs-center">{{ props.item.id }}</td>
+				<td class="text-xs-center">{{ props.item.title }}</td>
+				<td class="text-xs-center">{{ props.item.vote }}</td>
+				<td class="text-xs-center">{{ props.item.view }}</td>
+			</router-link>
 		</template>
 	</v-data-table>
 </template>

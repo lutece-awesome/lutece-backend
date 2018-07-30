@@ -20,7 +20,7 @@
 					nam essent vocent admodum.
 					</span>
 					<v-divider class="my-3"/>
-					<div class="title mb-3">Star Lutece project in Github!</div>
+					<div class="title mb-3">Star Lutece on GITHUB!</div>
 					<v-btn
 						class="mx-0"
 						color="primary"

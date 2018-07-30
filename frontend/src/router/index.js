@@ -7,6 +7,7 @@ import StatusList from '@/components/status/list/app';
 import StatusDetail from '@/components/status/detail/app';
 import Contest from '@/components/contest/contest';
 import BlogList from '@/components/blog/list/app';
+import BlogDetail from '@/components/blog/detail/app';
 import BlogEditor from '@/components/blog/basic/app';
 import UserList from '@/components/user/list/app';
 import UserDetail from '@/components/user/detail/app';
@@ -95,6 +96,11 @@ export default new Router({
 			path: '/blog',
 			name: 'Blog',
 			component: BlogList,
+		},
+		{
+			path: '/blog/:slug',
+			name: 'BlogDetail',
+			component: BlogDetail,
 		},
 		{
 			path: '/blog/create',

@@ -56,8 +56,7 @@ export default {
 					content: this.value.content,
 				},
 			})
-				.then(response => response.data.CreateBlog)
-				.then(data => console.log(data));
+				.then(response => response.data.CreateBlog);
 		},
 	},
 

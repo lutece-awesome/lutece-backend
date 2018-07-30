@@ -2,10 +2,11 @@ query BLogListGQL($page: Int!) {
 	blogList(page: $page) {
 		maxpage
 		blogList {
-            id
-            title
-            vote
-            view
+            	id
+            	title
+            	vote
+            	view
+			slug
 		}
 	}
 }
