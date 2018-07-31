@@ -23,24 +23,29 @@
 					<v-avatar
 						size="128"
 						class="mr-2" >
-						<img :src = "gravataremail" >
+						<img :src = "gravataremail">
 					</v-avatar>
 					<v-card-title primary-title>
 						<h3 class="headline">{{ username }}</h3>
 					</v-card-title>
 					<v-card-text>
+						<div> Activity </div>
+						<div> <b> {{ total_submission }} </b> submissions during the last year. </div>
 						<div class="scroll text-xs-center">
 							<CalendarHeatmap
 								:values = "heatmap"
 								:end-date = "endDate"
 								tooltip-unit = "submissions" />
 						</div>
+						<div> Solve </div>
 						<v-btn
 							v-for = "each in analysis"
+							:color = "each[1] === 'yes' ? 'success' : 'error' "
 							:key = "each[0]"
+							round
+							small
 						>
 							{{ each[0] }}
-							{{ each[1] }}
 						</v-btn>
 					</v-card-text>
 				</v-card>
@@ -79,6 +84,13 @@ export default {
 	computed: {
 		username() {
 			return this.$route.params.username;
+		},
+		total_submission() {
+			let sum = 0;
+			for (let i = 0; i < this.heatmap.length; i += 1) {
+				sum += this.heatmap[i].count;
+			}
+			return sum;
 		},
 	},
 
