@@ -35,14 +35,14 @@
 								:end-date = "endDate"
 								tooltip-unit = "submissions" />
 						</div>
+						<v-btn
+							v-for = "each in analysis"
+							:key = "each[0]"
+						>
+							{{ each[0] }}
+							{{ each[1] }}
+						</v-btn>
 					</v-card-text>
-					<v-btn
-						v-for = "each in analysis"
-						:key = "each[0]"
-					>
-						{{ each[0] }}
-						{{ each[1] }}
-					</v-btn>
 				</v-card>
 			</v-flex>
 
