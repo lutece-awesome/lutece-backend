@@ -31,20 +31,20 @@
 					</div>
 
 					<h2
-						style = "text-align:center; margin-top:12px;"
+						class="text-xs-center mt-2"
 					>{{ displayName }}
 					</h2>
 
 					<v-card-text>
-						<div> Activity </div>
-						<div> <b> {{ total_submission }} </b> submissions during the last year. </div>
+						<h3> Activity </h3>
+						<p> <b> {{ total_submission }} </b> submissions during the last year. </p>
 						<div class="scroll text-xs-center">
 							<CalendarHeatmap
 								:values = "heatmap"
 								:end-date = "endDate"
 								tooltip-unit = "submissions" />
 						</div>
-						<div> Solve </div>
+						<h3> Detail </h3>
 						<router-link
 							v-for = "each in analysis"
 							:key = "each[0]"

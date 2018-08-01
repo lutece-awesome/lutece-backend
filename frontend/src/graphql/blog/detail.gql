@@ -4,5 +4,6 @@ query BlogGQL( $slug: String! ){
         content
         view
         vote
+        createTime
     }
 }
