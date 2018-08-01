@@ -20,14 +20,21 @@
 					<v-icon>mdi-pencil</v-icon>
 				</v-btn>
 				<v-card>
-					<v-avatar
-						size="128"
-						class="mr-2" >
-						<img :src = "gravataremail">
-					</v-avatar>
-					<v-card-title primary-title>
-						<h3 class="headline">{{ username }}</h3>
-					</v-card-title>
+					<div
+						:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+						class="text-xs-center mt-2">
+						<v-avatar
+							size="128"
+							class="mr-2" >
+							<img :src = "gravataremail" >
+						</v-avatar>
+					</div>
+
+					<h2
+						style = "text-align:center; margin-top:12px;"
+					>{{ displayName }}
+					</h2>
+
 					<v-card-text>
 						<div> Activity </div>
 						<div> <b> {{ total_submission }} </b> submissions during the last year. </div>
@@ -38,15 +45,18 @@
 								tooltip-unit = "submissions" />
 						</div>
 						<div> Solve </div>
-						<v-btn
+						<router-link
 							v-for = "each in analysis"
-							:color = "each[1] === 'yes' ? 'success' : 'error' "
 							:key = "each[0]"
-							round
-							small
-						>
-							{{ each[0] }}
-						</v-btn>
+							:to = "{name: 'ProblemDetailDescription', params: {slug: each[2]}}">
+							<v-btn
+								:color = "each[1] === 'yes' ? 'success' : 'error' "
+								round
+								small
+							>
+								{{ each[0] }}
+							</v-btn>
+						</router-link>
 					</v-card-text>
 				</v-card>
 			</v-flex>

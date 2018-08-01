@@ -45,14 +45,18 @@ class UserType(DjangoObjectType):
     def resolve_analysis(self, info, * args, ** kwargs):
         from submission.models import Submission
         from submission.judge_result import Judge_result
-        s = Submission.objects.filter(user=self)
+        s = Submission.objects.filter( user = self )
         solved = set()
         tried = set()
+        trans = dict()
         for each in s:
-            tried.add(each.problem_id)
+            pk = each.problem.pk
+            tried.add( pk )
+            if pk not in trans:
+                trans[pk] = each.problem.slug
             if Judge_result.get_judge_result(each.judge_status) is Judge_result.AC:
-                solved.add(each.problem_id)
-        return sorted([(each, 'yes' if each in solved else 'no') for each in tried], key=lambda x: x[0])
+                solved.add( pk )
+        return sorted([( each, 'yes' if each in solved else 'no' , trans[ each ] ) for each in tried], key=lambda x: x[0])
 
 
 class UserListType(graphene.ObjectType):

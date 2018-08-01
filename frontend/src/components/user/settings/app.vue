@@ -19,7 +19,7 @@
 						>
 							<v-text-field
 								v-model="displayName"
-								:error-messages="geterror('displayName')"
+								:error-messages="geterror('display_name')"
 								label="Display name"
 								prepend-icon = "mdi-account"
 							/>
