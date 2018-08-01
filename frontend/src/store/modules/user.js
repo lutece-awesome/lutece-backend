@@ -24,7 +24,7 @@ const mutations = {
 		state.token = data.token;
 		state.payload = data.payload;
 		state.profile = data.user;
-		state.permission = JSON.parse(data.permission);
+		state.permission = data.permission;
 		localStorage.setItem('USER_TOKEN', data.token);
 	},
 	logout(state) {

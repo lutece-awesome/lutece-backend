@@ -115,8 +115,6 @@ export default {
 				.then(response => response.data.user)
 				.then((data) => {
 					Object.assign(this, data);
-					this.heatmap = JSON.parse(this.heatmap);
-					this.analysis = JSON.parse(this.analysis);
 				});
 		},
 	},

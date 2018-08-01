@@ -68,7 +68,7 @@ export default {
 					standardInput: this.standardInput,
 					standardOutput: this.standardOutput,
 					slug: this.slug,
-					samples: JSON.stringify(this.samples),
+					samples: this.samples,
 					discussionvisible: this.discussionvisible,
 					visible: this.visible,
 				},

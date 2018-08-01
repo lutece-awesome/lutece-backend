@@ -95,7 +95,7 @@ export default {
 		this.$apollo.query({
 			query: LanguageList,
 		})
-			.then(response => JSON.parse(response.data.allLanguage))
+			.then(response => response.data.allLanguage)
 			.then((data) => {
 				this.data = [];
 				for (let i = 0; i < data.length; i += 1) {

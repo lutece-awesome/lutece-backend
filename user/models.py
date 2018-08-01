@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Permission
-from json import dumps
 from django.http import HttpResponse
 from annoying.functions import get_object_or_None
 from django_gravatar.helpers import get_gravatar_url
