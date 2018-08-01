@@ -9,7 +9,9 @@ from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
 from graphql_jwt.mixins import RefreshMixin
 from graphql_jwt.mutations import JSONWebTokenMixin
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.db.models.functions import TruncDate, Cast
+from django.db.models.fields import CharField
 
 
 class UserType(DjangoObjectType):
@@ -33,15 +35,12 @@ class UserType(DjangoObjectType):
         from user.models import User
         now = datetime.datetime.now()
         start_date = now - datetime.timedelta(days=366)
-        s = Submission.objects.filter(
-            user=self, submit_time__date__gt=start_date)
-        ret = dict()
-        for each in s:
-            key = str(each.submit_time.strftime("%Y-%m-%d"))
-            if key not in ret:
-                ret[key] = 0
-            ret[key] += 1
-        return [{'date': key, 'count': value} for key, value in ret.items()]
+        s = Submission.objects.filter(user=self, submit_time__date__gt=start_date)
+        s = s.annotate(date=Cast(TruncDate('submit_time'), CharField()))
+        s = s.order_by('date')
+        s = s.values('date')
+        s = s.annotate(count=Count('submission_id'))
+        return list(s)
 
     def resolve_analysis(self, info, * args, ** kwargs):
         from submission.models import Submission
