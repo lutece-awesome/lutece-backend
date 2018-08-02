@@ -15,21 +15,25 @@
 					class = "text-xs-center mt-2"
 					style = "color:#999;"
 				>
+					<div> Created by
+						<router-link :to = "{name: 'UserDetail', params: {username: blog.user.username}}" >
+							{{ blog.user.displayName }}
+						</router-link>
+					</div>
 					<span> {{ blog.createTime | moment("MMMM Do, YYYY") }} </span>
-					<span style = "margin-left:4px;margin-right:4px;" > | </span>
+					<span class = "ml-1 mr-1" > | </span>
 					<span> {{ blog.view }} views </span>
-					<span style = "margin-left:4px;margin-right:4px;" > | </span>
+					<span class = "ml-1 mr-1" > | </span>
 					<span>
 						{{ blog.vote }} stars
-						<v-icon style = "margin-left:4px;">mdi-thumb-up-outline </v-icon>
+						<v-icon class = "ml-1" >mdi-thumb-up-outline </v-icon>
 					</span>
 				</div>
 
 				<v-divider class="my-3"/>
 				<div
-					class="subheading">
-					{{ blog.content }}
-				</div>
+					v-mixrend = "blog.content"
+					class="subheading"/>
 				<v-divider class="my-3"/>
 
 				<Commtents/>
@@ -65,6 +69,10 @@ export default {
 			view: 0,
 			vote: 0,
 			createTime: '',
+			user: {
+				username: '',
+				displayName: '',
+			},
 		},
 	}),
 

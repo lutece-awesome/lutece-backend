@@ -5,5 +5,9 @@ query BlogGQL( $slug: String! ){
         view
         vote
         createTime
+        user{
+            username
+            displayName
+        }
     }
 }

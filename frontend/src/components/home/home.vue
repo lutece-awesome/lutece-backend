@@ -109,7 +109,6 @@
 						</v-flex>
 					</v-layout>
 				</section>
-
 			</v-flex>
 		</v-layout>
 	</v-container>
