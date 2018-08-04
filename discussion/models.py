@@ -11,7 +11,7 @@ class Discussion(models.Model):
         'Submit time', null=True, default=timezone.now)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    visibility = models.BooleanField(default=True)
+    visibility = models.BooleanField( default=True , db_index = True )
     vote = models.IntegerField( default = 0 )
 
     @classmethod

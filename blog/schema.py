@@ -7,6 +7,7 @@ from user.models import User
 from graphql_jwt.decorators import login_required
 from .form import BasicBlogForm
 from utils.schema import paginatorList
+from discussion.schema import DiscussionType
 
 class BlogType( DjangoObjectType ):
     class Meta:
@@ -17,6 +18,17 @@ class BlogType( DjangoObjectType ):
 
     def resolve_user( self , info , * args , ** kwargs ):
         return self.user
+
+class BlogDiscussionType( DiscussionType ):
+    class Meta:
+        model = BlogDiscussion
+        # Filte this field is essential, only super class query is needed here
+        exclude_fields = ( 'discussion_ptr' , )
+
+class BlogDiscussionListType( graphene.ObjectType ):
+    class Meta:
+        interfaces = ( paginatorList , )
+    discussionList = graphene.List( BlogDiscussionType )
 
 class BlogListType( graphene.ObjectType ):
     class Meta:
@@ -50,6 +62,7 @@ class CreateBlog( graphene.Mutation ):
 class Query(object):
     blog = graphene.Field( BlogType , slug = graphene.String() )
     blogList = graphene.Field( BlogListType, page = graphene.Int() )
+    blogDiscussionList = graphene.Field( BlogDiscussionListType , slug = graphene.String() , page = graphene.Int() , time = graphene.Int( required = False ) )
 
     def resolve_blog( self , info , slug ):
         s = Blog.objects.get( slug = slug )
@@ -66,7 +79,14 @@ class Query(object):
         paginator = Paginator( blog_list, PER_PAGE_COUNT )
         return BlogListType( maxpage = paginator.num_pages , blogList = paginator.get_page( page ) )
     
-
+    def resolve_blogDiscussionList( self , info , slug , page , * args , ** kwargs ):
+        from django.core.paginator import Paginator
+        from Lutece.config import PER_PAGE_COUNT
+        discussion_list = BlogDiscussion.objects.filter( blog = Blog.objects.get( slug = slug ) ).order_by( 'submit_time' )
+        if not info.context.user.has_perm('blog.view_all'):
+            discussion_list = discussion_list.filter( visibility = True )
+        paginator = Paginator( discussion_list, PER_PAGE_COUNT )
+        return BlogDiscussionListType( maxpage = paginator.num_pages , discussionList = paginator.get_page( page ) )
 
 class Mutation(graphene.AbstractType):
     CreateBlog = CreateBlog.Field()
