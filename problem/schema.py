@@ -100,7 +100,7 @@ class Query(object):
             problem_list = problem_list.filter(visible=True)
         if filter is not None:
             problem_list = problem_list.filter(title__icontains=filter)
-        return ProblemListType(maxpage=1, problemList=problem_list[:5])
+        return ProblemListType( maxpage = 1, problemList = problem_list[:5] )
 
 
 class Mutation(graphene.AbstractType):
