@@ -6,7 +6,7 @@ import django.utils.timezone as timezone
 class Discussion(models.Model):
     discussion_id = models.AutoField(primary_key=True)
     content = models.CharField(max_length=200, blank=True, null=True)
-    reply = models.ForeignKey( 'self' , on_delete = models.SET_NULL , null = True , blank = True )
+    reply = models.ForeignKey( 'self' , on_delete = models.SET_NULL , null = True , blank = True , db_index = True )
     submit_time = models.DateTimeField(
         'Submit time', null=True, default=timezone.now)
     user = models.ForeignKey(

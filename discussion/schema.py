@@ -4,13 +4,16 @@ from annoying.functions import get_object_or_None
 from .models import Discussion
 from user.schema import UserType
 
-class DiscussionType( DjangoObjectType ):
-    class Meta:
-        model = Discussion
-        only_fields = ( 'discussion_id' , 'reply' , 'submit_time' , 'vote' )
-
+class DiscussionType( graphene.AbstractType ):
+    pk = graphene.ID()
     user = graphene.Field( UserType )
     content = graphene.String()
+    vote = graphene.Int()
+    submit_time = graphene.DateTime()
+    reply = graphene.ID()
+
+    def resolve_pk( self , info , * args , ** kwargs ):
+        return self.pk
 
     def resolve_user( self , info , * args , ** kwargs ):
         return self.user
@@ -20,11 +23,19 @@ class DiscussionType( DjangoObjectType ):
         if not self.visibility and not privileage:
             return ''
         return self.content
-        
+
+    def resolve_vote( self , info , * args , ** kwargs ):
+        return self.vote
+
+    def resolve_submit_time( self , info , * args , ** kwargs ):
+        return self.submit_time
+
+    # For security reason, recurse are not allowed here
+    def resolve_reply( self , info , * args , ** kwargs ):
+        return self.reply.pk if self.reply else None
 
 class Query(object):
     pass
-
 
 class Mutation(graphene.AbstractType):
     pass
