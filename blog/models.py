@@ -34,4 +34,4 @@ class BlogVoteUser( models.Model ):
     vote = models.BooleanField( default = True )
 
 class BlogDiscussion( Discussion ):
-    blog = models.ForeignKey( Blog  , null = True , on_delete = models.SET_NULL)
+    blog = models.ForeignKey( Blog  , null = True , on_delete = models.SET_NULL )

@@ -53,7 +53,7 @@
 
 <script>
 import BlogGQL from '@/graphql/blog/detail.gql';
-import Commtents from '@/components/blog/basic/comments';
+import Commtents from '@/components/blog/comments/app';
 
 export default {
 
