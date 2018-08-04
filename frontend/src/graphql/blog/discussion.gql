@@ -1,0 +1,22 @@
+query ComemntsGQL( $page: Int! , $slug: String! , $time: Int ){
+    blogDiscussionList( page: $page , slug: $slug , time: $time ){
+        maxpage
+        discussionList{
+            user{
+                username
+                displayName
+                gravataremail
+            }
+            content
+            submitTime
+            vote
+            pk
+            reply{
+                submitTime
+                content
+                vote
+                hasVoted
+            }
+        }
+    }
+}

@@ -36,7 +36,9 @@
 					class="subheading"/>
 				<v-divider class="my-3"/>
 
-				<Commtents/>
+				<Commtents
+					:slug = "slug"
+				/>
 
 				<!-- <div>
 					view: {{ blog.view }}
@@ -76,8 +78,11 @@ export default {
 		},
 	}),
 
-	mounted() {
+	created() {
 		this.slug = this.$route.params.slug;
+	},
+
+	mounted() {
 		this.request();
 	},
 

@@ -62,7 +62,8 @@
 												<div class="headline text-xs-center">Material Design</div>
 											</v-card-title>
 											<v-card-text>
-												基于遵守Google Material设计范式的Vuetify UI Framework打造,无论是通过PC,平板,手机,都能拥有最完美的体验.
+												基于遵守Google Material设计范式的Vuetify UI Framework打造,无论是通过PC,平板,手机,都能拥有最完美的体验,
+												同时深度优化的SPA带来如丝般顺滑的游览体验.
 											</v-card-text>
 										</v-card>
 									</v-flex>
