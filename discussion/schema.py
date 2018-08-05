@@ -11,10 +11,14 @@ class ReplyType( DjangoObjectType ):
     class Meta:
         model = AbstractDiscussion
         only_fields = ( 'vote' , 'submit_time' , 'visibility' )
-
+    
+    pk = graphene.ID()
     user = graphene.Field( UserType )
     content = graphene.String()
     has_voted = graphene.Boolean()
+
+    def resolve_pk( self , info , * args , ** kwargs ):
+        return self.pk
 
     def resolve_content( self , info , * args , ** kwargs ):
         privileage = info.context.user.has_perm( 'discussion.view_all' )
@@ -59,7 +63,7 @@ class DiscussionType( graphene.AbstractType ):
         return self.submit_time
 
     def resolve_reply( self , info , * args , ** kwargs ):
-        return list( AbstractDiscussion.objects.filter( reply = self.pk ) )
+        return list( AbstractDiscussion.objects.filter( ancestor = self.pk ) )
 
     def resolve_has_voted( self , info , * args , ** kwargs ):
         s = get_object_or_None( DiscussionVote , discussion = self )

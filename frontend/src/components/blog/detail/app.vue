@@ -39,14 +39,6 @@
 				<Commtents
 					:slug = "slug"
 				/>
-
-				<!-- <div>
-					view: {{ blog.view }}
-				</div>
-
-				<div>
-					vote: {{ blog.vote }}
-				</div> -->
 			</v-flex>
 		</v-layout>
 	</v-container>

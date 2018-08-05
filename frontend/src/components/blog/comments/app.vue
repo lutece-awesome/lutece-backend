@@ -2,7 +2,7 @@
 	<div>
 		<div>
 			<v-icon class = "mr-1" > mdi-comment </v-icon>
-			<span style = "font-size:16px;font-weight:500;" > Comments: </span>
+			<span style = "font-size:20px;font-weight:500;" > Comments: </span>
 		</div>
 
 		<div style = "width:auto">
