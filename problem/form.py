@@ -5,10 +5,18 @@ from .models import Problem
 
 class UpdateProblemForm( forms.Form ):
     title = forms.CharField( required = True , max_length = 64)
+    content = forms.CharField( required = True )
+    standard_input = forms.CharField( required = True )
+    standard_output = forms.CharField( required = True )
+    constraints = forms.CharField( required = True )
     resource = forms.CharField( max_length = 128 )
+    note = forms.CharField( required = True )
+    visible = forms.BooleanField( required = True )
+    discussionvisible = forms.BooleanField( required = True )
     time_limit = forms.IntegerField( max_value = 60000 , min_value = 1 )
     memory_limit = forms.IntegerField( max_value = 1024 , min_value = 1 )
     slug = forms.CharField( required = True )
+    samples = forms.CharField( required = True )
 
     def clean( self ):
         cleaned_data = super().clean()

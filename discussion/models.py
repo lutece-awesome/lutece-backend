@@ -15,6 +15,10 @@ class Discussion(models.Model):
     visibility = models.BooleanField( default=True , db_index = True )
     vote = models.IntegerField( default = 0 )
 
+    def refresh_vote( self ):
+        self.vote = DiscussionVote.objects.filter( discussion = self , vote = DiscussionVote.agree ).count() - DiscussionVote.objects.filter( discussion = self , vote = DiscussionVote.disagree ).count()
+        self.save()
+
     @classmethod
     def get_new(cls):
         return cls.objects.create().discussion_id
@@ -28,4 +32,12 @@ class Discussion(models.Model):
 class DiscussionVote( models.Model ):
     discussion = models.ForeignKey( Discussion , null = True , on_delete = models.SET_NULL )
     user = models.ForeignKey( User , null = True , on_delete = models.SET_NULL )
-    vote = models.BooleanField( default = True )
+    agree = 'Agree'
+    neutral = 'Neutral'
+    disagree = 'Disagree'
+    state_choice = {
+        ( agree , 'Agree this discussion' ),
+        ( neutral , 'Only god knows its attitude' ),
+        ( disagree , 'Disagree this discussion' ),
+    }
+    vote = models.CharField( choices = state_choice , default = neutral , max_length = 12 , db_index = True )

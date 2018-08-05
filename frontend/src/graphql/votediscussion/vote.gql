@@ -1,0 +1,12 @@
+mutation VoteDiscussionGQL(
+	$pk: ID!
+    $attitude: Boolean!
+) {
+	UpdateDiscussionVote(
+		pk: $pk
+        attitude: $attitude
+	) {
+		vote
+        result
+	}
+}

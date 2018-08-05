@@ -45,16 +45,16 @@ class UpdateProblem(graphene.Mutation):
 
     state = graphene.Boolean()
 
-    # @permission_required( 'problem.change_problem' )
+    @permission_required( 'problem.change_problem' )
     def mutate(self, info, ** kwargs):
         from json import loads
         updateProblemForm = UpdateProblemForm(kwargs)
         if updateProblemForm.is_valid():
             values = updateProblemForm.cleaned_data
-            slug, samples = kwargs['slug'], loads(kwargs['samples'])
-            kwargs.pop('slug')
-            kwargs.pop('samples')
-            Problem.objects.filter(slug=slug).update(** kwargs)
+            slug, samples = values['slug'], loads(values['samples'])
+            values.pop('slug')
+            values.pop('samples')
+            Problem.objects.filter(slug=slug).update(** values)
             prob = Problem.objects.get(slug=slug)
             prob.sample_set.all().delete()
             for x in samples:

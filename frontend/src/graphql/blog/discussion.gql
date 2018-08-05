@@ -11,6 +11,7 @@ query ComemntsGQL( $page: Int! , $slug: String! , $time: Int ){
             submitTime
             vote
             pk
+            attitude
             reply{
                 pk
                 submitTime
@@ -21,7 +22,7 @@ query ComemntsGQL( $page: Int! , $slug: String! , $time: Int ){
                     gravataremail
                 }
                 vote
-                hasVoted
+                attitude
             }
         }
     }

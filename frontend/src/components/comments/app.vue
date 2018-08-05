@@ -76,7 +76,6 @@ export default {
 					this.maxpage = data.maxpage;
 					this.page = Math.min(this.page, this.maxpage);
 					this.data = data.discussionList;
-					console.log(this.data);
 				});
 		},
 	},

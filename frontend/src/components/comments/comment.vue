@@ -8,13 +8,13 @@
 				class = "mb-4" >
 				<div>
 					<v-avatar size = "40" >
-						<img :src = "value.user.gravataremail" >
+						<img :src = "data.user.gravataremail" >
 					</v-avatar>
 					<router-link
-						:to = "{name: 'UserDetail', params: {username: value.user.username}}"
+						:to = "{name: 'UserDetail', params: {username: data.user.username}}"
 						class = "ml-2"
 					>
-						{{ value.user.displayName }}
+						{{ data.user.displayName }}
 					</router-link>
 					<span
 						class = "ml-2"
@@ -23,27 +23,29 @@
 							mdi-clock-outline
 						</v-icon>
 						<span class="humanize-time">
-							{{ value.submitTime | moment("from") }}
+							{{ data.submitTime | moment("from") }}
 						</span>
 						<span class="full-time">
-							{{ value.submitTime | moment("Y-MM-DD HH:mm:ss") }}
+							{{ data.submitTime | moment("Y-MM-DD HH:mm:ss") }}
 						</span>
 					</span>
 				</div>
 				<div
-					v-mixrend = "value.content"
+					v-mixrend = "data.content"
 					class = "mt-3"/>
 				<div
 					class = "mb-0 mt-2"
 					style = "color:#999;">
 					<span
 						class = "display-0" >
-						{{ value.vote }}
+						{{ data.vote }}
 					</span>
 					<span class = "ml-1" >
-						<a>
+						<a
+							@click = "voteDiscussion( true )"
+						>
 							<v-icon
-								:color = "value.hasVoted === true ? 'green darkgen-2' : 'grey' "
+								:color = "data.attitude === 'Agree' ? 'green darkgen-2' : 'grey' "
 								small
 							>
 								mdi-chevron-up
@@ -51,10 +53,12 @@
 						</a>
 					</span>
 					<span>
-						<a>
+						<a
+						>
 							<v-icon
-								:color = "value.hasVoted === false ? 'green darkgen-2' : 'grey' "
+								:color = "data.attitude === 'Disagree' ? 'green darkgen-2' : 'grey' "
 								small
+								@click = "voteDiscussion( false )"
 							>
 								mdi-chevron-down
 							</v-icon>
@@ -72,26 +76,60 @@
 
 
 <script>
+
+import VoteDiscussionGQL from '@/graphql/votediscussion/vote.gql';
+
 export default {
 	props: {
 		value: {
 			type: Object,
-			default: () => ({
-				user: {
-					displayName: '',
-					username: '',
-					gravataremail: '',
-				},
-				pk: 0,
-				submitTime: 0,
-				hasVoted: false,
-				vote: 0,
-				content: '',
-			}),
+			default: () => null,
 		},
 		isReply: {
 			type: Boolean,
 			default: false,
+		},
+	},
+
+	data: () => ({
+		data: {
+			user: {
+				displayName: '',
+				username: '',
+				gravataremail: '',
+			},
+			pk: 0,
+			submitTime: 0,
+			attitude: 'Neutral',
+			vote: 0,
+			content: '',
+		},
+	}),
+
+	created() {
+		this.data = JSON.parse(JSON.stringify(this.value));
+	},
+
+	methods: {
+		voteDiscussion(attitude) {
+			if (this.uploading) {
+				alert('Please wait a moment...');
+				return;
+			}
+			this.uploading = true;
+			this.$apollo.mutate({
+				mutation: VoteDiscussionGQL,
+				variables: {
+					pk: this.data.pk,
+					attitude,
+				},
+			})
+				.then(response => response.data.UpdateDiscussionVote)
+				.then((data) => {
+					this.data.attitude = data.result;
+					this.data.vote = data.vote;
+				})
+				.finally(() => { this.uploading = false; });
 		},
 	},
 };
