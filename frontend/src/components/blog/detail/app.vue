@@ -39,14 +39,6 @@
 				<Commtents
 					:slug = "slug"
 				/>
-
-				<!-- <div>
-					view: {{ blog.view }}
-				</div>
-
-				<div>
-					vote: {{ blog.vote }}
-				</div> -->
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -55,7 +47,7 @@
 
 <script>
 import BlogGQL from '@/graphql/blog/detail.gql';
-import Commtents from '@/components/blog/comments/app';
+import Commtents from '@/components/comments/app';
 
 export default {
 

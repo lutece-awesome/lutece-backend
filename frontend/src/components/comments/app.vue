@@ -2,7 +2,7 @@
 	<div>
 		<div>
 			<v-icon class = "mr-1" > mdi-comment </v-icon>
-			<span style = "font-size:16px;font-weight:500;" > Comments: </span>
+			<span style = "font-size:20px;font-weight:500;" > Comments: </span>
 		</div>
 
 		<div style = "width:auto">
@@ -24,7 +24,7 @@
 
 <script>
 
-import comments from '@/components/blog/comments/comments';
+import comments from '@/components/comments/comments';
 import CommentsGQL from '@/graphql/blog/discussion.gql';
 
 export default {

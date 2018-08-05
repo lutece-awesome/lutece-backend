@@ -12,8 +12,14 @@ query ComemntsGQL( $page: Int! , $slug: String! , $time: Int ){
             vote
             pk
             reply{
+                pk
                 submitTime
                 content
+                user{
+                    username
+                    displayName
+                    gravataremail
+                }
                 vote
                 hasVoted
             }

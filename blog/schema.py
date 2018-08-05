@@ -78,11 +78,10 @@ class Query(object):
     
     def resolve_blogDiscussionList( self , info , slug , page , * args , ** kwargs ):
         from django.core.paginator import Paginator
-        from Lutece.config import PER_PAGE_COUNT
         discussion_list = BlogDiscussion.objects.filter( blog = Blog.objects.get( slug = slug ) , reply = None ).order_by( 'submit_time' )
         if not info.context.user.has_perm('blog.view_all'):
             discussion_list = discussion_list.filter( visibility = True )
-        paginator = Paginator( discussion_list, PER_PAGE_COUNT )
+        paginator = Paginator( discussion_list, 10 )
         return BlogDiscussionListType( maxpage = paginator.num_pages , discussionList = paginator.get_page( page ) )
 
 class Mutation(graphene.AbstractType):
