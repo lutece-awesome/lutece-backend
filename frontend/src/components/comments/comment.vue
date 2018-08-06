@@ -76,7 +76,7 @@
 
 
 <script>
-
+import { mapGetters } from 'vuex';
 import VoteDiscussionGQL from '@/graphql/votediscussion/vote.gql';
 
 export default {
@@ -106,12 +106,19 @@ export default {
 		},
 	}),
 
+	computed: {
+		...mapGetters({
+			isAuthenticated: 'user/isAuthenticated',
+		}),
+	},
+
 	created() {
 		this.data = JSON.parse(JSON.stringify(this.value));
 	},
 
 	methods: {
 		voteDiscussion(attitude) {
+			if (!this.isAuthenticated) return;
 			if (this.uploading) {
 				alert('Please wait a moment...');
 				return;
