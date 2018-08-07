@@ -33,7 +33,7 @@
 					</div>
 					<div
 						v-mixrend = "data.content"
-						class = "mt-3"/>
+						class = "mt-3 commentContent"/>
 					<div
 						class = "mb-0 mt-2"
 						style = "color:#999;">
