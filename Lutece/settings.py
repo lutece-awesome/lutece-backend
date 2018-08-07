@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'utils',
     'discussion',
     'blog',
-    'home',
     # channel
     'channels'
 ]

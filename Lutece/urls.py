@@ -27,13 +27,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('data_server/', include('data_server.urls')),
     re_path(r'^.*$', ensure_csrf_cookie(TemplateView.as_view(template_name='frontend/dist/index.html'))),
-    # path('start/', TemplateView.as_view(template_name='base/start.html'), name='start'),
-    # path('about/', TemplateView.as_view(template_name='base/about.html'), name='about'),
-    # path('contest/', include('contest.urls')),
-    # path('problem/', include('problem.urls')),
-    # path('user/', include('user.urls')),
-    # path('submission/', include('submission.urls')),
-    # path('discussion/', include('discussion.urls')),
-    # path('blog/', include('blog.urls')),
-    # path('markdownx/', include(markdownx)),
 ]
