@@ -31,7 +31,10 @@ class ReplyType( DjangoObjectType ):
         return self.user
 
     def resolve_attitude( self , info , * args , ** kwargs ):
-        s = get_object_or_None( DiscussionVote , discussion = self )
+        if info.context.user.is_authenticated:
+            s = get_object_or_None( DiscussionVote , discussion = self , user = info.context.user )
+        else:
+            s = None
         return s.vote if s else DiscussionVote.neutral
 
 
@@ -67,7 +70,10 @@ class DiscussionType( graphene.AbstractType ):
         return list( AbstractDiscussion.objects.filter( ancestor = self.pk ) )
 
     def resolve_attitude( self , info , * args , ** kwargs ):
-        s = get_object_or_None( DiscussionVote , discussion = self )
+        if info.context.user.is_authenticated:
+            s = get_object_or_None( DiscussionVote , discussion = self , user = info.context.user )
+        else:
+            s = None
         return s.vote if s else DiscussionVote.neutral
     
     def resolve_visibility( self , info , * args , ** kwargs ):

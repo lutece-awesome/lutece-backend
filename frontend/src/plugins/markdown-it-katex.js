@@ -5,7 +5,9 @@ export default {
 		const mdPromise = new Promise(((resolve, _reject) => {
 			import('markdown-it').then(({ default: MD }) => {
 				import('@neilsustc/markdown-it-katex').then(({ default: mk }) => {
-					const md = MD();
+					const md = MD({
+						typographer: true,
+					});
 					md.use(mk);
 					resolve(md);
 				});
