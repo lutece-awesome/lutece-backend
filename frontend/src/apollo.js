@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo';
@@ -8,7 +8,7 @@ import fetch from 'unfetch';
 import Cookies from 'js-cookie';
 import { getGraphQLUri } from '@/utils';
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
 	// You should use an absolute URL here
 	uri: getGraphQLUri(),
 	credentials: 'same-origin',

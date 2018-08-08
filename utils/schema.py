@@ -2,6 +2,7 @@ import graphene
 from .language import Language
 from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
+from graphene_file_upload import Upload
 
 
 class paginatorList(graphene.Interface):
@@ -9,13 +10,14 @@ class paginatorList(graphene.Interface):
 
 class UploadImage( graphene.Mutation ):
     class Arguments:
-        pass
+        file = Upload( required = True )
 
     path = graphene.String()
 
     @login_required
     def mutate( self , info , * args , ** kwargs ):
-        print( info )
+        file = info.context.FILES['0']
+        return UploadImage( path = '666' )
 
 class Query(object):
     all_language = graphene.Field(GenericScalar)

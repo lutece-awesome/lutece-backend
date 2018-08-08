@@ -65,3 +65,4 @@ django-graphql-jwt==0.1.10
 django-uuslug==1.1.8
 channels==2.1.2
 channels-redis==2.2.1
+graphene-file-upload==0.1.2

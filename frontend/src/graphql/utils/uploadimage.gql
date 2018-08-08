@@ -1,5 +1,5 @@
-mutation UploadImageGQL() {
-     UploadImage{
-	path
-     }
+mutation UploadImageGQL($file: Upload!){
+    UploadImage(file:$file){
+        path
+    }
 }
