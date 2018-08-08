@@ -50,6 +50,7 @@ import BlogGQL from '@/graphql/blog/detail.gql';
 import Commtents from '@/components/comments/app';
 
 export default {
+	metaInfo() { return { title: this.blog.title ? this.blog.title : 'Loading...' }; },
 
 	components: {
 		Commtents,

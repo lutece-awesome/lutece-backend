@@ -1,0 +1,5 @@
+mutation UploadImageGQL() {
+     UploadImage{
+	path
+     }
+}

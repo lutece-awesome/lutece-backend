@@ -75,6 +75,7 @@
 			</div>
 		</v-card>
 		<textEditor
+			:class = "{ 'ml-5' : isReply }"
 			:display = "editorDisplay"
 			@close-editor = "closeEditor" />
 	</div>
@@ -131,11 +132,28 @@ export default {
 
 	methods: {
 		Reply() {
+			if (!this.isAuthenticated) {
+				this.$router.push({
+					name: 'Login',
+					query: {
+						redirect: this.$route.path,
+					},
+				});
+				return;
+			}
 			this.editorDisplay = true;
 		},
 
 		voteDiscussion(attitude) {
-			if (!this.isAuthenticated) return;
+			if (!this.isAuthenticated) {
+				this.$router.push({
+					name: 'Login',
+					query: {
+						redirect: this.$route.path,
+					},
+				});
+				return;
+			}
 			if (this.uploading) {
 				alert('Please wait a moment...');
 				return;
