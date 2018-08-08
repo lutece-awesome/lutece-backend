@@ -23,11 +23,10 @@
 							<v-icon small>
 								mdi-clock-outline
 							</v-icon>
-							<span class="humanize-time">
+							<span
+								:title = "data.submitTime | moment('Y-MM-DD HH:mm:ss')"
+								class="humanize-time" >
 								{{ data.submitTime | moment("from") }}
-							</span>
-							<span class="full-time">
-								{{ data.submitTime | moment("Y-MM-DD HH:mm:ss") }}
 							</span>
 						</span>
 					</div>
@@ -75,7 +74,9 @@
 				</v-card-text>
 			</div>
 		</v-card>
-		<textEditor />
+		<textEditor
+			:display = "editorDisplay"
+			@close-editor = "closeEditor" />
 	</div>
 </template>
 
@@ -115,6 +116,7 @@ export default {
 			vote: 0,
 			content: '',
 		},
+		editorDisplay: false,
 	}),
 
 	computed: {
@@ -129,7 +131,7 @@ export default {
 
 	methods: {
 		Reply() {
-			alert(this.replycontent);
+			this.editorDisplay = true;
 		},
 
 		voteDiscussion(attitude) {
@@ -152,6 +154,10 @@ export default {
 					this.data.vote = data.vote;
 				})
 				.finally(() => { this.uploading = false; });
+		},
+
+		closeEditor() {
+			this.editorDisplay = false;
 		},
 	},
 };

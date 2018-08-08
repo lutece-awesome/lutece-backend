@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-show = "display" >
 		<v-toolbar
 			dense
 			height = "40">
@@ -21,6 +21,10 @@
 				<v-icon small>mdi-image</v-icon>
 				<span class = "ml-2" > UPLOAD </span>
 			</v-btn>
+			<v-spacer/>
+			<a @click = "$emit('close-editor')" >
+				<v-icon> mdi-close-circle </v-icon>
+			</a>
 		</v-toolbar>
 		<v-textarea
 			v-show = "!preview"
@@ -44,6 +48,14 @@
 
 <script>
 export default {
+
+	props: {
+		display: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
+	},
 	data: () => ({
 		content: '',
 		preview: false,
@@ -62,5 +74,6 @@ export default {
         font-size: 14px !important;
         resize: none;
         font-family: 'Monaco', courier, monospace !important;
+		line-height: 1.5rem;
     }
 </style>
