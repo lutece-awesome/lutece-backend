@@ -20,8 +20,11 @@ from markdownx import urls as markdownx
 from graphene_django.views import GraphQLView
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from .base_setting import DEBUG as lutece_debug
+from django.conf import settings
+from django.conf.urls.static import static
 
-urlpatterns = [
+
+urlpatterns = static( settings.MEDIA_URL , document_root=settings.MEDIA_ROOT) + [
     path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))
          ) if lutece_debug else path('graphql', GraphQLView.as_view(graphiql=False)),
     path('admin/', admin.site.urls),

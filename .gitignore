@@ -128,3 +128,6 @@ Lutece/local_hezhu.py
 production.py
 
 base_setting.py
+
+# media
+media/
