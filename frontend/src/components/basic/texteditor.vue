@@ -87,13 +87,13 @@ export default {
 			this.$refs.fileUploadInput.click();
 		},
 		uploadFile(event) {
-			this.uploading = true;
 			const file = event.target.files[0];
 			const maxsize = 2 * 1024 * 1024; // 2mb
 			if (file.size > maxsize) {
 				alert('Image size should no more than 2mb.');
 				return;
 			}
+			this.uploading = true;
 			this.$apollo.mutate({
 				mutation: UploadImageGQL,
 				variables: {
