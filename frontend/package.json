@@ -25,6 +25,7 @@
     "katex": "^0.10.0-beta",
     "lodash.debounce": "^4.0.8",
     "markdown-it": "^8.4.2",
+    "markdown-it-imsize": "^2.0.1",
     "moment": "^2.22.2",
     "unfetch": "^3.1.1",
     "vue": "^2.5.17",
