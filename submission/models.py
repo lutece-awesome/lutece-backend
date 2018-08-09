@@ -3,7 +3,6 @@ from user.models import User
 from problem.models import Problem
 from contest.models import Contest
 from django.forms.models import model_to_dict
-
 import django.utils.timezone as timezone
 from django.http import Http404
 # Create your models here.

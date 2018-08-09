@@ -23,6 +23,7 @@
 					ref = "fileUploadInput"
 					type = "file"
 					style = "display:none;"
+					enctype = "multipart/form-data"
 					@change = "uploadFile">
 				<v-icon small>mdi-image</v-icon>
 				<span class = "ml-2" > UPLOAD </span>
@@ -104,7 +105,12 @@ export default {
 				.then((data) => {
 					console.log(data);
 				})
-				.finally(() => { { this.uploading = false; } });
+				.catch((error) => {
+					const af = JSON.parse(error.graphQLErrors[0].message);
+					const msg = af.image['0'].message;
+					alert(msg);
+				})
+				.finally(() => { this.uploading = false; });
 		},
 	},
 };
