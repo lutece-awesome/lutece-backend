@@ -98,7 +98,7 @@ export default new Router({
 			component: BlogList,
 		},
 		{
-			path: '/blog/:slug',
+			path: '/blog/:slug/:page',
 			name: 'BlogDetail',
 			component: BlogDetail,
 		},

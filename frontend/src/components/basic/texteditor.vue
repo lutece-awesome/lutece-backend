@@ -37,7 +37,7 @@
 			v-show = "!preview"
 			ref = "content"
 			v-model = "content"
-			:loading = "isLoading"
+			:loading = "uploading"
 			class = "commentEditor"
 			auto-grow
 			solo
@@ -74,7 +74,6 @@ export default {
 		content: '',
 		preview: false,
 		uploading: false,
-		isLoading: false,
 	}),
 
 	methods: {
