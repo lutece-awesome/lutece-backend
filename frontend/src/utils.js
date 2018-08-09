@@ -1,4 +1,4 @@
-function getServerUri(protocol, path) {
+export function getServerUri(protocol, path) {
 	const env = process.env.NODE_ENV;
 	const loc = window.location;
 	const host = env === 'production' ? loc.host : `${loc.host.split(':')[0]}:8000`;

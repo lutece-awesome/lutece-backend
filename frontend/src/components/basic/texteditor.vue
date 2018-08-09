@@ -35,7 +35,9 @@
 		</v-toolbar>
 		<v-textarea
 			v-show = "!preview"
+			ref = "content"
 			v-model = "content"
+			:loading = "isLoading"
 			class = "commentEditor"
 			auto-grow
 			solo
@@ -56,6 +58,8 @@
 <script>
 
 import UploadImageGQL from '@/graphql/utils/uploadimage.gql';
+import { getServerUri } from '@/utils';
+
 
 export default {
 
@@ -70,9 +74,23 @@ export default {
 		content: '',
 		preview: false,
 		uploading: false,
+		isLoading: false,
 	}),
 
 	methods: {
+		insertContent(value) {
+			const textArea = this.$refs.content.$el.querySelector('textarea');
+			const startPos = textArea.selectionStart;
+			const endPos = textArea.selectionEnd;
+			let cursorPos = startPos;
+			const tmpStr = textArea.value;
+			if (value === null) return;
+			this.content = tmpStr.substring(0, startPos) + value
+			+ tmpStr.substring(endPos, tmpStr.length);
+			cursorPos += value.length;
+			textArea.selectionStart = cursorPos;
+			textArea.selectionEnd = cursorPos;
+		},
 		previewContent() {
 			this.preview = !this.preview;
 		},
@@ -103,9 +121,10 @@ export default {
 			})
 				.then(response => response.data.UploadImage)
 				.then((data) => {
-					console.log(data);
+					this.insertContent(`![](${getServerUri('http', data.path.slice(1))} =300x)`);
 				})
 				.catch((error) => {
+					alert(error);
 					const af = JSON.parse(error.graphQLErrors[0].message);
 					const msg = af.image['0'].message;
 					alert(msg);

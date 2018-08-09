@@ -1,5 +1,7 @@
 /* eslint no-param-reassign: ["error", { "props": false }] */
 
+import imsize_plugin from 'markdown-it-imsize';
+
 export default {
 	install(Vue) {
 		const mdPromise = new Promise(((resolve, _reject) => {
@@ -7,7 +9,7 @@ export default {
 				import('@neilsustc/markdown-it-katex').then(({ default: mk }) => {
 					const md = MD({
 						typographer: true,
-					});
+					}).use(imsize_plugin);
 					md.use(mk);
 					resolve(md);
 				});
