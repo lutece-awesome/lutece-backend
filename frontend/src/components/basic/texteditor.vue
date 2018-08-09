@@ -124,7 +124,6 @@ export default {
 					this.insertContent(`![](${getServerUri('http', data.path.slice(1))} =300x)`);
 				})
 				.catch((error) => {
-					alert(error);
 					const af = JSON.parse(error.graphQLErrors[0].message);
 					const msg = af.image['0'].message;
 					alert(msg);
