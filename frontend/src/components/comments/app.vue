@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if = "!isLoading">
 		<div>
 			<v-icon class = "mr-1" > mdi-comment </v-icon>
 			<span style = "font-size:20px;font-weight:500;" > Comments: </span>
@@ -17,7 +17,6 @@
 				v-model = "page"
 				:length = "maxpage"/>
 		</div>
-
 	</div>
 </template>
 
@@ -44,6 +43,7 @@ export default {
 		data: null,
 		page: 1,
 		maxpage: 0,
+		isLoading: false,
 	}),
 
 	watch: {
@@ -63,6 +63,7 @@ export default {
 
 	methods: {
 		request(force = false) {
+			this.isLoading = true;
 			this.$apollo.query({
 				query: CommentsGQL,
 				variables: {
@@ -85,7 +86,8 @@ export default {
 							page: this.page,
 						},
 					});
-				});
+				})
+				.finally(() => { this.isLoading = false; });
 		},
 	},
 
