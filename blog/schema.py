@@ -73,7 +73,7 @@ class Query(object):
         blog_list = Blog.objects.all()
         if not info.context.user.has_perm('blog.view_all'):
             blog_list = blog_list.filter( disable = False )
-        paginator = Paginator( blog_list, PER_PAGE_COUNT )
+        paginator = Paginator( blog_list, 1 )
         return BlogListType( maxpage = paginator.num_pages , blogList = paginator.get_page( page ) )
     
     def resolve_blogDiscussionList( self , info , slug , page , * args , ** kwargs ):
