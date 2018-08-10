@@ -66,8 +66,6 @@ export default {
 	},
 
 	data: () => ({
-		isLoading: true,
-		items: [],
 		page: 1,
 		maxpage: 0,
 	}),

@@ -9,15 +9,30 @@
 				xs12
 				md10
 				lg8>
-				<v-card>
-					<Searchbar
-						v-model="filter"
-						label="Search problem by id, title or source" />
-					<v-divider/>
-					<ProblemList
-						:problem-item="problemList"
-						:is-loading="isLoading"/>
-				</v-card>
+				<Searchbar
+					v-model="filter"
+					label="Search problem by id, title or source" />
+				<v-divider/>
+
+				<ApolloQuery
+					:query = "require('@/graphql/problem/list.gql')"
+					:variables = "{ page , filter }"
+					@result = "onResult" >
+					<template
+						slot-scope = "{ result: { loading , error , data } }">
+						<div
+							v-if = "loading"
+						> Loading... </div>
+						<div
+							v-else-if = "error"
+						>An error occured</div>
+						<v-card>
+							<ProblemList
+								:problem-item = "data.problemList.problemList"
+								:is-loading = "loading"/>
+						</v-card>
+					</template>
+				</ApolloQuery>
 				<div
 					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
 					class="text-xs-center mt-2">
@@ -34,9 +49,6 @@
 <script>
 import ProblemList from '@/components/problem/list/list';
 import Searchbar from '@/components/basic/searchbar';
-import ProblemListGQL from '@/graphql/problem/list.gql';
-
-const debounce = require('lodash.debounce');
 
 export default {
 	name: 'Problem',
@@ -48,54 +60,20 @@ export default {
 
 	data() {
 		return {
-			isLoading: true,
 			page: 1,
 			maxpage: 0,
-			problemList: [],
 			filter: '',
 		};
 	},
 
-	watch: {
-		page() {
-			this.request();
-		},
-		filter() {
-			this.isLoading = true;
-			this.debouncedRequest();
-		},
-	},
-
 	activated() {
 		this.$refs.pagination.init();
-		this.request();
-	},
-
-	mounted() {
-		this.request();
 	},
 
 	methods: {
-		request() {
-			const variables = {
-				page: this.page,
-				filter: this.filter,
-			};
-			this.isLoading = true;
-			this.$apollo.query({
-				query: ProblemListGQL,
-				variables,
-			})
-				.then(response => response.data.problemList)
-				.then((data) => {
-					Object.assign(this, data);
-					this.page = Math.min(this.page, this.maxpage);
-				})
-				.then(() => { this.isLoading = false; });
+		onResult(result) {
+			this.maxpage = result.data.problemList.maxpage;
 		},
-		debouncedRequest: debounce(function _debouncedRequest() {
-			this.request();
-		}, 250),
 	},
 };
 </script>
