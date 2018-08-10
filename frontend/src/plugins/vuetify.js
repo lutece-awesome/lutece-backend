@@ -3,6 +3,7 @@ import {
 	Vuetify, // required
 	VApp, // required
 	VTextarea,
+	VSubheader,
 	VSwitch,
 	VNavigationDrawer,
 	VGrid,
@@ -32,6 +33,7 @@ import colors from 'vuetify/es5/util/colors';
 Vue.use(Vuetify, {
 	components: {
 		VTextarea,
+		VSubheader,
 		VSwitch,
 		VApp,
 		VNavigationDrawer,

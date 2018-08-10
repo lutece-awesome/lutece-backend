@@ -9,26 +9,24 @@
 				xs12
 				md10
 				lg8>
-				<v-card>
-					<ApolloQuery
-						:query = "require('@/graphql/blog/list.gql')"
-						:variables = "{ page }"
-						@result = "onResult" >
-						<template
-							slot-scope = "{ result: { loading , error , data } }">
-							<div
-								v-if = "loading"
-							> Loading... </div>
-							<div
-								v-else-if = "error"
-							>An error occured</div>
-							<BlogList
-								v-else-if = "data"
-								:items = "data.blogList.blogList"
-							/>
-						</template>
-					</ApolloQuery>
-				</v-card>
+				<ApolloQuery
+					:query = "require('@/graphql/blog/list.gql')"
+					:variables = "{ page }"
+					@result = "onResult" >
+					<template
+						slot-scope = "{ result: { loading , error , data } }">
+						<div
+							v-if = "loading"
+						> Loading... </div>
+						<div
+							v-else-if = "error"
+						>An error occured</div>
+						<BlogList
+							v-else-if = "data"
+							:items = "data.blogList.blogList"
+						/>
+					</template>
+				</ApolloQuery>
 				<div
 					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
 					class="text-xs-center mt-2">
