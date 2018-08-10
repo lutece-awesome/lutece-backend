@@ -30,86 +30,75 @@
 						Github
 					</v-btn> -->
 				</div>
-				<section>
+			</v-flex>
+			<v-flex
+				xs12
+				sm8>
+				<v-container grid-list-xl>
 					<v-layout
-						column
+						row
 						wrap
-						class="my-5"
-						align-center
-					>
+						align-center>
 						<v-flex
 							xs12
-							sm4
-							class="my-3"/>
-						<v-flex xs12>
-							<v-container grid-list-xl>
-								<v-layout
-									row
-									wrap
-									align-center>
-									<v-flex
-										xs12
-										md4>
-										<v-card class="elevation-0 transparent">
-											<v-card-text class="text-xs-center">
-												<v-icon
-													x-large
-													class="blue--text text--lighten-2">mdi-emoticon-cool</v-icon>
-											</v-card-text>
-											<v-card-title
-												primary-title
-												class="layout justify-center">
-												<div class="headline text-xs-center">Material Design</div>
-											</v-card-title>
-											<v-card-text>
-												基于遵守Google Material设计范式的Vuetify UI Framework打造,无论是通过PC,平板,手机,都能拥有最完美的体验,
-												同时深度优化的SPA带来如丝般顺滑的游览体验.
-											</v-card-text>
-										</v-card>
-									</v-flex>
-									<v-flex
-										xs12
-										md4>
-										<v-card class="elevation-0 transparent">
-											<v-card-text class="text-xs-center">
-												<v-icon
-													x-large
-													class="blue--text text--lighten-2">mdi-flash</v-icon>
-											</v-card-text>
-											<v-card-title
-												primary-title
-												class="layout justify-center">
-												<div class="headline">Fast and flexible</div>
-											</v-card-title>
-											<v-card-text>
-												借助于分布式的Osiris(奥西里斯)内核,可灵活的将判题任务分布至多台机器上,即使是最为基础的学生云服务器,也能轻松支撑数百人的比赛.
-											</v-card-text>
-										</v-card>
-									</v-flex>
-									<v-flex
-										xs12
-										md4>
-										<v-card class="elevation-0 transparent">
-											<v-card-text class="text-xs-center">
-												<v-icon
-													x-large
-													class="blue--text text--lighten-2">mdi-wrench</v-icon>
-											</v-card-text>
-											<v-card-title
-												primary-title
-												class="layout justify-center">
-												<div class="headline text-xs-center">Easily expandable</div>
-											</v-card-title>
-											<v-card-text>
-												Lutece基于Python的Django框架实现,借助于Python的海量第三方库,站在巨人的肩膀上实现任意的功能拓展,打造属于你自己的Lutece.
-											</v-card-text>
-										</v-card>
-									</v-flex>
-								</v-layout>
-							</v-container>
+							md4>
+							<v-card class="elevation-0 transparent">
+								<v-card-text class="text-xs-center">
+									<v-icon
+										x-large
+										class="blue--text text--lighten-2">mdi-emoticon-cool</v-icon>
+								</v-card-text>
+								<v-card-title
+									primary-title
+									class="layout justify-center">
+									<div class="headline text-xs-center">Material Design</div>
+								</v-card-title>
+								<v-card-text>
+									基于遵守Google Material设计范式的Vuetify UI Framework打造,无论是通过PC,平板,手机,都能拥有最完美的体验,
+									同时深度优化的SPA带来如丝般顺滑的游览体验.
+								</v-card-text>
+							</v-card>
+						</v-flex>
+						<v-flex
+							xs12
+							md4>
+							<v-card class="elevation-0 transparent">
+								<v-card-text class="text-xs-center">
+									<v-icon
+										x-large
+										class="blue--text text--lighten-2">mdi-flash</v-icon>
+								</v-card-text>
+								<v-card-title
+									primary-title
+									class="layout justify-center">
+									<div class="headline">Fast and flexible</div>
+								</v-card-title>
+								<v-card-text>
+									借助于分布式的Osiris(奥西里斯)内核,可灵活的将判题任务分布至多台机器上,即使是最为基础的学生云服务器,也能轻松支撑数百人的比赛.
+								</v-card-text>
+							</v-card>
+						</v-flex>
+						<v-flex
+							xs12
+							md4>
+							<v-card class="elevation-0 transparent">
+								<v-card-text class="text-xs-center">
+									<v-icon
+										x-large
+										class="blue--text text--lighten-2">mdi-wrench</v-icon>
+								</v-card-text>
+								<v-card-title
+									primary-title
+									class="layout justify-center">
+									<div class="headline text-xs-center">Easily expandable</div>
+								</v-card-title>
+								<v-card-text>
+									Lutece基于Python的Django框架实现,借助于Python的海量第三方库,站在巨人的肩膀上实现任意的功能拓展,打造属于你自己的Lutece.
+								</v-card-text>
+							</v-card>
 						</v-flex>
 					</v-layout>
-				</section>
+				</v-container>
 			</v-flex>
 		</v-layout>
 	</v-container>
