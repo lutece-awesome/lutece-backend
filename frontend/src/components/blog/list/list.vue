@@ -9,7 +9,7 @@
 			slot="items"
 			slot-scope="props">
 			<router-link
-				:to="{name: 'BlogDetail', params: {slug: props.item.slug}}"
+				:to="{name: 'BlogDetail', params: {slug: props.item.slug }}"
 				:style="{cursor: 'pointer'}"
 				tile
 				tag="tr">

@@ -78,15 +78,6 @@ export default {
 					this.page = Math.min(this.page, this.maxpage);
 					this.data = data.discussionList;
 				})
-				.then(() => {
-					this.$router.push({
-						name: 'BlogDetail',
-						params: {
-							slug: this.slug,
-							page: this.page,
-						},
-					});
-				})
 				.finally(() => { this.isLoading = false; });
 		},
 	},
