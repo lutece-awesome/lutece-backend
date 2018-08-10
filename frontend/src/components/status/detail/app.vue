@@ -147,7 +147,7 @@ export default {
 
 	computed: {
 		progress() {
-			return this.judge.length / this.casenumber * 100;
+			return (this.judge.length / this.casenumber) * 100;
 		},
 		...mapGetters({
 			token: 'user/token',

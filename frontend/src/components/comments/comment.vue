@@ -155,7 +155,7 @@ export default {
 				return;
 			}
 			if (this.uploading) {
-				alert('Please wait a moment...');
+				this.$store.commit('snackbar/setSnack', 'Please wait a moment...');
 				return;
 			}
 			this.uploading = true;

@@ -96,11 +96,11 @@ export default {
 		},
 		triggerUpload() {
 			if (this.preview) {
-				alert('You can not upload image while previewing');
+				this.$store.commit('snackbar/setSnack', 'You can not upload image while previewing');
 				return;
 			}
 			if (this.uploading) {
-				alert('Previous image is uploading, please wait a moment.');
+				this.$store.commit('snackbar/setSnack', 'Previous image is uploading, please wait a moment.');
 				return;
 			}
 			this.$refs.fileUploadInput.click();
@@ -109,7 +109,7 @@ export default {
 			const file = event.target.files[0];
 			const maxsize = 2 * 1024 * 1024; // 2mb
 			if (file.size > maxsize) {
-				alert('Image size should no more than 2mb.');
+				this.$store.commit('snackbar/setSnack', 'Image size should no more than 2mb.');
 				return;
 			}
 			this.uploading = true;
@@ -126,7 +126,7 @@ export default {
 				.catch((error) => {
 					const af = JSON.parse(error.graphQLErrors[0].message);
 					const msg = af.image['0'].message;
-					alert(msg);
+					this.$store.commit('snackbar/setSnack', msg);
 				})
 				.finally(() => { this.uploading = false; });
 		},

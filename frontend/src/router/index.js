@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '../store';
 import Home from '@/components/home/home';
 import About from '@/components/about/about';
 import StatusList from '@/components/status/list/app';
@@ -22,6 +21,7 @@ import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
 import ProblemEdit from '@/components/problem/detail/edit';
+import store from '../store';
 
 Vue.use(Router);
 

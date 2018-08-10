@@ -5,7 +5,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo';
 import fetch from 'unfetch';
-import Cookies from 'js-cookie';
 import { getGraphQLUri } from '@/utils';
 
 const httpLink = createUploadLink({
@@ -18,24 +17,16 @@ const httpLink = createUploadLink({
 const httpLinkAuth = setContext((_, { headers }) => {
 	// get the authentication token from localstorage if it exists
 	const token = localStorage.getItem('USER_TOKEN');
-	const headersWithCSRF = {
-		...headers,
-		'X-CSRFToken': Cookies.get('csrftoken'),
-	};
 	// return the headers to the context so httpLink can read them
 	if (token) {
 		return {
 			headers: {
-				...headersWithCSRF,
+				...headers,
 				Authorization: `JWT ${token}`,
 			},
 		};
 	}
-	return {
-		headers: {
-			...headersWithCSRF,
-		},
-	};
+	return { headers };
 });
 
 const apolloClient = new ApolloClient({
