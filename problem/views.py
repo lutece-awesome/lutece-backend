@@ -11,7 +11,6 @@ from .util import get_problem_analysis , get_user_problem_analysis, check_visibl
 from utils.paginator_menu import get_range as page_range
 from json import dumps, loads
 from data_server.util import get_case_number, make_data_folder
-from django.views.decorators.csrf import csrf_exempt
 from data_server.util import upload_data
 from annoying.functions import get_object_or_None
 from django.urls import reverse
@@ -50,7 +49,6 @@ def problem_edit( request , problem_id ):
         'checker' : config.CHECKER_LIST })
 
 @permission_required( 'problem.change_problem')
-@csrf_exempt
 def problem_upload_data( request , problem_id ):
     status = {'error_list': []}
     data = request.FILES['data']

@@ -18,16 +18,14 @@ from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 from markdownx import urls as markdownx
 from graphene_file_upload import ModifiedGraphQLView
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from .base_setting import DEBUG as lutece_debug
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = static( settings.MEDIA_URL , document_root=settings.MEDIA_ROOT) + [
-    path('graphql', csrf_exempt(ModifiedGraphQLView.as_view(graphiql=True))
-         ) if lutece_debug else path('graphql', ModifiedGraphQLView.as_view(graphiql=False)),
+    path('graphql', ModifiedGraphQLView.as_view(graphiql=True)),
     path('admin/', admin.site.urls),
     path('data_server/', include('data_server.urls')),
-    re_path(r'^.*$', ensure_csrf_cookie(TemplateView.as_view(template_name='frontend/dist/index.html'))),
+    re_path(r'^.*$', TemplateView.as_view(template_name='frontend/dist/index.html')),
 ]
