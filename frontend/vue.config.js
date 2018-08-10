@@ -68,5 +68,8 @@ module.exports = {
 				.use(MyFontminPlugin)
 				.end();
 		});
+		_config.module
+			.rule('eslint')
+			.test(/\.(vue|(j|t)sx?)$/);
 	},
 };
