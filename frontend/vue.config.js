@@ -35,6 +35,10 @@ module.exports = {
 		msTileColor: '#2B5797',
 		appleMobileWebAppCapable: 'yes',
 		appleMobileWebAppStatusBarStyle: 'black',
+		workboxOptions: {
+			swDest: 'static/js/service-worker.js',
+			importsDirectory: 'static/js/',
+		},
 	},
 
 	baseUrl: undefined,
