@@ -19,3 +19,17 @@ npm run build
 ```
 npm run lint
 ```
+
+## Advanced
+
+You can run scripts with additional features using the GUI.
+
+### Install Vue CLI
+```
+npm install -g @vue/cli
+```
+
+### Run Vue CLI GUI
+```
+vue ui
+```
