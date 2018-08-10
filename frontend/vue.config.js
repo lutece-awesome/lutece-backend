@@ -54,6 +54,7 @@ module.exports = {
 						path.join(__dirname, './index.html'),
 						path.join(__dirname, './src/**/*.vue'),
 						path.join(__dirname, './src/**/*.js'),
+						path.join(__dirname, 'node_modules', 'vuetify', 'src', '**/*.@(js|ts)'),
 					]),
 					whitelistPatterns: [/^(?!mdi)/],
 				}])
