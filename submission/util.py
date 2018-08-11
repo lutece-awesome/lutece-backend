@@ -2,8 +2,6 @@ from .models import Submission, Judgeinfo
 from .judge_result import Judge_result
 from problem.util import InsAccepttimes
 from json import dumps
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 
 
 def Modify_submission_status(** report):
@@ -13,7 +11,6 @@ def Modify_submission_status(** report):
     result = report['result']
     submission = report['submission']
     name = 'StatusDetail_%d' % submission
-    channel_layer = get_channel_layer()
     send_data = dict()
     if 'complete' in report and report['complete'] is True:
         send_data['completed'] = report['complete']
@@ -50,8 +47,14 @@ def Modify_submission_status(** report):
             Modify_user_tried_solved(sub.user)
             send_data['result'] = result
         sub.save()
-    async_to_sync(channel_layer.group_send)(
-        name, {"type": "update_result", 'data': send_data})
+    try:
+        from channels.layers import get_channel_layer
+        from asgiref.sync import async_to_sync
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            name, {"type": "update_result", 'data': send_data})            
+    except ImportError:
+        print('WARNING: fail to import channels.')
 
 
 def get_update_dict(dic):
