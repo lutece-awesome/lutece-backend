@@ -1,5 +1,6 @@
 <template>
 	<v-app>
+		<NProgress/>
 		<Navbar/>
 		<v-content>
 			<v-fade-transition
@@ -22,12 +23,15 @@ import Footer from '@/components/global/footer';
 import Navbar from '@/components/global/navbar';
 import Snackbar from '@/components/global/snackbar';
 import { mapGetters } from 'vuex';
+import NProgress from 'nprogress';
+
 
 export default {
 	components: {
 		Navbar,
 		Footer,
 		Snackbar,
+		NProgress,
 	},
 	computed: {
 		...mapGetters({

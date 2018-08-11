@@ -1,5 +1,7 @@
 import '@babel/polyfill';
 import Vue from 'vue';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 import '@mdi/font/css/materialdesignicons.css';
 import 'katex/dist/katex.css';
 import './plugins/filters';
@@ -16,6 +18,15 @@ import './registerServiceWorker';
 import './stylus/main.styl';
 
 Vue.config.productionTip = false;
+
+router.beforeEach((to, from, next) => {
+	NProgress.start();
+	next();
+});
+
+router.afterEach(() => {
+	NProgress.done();
+});
 
 new Vue({
 	router,
