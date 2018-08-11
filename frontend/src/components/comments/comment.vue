@@ -35,42 +35,31 @@
 						v-mixrend = "data.content"
 						class = "mt-3 commentContent"/>
 					<div
-						class = "mb-0 mt-2"
-						style = "color:#999;">
-						<span
-							class = "display-0" >
-							{{ data.vote }}
-						</span>
+						class = "mb-0 mt-2 subheader"
+					>
+						<span> {{ data.vote }} </span>
 						<span class = "ml-1" >
-							<a
+							<v-icon
+								:color = "data.attitude === 'Agree' ? 'green darkgen-2' : 'grey' "
 								@click = "voteDiscussion( true )"
 							>
-								<v-icon
-									:color = "data.attitude === 'Agree' ? 'green darkgen-2' : 'grey' "
-									small
-								>
-									mdi-chevron-up
-								</v-icon>
-							</a>
+								mdi-chevron-up
+							</v-icon>
 						</span>
 						<span>
-							<a
+							<v-icon
+								:color = "data.attitude === 'Disagree' ? 'red darkgen-2' : 'grey' "
+								@click = "voteDiscussion( false )"
 							>
-								<v-icon
-									:color = "data.attitude === 'Disagree' ? 'green darkgen-2' : 'grey' "
-									small
-									@click = "voteDiscussion( false )"
-								>
-									mdi-chevron-down
-								</v-icon>
-							</a>
+								mdi-chevron-down
+							</v-icon>
 						</span>
 						<span class = "ml-2 mr-2" > | </span>
-						<a
-							style = "color:#999"
+						<span
+							style = "cursor:pointer;"
 							@click = "Reply" >
 							Reply
-						</a>
+						</span>
 					</div>
 				</v-card-text>
 			</div>
@@ -183,6 +172,11 @@ export default {
 </script>
 
 <style scoped>
+	.subheader {
+		font-size: 16px;
+		font-weight:  350;
+	}
+
 	.card {
 		cursor: default;
 	}
