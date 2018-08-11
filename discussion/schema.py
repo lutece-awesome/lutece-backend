@@ -102,8 +102,33 @@ class UpdateDiscussionVote(graphene.Mutation):
         i.refresh_vote()
         return UpdateDiscussionVote( result = s.vote , vote = i.vote )
 
+class ReplyDiscussion(graphene.Mutation):
+    class Arguments:
+        parent = graphene.ID()
+        content = graphene.String()
+    
+    state = graphene.Boolean()
+    
+    @login_required
+    def mutate( self , info , * args , ** kwargs ):
+        from .form import ReplyDiscussionForm
+        replyDiscussionForm = ReplyDiscussionForm( ** kwargs )
+        if replyDiscussionForm.is_valid():
+            values = replyDiscussionForm.cleaned_data
+            reply = AbstractDiscussion.objects.get( pk = values['parent'] )
+            AbstractDiscussion(
+                user = info.context.user,
+                content = values['content'],
+                reply = reply,
+                ancestor = reply.ancestor if reply.ancestor else reply,
+            ).save()
+            return ReplyDiscussion( state = True )
+        else:
+            raise RuntimeError( replyDiscussionForm.errors.as_json() )
+
 class Query(object):
     pass
 
 class Mutation(graphene.AbstractType):
     UpdateDiscussionVote = UpdateDiscussionVote.Field()
+    ReplyDiscussion = ReplyDiscussion.Field()

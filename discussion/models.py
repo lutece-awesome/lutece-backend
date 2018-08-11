@@ -5,7 +5,7 @@ import django.utils.timezone as timezone
 
 class Discussion(models.Model):
     discussion_id = models.AutoField(primary_key=True)
-    content = models.CharField(max_length=200, blank=True, null=True)
+    content = models.CharField(max_length = 1024, blank=True, null=True)
     reply = models.ForeignKey( 'self' , on_delete = models.SET_NULL , null = True , blank = True , db_index = True , related_name = 'discussion_reply' )
     ancestor = models.ForeignKey( 'self' , on_delete = models.SET_NULL , null = True , blank = True , db_index = True , related_name = 'discussion_ancestor' )
     submit_time = models.DateTimeField(
