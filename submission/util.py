@@ -2,6 +2,7 @@ from .models import Submission, Judgeinfo
 from .judge_result import Judge_result
 from problem.util import InsAccepttimes
 from json import dumps
+from django.apps import apps
 
 
 def Modify_submission_status(** report):
@@ -47,14 +48,12 @@ def Modify_submission_status(** report):
             Modify_user_tried_solved(sub.user)
             send_data['result'] = result
         sub.save()
-    try:
+    if apps.is_installed("channels"):
         from channels.layers import get_channel_layer
         from asgiref.sync import async_to_sync
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
-            name, {"type": "update_result", 'data': send_data})            
-    except ImportError:
-        print('WARNING: fail to import channels.')
+            name, {"type": "update_result", 'data': send_data})
 
 
 def get_update_dict(dic):
