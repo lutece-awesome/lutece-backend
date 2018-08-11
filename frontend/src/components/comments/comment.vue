@@ -2,7 +2,8 @@
 	<div>
 		<v-card
 			:class = "{ 'ml-5' : isReply }"
-			class = "mt-2"
+			hover
+			class = "mt-2 card"
 		>
 			<div class = "pl-1 pr-1" >
 				<v-card-text
@@ -182,7 +183,7 @@ export default {
 </script>
 
 <style scoped>
-	.v-card:hover{
-		box-shadow: 3px 3px 3px #888888;
+	.card {
+		cursor: default;
 	}
 </style>

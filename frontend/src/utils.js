@@ -1,4 +1,4 @@
-export function getServerUri(protocol, path) {
+function getServerUri(protocol, path) {
 	const env = process.env.NODE_ENV;
 	const loc = window.location;
 	const host = env === 'production' ? loc.host : `${loc.host.split(':')[0]}:8000`;
@@ -20,4 +20,8 @@ function getWebSocketUri() {
 	return getServerUri('ws', 'ws');
 }
 
-export { getGraphQLUri, getWebSocketUri };
+function getThoundNumberic(number) {
+	return number < 1000 ? String(number) : `${String((number / 1000).toFixed(1))}K`;
+}
+
+export { getGraphQLUri, getWebSocketUri, getServerUri, getThoundNumberic };
