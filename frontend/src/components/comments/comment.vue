@@ -174,7 +174,8 @@ export default {
 <style scoped>
 	.subheader {
 		font-size: 16px;
-		font-weight:  350;
+		color: grey;
+		font-weight:  400;
 	}
 
 	.card {
