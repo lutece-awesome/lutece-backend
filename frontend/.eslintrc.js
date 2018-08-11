@@ -11,6 +11,9 @@ module.exports = {
   extends: [
     'plugin:vue/recommended',
     '@vue/airbnb'
+	],
+  plugins: [
+    'graphql'
   ],
   // check if imports actually resolve
   settings: {
