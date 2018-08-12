@@ -39,5 +39,6 @@ class Query(object):
     def resolve_all_language(self, *args, **kwargs):
         return [x.value.attribute for x in Language]
 
+
 class Mutation(graphene.AbstractType):
     UploadImage = UploadImage.Field()

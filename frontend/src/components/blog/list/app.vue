@@ -62,7 +62,7 @@ export default {
 	components: {
 		BlogList,
 	},
-
+	
 	data: () => ({
 		page: 1,
 		maxpage: 0,

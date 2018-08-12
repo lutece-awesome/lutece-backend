@@ -1,5 +1,5 @@
 <template>
-	<v-container
+	<!-- <v-container
 		class="pa-0"
 		fluid
 		grid-list-lg>
@@ -65,6 +65,29 @@
 				</v-card>
 			</v-flex>
 		</v-data-iterator>
+	</v-container> -->
+	<v-container>
+		<v-layout row wrap>
+			<v-flex
+				v-for = "( each , index ) in userItem" 
+				:key = "index"
+				xs4>
+			<v-card 
+				hover 
+				:to = "{ name: 'UserDetail' , params: {username: each.username } }"
+				class = "mb-4 mr-4" >
+				<v-card-text>
+					<v-avatar>
+						<img :src=  "each.gravataremail" />
+					</v-avatar>
+				</v-card-text>
+				<v-divider class = "mt-2 mb-2" />
+				<v-card-text class = "about" >
+					{{ each.about }}
+				</v-card-text>
+			</v-card>
+			</v-flex>
+		</v-layout>
 	</v-container>
 </template>
 
@@ -83,3 +106,11 @@ export default {
 	},
 };
 </script>
+
+
+<style scoped>
+	.about {
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+</style>
