@@ -72,7 +72,9 @@
 							class="mr-2" >
 							<img :src="profile.gravataremail" >
 						</v-avatar>
-						{{ profile.	displayName }}
+						<span style = "text-transform: none;" >
+							{{ profile.	displayName }}
+						</span>
 						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
