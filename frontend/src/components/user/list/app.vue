@@ -17,8 +17,9 @@
 					@result = "onResult">
 					<template
 						slot-scope = "{ result: { loading , error , data } }">
-						<div v-if = "loading"> 123456 </div>
-						<!-- <rotate-square2 v-if = "loading" > Loadind... </rotate-square2> -->
+						<div v-if = "loading" >
+							<Circle8 />
+						</div>
 						<div v-else-if = "error" >An error occured</div>
 						<div v-else-if = "data" >
 							<UserList
@@ -43,7 +44,7 @@
 <script>
 import UserList from '@/components/user/list/list';
 import Searchbar from '@/components/basic/searchbar';
-// import { RotateSquare2 } from 'vue-loading-spinner';
+import { Circle8 } from 'vue-loading-spinner';
 
 
 export default {
@@ -52,7 +53,7 @@ export default {
 	components: {
 		UserList,
 		Searchbar,
-		// RotateSquare2,
+		Circle8,
 	},
 
 	data() {
