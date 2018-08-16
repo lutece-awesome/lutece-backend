@@ -4,16 +4,18 @@
 		fluid>
 		<v-layout
 			row
+			wrap
 			justify-center>
+			<v-flex xs12>
+				<Searchbar
+					v-model = "filter"
+					class = "mb-4 fluid"
+					label = "Search problem" />
+			</v-flex>
 			<v-flex
 				xs12
 				md10
 				lg8>
-				<Searchbar
-					v-model="filter"
-					label="Search problem by id, title or source" />
-				<v-divider/>
-
 				<ApolloQuery
 					:query = "require('@/graphql/problem/list.gql')"
 					:variables = "{ page , filter }"
@@ -26,21 +28,23 @@
 						<div
 							v-else-if = "error"
 						>An error occured</div>
-						<v-card>
-							<ProblemList
-								:problem-item = "data.problemList.problemList"
-								:is-loading = "loading"/>
-						</v-card>
+						<div v-else-if = "data">
+							<v-card>
+								<ProblemList
+									:problem-item = "data.problemList.problemList"
+									:is-loading = "loading"/>
+							</v-card>
+							<div
+								:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+								class="text-xs-center mt-2">
+								<v-pagination
+									ref="pagination"
+									v-model="page"
+									:length="maxpage"/>
+							</div>
+						</div>
 					</template>
 				</ApolloQuery>
-				<div
-					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-					class="text-xs-center mt-2">
-					<v-pagination
-						ref="pagination"
-						v-model="page"
-						:length="maxpage"/>
-				</div>
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -64,10 +68,6 @@ export default {
 			maxpage: 0,
 			filter: '',
 		};
-	},
-
-	activated() {
-		this.$refs.pagination.init();
 	},
 
 	methods: {
