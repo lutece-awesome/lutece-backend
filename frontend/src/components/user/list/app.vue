@@ -10,18 +10,30 @@
 				<Searchbar
 					v-model = "filter"
 					label = "Search user"
-					class = "mb-3 elevation-1" />
-				<UserList
-					:user-item = "userList"
-					:is-loading = "isLoading"/>
-				<div
-					:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
-					class = "text-xs-center mt-2">
-					<v-pagination
-						ref="pagination"
-						v-model="page"
-						:length="maxpage"/>
-				</div>
+				/>
+				<ApolloQuery
+					:query = "require('@/graphql/user/list.gql')"
+					:variables = "{ page , filter }"
+					@result = "onResult">
+					<template
+						slot-scope = "{ result: { loading , error , data } }">
+						<div v-if = "loading" > Loading... </div>
+						<div v-else-if = "error" >An error occured</div>
+						<div v-else-if = "data" >
+							<UserList
+								:user-item = "data.userList.userList"
+								:is-loading = "isLoading"/>
+							<div
+								:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
+								class = "text-xs-center">
+								<v-pagination
+									ref = "pagination"
+									v-model = "page"
+									:length = "maxpage"/>
+							</div>
+						</div>
+					</template>
+				</ApolloQuery>
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -30,9 +42,7 @@
 <script>
 import UserList from '@/components/user/list/list';
 import Searchbar from '@/components/basic/searchbar';
-import UserListGQL from '@/graphql/user/list.gql';
 
-const debounce = require('lodash.debounce');
 
 export default {
 	name: 'User',
@@ -44,55 +54,17 @@ export default {
 
 	data() {
 		return {
-			isLoading: true,
 			page: 1,
 			maxpage: 0,
-			userList: [],
 			filter: '',
 		};
 	},
 
-	watch: {
-		page() {
-			this.request();
-		},
-		filter() {
-			this.isLoading = true;
-			this.debouncedRequest();
-		},
-	},
-
-	activated() {
-		this.$refs.pagination.init();
-		this.request();
-	},
-
-	mounted() {
-		this.page = 1;
-		this.request();
-	},
-
 	methods: {
-		request() {
-			const variables = {
-				page: this.page,
-				filter: this.filter,
-			};
-			this.isLoading = true;
-			this.$apollo.query({
-				query: UserListGQL,
-				variables,
-			})
-				.then(response => response.data.userList)
-				.then((data) => {
-					Object.assign(this, data);
-					this.page = Math.min(this.page, this.maxpage);
-				})
-				.then(() => { this.isLoading = false; });
+		onResult(result) {
+			this.maxpage = result.data.userList.maxpage;
 		},
-		debouncedRequest: debounce(function _debouncedRequest() {
-			this.request();
-		}, 250),
 	},
+
 };
 </script>

@@ -1,13 +1,15 @@
 <template>
-	<v-text-field
-		:value = "value"
-		:label = "label"
-		hide-details
-		append-icon = "mdi-magnify"
-		solo
-		flat
-		type = "search"
-		@input = "$emit('input', $event)"/>
+	<v-card hover>
+		<v-text-field
+			:value = "value"
+			:label = "label"
+			hide-details
+			append-icon = "mdi-magnify"
+			solo
+			flat
+			type = "search"
+			@input = "$emit('input', $event)"/>
+	</v-card>
 </template>
 
 <script>
