@@ -8,15 +8,15 @@
 			justify-center>
 			<v-flex xs12>
 				<Searchbar
-					v-model="filter"
-					label="Search user by display name, school, company or location"
-					class="mb-3 elevation-1" />
+					v-model = "filter"
+					label = "Search user"
+					class = "mb-3 elevation-1" />
 				<UserList
-					:user-item="userList"
-					:is-loading="isLoading"/>
+					:user-item = "userList"
+					:is-loading = "isLoading"/>
 				<div
-					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-					class="text-xs-center mt-2">
+					:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
+					class = "text-xs-center mt-2">
 					<v-pagination
 						ref="pagination"
 						v-model="page"

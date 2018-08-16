@@ -9,6 +9,8 @@ query UserListGQL($page: Int!, $filter: String) {
 			company
 			location
 			about
+			solved
+			tried
 		}
 	}
 }
