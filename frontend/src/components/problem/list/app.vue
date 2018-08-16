@@ -22,12 +22,8 @@
 					@result = "onResult" >
 					<template
 						slot-scope = "{ result: { loading , error , data } }">
-						<div
-							v-if = "loading"
-						> Loading... </div>
-						<div
-							v-else-if = "error"
-						>An error occured</div>
+						<div v-if = "loading" > <LoadingSpinner/> </div>
+						<div v-else-if = "error"> An error occured</div>
 						<div v-else-if = "data">
 							<v-card>
 								<ProblemList
@@ -53,6 +49,7 @@
 <script>
 import ProblemList from '@/components/problem/list/list';
 import Searchbar from '@/components/basic/searchbar';
+import LoadingSpinner from '@/components/basic/loadingspinner';
 
 export default {
 	name: 'Problem',
@@ -60,6 +57,7 @@ export default {
 	components: {
 		ProblemList,
 		Searchbar,
+		LoadingSpinner,
 	},
 
 	data() {
