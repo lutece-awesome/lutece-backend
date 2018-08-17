@@ -8,20 +8,31 @@
 			slot="items"
 			slot-scope="props">
 			<router-link
-				:to="{name: 'StatusDetail', params: {pk: props.item.submissionId}}"
-				:style="{cursor: 'pointer'}"
+				:to = "{name: 'StatusDetail', params: {pk: props.item.submissionId}}"
+				style = "cursor: pointer"
 				tile
-				tag="tr">
+				tag = "tr">
 				<td class="text-xs-center">{{ props.item.submissionId }}</td>
 				<td class="text-xs-center nowrap">
-					<v-avatar
-						size="32"
-						class="mr-1" >
-						<img :src="props.item.user.gravataremail" >
-					</v-avatar>
-					{{ props.item.user.displayName }}
+					<router-link
+						:to = "{ name: 'UserDetail' , params: {username: props.item.user.username } }"
+						tag = "span"
+					>
+						<v-avatar
+							size="32"
+							class="mr-1" >
+							<img :src="props.item.user.gravataremail" >
+						</v-avatar>
+						{{ props.item.user.displayName }}
+					</router-link>
 				</td>
-				<td class="text-xs-center">{{ props.item.problem.title }}</td>
+				<td class="text-xs-center">
+					<router-link
+						:to = "{ name: 'ProblemDetailDescription' , params: {slug: props.item.problem.slug } }"
+					>
+						{{ props.item.problem.title }}
+					</router-link>
+				</td>
 				<td
 					:class="props.item.color + '--text'"
 					class="text-xs-center">

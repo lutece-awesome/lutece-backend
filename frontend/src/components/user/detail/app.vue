@@ -19,7 +19,8 @@
 					right>
 					<v-icon>mdi-pencil</v-icon>
 				</v-btn>
-				<v-card>
+
+				<!-- <v-card>
 					<div
 						:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
 						class="text-xs-center mt-2">
@@ -58,7 +59,8 @@
 							</v-btn>
 						</router-link>
 					</v-card-text>
-				</v-card>
+				</v-card> -->
+
 			</v-flex>
 
 		</v-layout>

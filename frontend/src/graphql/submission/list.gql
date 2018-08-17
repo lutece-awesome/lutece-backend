@@ -22,11 +22,13 @@ query SubmissionListGQL(
 			failedCase
 			submitTime
 			user {
+				username
 				gravataremail
 				displayName
 			}
 			problem {
 				title
+				slug
 			}
 			judgeStatus
 			language

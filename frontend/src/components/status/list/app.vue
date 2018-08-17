@@ -14,7 +14,8 @@
 						:filters="filters"
 						:user-search="userSearch"
 						:problem-search="problemSearch"
-						:is-loading="isLoading" />
+						:is-loading="isLoading"
+						class = "elevation-1" />
 				</v-card>
 				<div
 					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"

@@ -28,7 +28,8 @@
 							<v-card>
 								<ProblemList
 									:problem-item = "data.problemList.problemList"
-									:is-loading = "loading"/>
+									:is-loading = "loading"
+									class = "elevation-1"/>
 							</v-card>
 							<div
 								:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
