@@ -3,7 +3,7 @@
 		<v-card
 			v-for = "( each , index ) in items"
 			:key = "index"
-			:to = "{name: 'BlogDetail', params: {slug: each.slug }}"
+			:to = "{ name: 'BlogDetail', params: {slug: each.slug }}"
 			class = "mb-4"
 			hover
 			raised
@@ -35,7 +35,13 @@
 								>
 									<img :src = "each.user.gravataremail" >
 								</v-avatar>
-								<span class = "ml-2" > <a> {{ each.user.displayName }} </a> </span>
+								<span class = "ml-2" >
+									<router-link
+										:to = "{ name: 'UserDetail' , params: {username: each.user.username } }"
+									>
+										{{ each.user.displayName }}
+									</router-link>
+								</span>
 							</span>
 							<span
 								style = "float:right"
