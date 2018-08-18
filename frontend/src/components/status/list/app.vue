@@ -49,6 +49,7 @@ export default {
 	components: {
 		StatusList,
 	},
+
 	data() {
 		return {
 			isLoading: false,
@@ -68,6 +69,7 @@ export default {
 			},
 		};
 	},
+
 	computed: {
 		userSearchFilter() {
 			return this.userSearch.filter;

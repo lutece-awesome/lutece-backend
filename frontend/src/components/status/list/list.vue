@@ -16,7 +16,6 @@
 				<td class="text-xs-center nowrap">
 					<router-link
 						:to = "{ name: 'UserDetail' , params: {username: props.item.user.username } }"
-						tag = "span"
 					>
 						<v-avatar
 							size="32"

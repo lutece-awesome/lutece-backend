@@ -23,7 +23,7 @@
 					<table class="submission-table output-code mt-2">
 						<tr>
 							<td><pre>Problem:</pre></td>
-							<td>
+							<td >
 								<router-link
 									:to="{name: 'ProblemDetailDescription',
 										params: {slug: problem__slug}}">

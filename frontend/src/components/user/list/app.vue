@@ -64,6 +64,11 @@ export default {
 		};
 	},
 
+	activated() {
+		if (this.$refs.pagination) { this.$refs.pagination.init(); }
+	},
+
+
 	methods: {
 		onResult(result) {
 			this.maxpage = result.data.userList.maxpage;
