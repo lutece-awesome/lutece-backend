@@ -20,6 +20,22 @@
 					<v-icon>mdi-pencil</v-icon>
 				</v-btn>
 
+				<v-card
+					hover
+					style = "cursor:default;"
+				>
+					<div
+						:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+						class="text-xs-center mt-2">
+						<v-avatar
+							size = "128"
+							class = "mt-2"
+						>
+							<img :src = "gravataremail" >
+						</v-avatar>
+					</div>
+				</v-card>
+
 				<!-- <v-card>
 					<div
 						:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
