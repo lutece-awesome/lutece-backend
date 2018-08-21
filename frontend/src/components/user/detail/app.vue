@@ -30,7 +30,7 @@
 						>
 							<v-flex
 								xs12
-								md4
+								sm4
 								align-content-start
 							>
 								<div
@@ -105,7 +105,7 @@
 										</div>
 
 										<v-divider class = "mt-2 mb-2" />
-										<SubmissionChart
+										<Doughnut
 											:data = "chartData"
 											:options = "chartOptions"
 										/>
@@ -114,9 +114,19 @@
 							</v-flex>
 
 							<v-flex
+								:class = "{ 'mt-4' : isxs , 'pl-4' : notxs }"
 								xs12
-								md8
-							/>
+								sm8
+							>
+								<v-card
+									hover
+									style = "cursor: default;"
+								>
+									<v-card-text>
+										123
+									</v-card-text>
+								</v-card>
+							</v-flex>
 						</v-layout>
 					</v-container>
 				</div>
@@ -130,7 +140,8 @@
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
 import LoadingSpinner from '@/components/basic/loadingspinner';
-import SubmissionChart from '@/components/user/detail/chart';
+import Doughnut from '@/components/user/detail/doughnut';
+
 
 export default {
 	metaInfo() { return { title: this.username }; },
@@ -138,7 +149,7 @@ export default {
 	components: {
 		CalendarHeatmap,
 		LoadingSpinner,
-		SubmissionChart,
+		Doughnut,
 	},
 
 	data: () => ({
@@ -151,6 +162,12 @@ export default {
 		},
 		chartOptions() {
 			return { responsive: true, maintainAspectRatio: false };
+		},
+		isxs() {
+			return this.$vuetify.breakpoint.smAndDown;
+		},
+		notxs() {
+			return !this.$vuetify.breakpoint.smAndDown;
 		},
 	},
 
@@ -170,7 +187,6 @@ export default {
 			};
 		},
 	},
-
 };
 </script>
 
