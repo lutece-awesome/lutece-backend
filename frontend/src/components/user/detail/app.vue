@@ -14,6 +14,7 @@
 		<ApolloQuery
 			:query = "require('@/graphql/user/profile.gql')"
 			:variables = "{ username }"
+			@result = "onResult"
 		>
 			<template
 				slot-scope = "{ result: { loading , error , data } }">
@@ -22,9 +23,7 @@
 				</div>
 				<div v-else-if = "error" >An error occured</div>
 				<div v-else-if = "data" >
-					<v-container
-						:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
-						fluid>
+					<v-container>
 						<v-layout
 							row
 							wrap
@@ -35,14 +34,15 @@
 								align-content-start
 							>
 								<div
-									:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-									class="text-xs-center mt-2">
+									:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
+									class = "text-xs-center mt-2">
 									<v-avatar
 										size = "128"
 										class = "mt-2"
 									>
 										<img :src = "data.user.gravataremail" >
 									</v-avatar>
+									<h3 class = "mt-2"> {{ data.user.displayName }} </h3>
 								</div>
 								<v-card
 									hover
@@ -50,10 +50,6 @@
 									style = "cursor:default;"
 								>
 									<v-card-text>
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px">mdi-account</v-icon>
-											<span class = "ml-1"> {{ data.user.displayName }} </span>
-										</div>
 										<div class = "mb-1" >
 											<v-icon class = "mdi-18px">mdi-school</v-icon>
 											<span class = "ml-1"> {{ data.user.school }} </span>
@@ -66,14 +62,6 @@
 											<v-icon class = "mdi-18px">mdi-map-marker</v-icon>
 											<span class = "ml-1"> {{ data.user.location }} </span>
 										</div>
-										<!-- <div>
-											<v-icon class = "mdi-18px" >mdi-chart-bar</v-icon>
-											<span class = "ml-1">
-												<span style = "color:green" > {{ data.user.solved }} </span>
-												/
-												<span style = "color:red" > {{ data.user.tried }} </span>
-											</span>
-										</div> -->
 									</v-card-text>
 								</v-card>
 								<v-card
@@ -82,10 +70,53 @@
 									style = "cursor:default;"
 								>
 									<v-card-text>
-										123
+										<div class = "mb-1" >
+											<v-icon class = "mdi-18px" >mdi-chart-bar</v-icon>
+											<span class = "ml-1 subheader" > Solved Problem </span>
+											<span
+												style = "float: right"
+											>
+												<span style = "color:green" > {{ data.user.solved }} </span>
+												<span> / </span>
+												<span style = "color:red" > {{ data.user.tried }} </span>
+											</span>
+										</div>
+
+										<div class = "mb-1" >
+											<v-icon class = "mdi-18px" >mdi-nut</v-icon>
+											<span class = "ml-1 subheader" > Submission Analysis </span>
+											<span
+												style = "float: right"
+											>
+												<span style = "color:green" > 50 </span>
+												<span> / </span>
+												<span style = "color:red" > 932 </span>
+											</span>
+										</div>
+
+										<div class = "mb-1" >
+											<v-icon class = "mdi-18px" >mdi-check-all</v-icon>
+											<span class = "ml-1 subheader" > Success Ratio </span>
+											<span
+												style = "float: right"
+											>
+												<span style = "color:green" > 5.4% </span>
+											</span>
+										</div>
+
+										<v-divider class = "mt-2 mb-2" />
+										<SubmissionChart
+											:data = "chartData"
+											:options = "chartOptions"
+										/>
 									</v-card-text>
 								</v-card>
 							</v-flex>
+
+							<v-flex
+								xs12
+								md8
+							/>
 						</v-layout>
 					</v-container>
 				</div>
@@ -98,9 +129,8 @@
 <script>
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
-import { ProfileGQL } from '@/graphql/user/profile.gql';
 import LoadingSpinner from '@/components/basic/loadingspinner';
-
+import SubmissionChart from '@/components/user/detail/chart';
 
 export default {
 	metaInfo() { return { title: this.username }; },
@@ -108,60 +138,45 @@ export default {
 	components: {
 		CalendarHeatmap,
 		LoadingSpinner,
+		SubmissionChart,
 	},
 
 	data: () => ({
-		endDate: Date.now(),
-		heatmap: [],
-		analysis: [],
-		displayName: '',
-		gravataremail: '',
-		group: '',
-		school: '',
-		company: '',
-		location: '',
-		about: '',
-		solved: 0,
-		tried: 0,
+		chartData: null,
 	}),
 
 	computed: {
 		username() {
 			return this.$route.params.username;
 		},
-		total_submission() {
-			let sum = 0;
-			for (let i = 0; i < this.heatmap.length; i += 1) {
-				sum += this.heatmap[i].count;
-			}
-			return sum;
+		chartOptions() {
+			return { responsive: true, maintainAspectRatio: false };
 		},
-	},
-
-	watch: {
-		username() {
-			this.request();
-		},
-	},
-
-	mounted() {
-		this.request();
 	},
 
 	methods: {
-		request() {
-			this.$apollo.query({
-				query: ProfileGQL,
-				variables: {
-					username: this.username,
-				},
-			})
-				.then(response => response.data.user)
-				.then((data) => {
-					Object.assign(this, data);
-				});
+		onResult(result) {
+			this.chartData = {
+				labels: ['Accepted', 'Rejected'],
+				datasets: [
+					{
+						backgroundColor: [
+							'#21ba45',
+							'red',
+						],
+						data: [result.data.user.solved, result.data.user.tried],
+					},
+				],
+			};
 		},
 	},
 
 };
 </script>
+
+
+<style scoped>
+	.subheader{
+		font-weight: 500;
+	}
+</style>
