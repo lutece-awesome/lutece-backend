@@ -9,5 +9,7 @@ query ProfileGQL($username: String!) {
 		company
 		location
 		about
+		solved
+		tried
 	}
 }

@@ -24,7 +24,7 @@ export default {
 	props: {
 		height: {
 			type: Number,
-			default: 400,
+			default: 200,
 		},
 		size: {
 			type: Number,

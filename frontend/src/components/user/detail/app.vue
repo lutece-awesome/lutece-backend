@@ -1,86 +1,97 @@
 <template>
-	<v-container
-		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
-		fluid>
-		<v-layout
-			row
-			justify-center>
-			<v-flex
-				xs12
-				md8>
-				<v-btn
-					v-if="$store.state.user.payload && username == $store.state.user.payload.username"
-					:to="{name: 'UserSettings'}"
-					color="accent"
-					dark
-					fab
-					fixed
-					bottom
-					right>
-					<v-icon>mdi-pencil</v-icon>
-				</v-btn>
-
-				<v-card
-					hover
-					style = "cursor:default;"
-				>
-					<div
-						:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-						class="text-xs-center mt-2">
-						<v-avatar
-							size = "128"
-							class = "mt-2"
+	<div>
+		<v-btn
+			v-if="$store.state.user.payload && username == $store.state.user.payload.username"
+			:to="{name: 'UserSettings'}"
+			color="accent"
+			dark
+			fab
+			fixed
+			bottom
+			right>
+			<v-icon>mdi-pencil</v-icon>
+		</v-btn>
+		<ApolloQuery
+			:query = "require('@/graphql/user/profile.gql')"
+			:variables = "{ username }"
+		>
+			<template
+				slot-scope = "{ result: { loading , error , data } }">
+				<div v-if = "loading" >
+					<LoadingSpinner />
+				</div>
+				<div v-else-if = "error" >An error occured</div>
+				<div v-else-if = "data" >
+					<v-container
+						:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+						fluid>
+						<v-layout
+							row
+							wrap
 						>
-							<img :src = "gravataremail" >
-						</v-avatar>
-					</div>
-				</v-card>
-
-				<!-- <v-card>
-					<div
-						:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-						class="text-xs-center mt-2">
-						<v-avatar
-							size="128"
-							class="mr-2" >
-							<img :src = "gravataremail" >
-						</v-avatar>
-					</div>
-
-					<h2
-						class="text-xs-center mt-2"
-					>{{ displayName }}
-					</h2>
-
-					<v-card-text>
-						<h3> Activity </h3>
-						<p> <b> {{ total_submission }} </b> submissions during the last year. </p>
-						<div class="scroll text-xs-center">
-							<CalendarHeatmap
-								:values = "heatmap"
-								:end-date = "endDate"
-								tooltip-unit = "submissions" />
-						</div>
-						<h3> Detail </h3>
-						<router-link
-							v-for = "each in analysis"
-							:key = "each[0]"
-							:to = "{name: 'ProblemDetailDescription', params: {slug: each[2]}}">
-							<v-btn
-								:color = "each[1] === 'yes' ? 'success' : 'error' "
-								round
-								small
+							<v-flex
+								xs12
+								md4
+								align-content-start
 							>
-								{{ each[0] }}
-							</v-btn>
-						</router-link>
-					</v-card-text>
-				</v-card> -->
-
-			</v-flex>
-
-		</v-layout>
-	</v-container>
+								<div
+									:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
+									class="text-xs-center mt-2">
+									<v-avatar
+										size = "128"
+										class = "mt-2"
+									>
+										<img :src = "data.user.gravataremail" >
+									</v-avatar>
+								</div>
+								<v-card
+									hover
+									class = "mt-2"
+									style = "cursor:default;"
+								>
+									<v-card-text>
+										<div class = "mb-1" >
+											<v-icon class = "mdi-18px">mdi-account</v-icon>
+											<span class = "ml-1"> {{ data.user.displayName }} </span>
+										</div>
+										<div class = "mb-1" >
+											<v-icon class = "mdi-18px">mdi-school</v-icon>
+											<span class = "ml-1"> {{ data.user.school }} </span>
+										</div>
+										<div class = "mb-1" >
+											<v-icon class = "mdi-18px">mdi-domain</v-icon>
+											<span class = "ml-1"> {{ data.user.company }} </span>
+										</div>
+										<div>
+											<v-icon class = "mdi-18px">mdi-map-marker</v-icon>
+											<span class = "ml-1"> {{ data.user.location }} </span>
+										</div>
+										<!-- <div>
+											<v-icon class = "mdi-18px" >mdi-chart-bar</v-icon>
+											<span class = "ml-1">
+												<span style = "color:green" > {{ data.user.solved }} </span>
+												/
+												<span style = "color:red" > {{ data.user.tried }} </span>
+											</span>
+										</div> -->
+									</v-card-text>
+								</v-card>
+								<v-card
+									hover
+									class = "mt-4"
+									style = "cursor:default;"
+								>
+									<v-card-text>
+										123
+									</v-card-text>
+								</v-card>
+							</v-flex>
+						</v-layout>
+					</v-container>
+				</div>
+			</template>
+		</ApolloQuery>
+	</div>
 </template>
 
 
@@ -88,6 +99,7 @@
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
 import { ProfileGQL } from '@/graphql/user/profile.gql';
+import LoadingSpinner from '@/components/basic/loadingspinner';
 
 
 export default {
@@ -95,7 +107,9 @@ export default {
 
 	components: {
 		CalendarHeatmap,
+		LoadingSpinner,
 	},
+
 	data: () => ({
 		endDate: Date.now(),
 		heatmap: [],
@@ -107,6 +121,8 @@ export default {
 		company: '',
 		location: '',
 		about: '',
+		solved: 0,
+		tried: 0,
 	}),
 
 	computed: {

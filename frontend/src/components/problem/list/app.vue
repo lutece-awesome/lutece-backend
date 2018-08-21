@@ -25,11 +25,14 @@
 						<div v-if = "loading" > <LoadingSpinner/> </div>
 						<div v-else-if = "error"> An error occured</div>
 						<div v-else-if = "data">
-							<v-card>
+							<v-card
+								hover
+								style = "cursor: default"
+							>
 								<ProblemList
 									:problem-item = "data.problemList.problemList"
 									:is-loading = "loading"
-									class = "elevation-1"/>
+								/>
 							</v-card>
 							<div
 								:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
