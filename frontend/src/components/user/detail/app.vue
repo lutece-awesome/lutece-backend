@@ -30,7 +30,7 @@
 						>
 							<v-flex
 								xs12
-								sm4
+								md4
 								align-content-start
 							>
 								<div
@@ -105,9 +105,9 @@
 										</div>
 
 										<v-divider class = "mt-2 mb-2" />
-										<Doughnut
-											:data = "chartData"
-											:options = "chartOptions"
+										<DoughnutChart
+											:data = "doughnutData"
+											:options = "doughnutOptions"
 										/>
 									</v-card-text>
 								</v-card>
@@ -116,14 +116,27 @@
 							<v-flex
 								:class = "{ 'mt-4' : isxs , 'pl-4' : notxs }"
 								xs12
-								sm8
+								md8
 							>
 								<v-card
 									hover
 									style = "cursor: default;"
 								>
 									<v-card-text>
-										123
+										<v-switch
+											v-model = "switchUserData"
+											class = "text-xs-right"
+										/>
+										<LineChart
+											v-if = "switchUserData"
+											:data = "barData"
+											:options = "lineOptions"
+										/>
+										<BarChart
+											v-else
+											:data = "barData"
+											:options = "barOptions"
+										/>
 									</v-card-text>
 								</v-card>
 							</v-flex>
@@ -140,8 +153,9 @@
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
 import LoadingSpinner from '@/components/basic/loadingspinner';
-import Doughnut from '@/components/user/detail/doughnut';
-
+import DoughnutChart from '@/components/chart/doughnut';
+import BarChart from '@/components/chart/bar';
+import LineChart from '@/components/chart/line';
 
 export default {
 	metaInfo() { return { title: this.username }; },
@@ -149,19 +163,31 @@ export default {
 	components: {
 		CalendarHeatmap,
 		LoadingSpinner,
-		Doughnut,
+		DoughnutChart,
+		BarChart,
+		LineChart,
 	},
 
 	data: () => ({
-		chartData: null,
+		doughnutData: null,
+		barData: null,
+		switchUserData: true,
+		doughnutOptions: {
+			responsive: true,
+		},
+		lineOptions: {
+			responsive: true,
+			maintainAspectRatio: false,
+		},
+		barOptions: {
+			responsive: true,
+			maintainAspectRatio: false,
+		},
 	}),
 
 	computed: {
 		username() {
 			return this.$route.params.username;
-		},
-		chartOptions() {
-			return { responsive: true, maintainAspectRatio: false };
 		},
 		isxs() {
 			return this.$vuetify.breakpoint.smAndDown;
@@ -173,7 +199,7 @@ export default {
 
 	methods: {
 		onResult(result) {
-			this.chartData = {
+			this.doughnutData = {
 				labels: ['Accepted', 'Rejected'],
 				datasets: [
 					{
@@ -182,6 +208,18 @@ export default {
 							'red',
 						],
 						data: [result.data.user.solved, result.data.user.tried],
+					},
+				],
+			};
+
+			this.barData = {
+				// labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'],
+				datasets: [
+					{
+						label: 'Submissions',
+						backgroundColor: '#f87979',
+						data: [1, 2, 3, 4, 4, 3, 2, 1, 5, 6, 7, 4, 3, 5],
 					},
 				],
 			};
