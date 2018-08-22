@@ -11,5 +11,7 @@ query ProfileGQL($username: String!) {
 		about
 		solved
 		tried
+		joinedDate
+		lastloginDate
 	}
 }

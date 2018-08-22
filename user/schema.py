@@ -24,6 +24,14 @@ class UserType(DjangoObjectType):
     group = graphene.String()
     heatmap = GenericScalar()
     analysis = GenericScalar()
+    joined_date = graphene.Date()
+    lastlogin_date = graphene.DateTime()
+
+    def resolve_joined_date( self , info , * args , ** kwargs ):
+        return self.date_joined.date()
+    
+    def resolve_lastlogin_date( self , info , * args , ** kwargs ):
+        return self.last_login or self.date_joined
 
     def resolve_group(self, info, * args,  ** kwargs):
         return Group.get_user_group(self.group).value.display
@@ -80,12 +88,15 @@ class UserLogin(graphene.Mutation):
 
     def mutate(self, info, ** kwargs):
         from .form import UserLoginForm
+        from django.contrib.auth.models import update_last_login
+
         LoginForm = UserLoginForm(kwargs)
         if LoginForm.is_valid():
             values = LoginForm.cleaned_data
-            user = User.objects.get(username=values['username'])
+            user = User.objects.get( username = values['username'] )
             token = get_token(user)
             payload = get_payload(token, info.context)
+            update_last_login( None , user )
             return UserLogin(payload=payload, token=token, permission=list(user.get_all_permissions()), user=user)
         else:
             raise RuntimeError(LoginForm.errors.as_json())
