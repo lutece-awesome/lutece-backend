@@ -13,5 +13,9 @@ query ProfileGQL($username: String!) {
 		tried
 		joinedDate
 		lastloginDate
+		submissionStatistics{
+			accept
+			reject
+		}
 	}
 }

@@ -12,6 +12,7 @@ from graphql_jwt.mutations import JSONWebTokenMixin
 from django.db.models import Q, Count
 from django.db.models.functions import TruncDate, Cast
 from django.db.models.fields import CharField
+from submission.schema import SubmissionStatistics
 
 
 class UserType(DjangoObjectType):
@@ -26,6 +27,7 @@ class UserType(DjangoObjectType):
     analysis = GenericScalar()
     joined_date = graphene.Date()
     lastlogin_date = graphene.DateTime()
+    submission_statistics = graphene.Field( SubmissionStatistics )
 
     def resolve_joined_date( self , info , * args , ** kwargs ):
         return self.date_joined.date()
@@ -35,6 +37,9 @@ class UserType(DjangoObjectType):
 
     def resolve_group(self, info, * args,  ** kwargs):
         return Group.get_user_group(self.group).value.display
+    
+    def resolve_submission_statistics( self , info , * args , ** kwargs ):
+        return SubmissionStatistics( user = self )
 
     def resolve_heatmap(self, info, * args, ** kwargs):
         import datetime

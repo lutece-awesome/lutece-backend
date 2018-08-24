@@ -132,9 +132,14 @@
 											<span
 												style = "float: right"
 											>
-												<span style = "color:green" > 50 </span>
+												<span style = "color:green" >
+													{{ data.user.submissionStatistics.accept }}
+												</span>
 												<span> / </span>
-												<span style = "color:red" > 932 </span>
+												<span style = "color:red" >
+													{{ data.user.submissionStatistics.accept
+													+ data.user.submissionStatistics.reject }}
+												</span>
 											</span>
 										</div>
 
@@ -144,7 +149,12 @@
 											<span
 												style = "float: right"
 											>
-												<span style = "color:green" > 5.4% </span>
+												<span style = "color:green" >
+													{{ successRatio(
+														data.user.submissionStatistics.accept ,
+														data.user.submissionStatistics.reject )
+													}}%
+												</span>
 											</span>
 										</div>
 
@@ -234,6 +244,8 @@ export default {
 
 	methods: {
 		onResult(result) {
+			const ac = result.data.user.submissionStatistics.accept;
+			const rj = result.data.user.submissionStatistics.reject;
 			this.doughnutData = {
 				labels: ['Accepted', 'Rejected'],
 				datasets: [
@@ -242,7 +254,7 @@ export default {
 							'#21ba45',
 							'red',
 						],
-						data: [result.data.user.solved, result.data.user.tried],
+						data: [ac, rj],
 					},
 				],
 			};
@@ -257,6 +269,11 @@ export default {
 					},
 				],
 			};
+		},
+		successRatio(ac, rj) {
+			const cnt = ac + rj;
+			if (cnt === 0) return 0.0;
+			return ((100.0 * ac) / cnt).toFixed(1);
 		},
 	},
 };

@@ -7,6 +7,7 @@ from graphql_jwt.decorators import login_required
 from .tasks import Submission_task
 from utils.schema import paginatorList
 from submission.judge_result import Judge_result, Query_field
+from user.models import User
 
 
 class SubmissionType(DjangoObjectType):
@@ -47,6 +48,22 @@ class SubmissionListType(graphene.ObjectType):
         interfaces = (paginatorList, )
 
     submissionList = graphene.List(SubmissionType)
+
+class SubmissionStatistics( graphene.ObjectType ):
+    accept = graphene.Int()
+    reject = graphene.Int()
+
+    def __init__( self , * args , ** kwargs ):
+        if 'user' in kwargs:
+            self.user = kwargs['user']
+        else:
+            raise RuntimeError( 'User field is required' )
+
+    def resolve_accept( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.AC.value.full  ).count()
+    
+    def resolve_reject( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user ).count() - self.resolve_accept( info )
 
 
 class SubmitSolution(graphene.Mutation):
