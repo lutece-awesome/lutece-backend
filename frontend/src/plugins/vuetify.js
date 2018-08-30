@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import {
 	Vuetify, // required
+	VHover,
 	VTooltip,
 	VApp, // required
 	VTextarea,
@@ -33,6 +34,7 @@ import colors from 'vuetify/es5/util/colors';
 
 Vue.use(Vuetify, {
 	components: {
+		VHover,
 		VTooltip,
 		VTextarea,
 		VSubheader,
