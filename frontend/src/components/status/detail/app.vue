@@ -1,7 +1,5 @@
 <template>
-	<v-container
-		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
-		fluid>
+	<v-container fluid>
 		<v-layout
 			row
 			justify-center>
@@ -66,60 +64,59 @@
 					hover
 					class = "mt-5"
 					style = "cursor:default" >
-					<v-tabs
-						v-model = "tabs"
-						fixed-tabs>
-						<v-tab :ripple = "false"> Code </v-tab>
-						<v-tab :ripple = "false"> Progress </v-tab>
-					</v-tabs>
-					<v-tabs-items
-						v-model = "tabs"
-						touchless
-					>
-						<v-tab-item id = "Code">
-							<v-card>
-								<v-card-text>
-									<codemirror
-										v-if="code"
-										v-model="code"
-										:options="cmOptions"
-									/>
-									<div
-										v-if="judgererror_msg"
-										class="output-code">
-										<pre>{{ judgererror_msg }}</pre>
-									</div>
-									<div
-										v-if="compileerror_msg"
-										class="output-code">
-										<pre>{{ compileerror_msg }}</pre>
-									</div>
-								</v-card-text>
-							</v-card>
-						</v-tab-item>
-						<v-tab-item id = "Progress">
-							<v-card>
-								<v-card-text>
-									<v-data-table
-										:items="judge"
-										:headers="headers"
-										dense
-										hide-actions>
-										<template
-											slot="items"
-											slot-scope="props">
-											<tr>
-												<td class="text-xs-center">{{ props.item.case }}</td>
-												<td class="text-xs-center">{{ props.item.result }}</td>
-												<td class="text-xs-center">{{ props.item.time_cost }} ms</td>
-												<td class="text-xs-center">{{ props.item.memory_cost }} KiB</td>
-											</tr>
-										</template>
-									</v-data-table>
-								</v-card-text>
-							</v-card>
-						</v-tab-item>
-					</v-tabs-items>
+
+					<div v-if = "hasCode">
+						<v-tabs
+							v-model = "tabs"
+							fixed-tabs>
+							<v-tab :ripple = "false"> Code </v-tab>
+							<v-tab :ripple = "false"> Progress </v-tab>
+						</v-tabs>
+					</div>
+					<div v-else>
+						<v-tabs
+							v-model = "tabs"
+							fixed-tabs>
+							<v-tab :ripple = "false"> Progress </v-tab>
+						</v-tabs>
+					</div>
+
+					<div v-if = "hasCode">
+						<v-tabs-items
+							v-model = "tabs"
+							touchless
+						>
+
+							<v-tab-item>
+								<codeComponent
+									:code = "code"
+									:judgererror_msg = "judgererror_msg"
+									:compileerror_msg = "compileerror_msg"
+									:cm-options = "cmOptions"
+								/>
+							</v-tab-item>
+
+							<v-tab-item>
+								<progressComponent
+									:judge = "judge"
+									:headers = "headers" />
+							</v-tab-item>
+
+						</v-tabs-items>
+					</div>
+					<div v-else>
+						<v-tabs-items
+							v-model = "tabs"
+							touchless
+						>
+							<v-tab-item>
+								<progressComponent
+									:judge = "judge"
+									:headers = "headers" />
+							</v-tab-item>
+
+						</v-tabs-items>
+					</div>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -134,7 +131,8 @@ import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		codemirror: () => import('@/components/basic/codemirror'),
+		codeComponent: () => import('@/components/status/detail/code'),
+		progressComponent: () => import('@/components/status/detail/progress'),
 	},
 	metaInfo() { return { title: `Submission#${this.pk}` }; },
 	data: () => ({
@@ -148,6 +146,14 @@ export default {
 		code: null,
 		casenumber: null,
 		codehighlight: null,
+		cmOptions: {
+			indentUnit: 4,
+			lineNumbers: true,
+			matchBrackets: true,
+			mode: '',
+			theme: 'neo',
+			readOnly: true,
+		},
 		completed: false,
 		problem__title: null,
 		problem__slug: null,
@@ -177,14 +183,7 @@ export default {
 				sortable: false,
 			},
 		],
-		cmOptions: {
-			indentUnit: 4,
-			lineNumbers: true,
-			matchBrackets: true,
-			mode: '',
-			theme: 'neo',
-			readOnly: true,
-		},
+
 	}),
 
 	computed: {
@@ -194,6 +193,10 @@ export default {
 		...mapGetters({
 			token: 'user/token',
 		}),
+		hasCode() {
+			if (!this.code) return false;
+			return this.code.length > 0;
+		},
 	},
 
 	watch: {
