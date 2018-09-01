@@ -1,6 +1,5 @@
 <template>
 	<v-container
-		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
 		fluid>
 		<v-layout
 			row
@@ -8,7 +7,10 @@
 			<v-flex
 				xs12
 				xl10>
-				<v-card>
+				<v-card
+					hover
+					style = "cursor:default"
+				>
 					<StatusList
 						:status-item="submissionList"
 						:filters="filters"

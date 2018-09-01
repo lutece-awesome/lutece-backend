@@ -1,7 +1,5 @@
 <template>
-	<v-container
-		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
-		fluid>
+	<v-container>
 		<v-layout
 			row
 			wrap

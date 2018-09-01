@@ -7,13 +7,15 @@
 				:options = "cmOptions"
 			/>
 			<div
-				v-if="judgererror_msg"
-				class="output-code">
+				v-if = "judgererror_msg"
+				class = "output-code mt-1">
+				<h4> Judger info </h4>
 				<pre>{{ judgererror_msg }}</pre>
 			</div>
 			<div
-				v-if="compileerror_msg"
-				class="output-code">
+				v-if = "compileerror_msg"
+				class = "output-code mt-1">
+				<h4> Compile Info </h4>
 				<pre>{{ compileerror_msg }}</pre>
 			</div>
 		</v-card-text>
