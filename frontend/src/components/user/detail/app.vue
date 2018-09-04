@@ -203,7 +203,7 @@
 <script>
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
-import LoadingSpinner from '@/components/basic/loadingspinner';
+import LoadingSpinner from '@/components/basic/loading';
 import DoughnutChart from '@/components/chart/doughnut';
 import LineChart from '@/components/chart/line';
 

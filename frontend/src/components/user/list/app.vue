@@ -16,7 +16,7 @@
 					<template
 						slot-scope = "{ result: { loading , error , data } }">
 						<div v-if = "loading" >
-							<LoadingSpinner />
+							<LoadingSpinner/>
 						</div>
 						<div v-else-if = "error" >An error occured</div>
 						<div v-else-if = "data" >
@@ -42,7 +42,7 @@
 <script>
 import UserList from '@/components/user/list/list';
 import Searchbar from '@/components/basic/searchbar';
-import LoadingSpinner from '@/components/basic/loadingspinner';
+import LoadingSpinner from '@/components/basic/loading';
 
 
 export default {
