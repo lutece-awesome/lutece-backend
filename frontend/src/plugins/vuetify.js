@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import {
 	Vuetify, // required
+	VProgressCircular,
 	VHover,
 	VTooltip,
 	VApp, // required
@@ -34,6 +35,7 @@ import colors from 'vuetify/es5/util/colors';
 
 Vue.use(Vuetify, {
 	components: {
+		VProgressCircular,
 		VHover,
 		VTooltip,
 		VTextarea,

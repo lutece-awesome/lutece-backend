@@ -36,8 +36,10 @@
 					class="subheading"/>
 				<v-divider class="my-3"/>
 
+
 				<Commtents
 					:slug = "slug"
+					class = "mt-2"
 				/>
 			</v-flex>
 		</v-layout>
@@ -48,6 +50,7 @@
 <script>
 import BlogGQL from '@/graphql/blog/detail.gql';
 import Commtents from '@/components/comments/app';
+
 
 export default {
 	metaInfo() { return { title: this.blog.title ? this.blog.title : 'Loading...' }; },
