@@ -39,7 +39,7 @@
 
 				<Commtents
 					:slug = "slug"
-					class = "mt-2"
+					class = "mt-4"
 				/>
 			</v-flex>
 		</v-layout>

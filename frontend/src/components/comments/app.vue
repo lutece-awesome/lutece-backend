@@ -1,10 +1,9 @@
 <template>
 	<div>
-		<div>
-			<v-icon class = "mr-1" > mdi-comment </v-icon>
-			<span style = "font-size:20px;font-weight:500;" > Comments: </span>
+		<div class = "mb-3">
+			<v-icon class = "mdi-20px" > mdi-comment </v-icon>
+			<span class = "title ml-1" > Comments: </span>
 		</div>
-
 		<ApolloQuery
 			:query = "require('@/graphql/blog/discussion.gql')"
 			:variables = "{ page , slug }"
@@ -14,7 +13,7 @@
 				<LoadingSpinner v-if = "loading" />
 				<div v-else-if = "error" > An error occured </div>
 				<div v-else-if = "data">
-					<comments v-model = "data.blogDiscussionList.blogDiscussionList" />
+					<Comments v-model = "data.blogDiscussionList.discussionList" />
 					<div
 						:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
 						class = "text-xs-center mt-2">
@@ -33,13 +32,13 @@
 
 <script>
 
-import comments from '@/components/comments/comments';
+import Comments from '@/components/comments/comments';
 import LoadingSpinner from '@/components/basic/loadingspinner';
 
 export default {
 
 	components: {
-		comments,
+		Comments,
 		LoadingSpinner,
 	},
 
@@ -51,25 +50,12 @@ export default {
 	},
 
 	data: () => ({
-		data: null,
 		page: 1,
 		maxpage: 0,
-		isLoading: false,
 	}),
-
-	watch: {
-		page() {
-			this.request();
-		},
-	},
 
 	activated() {
 		this.$refs.pagination.init();
-		this.request();
-	},
-
-	mounted() {
-		this.request();
 	},
 
 	methods: {
