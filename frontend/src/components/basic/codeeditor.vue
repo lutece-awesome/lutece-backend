@@ -30,7 +30,10 @@
 					flat
 					color="primary"
 					type="submit"
-					@click= "submitsolution" >Submit</v-btn>
+					@click= "submitsolution">
+					<v-icon> mdi-send </v-icon>
+					<span class = "ml-2"> Submit </span>
+				</v-btn>
 			</v-card-actions>
 		</v-flex>
 	</v-layout>

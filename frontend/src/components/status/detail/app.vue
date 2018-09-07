@@ -4,10 +4,10 @@
 			row
 			justify-center>
 			<v-flex
+				v-show = "result"
 				xs12
 				md8>
 				<v-card
-					v-if = "result"
 					hover
 					style = "cursor:default"
 				>
@@ -61,7 +61,6 @@
 					</v-card-text>
 				</v-card>
 				<v-card
-					v-if = "result"
 					hover
 					class = "mt-5"
 					style = "cursor:default" >
