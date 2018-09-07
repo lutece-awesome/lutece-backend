@@ -61,6 +61,7 @@
 					</v-card-text>
 				</v-card>
 				<v-card
+					v-if = "result"
 					hover
 					class = "mt-5"
 					style = "cursor:default" >
