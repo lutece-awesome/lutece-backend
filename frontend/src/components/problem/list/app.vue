@@ -1,16 +1,9 @@
 <template>
-	<v-container
-		fluid>
+	<v-container>
 		<v-layout
 			row
 			wrap
 			justify-center>
-			<v-flex xs12>
-				<Searchbar
-					v-model = "filter"
-					class = "mb-4 fluid"
-					label = "Search problem" />
-			</v-flex>
 			<v-flex
 				xs12
 				md10
@@ -21,17 +14,23 @@
 					@result = "onResult" >
 					<template
 						slot-scope = "{ result: { loading , error , data } }">
+						<Searchbar
+							v-model = "filter"
+							class = "mb-4 fluid"
+							label = "" />
 						<div v-if = "error"> An error occured</div>
 						<div v-else-if = "data">
-							<v-card
-								hover
-								style = "cursor: default"
-							>
-								<ProblemList
-									:problem-item = "data.problemList.problemList"
-									:is-loading = "loading"
-								/>
-							</v-card>
+							<v-hover>
+								<v-card
+									slot-scope = "{ hover }"
+									:class = "`elevation-${hover ? 4 : 1}`"
+								>
+									<ProblemList
+										:problem-item = "data.problemList.problemList"
+										:is-loading = "loading"
+									/>
+								</v-card>
+							</v-hover>
 							<div
 								:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
 								class="text-xs-center mt-2">
@@ -51,7 +50,7 @@
 <script>
 import ProblemList from '@/components/problem/list/list';
 import Searchbar from '@/components/basic/searchbar';
-import LoadingSpinner from '@/components/basic/loading';
+import LoadingSpinner from '@/components/basic/loadingspinner';
 
 export default {
 	name: 'Problem',

@@ -4,7 +4,10 @@
 			row
 			wrap >
 			<v-flex xs12>
-				<div class = "text-xs-center" >
+				<div
+					:style = "{ 'padding-top': height + 'px'}"
+					class = "text-xs-center"
+				>
 					<v-progress-circular
 						:size = "size"
 						indeterminate
@@ -20,8 +23,8 @@
 export default {
 	props: {
 		height: {
-			type: Number,
-			default: 200,
+			type: String,
+			default: '100',
 		},
 		size: {
 			type: Number,

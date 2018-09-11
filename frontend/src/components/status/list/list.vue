@@ -125,15 +125,17 @@
 				<th
 					role="columnheader"
 					scope="col"
-					class="column text-xs-center">Time (ms)</th>
+					class="column text-xs-center pt-3">
+					Time (ms)
+				</th>
 				<th
 					role="columnheader"
 					scope="col"
-					class="column text-xs-center">Memory (KiB)</th>
+					class="column text-xs-center pt-3">Memory (KiB)</th>
 				<th
 					role="columnheader"
 					scope="col"
-					class="column text-xs-center">Submit Time</th>
+					class="column text-xs-center pt-3">Submit Time</th>
 				<th
 					role="columnheader"
 					scope="col"

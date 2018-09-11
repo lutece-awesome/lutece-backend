@@ -4,19 +4,21 @@
 			row
 			wrap
 			justify-center>
-			<v-flex xs12>
-				<Searchbar
-					v-model = "filter"
-					label = "Search user"
-				/>
+			<v-flex
+				xs12
+				xl10>
 				<ApolloQuery
 					:query = "require('@/graphql/user/list.gql')"
 					:variables = "{ page , filter }"
 					@result = "onResult">
 					<template
 						slot-scope = "{ result: { loading , error , data } }">
+						<Searchbar
+							v-model = "filter"
+							label = ""
+						/>
 						<div v-if = "loading" >
-							<LoadingSpinner/>
+							<LoadingSpinner height = "200" />
 						</div>
 						<div v-else-if = "error" >An error occured</div>
 						<div v-else-if = "data" >
@@ -42,7 +44,7 @@
 <script>
 import UserList from '@/components/user/list/list';
 import Searchbar from '@/components/basic/searchbar';
-import LoadingSpinner from '@/components/basic/loading';
+import LoadingSpinner from '@/components/basic/loadingspinner';
 
 
 export default {

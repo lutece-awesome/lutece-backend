@@ -1,24 +1,25 @@
 <template>
-	<v-container
-		fluid>
+	<v-container>
 		<v-layout
 			row
 			justify-center>
 			<v-flex
 				xs12
 				xl10>
-				<v-card
-					hover
-					style = "cursor:default"
-				>
-					<StatusList
-						:status-item="submissionList"
-						:filters="filters"
-						:user-search="userSearch"
-						:problem-search="problemSearch"
-						:is-loading="isLoading"
-						class = "elevation-1" />
-				</v-card>
+				<v-hover>
+					<v-card
+						slot-scope = "{ hover }"
+						:class = "`elevation-${hover ? 4 : 1}`"
+					>
+						<StatusList
+							:status-item="submissionList"
+							:filters="filters"
+							:user-search="userSearch"
+							:problem-search="problemSearch"
+							:is-loading="isLoading"
+						/>
+					</v-card>
+				</v-hover>
 				<div
 					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
 					class="text-xs-center mt-2">

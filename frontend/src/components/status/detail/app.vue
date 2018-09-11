@@ -30,9 +30,10 @@
 								<td><pre>Problem:</pre></td>
 								<td class = "pl-1">
 									<router-link
-										:to="{name: 'ProblemDetailDescription',
+										:to = "{name: 'ProblemDetailDescription',
 											params: {slug: problem__slug}}"
-										tag = "a">
+										tag = "a"
+									>
 										{{ problem__title }}
 									</router-link>
 								</td>
