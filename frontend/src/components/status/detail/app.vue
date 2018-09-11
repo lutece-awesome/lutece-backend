@@ -7,118 +7,124 @@
 				v-show = "result"
 				xs12
 				md8>
-				<v-card
-					hover
-					style = "cursor:default"
-				>
-					<v-card-title primary-title>
-						<h3
-							:class = "result_color + '--text'"
-							class = "headline mb-0">
-							{{ result }}
-						</h3>
-					</v-card-title>
-					<v-progress-linear
-						:indeterminate="!completed && judge.length == 0"
-						v-model="progress"
-						:color="result_color"
-						height="2"
-						class="ma-0"/>
-					<v-card-text>
-						<table class="submission-table output-code mt-2">
-							<tr>
-								<td><pre>Problem:</pre></td>
-								<td class = "pl-1">
-									<router-link
-										:to = "{name: 'ProblemDetailDescription',
-											params: {slug: problem__slug}}"
-										tag = "a"
-									>
-										{{ problem__title }}
-									</router-link>
-								</td>
-							</tr>
-							<tr>
-								<td><pre>User:</pre></td>
-								<td class = "pl-1">
-									<router-link :to="{name: 'UserDetail', params: {username: user__username}}">
-										{{ user__display_name }}
-									</router-link>
-								</td>
-							</tr>
-							<tr>
-								<td><pre>Time:</pre></td>
-								<td class = "pl-1"><pre>{{ submit_time }}</pre></td>
-							</tr>
-							<tr>
-								<td><pre>Case:</pre></td>
-								<td
-									class = "pl-1" >
-									<span :class = "result_color + '--text'">
-										{{ judge.length }} / {{ casenumber }}
-									</span>
-								</td>
-						</tr></table>
-					</v-card-text>
-				</v-card>
-				<v-card
-					hover
-					class = "mt-5"
-					style = "cursor:default" >
+				<v-hover>
+					<v-card
+						slot-scope = "{ hover }"
+						:class = "`elevation-${hover ? 4 : 1}`"
+					>
+						<v-card-title primary-title>
+							<h3
+								:class = "result_color + '--text'"
+								class = "headline mb-0">
+								{{ result }}
+							</h3>
+						</v-card-title>
+						<v-progress-linear
+							:indeterminate="!completed && judge.length == 0"
+							v-model="progress"
+							:color="result_color"
+							height="2"
+							class="ma-0"/>
+						<v-card-text>
+							<table class="submission-table output-code mt-2">
+								<tr>
+									<td><pre>Problem:</pre></td>
+									<td class = "pl-1">
+										<router-link
+											:to = "{name: 'ProblemDetailDescription',
+												params: {slug: problem__slug}}"
+											tag = "a"
+										>
+											{{ problem__title }}
+										</router-link>
+									</td>
+								</tr>
+								<tr>
+									<td><pre>User:</pre></td>
+									<td class = "pl-1">
+										<router-link :to="{name: 'UserDetail', params: {username: user__username}}">
+											{{ user__display_name }}
+										</router-link>
+									</td>
+								</tr>
+								<tr>
+									<td><pre>Time:</pre></td>
+									<td class = "pl-1"><pre>{{ submit_time }}</pre></td>
+								</tr>
+								<tr>
+									<td><pre>Case:</pre></td>
+									<td
+										class = "pl-1" >
+										<span :class = "result_color + '--text'">
+											{{ judge.length }} / {{ casenumber }}
+										</span>
+									</td>
+							</tr></table>
+						</v-card-text>
+					</v-card>
+				</v-hover>
 
-					<div v-if = "hasCode">
-						<v-tabs
-							v-model = "tabs"
-							fixed-tabs>
-							<v-tab :ripple = "false"> Code </v-tab>
-							<v-tab :ripple = "false"> Progress </v-tab>
-						</v-tabs>
-					</div>
-					<div v-else>
-						<v-tabs
-							v-model = "tabs"
-							fixed-tabs>
-							<v-tab :ripple = "false"> Progress </v-tab>
-						</v-tabs>
-					</div>
+				<v-hover>
+					<v-card
+						slot-scope = "{ hover }"
+						:class = "`elevation-${hover ? 4 : 1}`"
+						class = "mt-5"
+					>
 
-					<div v-if = "hasCode">
-						<v-tabs-items
-							v-model = "tabs"
-							touchless
-						>
+						<div v-if = "hasCode">
+							<v-tabs
+								v-model = "tabs"
+								fixed-tabs>
+								<v-tab :ripple = "false"> Code </v-tab>
+								<v-tab :ripple = "false"> Progress </v-tab>
+							</v-tabs>
+						</div>
+						<div v-else>
+							<v-tabs
+								v-model = "tabs"
+								fixed-tabs>
+								<v-tab :ripple = "false"> Progress </v-tab>
+							</v-tabs>
+						</div>
 
-							<v-tab-item>
-								<codeComponent
-									:code = "code"
-									:judgererror_msg = "judgererror_msg"
-									:compileerror_msg = "compileerror_msg"
-									:cm-options = "cmOptions"
-								/>
-							</v-tab-item>
+						<div v-if = "hasCode">
+							<v-tabs-items
+								v-model = "tabs"
+								touchless
+							>
 
-							<v-tab-item>
-								<progressComponent
-									:judge = "judge"
-									:headers = "headers" />
-							</v-tab-item>
+								<v-tab-item>
+									<codeComponent
+										:code = "code"
+										:judgererror_msg = "judgererror_msg"
+										:compileerror_msg = "compileerror_msg"
+										:cm-options = "cmOptions"
+									/>
+								</v-tab-item>
 
-						</v-tabs-items>
-					</div>
-					<div v-else>
-						<v-tabs-items
-							v-model = "tabs"
-							touchless
-						>
-							<v-tab-item>
-								<progressComponent
-									:judge = "judge"
-									:headers = "headers" />
-							</v-tab-item>
+								<v-tab-item>
+									<progressComponent
+										:judge = "judge"
+										:headers = "headers" />
+								</v-tab-item>
 
-						</v-tabs-items>
-					</div>
-				</v-card>
+							</v-tabs-items>
+						</div>
+						<div v-else>
+							<v-tabs-items
+								v-model = "tabs"
+								touchless
+							>
+								<v-tab-item>
+									<progressComponent
+										:judge = "judge"
+										:headers = "headers" />
+								</v-tab-item>
+
+							</v-tabs-items>
+						</div>
+					</v-card>
+				</v-hover>
 			</v-flex>
 		</v-layout>
 	</v-container>

@@ -6,7 +6,9 @@
 			justify-center>
 			<v-flex
 				xs12
-				xl10>
+				md10
+				lg8
+			>
 				<ApolloQuery
 					:query = "require('@/graphql/user/list.gql')"
 					:variables = "{ page , filter }"
@@ -15,19 +17,23 @@
 						slot-scope = "{ result: { loading , error , data } }">
 						<Searchbar
 							v-model = "filter"
+							class = "mb-4 fluid"
 							label = ""
 						/>
-						<div v-if = "loading" >
-							<LoadingSpinner height = "200" />
-						</div>
-						<div v-else-if = "error" >An error occured</div>
+						<div v-if = "error" >An error occured</div>
 						<div v-else-if = "data" >
-							<UserList
-								:user-item = "data.userList.userList"
-							/>
+							<v-hover>
+								<v-card
+									slot-scope = "{ hover }"
+									:class = "`elevation-${hover ? 4 : 1}`"
+								>
+									<UserList
+										:user-item = "data.userList.userList"
+									/>
+								</v-card>
+							</v-hover>
 							<div
-								:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
-								class = "text-xs-center">
+								class = "text-xs-center mt-2">
 								<v-pagination
 									ref = "pagination"
 									v-model = "page"

@@ -5,12 +5,13 @@ query UserListGQL($page: Int!, $filter: String) {
 			username
 			gravataremail
 			displayName
-			school
-			company
-			location
-			about
 			solved
 			tried
+			submissionStatistics{
+				accept
+				reject
+			}
+			rank
 		}
 	}
 }

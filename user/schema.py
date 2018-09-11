@@ -28,6 +28,7 @@ class UserType(DjangoObjectType):
     joined_date = graphene.Date()
     lastlogin_date = graphene.DateTime()
     submission_statistics = graphene.Field( SubmissionStatistics )
+    rank = graphene.Int()
 
     def resolve_joined_date( self , info , * args , ** kwargs ):
         return self.date_joined.date()
@@ -73,6 +74,10 @@ class UserType(DjangoObjectType):
             if Judge_result.get_judge_result(each.judge_status) is Judge_result.AC:
                 solved.add( pk )
         return sorted([( each, 'yes' if each in solved else 'no' , trans[ each ] ) for each in tried], key=lambda x: x[0])
+
+    def resolve_rank( self , info , * args , ** kwargs ):
+        from django.db.models import Q
+        return User.objects.filter( show = True ).filter( Q( solved__gt = self.solved ) | Q( solved__exact = self.solved , pk__lt = self.pk ) ).count() + 1
 
 
 class UserListType(graphene.ObjectType):
@@ -203,12 +208,13 @@ class Query(object):
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
+        from Lutece.config import PER_PAGE_COUNT
         filter = kwargs.get('filter')
         user_list = User.objects.all().order_by('-solved').filter(show=True)
         if filter is not None:
             user_list = user_list.filter(Q(display_name__icontains=filter) | Q(
                 school__icontains=filter) | Q(company__icontains=filter) | Q(location__icontains=filter))
-        paginator = Paginator(user_list, 12)
+        paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, userList=paginator.get_page(page))
 
     def resolve_userSearch(self, info, **kwargs):
