@@ -8,37 +8,38 @@
 		<template
 			slot="items"
 			slot-scope="props">
-			<td class = "text-xs-center">{{ getRank( props.item.rank ) }}</td>
-			<td class = "text-xs-center" >
-				<div style = "white-space: nowrap;">
-					<v-avatar
-						size = "32"
-						color="grey lighten-4"
-					>
-						<img :src = "props.item.gravataremail" >
-					</v-avatar>
-					<router-link
-						:to = "{ name: 'UserDetail' , params: {username: props.item.username } }"
-						tag = "span"
-						class = "body-2 ml-2"
-						style = "cursor: pointer"
-					>
-						{{ props.item.displayName }}
-					</router-link>
-				</div>
-			</td>
-			<td class="text-xs-center">
-				<span style = "color:green" > {{ props.item.solved }} </span>
-				<span> / </span>
-				<span style = "color:red" > {{ props.item.tried }} </span>
-			</td>
-			<td class = "text-xs-center">
-				{{
-					successRatio(
-						props.item.submissionStatistics.accept ,
-						props.item.submissionStatistics.reject )
-				}} %
-			</td>
+			<router-link
+				:to = "{ name: 'UserDetail' , params: {username: props.item.username } }"
+				tile
+				tag ="tr"
+				style = "cursor: pointer"
+			>
+				<td class = "text-xs-center">{{ getRank( props.item.rank ) }}</td>
+				<td class = "text-xs-center" >
+					<div style = "white-space: nowrap;">
+						<v-avatar
+							size = "32"
+							color="grey lighten-4"
+						>
+							<img :src = "props.item.gravataremail" >
+						</v-avatar>
+						<span class = "body-2 ml-2"> {{ props.item.displayName }} </span>
+					</div>
+				</td>
+				<td class="text-xs-center">
+					<span style = "color:green" > {{ props.item.solved }} </span>
+					<span> / </span>
+					<span style = "color:red" > {{ props.item.tried }} </span>
+				</td>
+				<td class = "text-xs-center">
+					{{
+						successRatio(
+							props.item.submissionStatistics.accept ,
+							props.item.submissionStatistics.reject )
+					}} %
+				</td>
+			</router-link>
+
 		</template>
 	</v-data-table>
 </template>
