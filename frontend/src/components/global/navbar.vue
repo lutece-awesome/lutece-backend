@@ -39,7 +39,8 @@
 			clipped-left
 			app
 			dark
-			color="primary">
+			color = "red"
+		>
 			<v-toolbar-side-icon @click.stop="drawer=!drawer"/>
 			<v-toolbar-title class="hidden-xs-only">
 				Lutece
@@ -61,29 +62,33 @@
 					SIGN IN
 				</v-btn>
 				<v-menu
-					v-if="isProfileLoaded"
+					v-if = "isProfileLoaded"
 					open-on-hover
-					offset-y>
+					light
+					offset-y
+				>
 					<v-btn
 						slot="activator"
 						flat>
-						<v-avatar
-							size="36"
-							class="mr-2" >
-							<img :src="profile.gravataremail" >
+						<v-avatar size = "36">
+							<img :src = "profile.gravataremail" >
 						</v-avatar>
-						<span style = "text-transform: none;" >
+						<span
+							style = "text-transform: none; color:white;"
+							class = "ml-2"
+						>
 							{{ profile.	displayName }}
 						</span>
-						<v-icon>mdi-menu-down</v-icon>
 					</v-btn>
 					<v-list>
 						<v-list-tile
-							v-for="item in dropdownItems"
-							:key="item.label"
-							:to="item.route"
-							active-class="grey lighten-3">
-							<v-icon class="mr-2">{{ item.icon }}</v-icon>
+							v-for = "item in dropdownItems"
+							:key = "item.label"
+							:to = "item.route"
+						>
+							<v-icon
+								class = "mr-2"
+								flat >{{ item.icon }}</v-icon>
 							<v-list-tile-content>
 								<v-list-tile-title>{{ item.label }}</v-list-tile-title>
 							</v-list-tile-content>
@@ -92,17 +97,17 @@
 				</v-menu>
 			</v-toolbar-items>
 			<v-btn
-				v-if="isProfileLoaded"
-				:to="userDetail"
+				v-if = "isProfileLoaded"
+				:to = "userDetail"
 				icon
-				class="hidden-md-and-up">
+				class = "hidden-md-and-up">
 				<v-avatar size="36">
 					<img :src="profile.gravataremail" >
 				</v-avatar>
 			</v-btn>
 			<v-btn
-				v-if="isProfileLoaded"
-				:to="signOut"
+				v-if = "isProfileLoaded"
+				:to = "signOut"
 				icon
 				class="hidden-md-and-up">
 				<v-icon>mdi-logout</v-icon>
