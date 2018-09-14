@@ -22,7 +22,7 @@
 				</v-hover>
 				<div
 					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-					class="text-xs-center mt-2">
+					class="text-xs-center mt-3">
 					<v-pagination
 						ref="pagination"
 						v-model="page"

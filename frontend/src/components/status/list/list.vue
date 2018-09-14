@@ -92,11 +92,11 @@
 					scope="col"
 					class="column text-xs-center">
 					<v-autocomplete
-						v-model="filters.problem"
-						:items="problemSearch.items"
-						:loading="problemSearch.isLoading"
-						:search-input.sync="problemSearch.filter"
-						:append-icon="null"
+						v-model = "filters.problem"
+						:items = "problemSearch.items"
+						:loading = "problemSearch.isLoading"
+						:search-input.sync = "problemSearch.filter"
+						:append-icon = "null"
 						single-line
 						hide-details
 						clearable
@@ -107,13 +107,13 @@
 					/>
 				</th>
 				<th
-					role="columnheader"
-					scope="col"
-					class="column text-xs-center">
+					role = "columnheader"
+					scope = "col"
+					class = "column text-xs-center">
 					<v-select
-						v-model="filters.judgeStatus"
-						:items="verdictItems"
-						label="Verdict"
+						v-model = "filters.judgeStatus"
+						:items = "verdictItems"
+						label = "Verdict"
 						single-line
 						hide-details
 						dense
@@ -123,33 +123,33 @@
 					/>
 				</th>
 				<th
-					role="columnheader"
-					scope="col"
-					class="column text-xs-center pt-3">
+					role = "columnheader"
+					scope = "col"
+					class = "column text-xs-center pt-3">
 					Time (ms)
 				</th>
 				<th
-					role="columnheader"
-					scope="col"
-					class="column text-xs-center pt-3">Memory (KiB)</th>
+					role = "columnheader"
+					scope = "col"
+					class = "column text-xs-center pt-3">Memory (KiB)</th>
 				<th
-					role="columnheader"
-					scope="col"
-					class="column text-xs-center pt-3">Submit Time</th>
+					role = "columnheader"
+					scope = "col"
+					class = "column text-xs-center pt-3">Submit Time</th>
 				<th
-					role="columnheader"
-					scope="col"
-					class="column text-xs-center">
+					role = "columnheader"
+					scope = "col"
+					class = "column text-xs-center">
 					<v-select
-						v-model="filters.language"
-						:items="languageItems"
-						label="Language"
+						v-model = "filters.language"
+						:items = "languageItems"
+						label = "Language"
 						single-line
 						hide-details
 						dense
 						clearable
 						offset-y
-						style="width: 100px"
+						style = "width: 100px"
 					/>
 				</th>
 			</tr>

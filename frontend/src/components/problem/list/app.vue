@@ -31,7 +31,7 @@
 									/>
 								</v-card>
 							</v-hover>
-							<div class = "text-xs-center mt-2">
+							<div class = "text-xs-center mt-3">
 								<v-pagination
 									ref = "pagination"
 									v-model = "page"

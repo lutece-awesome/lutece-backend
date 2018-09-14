@@ -7,9 +7,9 @@
 			<p><b>Lutece</b>的名字取自<a href = "https://en.wikipedia.org/wiki/BioShock_Infinite">BioShock Infinite</a>
 				中的双胞胎科学家(事实上她们是同一个人)Robert Lutece和Rosalind Lutece的姓氏.</p>
 			<p><b>Lutece</b>不仅将支持传统算法,还将计划支持并行计算和机器学习.</p>
-			<h1
-				class="headline mb-3 primary--text">Author</h1>
-			<v-container
+			<!-- <h1
+				class="headline mb-3 primary--text">Author</h1> -->
+			<!-- <v-container
 				fluid
 				grid-list-lg
 				class="pa-0 mb-3">
@@ -132,7 +132,7 @@
 						</v-card>
 					</v-flex>
 				</v-layout>
-			</v-container>
+			</v-container> -->
 			<h1
 				class="headline mb-3 primary--text">Copyright</h1>
 			<p>

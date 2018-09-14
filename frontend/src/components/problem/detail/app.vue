@@ -11,14 +11,15 @@
 				md10
 				xl8>
 				<v-btn
-					v-if="hasPermission('problem.change_problem')"
-					:to="{name: 'ProblemEdit', params: {slug: slug}}"
-					color="accent"
+					v-if = "hasPermission('problem.change_problem')"
+					:to = "{name: 'ProblemEdit', params: {slug: slug}}"
+					color = "accent"
 					dark
 					fab
 					fixed
 					bottom
-					right>
+					right
+				>
 					<v-icon>mdi-pencil</v-icon>
 				</v-btn>
 				<v-card>

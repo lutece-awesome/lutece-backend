@@ -2,15 +2,18 @@
 	<v-app>
 		<Navbar/>
 		<v-content>
-			<v-fade-transition
-				:duration="100"
-				mode="out-in">
-				<keep-alive
-					v-if="!isAuthenticated || isProfileLoaded"
-					include="Problem,Status,User,Blog">
-					<router-view/>
-				</keep-alive>
-			</v-fade-transition>
+			<div class = "maincontent" >
+				<v-fade-transition
+					:duration="100"
+					mode="out-in">
+					<keep-alive
+						v-if="!isAuthenticated || isProfileLoaded"
+						include="Problem,Status,User,Blog">
+						<router-view/>
+					</keep-alive>
+				</v-fade-transition>
+			</div>
+			<Footer/>
 		</v-content>
 		<Snackbar/>
 	</v-app>
@@ -47,3 +50,10 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+	.maincontent{
+		min-height: 85%;
+	}
+</style>
+

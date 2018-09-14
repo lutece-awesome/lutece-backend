@@ -113,10 +113,10 @@
 				<v-icon>mdi-logout</v-icon>
 			</v-btn>
 			<v-btn
-				v-if="!isAuthenticated"
-				:to="login"
+				v-if = "!isAuthenticated"
+				:to = "login"
 				icon
-				class="hidden-md-and-up">
+				class = "hidden-md-and-up">
 				<v-icon>mdi-login</v-icon>
 			</v-btn>
 		</v-toolbar>
@@ -151,26 +151,26 @@ export default {
 					title: 'Status',
 					path: '/status',
 				},
-				{
-					icon: 'mdi-trophy',
-					title: 'Contest',
-					path: '/contest',
-				},
+				// {
+				// 	icon: 'mdi-trophy',
+				// 	title: 'Contest',
+				// 	path: '/contest',
+				// },
 				{
 					icon: 'mdi-account-multiple',
 					title: 'User',
 					path: '/user',
 				},
-				{
-					icon: 'mdi-book-open',
-					title: 'Blog',
-					path: '/blog',
-				},
-				{
-					icon: 'mdi-information',
-					title: 'About',
-					path: '/about',
-				},
+				// {
+				// 	icon: 'mdi-book-open',
+				// 	title: 'Blog',
+				// 	path: '/blog',
+				// },
+				// {
+				// 	icon: 'mdi-information',
+				// 	title: 'About',
+				// 	path: '/about',
+				// },
 			],
 		};
 	},
