@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if = "visible" >
 		<v-navigation-drawer
 			v-model = "drawer"
 			:width = "240"
@@ -184,6 +184,7 @@ export default {
 			payload: 'user/payload',
 			isAuthenticated: 'user/isAuthenticated',
 			isProfileLoaded: 'user/isProfileLoaded',
+			visible: 'navbar/visible',
 		}),
 		title() {
 			return this.$root.title;

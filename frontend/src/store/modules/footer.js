@@ -1,7 +1,7 @@
 /* eslint no-shadow: ["error", { "allow": ["state"] }] */
 
 export const state = () => ({
-	visible: false,
+	visible: true,
 });
 
 export const mutations = {
@@ -14,9 +14,16 @@ const getters = {
 	visible: state => state.visible,
 };
 
+const actions = {
+	setVisible({ flag, commit }) {
+		commit('setVisible', flag);
+	},
+};
+
 export default {
 	namespaced: true,
 	state,
+	actions,
 	getters,
 	mutations,
 };

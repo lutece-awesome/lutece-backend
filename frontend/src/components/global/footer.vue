@@ -1,5 +1,6 @@
 <template>
-	<v-footer
+	<div
+		v-if = "visible"
 		height = "auto"
 		color = "primary lighten-1"
 	>
@@ -28,11 +29,17 @@
 				</v-flex>
 			</v-layout>
 		</v-container>
-	</v-footer>
+	</div>
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex';
 
+export default {
+	computed: {
+		...mapGetters({
+			visible: 'footer/visible',
+		}),
+	},
 };
 </script>
