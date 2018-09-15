@@ -1,6 +1,3 @@
-<!--
-    Homepage
--->
 <template>
 	<v-container fluid>
 		<v-layout
@@ -21,30 +18,20 @@
 						Lutece是一个基于GNU General Public License Version 3协议开源的Online Judge.
 					</div>
 					<v-divider class = "my-3"/>
-					<!-- <div class="title mb-3">Star Lutece on GITHUB!</div>
-					<v-btn
-						class="mx-0"
-						color="primary"
-						large
-						href="https://github.com/LaPluses/Lutece"
-					>
-						<v-icon
-							left
-							dark>mdi-github-circle</v-icon>
-						Github
-					</v-btn> -->
 				</div>
 			</v-flex>
 			<v-container grid-list-xl>
 				<v-layout
 					row
 					wrap
+					justify-center
 				>
 					<v-flex
 						v-for = "( each , index ) in cards"
 						:key = "index"
 						class = "full-height-flex"
 						xs12
+						sm9
 						md4
 					>
 						<v-hover>
@@ -77,7 +64,6 @@
 
 <script>
 export default {
-	metaInfo() { return { title: 'Home' }; },
 	data: () => ({
 		cards: [
 			{
@@ -93,9 +79,11 @@ export default {
 			{
 				icon: 'mdi-wrench',
 				title: 'Easily expandable',
-				text: 'Construced by Python and Vue, stand on the shoulders of giants, to build your own Lutece',
+				text: 'Developed by Python and Vue, stand on the shoulders of giants, to build your own Lutece',
 			},
 		],
 	}),
+	mounted() {
+	},
 };
 </script>

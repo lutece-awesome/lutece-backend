@@ -21,6 +21,7 @@ import ProblemDescription from '@/components/problem/detail/description';
 import ProblemEditor from '@/components/problem/detail/editor';
 import ProblemDiscussion from '@/components/problem/detail/discussion';
 import ProblemEdit from '@/components/problem/detail/edit';
+import GetStarted from '@/components/getstarted/app';
 import store from '../store';
 
 Vue.use(Router);
@@ -134,6 +135,11 @@ export default new Router({
 			path: '/problem/:slug/edit',
 			name: 'ProblemEdit',
 			component: ProblemEdit,
+		},
+		{
+			path: '/getstarted',
+			name: 'GetStarted',
+			component: GetStarted,
 		},
 		{
 			path: '/problem/:slug',

@@ -1,13 +1,10 @@
 <template>
-	<v-container
-		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
-		fluid>
+	<v-container>
 		<v-layout justify-center>
 			<v-flex
 				xs12
-				sm8
-				md6
-				xl4>
+				md8
+			>
 				<v-card>
 					<v-card-text>
 						<v-form @submit.prevent="login">
@@ -21,6 +18,7 @@
 										autocorrect="off"
 										autocapitalize="off"
 										spellcheck="false"
+										prepend-icon = "mdi-account"
 										required />
 								</v-flex>
 								<v-flex>
@@ -29,6 +27,7 @@
 										:error-messages="geterror('password')"
 										type="password"
 										label="Password"
+										prepend-icon = "mdi-lock"
 										required />
 								</v-flex>
 								<v-flex>

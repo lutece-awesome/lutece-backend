@@ -7,8 +7,8 @@
 					:duration="100"
 					mode="out-in">
 					<keep-alive
-						v-if="!isAuthenticated || isProfileLoaded"
-						include="Problem,Status,User,Blog">
+						v-if = "!isAuthenticated || isProfileLoaded"
+						include = "Problem,Status,User,Blog">
 						<router-view/>
 					</keep-alive>
 				</v-fade-transition>
