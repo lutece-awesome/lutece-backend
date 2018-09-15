@@ -12,11 +12,15 @@
 				sm8>
 				<div>
 					<h1
-						class="display-3"
-						style = "text-align:center;" >Lutece </h1>
-					<span class="subheading">Lutece是一个基于GNU General Public License Version 3协议开源的Online Judge.
-					</span>
-					<v-divider class="my-3"/>
+						class = "display-3 lutece"
+						style = "text-align:center"
+					>
+						Lutece
+					</h1>
+					<div class = "subheading mt-3">
+						Lutece是一个基于GNU General Public License Version 3协议开源的Online Judge.
+					</div>
+					<v-divider class = "my-3"/>
 					<!-- <div class="title mb-3">Star Lutece on GITHUB!</div>
 					<v-btn
 						class="mx-0"
@@ -31,75 +35,42 @@
 					</v-btn> -->
 				</div>
 			</v-flex>
-			<v-flex
-				xs12
-				sm8>
-				<v-container grid-list-xl>
-					<v-layout
-						row
-						wrap
-						align-center>
-						<v-flex
-							xs12
-							md4>
-							<v-card class="elevation-0 transparent">
-								<v-card-text class="text-xs-center">
+			<v-container grid-list-xl>
+				<v-layout
+					row
+					wrap
+				>
+					<v-flex
+						v-for = "( each , index ) in cards"
+						:key = "index"
+						class = "full-height-flex"
+						xs12
+						md4
+					>
+						<v-hover>
+							<v-card
+								slot-scope = "{ hover }"
+								:class = "`elevation-${hover ? 4 : 1}`"
+								class = "full-height-card">
+								<div class = "text-xs-center mt-4">
 									<v-icon
 										x-large
-										class="blue--text text--lighten-2">mdi-emoticon-cool</v-icon>
-								</v-card-text>
-								<v-card-title
+										class = "blue--text text--lighten-2"> {{ each.icon }} </v-icon>
+								</div>
+								<div
 									primary-title
-									class="layout justify-center">
-									<div class="headline text-xs-center">Material Design</div>
-								</v-card-title>
-								<v-card-text>
-									基于遵守Google Material设计范式的Vuetify UI Framework打造,无论是通过PC,平板,手机,都能拥有最完美的体验,
-									同时深度优化的SPA带来如丝般顺滑的游览体验.
+									class = "layout justify-center mt-4"
+								>
+									<div class = "headline text-xs-center"> {{ each.title }} </div>
+								</div>
+								<v-card-text class = "text-xs-center" >
+									{{ each.text }}
 								</v-card-text>
 							</v-card>
-						</v-flex>
-						<v-flex
-							xs12
-							md4>
-							<v-card class="elevation-0 transparent">
-								<v-card-text class="text-xs-center">
-									<v-icon
-										x-large
-										class="blue--text text--lighten-2">mdi-flash</v-icon>
-								</v-card-text>
-								<v-card-title
-									primary-title
-									class="layout justify-center">
-									<div class="headline">Fast and flexible</div>
-								</v-card-title>
-								<v-card-text>
-									借助于分布式的Osiris(奥西里斯)内核,可灵活的将判题任务分布至多台机器上,即使是最为基础的学生云服务器,也能轻松支撑数百人的比赛.
-								</v-card-text>
-							</v-card>
-						</v-flex>
-						<v-flex
-							xs12
-							md4>
-							<v-card class="elevation-0 transparent">
-								<v-card-text class="text-xs-center">
-									<v-icon
-										x-large
-										class="blue--text text--lighten-2">mdi-wrench</v-icon>
-								</v-card-text>
-								<v-card-title
-									primary-title
-									class="layout justify-center">
-									<div class="headline text-xs-center">Easily expandable</div>
-								</v-card-title>
-								<v-card-text>
-									Lutece基于Python的Django框架实现,借助于Python的海量第三方库,站在巨人的肩膀上实现任意的功能拓展,打造属于你自己的Lutece.
-								</v-card-text>
-							</v-card>
-						</v-flex>
-					</v-layout>
-				</v-container>
-			</v-flex>
+						</v-hover>
+					</v-flex>
+				</v-layout>
+			</v-container>
 		</v-layout>
 	</v-container>
 </template>
@@ -107,5 +78,25 @@
 <script>
 export default {
 	metaInfo() { return { title: 'Home' }; },
+	data: () => ({
+		cards: [
+			{
+				icon: 'mdi-material-design',
+				title: 'Material Design',
+				text: 'Design based on Google Material, easily to touch beautify',
+			},
+			{
+				icon: 'mdi-flash',
+				title: 'Fast and flexible',
+				text: 'Core drived by distributed judge Osiris, so powerful and amazing',
+			},
+			{
+				icon: 'mdi-wrench',
+				title: 'Easily expandable',
+				text: 'Construced by Python and Vue, stand on the shoulders of giants, to build your own Lutece',
+			},
+		],
+		cardHeight: 225,
+	}),
 };
 </script>

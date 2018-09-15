@@ -1,12 +1,12 @@
 <template>
 	<v-data-table
-		:items="statusItem"
-		:loading="isLoading"
-		:headers-length="8"
+		:items = "statusItem"
+		:loading = "isLoading"
+		:headers-length = "8"
 		hide-actions >
 		<template
-			slot="items"
-			slot-scope="props">
+			slot = "items"
+			slot-scope = "props">
 			<router-link
 				:to = "{name: 'StatusDetail', params: {pk: props.item.submissionId}}"
 				style = "cursor: pointer"
@@ -39,13 +39,13 @@
 					{{ props.item.judgeStatus }}
 					<span v-if="props.item.failedCase">#{{ props.item.failedCase }}</span>
 				</td>
-				<td class="text-xs-center">{{ props.item.timeCost }}</td>
-				<td class="text-xs-center">{{ props.item.memoryCost }}</td>
-				<td class="text-xs-center time">
+				<td class="text-xs-center hidden-sm-and-down">{{ props.item.timeCost }}</td>
+				<td class="text-xs-center hidden-sm-and-down">{{ props.item.memoryCost }}</td>
+				<td class="text-xs-center time hidden-sm-and-down">
 					<span class="humanize-time">{{ props.item.submitTime | moment("from") }}</span>
 					<span class="full-time">{{ props.item.submitTime | moment("Y-MM-DD HH:mm:ss") }}</span>
 				</td>
-				<td class="text-xs-center">{{ props.item.language }}</td>
+				<td class="text-xs-center hidden-sm-and-down">{{ props.item.language }}</td>
 			</router-link>
 		</template>
 		<template
@@ -64,7 +64,7 @@
 						type="number"
 						min="1"
 						step="1"
-						style="width: 50px"
+						style="width: 30px"
 					/>
 				</th>
 				<th
@@ -81,7 +81,7 @@
 						hide-details
 						clearable
 						label="User"
-						style="width: 80px"
+						style="width: 50px"
 						item-text="name"
 						dense
 					/>
@@ -101,7 +101,7 @@
 						hide-details
 						clearable
 						label="Problem"
-						style="width: 120px"
+						style="width: 80px"
 						item-text="name"
 						dense
 					/>
@@ -119,37 +119,37 @@
 						dense
 						clearable
 						offset-y
-						style="width: 180px"
+						style="width: 120px"
 					/>
 				</th>
 				<th
 					role = "columnheader"
 					scope = "col"
-					class = "column text-xs-center pt-3">
+					class = "column text-xs-center pt-3 hidden-sm-and-down">
 					Time (ms)
 				</th>
 				<th
 					role = "columnheader"
 					scope = "col"
-					class = "column text-xs-center pt-3">Memory (KiB)</th>
+					class = "column text-xs-center pt-3 hidden-sm-and-down">Memory (KiB)</th>
 				<th
 					role = "columnheader"
 					scope = "col"
-					class = "column text-xs-center pt-3">Submit Time</th>
+					class = "column text-xs-center pt-3 hidden-sm-and-down">Submit Time</th>
 				<th
 					role = "columnheader"
 					scope = "col"
-					class = "column text-xs-center">
+					class = "column text-xs-center hidden-sm-and-down">
 					<v-select
 						v-model = "filters.language"
 						:items = "languageItems"
-						label = "Language"
+						label = "Lang"
 						single-line
 						hide-details
 						dense
 						clearable
 						offset-y
-						style = "width: 100px"
+						style = "width: 60px"
 					/>
 				</th>
 			</tr>

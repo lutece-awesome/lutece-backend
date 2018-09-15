@@ -1,5 +1,7 @@
 <template>
-	<v-container>
+	<v-container
+		:class="{'pa-0': $vuetify.breakpoint.xsOnly }"
+	>
 		<v-layout
 			row
 			justify-center>
@@ -12,21 +14,21 @@
 						:class = "`elevation-${hover ? 4 : 1}`"
 					>
 						<StatusList
-							:status-item="submissionList"
-							:filters="filters"
-							:user-search="userSearch"
-							:problem-search="problemSearch"
-							:is-loading="isLoading"
+							:status-item = "submissionList"
+							:filters = "filters"
+							:user-search = "userSearch"
+							:problem-search = "problemSearch"
+							:is-loading = "isLoading"
 						/>
 					</v-card>
 				</v-hover>
 				<div
-					:class="{'mb-2': $vuetify.breakpoint.xsOnly}"
-					class="text-xs-center mt-3">
+					:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
+					class = "text-xs-center mt-3">
 					<v-pagination
-						ref="pagination"
-						v-model="page"
-						:length="maxpage"/>
+						ref = "pagination"
+						v-model = "page"
+						:length = "maxpage"/>
 				</div>
 			</v-flex>
 		</v-layout>

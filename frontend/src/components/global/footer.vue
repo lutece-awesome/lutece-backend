@@ -17,7 +17,8 @@
 					<div>
 						<a href = "https://github.com/LaPluses/Lutece">
 							<strong>
-								Lutece<sup>v2</sup>
+								<span class = "lutece"> Lutece </span>
+								<sup> v2 </sup>
 							</strong>
 						</a>
 						<span> Copyright (C) </span>

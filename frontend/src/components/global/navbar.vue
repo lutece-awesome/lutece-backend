@@ -1,19 +1,23 @@
 <template>
 	<div>
 		<v-navigation-drawer
-			v-model="drawer"
-			:width="240"
-			:mini-variant="$vuetify.breakpoint.mdOnly"
+			v-model = "drawer"
+			:width = "240"
+			:mini-variant = "$vuetify.breakpoint.mdOnly"
 			fixed
 			clipped
-			mobile-break-point="960"
+			mobile-break-point = "960"
 			app>
 			<v-toolbar
 				flat
-				class="hidden-sm-and-up">
+				class = "hidden-sm-and-up">
 				<v-list-tile >
 					<v-list-tile-content>
-						<v-list-tile-title class="title">Lutece</v-list-tile-title>
+						<v-list-tile-title class="title">
+							<span class = "lutece">
+								Lutece
+							</span>
+						</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-toolbar>
