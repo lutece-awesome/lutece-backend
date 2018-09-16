@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<v-btn
-			v-if="$store.state.user.payload && username == $store.state.user.payload.username"
-			:to="{name: 'UserSettings'}"
-			color="accent"
+			v-if = "$store.state.user.payload && username == $store.state.user.payload.username"
+			:to = "{name: 'UserSettings'}"
+			color = "accent"
 			dark
 			fab
 			fixed
@@ -24,77 +24,20 @@
 				<div v-else-if = "error" >An error occured</div>
 				<div v-else-if = "data" >
 					<v-container>
-
 						<v-layout
 							row
 							wrap
 						>
-							<v-flex xs12 >
-								<div
-									:class = "{'mb-2': $vuetify.breakpoint.xsOnly}"
-									class = "text-xs-center mt-2">
-									<v-avatar
-										size = "128"
-										class = "mt-2"
-									>
-										<img :src = "data.user.gravataremail" >
-									</v-avatar>
-									<h3 class = "mt-2"> {{ data.user.displayName }} </h3>
-								</div>
-								<v-card
-									:class = "{ 'smallprofilecard' : notxs }"
-									hover
-									class = "mt-2 profilecard"
-								>
-									<v-card-text>
-										<h3>
-											<v-icon class = "mdi-18px" >mdi-account </v-icon>
-											<span class = "ml-1"> Profile </span>
-										</h3>
-										<v-divider class = "mt-2 mb-2" />
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px">mdi-school</v-icon>
-											<span class = "ml-1"> {{ data.user.school }} </span>
-										</div>
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px">mdi-domain</v-icon>
-											<span class = "ml-1"> {{ data.user.company }} </span>
-										</div>
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px">mdi-map-marker</v-icon>
-											<span class = "ml-1"> {{ data.user.location }} </span>
-										</div>
-										<div class = "mb-1">
-											<v-tooltip bottom>
-												<span slot = "activator">
-													<v-icon class = "mdi-18px">mdi-flag-variant</v-icon>
-													<span class = "ml-1" >
-														{{ data.user.lastloginDate | moment("from") }}
-													</span>
-												</span>
-												<span>
-													Last visited in
-													{{ data.user.lastloginDate | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}
-												</span>
-											</v-tooltip>
-										</div>
-										<div>
-											<v-tooltip bottom>
-												<span slot = "activator">
-													<v-icon class = "mdi-18px">mdi-emoticon-cool</v-icon>
-													<span class = "ml-1">
-														{{ data.user.joinedDate | moment("from") }}
-													</span>
-												</span>
-												<span>
-													Joined in {{ data.user.lastloginDate | moment( "MMMM Do, YYYY" ) }}
-												</span>
-											</v-tooltip>
-										</div>
-									</v-card-text>
-								</v-card>
+							<v-flex
+								xs12
+								sm8
+								md6
+							>
+								<UserProfile :user = "data.user" />
 							</v-flex>
 						</v-layout>
+					</v-container>
+					<v-container>
 
 						<v-layout
 							row
@@ -206,6 +149,7 @@ import { CalendarHeatmap } from 'vue-calendar-heatmap';
 import LoadingSpinner from '@/components/basic/loading';
 import DoughnutChart from '@/components/chart/doughnut';
 import LineChart from '@/components/chart/line';
+import UserProfile from '@/components/user/detail/profile';
 
 export default {
 	metaInfo() { return { title: this.username }; },
@@ -215,6 +159,7 @@ export default {
 		LoadingSpinner,
 		DoughnutChart,
 		LineChart,
+		UserProfile,
 	},
 
 	data: () => ({

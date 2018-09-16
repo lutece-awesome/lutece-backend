@@ -80,7 +80,7 @@ export default {
 			{
 				icon: 'mdi-wrench',
 				title: 'Easily expandable',
-				text: 'Construced by Python and Vue, stand on the shoulders of giants, to build your own Lutece',
+				text: 'Developed by Python and Vue, stand on the shoulders of giants, to build your own Lutece',
 			},
 		],
 	}),
