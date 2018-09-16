@@ -13,6 +13,7 @@ query ProfileGQL($username: String!) {
 		tried
 		joinedDate
 		lastloginDate
+		rank
 		submissionStatistics{
 			accept
 			reject

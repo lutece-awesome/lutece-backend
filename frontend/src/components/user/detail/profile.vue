@@ -27,10 +27,7 @@
 				<v-flex
 					:class = "{'xs12': $vuetify.breakpoint.xsOnly, 'xs7': !$vuetify.breakpoint.xsOnly }"
 					class = "pl-4">
-					<h3
-						:class = "{'mt-3': $vuetify.breakpoint.xsOnly}"
-						class = "headline text-xs-center"
-					>
+					<h3 class = "headline text-xs-center mt-3">
 						{{ user.displayName }}
 					</h3>
 					<v-divider class = "mt-2" />

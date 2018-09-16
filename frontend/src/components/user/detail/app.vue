@@ -23,6 +23,7 @@
 				</div>
 				<div v-else-if = "error" >An error occured</div>
 				<div v-else-if = "data" >
+
 					<v-container>
 						<v-layout
 							row
@@ -30,15 +31,30 @@
 						>
 							<v-flex
 								xs12
-								sm8
-								md6
+								sm7
+								style = "min-height: 164px;"
 							>
-								<UserProfile :user = "data.user" />
+								<UserProfile :user = "data.user"/>
+							</v-flex>
+							<v-flex
+								:class = "{
+									'mt-4': $vuetify.breakpoint.xsOnly,
+									'pl-4': !$vuetify.breakpoint.xsOnly
+								}"
+								xs12
+								sm5
+								style = "min-height: 164px;"
+							>
+								<UserRank
+									:rank = "data.user.rank"
+									:solved = "data.user.solved"
+									:tried = "data.user.tried"
+								/>
 							</v-flex>
 						</v-layout>
 					</v-container>
-					<v-container>
 
+					<v-container>
 						<v-layout
 							row
 							wrap
@@ -150,6 +166,7 @@ import LoadingSpinner from '@/components/basic/loading';
 import DoughnutChart from '@/components/chart/doughnut';
 import LineChart from '@/components/chart/line';
 import UserProfile from '@/components/user/detail/profile';
+import UserRank from '@/components/user/detail/rank';
 
 export default {
 	metaInfo() { return { title: this.username }; },
@@ -160,6 +177,7 @@ export default {
 		DoughnutChart,
 		LineChart,
 		UserProfile,
+		UserRank,
 	},
 
 	data: () => ({
