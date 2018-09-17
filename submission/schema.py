@@ -50,8 +50,13 @@ class SubmissionListType(graphene.ObjectType):
     submissionList = graphene.List(SubmissionType)
 
 class SubmissionStatistics( graphene.ObjectType ):
-    accept = graphene.Int()
-    reject = graphene.Int()
+    ac = graphene.Int()
+    tle = graphene.Int()
+    ce = graphene.Int()
+    wa = graphene.Int()
+    re = graphene.Int()
+    ole = graphene.Int()
+    mle = graphene.Int()
 
     def __init__( self , * args , ** kwargs ):
         if 'user' in kwargs:
@@ -59,11 +64,27 @@ class SubmissionStatistics( graphene.ObjectType ):
         else:
             raise RuntimeError( 'User field is required' )
 
-    def resolve_accept( self , info , * args , ** kwargs ):
+    def resolve_ac( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.AC.value.full  ).count()
+
+    def resolve_tle( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.TLE.value.full  ).count()
     
-    def resolve_reject( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user ).count() - self.resolve_accept( info )
+    def resolve_ce( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.CE.value.full  ).count()
+    
+    def resolve_wa( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.WA.value.full  ).count()
+
+    def resolve_re( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.RE.value.full  ).count()
+
+    def resolve_ole( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.OLE.value.full  ).count()
+
+    def resolve_mle( self , info , * args , ** kwargs ):
+        return Submission.objects.filter( user = self.user , judge_status = Judge_result.MLE.value.full  ).count()
+    
 
 
 class SubmitSolution(graphene.Mutation):

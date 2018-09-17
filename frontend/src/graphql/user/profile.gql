@@ -15,8 +15,13 @@ query ProfileGQL($username: String!) {
 		lastloginDate
 		rank
 		submissionStatistics{
-			accept
-			reject
+			ac
+			tle
+			ce
+			wa
+			re
+			ole
+			mle
 		}
 	}
 }

@@ -31,7 +31,7 @@
 						>
 							<v-flex
 								xs12
-								sm7
+								sm6
 								style = "min-height: 164px;"
 							>
 								<UserProfile :user = "data.user"/>
@@ -42,7 +42,7 @@
 									'pl-4': !$vuetify.breakpoint.xsOnly
 								}"
 								xs12
-								sm5
+								sm6
 								style = "min-height: 164px;"
 							>
 								<UserRank
@@ -60,74 +60,16 @@
 							wrap
 						>
 
-							<v-flex xs12>
-								<v-card
-									:class = "{ 'smallchartcard' : notxs }"
-									hover
-									class = "mt-4 chart"
-									style = "cursor:default; margin: 0 auto;"
-								>
-									<v-card-text>
-										<h3>
-											<v-icon class = "mdi-18px" >mdi-octagram-outline </v-icon>
-											<span class = "ml-1">  Summary </span>
-										</h3>
-										<v-divider class = "mt-2 mb-2" />
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px" >mdi-chart-bar</v-icon>
-											<span class = "ml-1 subheader" > Solved Problem </span>
-											<span
-												style = "float: right"
-											>
-												<span style = "color:green" > {{ data.user.solved }} </span>
-												<span> / </span>
-												<span style = "color:red" > {{ data.user.tried }} </span>
-											</span>
-										</div>
-
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px" >mdi-view-list</v-icon>
-											<span class = "ml-1 subheader" > Submission Analysis </span>
-											<span
-												style = "float: right"
-											>
-												<span style = "color:green" >
-													{{ data.user.submissionStatistics.accept }}
-												</span>
-												<span> / </span>
-												<span style = "color:red" >
-													{{ data.user.submissionStatistics.accept
-													+ data.user.submissionStatistics.reject }}
-												</span>
-											</span>
-										</div>
-
-										<div class = "mb-1" >
-											<v-icon class = "mdi-18px" >mdi-check-all</v-icon>
-											<span class = "ml-1 subheader" > Success Ratio </span>
-											<span
-												style = "float: right"
-											>
-												<span style = "color:green" >
-													{{ successRatio(
-														data.user.submissionStatistics.accept ,
-														data.user.submissionStatistics.reject )
-													}}%
-												</span>
-											</span>
-										</div>
-
-										<v-divider class = "mt-2 mb-2" />
-
-										<DoughnutChart
-											:data = "doughnutData"
-											:options = "doughnutOptions"
-										/>
-									</v-card-text>
-								</v-card>
+							<v-flex
+								xs12
+								sm6
+							>
+								<UserSummary :statistics = "data.user.submissionStatistics"/>
 							</v-flex>
 
-							<v-flex xs12>
+							<!-- <v-flex
+								xs12
+								sm6>
 								<v-card
 									:class = "{ 'smallchartcard' : notxs }"
 									hover
@@ -146,7 +88,7 @@
 										/>
 									</v-card-text>
 								</v-card>
-							</v-flex>
+							</v-flex> -->
 
 
 						</v-layout>
@@ -163,10 +105,10 @@
 
 import { CalendarHeatmap } from 'vue-calendar-heatmap';
 import LoadingSpinner from '@/components/basic/loading';
-import DoughnutChart from '@/components/chart/doughnut';
 import LineChart from '@/components/chart/line';
 import UserProfile from '@/components/user/detail/profile';
 import UserRank from '@/components/user/detail/rank';
+import UserSummary from '@/components/user/detail/summary';
 
 export default {
 	metaInfo() { return { title: this.username }; },
@@ -174,19 +116,14 @@ export default {
 	components: {
 		CalendarHeatmap,
 		LoadingSpinner,
-		DoughnutChart,
 		LineChart,
 		UserProfile,
 		UserRank,
+		UserSummary,
 	},
 
 	data: () => ({
-		doughnutData: null,
 		barData: null,
-		doughnutOptions: {
-			responsive: true,
-			maintainAspectRatio: false,
-		},
 		lineOptions: {
 			responsive: true,
 			maintainAspectRatio: false,
@@ -207,21 +144,7 @@ export default {
 
 	methods: {
 		onResult(result) {
-			const ac = result.data.user.submissionStatistics.accept;
-			const rj = result.data.user.submissionStatistics.reject;
-			this.doughnutData = {
-				labels: ['Accepted', 'Rejected'],
-				datasets: [
-					{
-						backgroundColor: [
-							'#21ba45',
-							'red',
-						],
-						data: [ac, rj],
-					},
-				],
-			};
-
+			console.log(result);
 			this.lineData = {
 				labels: ['1st, Aug', '2st Feb', '3nd Jan', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug', '1st, Aug'],
 				datasets: [
@@ -233,31 +156,6 @@ export default {
 				],
 			};
 		},
-		successRatio(ac, rj) {
-			const cnt = ac + rj;
-			if (cnt === 0) return 0.0;
-			return ((100.0 * ac) / cnt).toFixed(1);
-		},
 	},
 };
 </script>
-
-
-<style scoped>
-	.subheader{
-		font-weight: 500;
-	}
-
-	.profilecard{
-		cursor: default;
-		margin: 0 auto;
-	}
-
-	.smallprofilecard{
-		width: 50%;
-	}
-
-	.smallchartcard{
-		width: 60%;
-	}
-</style>
