@@ -23,15 +23,67 @@ const JudgeResult = {
 		'Output Limit Exceeded': 8,
 		'Memory Limit Exceeded': 9,
 		'Judger Error': 10,
+		PR: 1,
+		PD: 0,
+		AC: 2,
+		RN: 3,
+		CE: 4,
+		WA: 5,
+		RE: 6,
+		TLE: 7,
+		OLE: 8,
+		MLE: 9,
+		JE: 10,
+	},
+
+	backgroundColor: {
+		2: 'rgba(0, 255, 127, 0.2)',
+		4: 'rgba(54, 162, 235, 0.2)',
+		5: 'rgba(255, 99, 132, 0.2)',
+		6: 'rgba(255, 206, 86, 0.2)',
+		7: 'rgba(75, 192, 192, 0.2)',
+		8: 'rgba(153, 102, 255, 0.2)',
+		9: 'rgba(255, 159, 64, 0.2)',
+	},
+
+	borderColor: {
+		2: 'rgba(0, 255, 127, 1)',
+		4: 'rgba(54, 162, 235, 1)',
+		5: 'rgba(255, 99, 132, 1)',
+		6: 'rgba(255, 206, 86, 1)',
+		7: 'rgba(75, 192, 192, 1)',
+		8: 'rgba(153, 102, 255, 1)',
+		9: 'rgba(255, 159, 64, 1)',
+	},
+
+	short: {
+		0: 'PD',
+		1: 'PR',
+		2: 'AC',
+		3: 'RN',
+		4: 'CE',
+		5: 'WA',
+		6: 'RE',
+		7: 'TLE',
+		8: 'OLE',
+		9: 'MLE',
+		10: 'JE',
+	},
+
+	toString: {
+		0: 'Pending',
+		1: 'Preparing',
+		2: 'Accepted',
+		3: 'Running',
+		4: 'Compile Error',
+		5: 'Wrong Answer',
+		6: 'Runtime Error',
+		7: 'Time Limit Exceeded',
+		8: 'Output Limit Exceeded',
+		9: 'Memory Limit Exceeded',
+		10: 'Judger Error',
 	},
 };
 
-const JudgeResultUtil = {
-	JudgeResult(result) {
-		return JudgeResult.valueOf(result);
-	},
 
-};
-
-
-export default JudgeResultUtil;
+export default JudgeResult;

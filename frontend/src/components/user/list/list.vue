@@ -32,11 +32,7 @@
 					<span style = "color:red" > {{ props.item.tried }} </span>
 				</td>
 				<td class = "text-xs-center">
-					{{
-						successRatio(
-							props.item.submissionStatistics.accept ,
-							props.item.submissionStatistics.reject )
-					}} %
+					{{ ( props.item.submissionStatistics.Ratio * 100 ).toFixed( 2 ) }} %
 				</td>
 			</router-link>
 
@@ -55,6 +51,10 @@ export default {
 		isLoading: {
 			type: Boolean,
 			default: false,
+		},
+		Ratio: {
+			type: Number,
+			default: 0,
 		},
 	},
 	data: () => ({
@@ -83,10 +83,6 @@ export default {
 		],
 	}),
 	methods: {
-		successRatio(ac, rj) {
-			if (ac + rj === 0) return '0.00';
-			return ((ac / (ac + rj)) * 100.0).toFixed(2);
-		},
 		getRank(rk) {
 			let s = String(rk);
 			if (s.length < 2) s = `0${s}`;

@@ -15,13 +15,13 @@ query ProfileGQL($username: String!) {
 		lastloginDate
 		rank
 		submissionStatistics{
-			ac
-			tle
-			ce
-			wa
-			re
-			ole
-			mle
+			AC
+			TLE
+			CE
+			WA
+			RE
+			OLE
+			MLE
 		}
 	}
 }

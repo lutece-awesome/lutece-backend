@@ -50,13 +50,14 @@ class SubmissionListType(graphene.ObjectType):
     submissionList = graphene.List(SubmissionType)
 
 class SubmissionStatistics( graphene.ObjectType ):
-    ac = graphene.Int()
-    tle = graphene.Int()
-    ce = graphene.Int()
-    wa = graphene.Int()
-    re = graphene.Int()
-    ole = graphene.Int()
-    mle = graphene.Int()
+    AC = graphene.Int()
+    TLE = graphene.Int()
+    CE = graphene.Int()
+    WA = graphene.Int()
+    RE = graphene.Int()
+    OLE = graphene.Int()
+    MLE = graphene.Int()
+    Ratio = graphene.Float()
 
     def __init__( self , * args , ** kwargs ):
         if 'user' in kwargs:
@@ -64,28 +65,31 @@ class SubmissionStatistics( graphene.ObjectType ):
         else:
             raise RuntimeError( 'User field is required' )
 
-    def resolve_ac( self , info , * args , ** kwargs ):
+    def resolve_AC( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.AC.value.full  ).count()
 
-    def resolve_tle( self , info , * args , ** kwargs ):
+    def resolve_TLE( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.TLE.value.full  ).count()
     
-    def resolve_ce( self , info , * args , ** kwargs ):
+    def resolve_CE( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.CE.value.full  ).count()
     
-    def resolve_wa( self , info , * args , ** kwargs ):
+    def resolve_WA( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.WA.value.full  ).count()
 
-    def resolve_re( self , info , * args , ** kwargs ):
+    def resolve_RE( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.RE.value.full  ).count()
 
-    def resolve_ole( self , info , * args , ** kwargs ):
+    def resolve_OLE( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.OLE.value.full  ).count()
 
-    def resolve_mle( self , info , * args , ** kwargs ):
+    def resolve_MLE( self , info , * args , ** kwargs ):
         return Submission.objects.filter( user = self.user , judge_status = Judge_result.MLE.value.full  ).count()
     
-
+    def resolve_Ratio( self , info , * args , ** kwargs ):
+        AC = self.resolve_AC( info , * args , ** kwargs )
+        ALL = Submission.objects.filter( user = self.user ).count()
+        return AC / ALL if ALL else 0
 
 class SubmitSolution(graphene.Mutation):
 

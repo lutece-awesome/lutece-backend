@@ -8,8 +8,7 @@ query UserListGQL($page: Int!, $filter: String) {
 			solved
 			tried
 			submissionStatistics{
-				accept
-				reject
+				Ratio
 			}
 			rank
 		}

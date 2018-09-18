@@ -44,11 +44,15 @@
 								</span>
 							</span>
 						</div>
-
-						<Bar
-							:data = "data"
-							:options = "options"
-						/>
+						<div
+							v-show = "all > 0"
+							class = "mt-4"
+						>
+							<Bar
+								:data = "data"
+								:options = "options"
+							/>
+						</div>
 					</v-flex>
 				</v-layout>
 			</v-container>
@@ -60,6 +64,7 @@
 <script>
 
 import Bar from '@/components/chart/bar';
+import JudgeResult from '@/plugins/judge-result';
 
 export default {
 	components: {
@@ -72,7 +77,25 @@ export default {
 		},
 		options: {
 			type: Object,
-			default: () => ({}),
+			default: () => ({
+				legend: {
+					display: false,
+				},
+				scales: {
+					xAxes: [{
+						display: false,
+						maxBarThickness: 64,
+					}],
+					yAxes: [{
+						display: true,
+						ticks: {
+							suggestedMin: 0,
+							suggestedMax: 6,
+						},
+					}],
+					connectNulls: true,
+				},
+			}),
 		},
 	},
 	data: () => ({
@@ -80,7 +103,7 @@ export default {
 	}),
 	computed: {
 		accept() {
-			return this.statistics.ac;
+			return this.statistics.AC;
 		},
 		all() {
 			let sum = 0;
@@ -93,13 +116,48 @@ export default {
 			return sum;
 		},
 	},
-	mounted() {
+	created() {
+		const label = [];
+		const data = [];
+		const backgroundColor = [];
+		const borderColor = [];
 		Object.keys(this.statistics).forEach((key) => {
 			const value = this.statistics[key];
-			if (Number.isInteger(value)) {
-
+			if (Number.isInteger(value) && value > 0) {
+				const result = JudgeResult.valueOf[String(key)];
+				label.push(JudgeResult.toString[result]);
+				data.push(value);
+				backgroundColor.push(JudgeResult.backgroundColor[result]);
+				borderColor.push(JudgeResult.borderColor[result]);
 			}
 		});
+		const index = [];
+		for (let i = 0; i < label.length; i += 1) {
+			index.push(i);
+		}
+		index.sort((i, j) => (
+			data[i] < data[j] || (data[i] === data[j] && i > j)
+		));
+		const mLabel = [];
+		const mData = [];
+		const mBackgroundColor = [];
+		const mBorderColor = [];
+		Object.keys(index).forEach((key) => {
+			mLabel.push(label[index[key]]);
+			mData.push(data[index[key]]);
+			mBackgroundColor.push(backgroundColor[index[key]]);
+			mBorderColor.push(borderColor[index[key]]);
+		});
+		this.data = {
+			labels: mLabel,
+			datasets: [{
+				label: 'Statistics',
+				backgroundColor: mBackgroundColor,
+				borderColor: mBorderColor,
+				borderWidth: 1.2,
+				data: mData,
+			}],
+		};
 	},
 	methods: {
 		successRatio(ac, all) {
