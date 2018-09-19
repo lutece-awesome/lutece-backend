@@ -92,7 +92,10 @@
 						>
 							<v-icon
 								class = "mr-2"
-								flat >{{ item.icon }}</v-icon>
+								flat
+							>
+								{{ item.icon }}
+							</v-icon>
 							<v-list-tile-content>
 								<v-list-tile-title>{{ item.label }}</v-list-tile-title>
 							</v-list-tile-content>

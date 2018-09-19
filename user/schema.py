@@ -29,6 +29,7 @@ class UserType(DjangoObjectType):
     lastlogin_date = graphene.DateTime()
     submission_statistics = graphene.Field( SubmissionStatistics )
     rank = graphene.Int()
+    userall = graphene.Int()
 
     def resolve_joined_date( self , info , * args , ** kwargs ):
         return self.date_joined.date()
@@ -79,6 +80,8 @@ class UserType(DjangoObjectType):
         from django.db.models import Q
         return User.objects.filter( show = True ).filter( Q( solved__gt = self.solved ) | Q( solved__exact = self.solved , pk__lt = self.pk ) ).count() + 1
 
+    def resolve_userall( self , info , * args , ** kwargs ):
+        return User.objects.filter( show = True ).count()
 
 class UserListType(graphene.ObjectType):
     class Meta:

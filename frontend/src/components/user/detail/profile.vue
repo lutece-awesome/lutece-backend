@@ -1,90 +1,118 @@
 <template>
-	<v-hover>
-		<v-card
-			slot-scope = "{ hover }"
-			:class = "`elevation-${hover ? 4 : 1}`"
-			class = "pl-3 pr-3 pt-3 pb-3">
-			<v-layout
-				row
-				wrap>
-				<v-flex
-					:class = "{'xs12': $vuetify.breakpoint.xsOnly, 'xs5': !$vuetify.breakpoint.xsOnly }"
-					text-xs-center>
-					<v-layout
-						fill-height
-						align-center
-						justify-center
-						ma-0
-					>
-						<v-img
-							:src = "user.gravataremail"
-							max-height = "160"
-							class = "pl-4 pr-4 pu-4 pb-4"
-							contain
-						/>
-					</v-layout>
-				</v-flex>
-				<v-flex
-					:class = "{'xs12': $vuetify.breakpoint.xsOnly, 'xs7': !$vuetify.breakpoint.xsOnly }"
-					class = "pl-4">
-					<h3 class = "headline text-xs-center mt-3">
-						{{ user.displayName }}
-					</h3>
-					<v-divider class = "mt-2" />
-					<div class = "mt-2" >
-						<v-icon class = "mdi-18px">mdi-school</v-icon>
-						<span class = "ml-1"> {{ user.school }} </span>
-					</div>
-					<div class = "mt-2" >
-						<v-icon class = "mdi-18px">mdi-domain</v-icon>
-						<span class = "ml-1"> {{ user.company }} </span>
-					</div>
-					<div class = "mt-2" >
-						<v-icon class = "mdi-18px">mdi-map-marker</v-icon>
-						<span class = "ml-1"> {{ user.location }} </span>
-					</div>
-					<div class = "mt-2">
-						<v-tooltip bottom>
-							<span slot = "activator">
-								<v-icon class = "mdi-18px">mdi-flag-variant</v-icon>
-								<span class = "ml-1" >
-									{{ user.lastloginDate | moment("from") }}
-								</span>
-							</span>
-							<span>
-								Last visited in
-								{{ user.lastloginDate | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}
-							</span>
-						</v-tooltip>
-					</div>
-					<div class = "mt-2" >
-						<v-tooltip bottom>
-							<span slot = "activator">
-								<v-icon class = "mdi-18px">mdi-emoticon-cool</v-icon>
-								<span class = "ml-1">
-									{{ user.joinedDate | moment("from") }}
-								</span>
-							</span>
-							<span>
-								Joined in {{ user.lastloginDate | moment( "MMMM Do, YYYY" ) }}
-							</span>
-						</v-tooltip>
-					</div>
-				</v-flex>
-			</v-layout>
-			<v-divider class = "mt-2" />
-			<v-card-text>
-				<div class = "about">
-					{{ user.about }}
-				</div>
-			</v-card-text>
-		</v-card>
-	</v-hover>
+	<div>
+		<v-layout
+			row
+			wrap>
+			<v-flex xs12>
+				<v-img
+					:src = "user.gravataremail"
+					height = "200"
+					class = "pl-4 pr-4 pu-4 pb-4"
+					contain
+				>
+					<LoadingSpinner slot = "placeholder" />
+				</v-img>
+			</v-flex>
+			<v-flex
+				xs12
+				class = "mt-3" >
+				<v-hover>
+					<v-card
+						slot-scope = "{ hover }"
+						:class = "`elevation-${hover ? 4 : 1}`"
+						class = "pl-3 pr-3 pt-3 pb-3">
+						<div class = "headline font-weight-medium ml-1" > {{ user.displayName }} </div>
+						<v-divider class = "mt-2 mb-2" />
+						<table class="profile-table">
+							<tr>
+								<td>Last Seen</td>
+								<td>
+									<v-tooltip bottom>
+										<span slot = "activator">
+											<span>
+												{{ user.lastloginDate | moment("from") }}
+											</span>
+										</span>
+										<span>
+											{{ user.lastloginDate | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}
+										</span>
+									</v-tooltip>
+								</td>
+							</tr>
+							<tr>
+								<td>Registered</td>
+								<td>
+									<v-tooltip bottom>
+										<span slot = "activator">
+											<span>
+												{{ user.joinedDate | moment("from") }}
+											</span>
+										</span>
+										<span>
+											{{ user.lastloginDate | moment( "MMMM Do, YYYY" ) }}
+										</span>
+									</v-tooltip>
+								</td>
+							</tr>
+							<tr v-if = "user.school" >
+								<td>School</td>
+								<td>{{ user.school }}</td>
+							</tr>
+							<tr v-if = "user.company" >
+								<td>Company</td>
+								<td>{{ user.company }}</td>
+							</tr>
+							<tr v-if = "user.location" >
+								<td>Location</td>
+								<td>{{ user.location }}</td>
+							</tr>
+							<tr v-if = "user.about">
+								<td>Society</td>
+								<td>
+									<img
+										:src = "require('@/assets/github.svg')"
+										height = "24"
+									>
+									<img
+										:src = "require('@/assets/zhihu.svg')"
+										height = "24"
+										class = "ml-2"
+									>
+									<img
+										:src = "require('@/assets/weibo.svg')"
+										height = "24"
+										class = "ml-2"
+									>
+									<img
+										:src = "require('@/assets/linkedin.svg')"
+										height = "24"
+										class = "ml-2"
+									>
+								</td>
+							</tr>
+							<tr v-if = "user.about">
+								<td>About</td>
+								<td>{{ user.about }}</td>
+							</tr>
+						</table>
+					</v-card>
+				</v-hover>
+			</v-flex>
+		</v-layout>
+	</div>
 </template>
 
 
 <script>
+
+import LoadingSpinner from '@/components/basic/loadingspinner';
+
 export default {
+
+	components: {
+		LoadingSpinner,
+	},
+
 	props: {
 		user: {
 			type: Object,

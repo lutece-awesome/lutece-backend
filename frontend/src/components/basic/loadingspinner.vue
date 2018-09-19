@@ -1,31 +1,22 @@
 <template>
-	<v-container align-center>
-		<v-layout
-			row
-			wrap >
-			<v-flex xs12>
-				<div
-					:style = "{ 'padding-top': height + 'px'}"
-					class = "text-xs-center"
-				>
-					<v-progress-circular
-						:size = "size"
-						indeterminate
-						color = "primary"
-					/>
-				</div>
-			</v-flex>
-		</v-layout>
-	</v-container>
+	<v-layout
+		slot="placeholder"
+		fill-height
+		align-center
+		justify-center
+		ma-0
+	>
+		<v-progress-circular
+			:size = "size"
+			indeterminate
+			color = "primary"
+		/>
+	</v-layout>
 </template>
 
 <script>
 export default {
 	props: {
-		height: {
-			type: String,
-			default: '100',
-		},
 		size: {
 			type: Number,
 			default: 30,

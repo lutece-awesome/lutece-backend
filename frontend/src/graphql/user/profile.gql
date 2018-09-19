@@ -14,6 +14,7 @@ query ProfileGQL($username: String!) {
 		joinedDate
 		lastloginDate
 		rank
+		userall
 		submissionStatistics{
 			AC
 			TLE

@@ -8,7 +8,6 @@
 				<v-layout
 					row
 					wrap>
-
 					<v-flex xs12>
 						<h3>
 							<v-icon class = "mdi-18px" >mdi-octagram-outline </v-icon>
@@ -17,33 +16,59 @@
 						<v-divider class = "mt-2 mb-3" />
 					</v-flex>
 					<v-flex xs12>
-						<div class = "mb-1" >
-							<v-icon class = "mdi-18px" >mdi-view-list</v-icon>
-							<span class = "ml-1 subheader" > Total Submissions </span>
-							<span
-								style = "float: right"
-							>
-								<span style = "color:green" >
-									{{ accept }}
-								</span>
-								<span> / </span>
-								<span style = "color:red" >
-									{{ all }}
-								</span>
-							</span>
-						</div>
+						<table class="summary-table">
+							<tr>
+								<td>
+									<v-icon class = "mdi-18px" >mdi-chart-line </v-icon>
+									<span class = "ml-1" > Rank </span>
+								</td>
+								<td class = "primary--text">
+									<span class = "success--text" > {{ user.rank }} </span>
+									<span> / </span>
+									<span class = "error--text" > {{ user.userall }} </span>
+								</td>
+							</tr>
 
-						<div class = "mb-1 mt-1" >
-							<v-icon class = "mdi-18px" >mdi-check-all</v-icon>
-							<span class = "ml-1 subheader" > Success Ratio </span>
-							<span
-								style = "float: right"
-							>
-								<span style = "color:green" >
+							<tr>
+								<td>
+									<v-icon class = "mdi-18px" >mdi-lightbulb-on-outline </v-icon>
+									<span class = "ml-1" > Problem </span>
+								</td>
+								<td class = "primary--text">
+									<span class = "success--text" > {{ user.solved }} </span>
+									<span> / </span>
+									<span class = "error--text" > {{ user.tried }} </span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<v-icon class = "mdi-18px" >mdi-poll</v-icon>
+									<span class = "ml-1" > Submissions </span>
+								</td>
+								<td>
+									<span class = "success--text" >
+										{{ accept }}
+									</span>
+									<span> / </span>
+									<span class = "error--text" >
+										{{ all }}
+									</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									<v-icon class = "mdi-18px" >mdi-check </v-icon>
+									<span class = "ml-1" > Ratio </span>
+								</td>
+								<td class = "success--text" >
 									{{ successRatio( accept , all ) }} %
-								</span>
-							</span>
-						</div>
+								</td>
+							</tr>
+
+						</table>
+
 						<div
 							v-show = "all > 0"
 							class = "mt-4"
@@ -51,6 +76,7 @@
 							<Bar
 								:data = "data"
 								:options = "options"
+								style = "height: 300px"
 							/>
 						</div>
 					</v-flex>
@@ -71,7 +97,7 @@ export default {
 		Bar,
 	},
 	props: {
-		statistics: {
+		user: {
 			type: Object,
 			default: null,
 		},
@@ -81,6 +107,7 @@ export default {
 				legend: {
 					display: false,
 				},
+				maintainAspectRatio: false,
 				scales: {
 					xAxes: [{
 						display: false,
@@ -100,6 +127,7 @@ export default {
 	},
 	data: () => ({
 		data: null,
+		statistics: null,
 	}),
 	computed: {
 		accept() {
@@ -117,6 +145,7 @@ export default {
 		},
 	},
 	created() {
+		this.statistics = this.user.submissionStatistics;
 		const label = [];
 		const data = [];
 		const backgroundColor = [];
