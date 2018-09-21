@@ -13,7 +13,7 @@
 							<v-icon class = "mdi-18px" >mdi-octagram-outline </v-icon>
 							<span class = "ml-1">  Summary </span>
 						</h3>
-						<v-divider class = "mt-2 mb-3" />
+						<v-divider class = "mt-2 mb-2" />
 					</v-flex>
 					<v-flex xs12>
 						<table class="summary-table">
@@ -22,10 +22,12 @@
 									<v-icon class = "mdi-18px" >mdi-chart-line </v-icon>
 									<span class = "ml-1" > Rank </span>
 								</td>
-								<td class = "primary--text">
-									<span class = "success--text" > {{ user.rank }} </span>
-									<span> / </span>
-									<span class = "error--text" > {{ user.userall }} </span>
+								<td>
+									<div class = "green--text text--lighten-2 summaryfont">
+										<span> {{ user.rank }} </span>
+										<span class = "separate" > / </span>
+										<span> {{ user.userall }} </span>
+									</div>
 								</td>
 							</tr>
 
@@ -34,10 +36,12 @@
 									<v-icon class = "mdi-18px" >mdi-lightbulb-on-outline </v-icon>
 									<span class = "ml-1" > Problem </span>
 								</td>
-								<td class = "primary--text">
-									<span class = "success--text" > {{ user.solved }} </span>
-									<span> / </span>
-									<span class = "error--text" > {{ user.tried }} </span>
+								<td>
+									<div class = "light-blue--text text--lighten-2 summaryfont">
+										<span> {{ user.solved }} </span>
+										<span class = "separate" > / </span>
+										<span> {{ user.tried }} </span>
+									</div>
 								</td>
 							</tr>
 
@@ -47,13 +51,11 @@
 									<span class = "ml-1" > Submissions </span>
 								</td>
 								<td>
-									<span class = "success--text" >
-										{{ accept }}
-									</span>
-									<span> / </span>
-									<span class = "error--text" >
-										{{ all }}
-									</span>
+									<div class = "orange--text summaryfont text--lighten-2">
+										<span> {{ accept }} </span>
+										<span class = "separate" > / </span>
+										<span> {{ all }} </span>
+									</div>
 								</td>
 							</tr>
 
@@ -62,8 +64,10 @@
 									<v-icon class = "mdi-18px" >mdi-check </v-icon>
 									<span class = "ml-1" > Ratio </span>
 								</td>
-								<td class = "success--text" >
-									{{ successRatio( accept , all ) }} %
+								<td >
+									<div class = "indigo--text text--lighten-2 summaryfont">
+										<span> {{ successRatio( accept , all ) }} % </span>
+									</div>
 								</td>
 							</tr>
 
@@ -196,3 +200,13 @@ export default {
 	},
 };
 </script>
+
+<style scoped>
+	.summaryfont{
+		font-weight: 600;
+	}
+	.separate{
+		margin-left: 2px;
+		margin-right: 2px;
+	}
+</style>

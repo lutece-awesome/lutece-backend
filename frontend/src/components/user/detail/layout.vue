@@ -5,14 +5,19 @@
 			wrap
 			justify-center
 		>
-			<v-flex xs4>
-				<user-profile :user = "user" />
-			</v-flex>
 			<v-flex
-				xs6
-				class = "ml-4"
+				xs12
+				sm10
+				md8
+				lg6
 			>
-				<user-summary :user = "user" />
+				<user-profile :user = "user" />
+				<user-summary
+					:user = "user"
+					class = "mt-4" />
+				<user-solved
+					:user = "user"
+					class = "mt-4" />
 			</v-flex>
 		</v-layout>
 	</v-container>
@@ -22,11 +27,13 @@
 
 import UserProfile from '@/components/user/detail/profile';
 import UserSummary from '@/components/user/detail/summary';
+import UserSolved from '@/components/user/detail/solved';
 
 export default {
 	components: {
 		UserProfile,
 		UserSummary,
+		UserSolved,
 	},
 
 	props: {

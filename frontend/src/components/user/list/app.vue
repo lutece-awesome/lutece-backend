@@ -29,6 +29,7 @@
 								>
 									<UserList
 										:user-item = "data.userList.userList"
+										:is-loading = "loading"
 									/>
 								</v-card>
 							</v-hover>

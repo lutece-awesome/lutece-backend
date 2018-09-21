@@ -30,14 +30,7 @@
 							<LoadingSpinner v-if = "loading" />
 							<div v-else-if = "error" >An error occured</div>
 							<div v-else-if = "data">
-								<layout-small
-									v-if = "$vuetify.breakpoint.smAndDown"
-									:user = "data.user"
-								/>
-								<layout-big
-									v-else
-									:user = "data.user"
-								/>
+								<Layout :user = "data.user"/>
 							</div>
 						</template>
 					</ApolloQuery>
@@ -51,16 +44,14 @@
 <script>
 
 import LoadingSpinner from '@/components/basic/loading';
-import LayoutSmall from '@/components/user/detail/layout_small';
-import LayoutBig from '@/components/user/detail/layout_big';
+import Layout from '@/components/user/detail/layout';
 
 export default {
 	metaInfo() { return { title: this.username }; },
 
 	components: {
 		LoadingSpinner,
-		LayoutSmall,
-		LayoutBig,
+		Layout,
 	},
 
 	computed: {
