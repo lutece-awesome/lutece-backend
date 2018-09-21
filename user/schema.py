@@ -63,7 +63,7 @@ class UserType(DjangoObjectType):
         s = Submission.objects.filter( user = self )
         privilege = info.context.user.has_perm('problem.view_all')
         if not privilege:
-            s = Submission.objects.filter( problem__visible = True )
+            s = s.filter( problem__visible = True )
         solved = set()
         tried = set()
         trans = dict()

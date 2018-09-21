@@ -20,10 +20,9 @@
 									v-for = "each in user.analysis"
 									:key = "each[0]"
 									:to = "{name: 'ProblemDetailDescription', params: {slug: each[2] }}"
+									:color = " each[1] == 'yes' ? 'success' : 'error' "
 									small
 									round
-
-									color = " each[1] == 'yes' ? success : error "
 								>
 									{{ each[0] }}
 								</v-btn>
@@ -44,6 +43,10 @@ export default {
 			type: Object,
 			default: null,
 		},
+	},
+
+	mounted() {
+		console.log(this.user);
 	},
 };
 </script>
