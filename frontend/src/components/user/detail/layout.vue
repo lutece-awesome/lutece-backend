@@ -9,7 +9,6 @@
 				xs12
 				sm10
 				md8
-				lg6
 			>
 				<user-profile :user = "user" />
 				<user-summary

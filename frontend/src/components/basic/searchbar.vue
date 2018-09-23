@@ -5,7 +5,7 @@
 			:class = "`elevation-${hover || isFocus ? 4 : 1}`"
 		>
 			<v-text-field
-				:value = "value"
+				v-model = "input"
 				:label = "label"
 				hide-details
 				prepend-inner-icon = "mdi-magnify"
@@ -14,28 +14,47 @@
 				type = "search"
 				@focus = "setFocus"
 				@blur = "removeFocus"
-				@input = "$emit('input', $event)"/>
+			/>
 		</v-card>
 	</v-hover>
 </template>
 
 <script>
 
+const debounce = require('lodash.debounce');
+
 export default {
 	props: {
-		value: {
-			type: String,
-			required: true,
-		},
 		label: {
 			type: String,
 			default: 'Search',
 		},
+		delay: {
+			type: Number,
+			default: 300,
+		},
+		callback: {
+			type: Function,
+			default: () => {},
+		},
 	},
 	data: () => ({
+		input: '',
 		isFocus: false,
+		debounceInput: null,
 	}),
+	watch: {
+		input() {
+			this.debounceInput();
+		},
+	},
+	created() {
+		this.debounceInput = debounce(this.emit, this.delay);
+	},
 	methods: {
+		emit() {
+			this.callback(this.input);
+		},
 		setFocus() {
 			this.isFocus = true;
 		},

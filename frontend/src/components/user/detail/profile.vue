@@ -71,7 +71,7 @@
 											<td>{{ user.location }}</td>
 										</tr>
 										<tr v-if = "user.about">
-											<td>Society</td>
+											<td>Social</td>
 											<td>
 												<img
 													:src = "require('@/assets/github.svg')"

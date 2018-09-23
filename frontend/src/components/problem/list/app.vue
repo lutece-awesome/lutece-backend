@@ -15,7 +15,7 @@
 					<template
 						slot-scope = "{ result: { loading , error , data } }">
 						<Searchbar
-							v-model = "filter"
+							:callback = "updateFilter"
 							class = "mb-4 fluid"
 							label = "" />
 						<div v-if = "error"> An error occured</div>
@@ -75,6 +75,9 @@ export default {
 	methods: {
 		onResult(result) {
 			this.maxpage = result.data.problemList.maxpage;
+		},
+		updateFilter(result) {
+			this.filter = result;
 		},
 	},
 };
