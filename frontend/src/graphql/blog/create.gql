@@ -1,5 +1,0 @@
-mutation CreateBlogGQL($title: String!, $content: String!){
-	CreateBlog(title: $title, content: $content) {
-		state
-	}
-}

@@ -1,7 +1,0 @@
-query ProblemSearchGQL($filter: String) {
-	problemSearch(filter: $filter) {
-		problemList {
-			title
-		}
-	}
-}

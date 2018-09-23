@@ -1,5 +1,0 @@
-mutation SubmitSolution($code: String!, $problemslug: String! , $language: String!) {
-	SubmitSolution(code: $code, problemslug: $problemslug , language: $language) {
-		pk
-	}
-}
