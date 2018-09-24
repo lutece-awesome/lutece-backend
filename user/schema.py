@@ -88,7 +88,6 @@ class UserListType(graphene.ObjectType):
         interfaces = (paginatorList, )
     userList = graphene.List(UserType)
 
-
 class UserLogin(graphene.Mutation):
     class Arguments:
         username = graphene.String(required=True)
@@ -208,6 +207,7 @@ class Query(object):
         UserListType, page=graphene.Int(), filter=graphene.String())
     userSearch = graphene.Field(UserListType, filter=graphene.String())
     user = graphene.Field(UserType, username=graphene.String())
+    topUser = graphene.List( UserType , number=graphene.Int())
 
     def resolve_userList(self, info, page, **kwargs):
         from django.core.paginator import Paginator
@@ -229,6 +229,9 @@ class Query(object):
 
     def resolve_user(self, info, username):
         return User.objects.get(username=username)
+    
+    def resolve_topUser(self, info, number):
+        return User.objects.filter( show = True ).order_by( '-solved' )[:number]
 
 
 class Mutation(graphene.AbstractType):

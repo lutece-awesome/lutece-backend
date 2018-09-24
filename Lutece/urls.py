@@ -27,5 +27,5 @@ urlpatterns = static( settings.MEDIA_URL , document_root=settings.MEDIA_ROOT) + 
     path('graphql', ModifiedGraphQLView.as_view(graphiql=True)),
     path('admin/', admin.site.urls),
     path('data_server/', include('data_server.urls')),
-    re_path(r'^.*$', TemplateView.as_view(template_name='frontend/dist/index.html')),
+    re_path(r'^.*$', TemplateView.as_view(template_name='static/index.html')),
 ]
