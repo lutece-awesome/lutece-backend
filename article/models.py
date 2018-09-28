@@ -6,14 +6,13 @@ from discussion.models import Discussion
 from uuslug import uuslug
 # Create your models here.
 
-class Blog( models.Model ):
+class Article( models.Model ):
     content = models.TextField( default = '' )
     title = models.CharField( max_length = 128 , default = '' )
     user = models.ForeignKey( User , null = True ,  on_delete = models.SET_NULL )
     create_time = models.DateTimeField ( default = timezone.now )
     slug = models.CharField( blank = True , max_length = 256 )
     view = models.IntegerField( default = 0 )
-    vote = models.IntegerField( default = 0 )
     disable = models.BooleanField( default = False )
 
     def __str__(self):
@@ -21,17 +20,12 @@ class Blog( models.Model ):
 
     def save(self, *args, **kwargs):
         self.slug = uuslug( self.title, instance = self )
-        super( Blog , self ).save( * args , ** kwargs )
+        super( Article , self ).save( * args , ** kwargs )
 
     class Meta:
         permissions = (
-            ('view_all' , 'Can view all blogs'),
+            ('view_all' , 'Can view all articles'),
         )
 
-class BlogVoteUser( models.Model ):
-    user = models.OneToOneField( User , null = True , on_delete = models.SET_NULL )
-    blog = models.OneToOneField( Blog , null = True , on_delete = models.SET_NULL )
-    vote = models.BooleanField( default = True )
-
-class BlogDiscussion( Discussion ):
-    blog = models.ForeignKey( Blog  , null = True , blank = True , on_delete = models.SET_NULL , db_index = True )
+class ArticleDiscussion( Discussion ):
+    article = models.ForeignKey( Article  , null = True , blank = True , on_delete = models.SET_NULL , db_index = True )

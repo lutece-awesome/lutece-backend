@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'data_server',
     'utils',
     'discussion',
-    'blog',
+    'article',
     # channel
     'channels'
 ]
