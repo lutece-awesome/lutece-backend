@@ -8,7 +8,7 @@ import django.utils.timezone as timezone
 class AbstractRecord(models.Model):
     
     def save( self , * args , ** kwargs ):
-        super().save( * args , ** kwargs )
+        super().save( * args , ** kwargs )    
 
 
 class DetailedRecord(AbstractRecord):
@@ -17,10 +17,6 @@ class DetailedRecord(AbstractRecord):
     record_time = models.DateTimeField( default = timezone.now , db_index = True )
 
     def save( self , * args , ** kwargs ):
-        if 'user' in kwargs:
-            self.record_user = kwargs['user']
-        if 'time' in kwargs:
-            self.record_time = kwargs['time']
         super().save( * args , ** kwargs )
 
 class SimpleRecord(AbstractRecord):
