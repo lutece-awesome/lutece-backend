@@ -3,13 +3,12 @@ from user.models import User
 from discussion.models import Discussion
 import django.utils.timezone as timezone
 from discussion.models import Discussion
-from uuslug import uuslug
 # Create your models here.
 
 
 class Article(models.Model):
-    content = models.TextField(default='')
-    title = models.CharField(max_length=128, default='')
+    content = models.TextField(blank = True)
+    title = models.CharField( max_length = 128, blank = True )
     author = models.ForeignKey(User, null=True,  on_delete=models.SET_NULL)
     create_time = models.DateTimeField(default=timezone.now)
     slug = models.CharField(blank=True, max_length=256)

@@ -18,8 +18,6 @@ django-extensions==2.1.2
 django-graphql-jwt==0.1.13
 django-gravatar2==1.4.2
 django-js-asset==1.1.0
-django-mptt==0.9.1
-django-uuslug==1.1.8
 graphene==2.1.3
 graphene-django==2.2.0
 graphene-file-upload==1.0.0

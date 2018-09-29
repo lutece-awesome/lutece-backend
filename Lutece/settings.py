@@ -45,16 +45,17 @@ INSTALLED_APPS = [
     'graphene_django',
     'corsheaders',
     # Lutece app
-    'contest',
-    'problem',
+    # 'contest',
+    # 'problem',
     'user',
-    'submission',
-    'data_server',
-    'utils',
-    'discussion',
-    'article',
-    'record',
-    'image',
+    # 'submission',
+    # 'data_server',
+    # 'utils',
+    # 'discussion',
+    # 'article',
+    # 'record',
+    # 'image',
+    'sample',
     # channel
     'channels'
 ]
