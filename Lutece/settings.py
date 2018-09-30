@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'graphene_django',
     'corsheaders',
     'channels'
-] + [
-    # Lutece app
+] 
+
+# Lutece app
+lutece_app = [
     # 'contest',
     # 'problem',
     'user',
@@ -58,6 +60,8 @@ INSTALLED_APPS = [
     # 'image',
     # 'sample',
 ]
+
+INSTALLED_APPS += lutece_app
 
 GRAPHENE = {
     'SCHEMA': 'Lutece.schema.schema'
@@ -118,12 +122,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Lutece.wsgi.application'
 AUTH_USER_MODEL = 'user.User'
-
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-# DATABASES = {
-# }
-
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',

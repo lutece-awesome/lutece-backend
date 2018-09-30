@@ -1,7 +1,4 @@
-from json import loads
-from datetime import datetime
 from graphql_jwt.utils import jwt_payload, get_user_by_payload
-import jwt
 from graphql_jwt.settings import jwt_settings
 from graphql_jwt.exceptions import GraphQLJWTError
 

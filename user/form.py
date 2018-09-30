@@ -19,7 +19,7 @@ class UserLoginForm( forms.Form ):
             self.add_error( 'password' , 'Password is wrong.' )
         return cleaned_data
 
-class UserSignupForm( forms.Form , AttachInfoForm ):
+class UserSignupForm( AttachInfoForm ):
     username = forms.CharField( required = True , max_length = MAX_USERNAME_LENGTH , min_length = MIN_USERNAME_LENGTH )
     password = forms.CharField( required = True , max_length = MAX_PASSWORD_LENGTH , min_length = MIN_PASSWORD_LENGTH )
     email = forms.EmailField( required = True )
