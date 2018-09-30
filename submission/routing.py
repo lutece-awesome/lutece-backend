@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from . import consumers
+# from . import consumers
 
 websocket_urlpatterns = [
-    url( r'ws/status/(?P<pk>\d{1,})/$' , consumers.StatusDetailConsumer )
+    # url( r'ws/status/(?P<pk>\d{1,})/$' , consumers.StatusDetailConsumer )
 ]

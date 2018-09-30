@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_gravatar',
     'gunicorn',
-    'mptt',
     'graphene_django',
     'corsheaders',
+    'channels'
+] + [
     # Lutece app
     # 'contest',
     # 'problem',
@@ -55,9 +56,7 @@ INSTALLED_APPS = [
     # 'article',
     # 'record',
     # 'image',
-    'sample',
-    # channel
-    'channels'
+    # 'sample',
 ]
 
 GRAPHENE = {

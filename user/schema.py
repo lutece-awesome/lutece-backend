@@ -1,88 +1,39 @@
 import graphene
-from graphene_django.types import DjangoObjectType
-from .models import User
-from annoying.functions import get_object_or_None
+from user.models import User
 from graphql_jwt.shortcuts import get_token, get_payload, get_user_by_payload
-from .group import Group
 from utils.schema import paginatorList
 from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
 from graphql_jwt.mixins import RefreshMixin
 from graphql_jwt.mutations import JSONWebTokenMixin
-from django.db.models import Q, Count
-from django.db.models.functions import TruncDate, Cast
-from django.db.models.fields import CharField
-from submission.schema import SubmissionStatistics
+from django_gravatar.helpers import get_gravatar_url
+from user.attachinfo import AttachInfoTypeMixin
+# from submission.schema import SubmissionStatistics
 
 
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
-        only_fields = ('username', 'display_name', 'school', 'company',
-                       'location', 'about', 'tried', 'solved')
-
+class UserType( graphene.ObjectType ):
+    username = graphene.String()
     gravataremail = graphene.String()
-    group = graphene.String()
-    heatmap = GenericScalar()
-    analysis = GenericScalar()
     joined_date = graphene.Date()
     lastlogin_date = graphene.DateTime()
-    submission_statistics = graphene.Field( SubmissionStatistics )
-    rank = graphene.Int()
-    userall = graphene.Int()
+    gravatar = graphene.String()
+    attach_info = graphene.Field( AttachInfoTypeMixin )
+
+    def resolve_username( self , info , * args , ** kwargs ):
+        return self.username
 
     def resolve_joined_date( self , info , * args , ** kwargs ):
         return self.date_joined.date()
     
     def resolve_lastlogin_date( self , info , * args , ** kwargs ):
         return self.last_login or self.date_joined
-
-    def resolve_group(self, info, * args,  ** kwargs):
-        return Group.get_user_group(self.group).value.display
     
-    def resolve_submission_statistics( self , info , * args , ** kwargs ):
-        return SubmissionStatistics( user = self )
-
-    def resolve_heatmap(self, info, * args, ** kwargs):
-        import datetime
-        import time
-        from submission.models import Submission
-        from user.models import User
-        now = datetime.datetime.now()
-        start_date = now - datetime.timedelta(days=366)
-        s = Submission.objects.filter(user=self, submit_time__date__gt=start_date)
-        s = s.annotate(date=Cast(TruncDate('submit_time'), CharField()))
-        s = s.order_by('date')
-        s = s.values('date')
-        s = s.annotate(count=Count('submission_id'))
-        return list(s)
-
-    def resolve_analysis(self, info, * args, ** kwargs):
-        from submission.models import Submission
-        from submission.judge_result import Judge_result
-        s = Submission.objects.filter( user = self )
-        privilege = info.context.user.has_perm('problem.view_all')
-        if not privilege:
-            s = s.filter( problem__visible = True )
-        solved = set()
-        tried = set()
-        trans = dict()
-        for each in s:
-            pk = each.problem.pk
-            tried.add( pk )
-            if pk not in trans:
-                trans[pk] = each.problem.slug
-            if Judge_result.get_judge_result(each.judge_status) is Judge_result.AC:
-                solved.add( pk )
-        return sorted([( each, 'yes' if each in solved else 'no' , trans[ each ] ) for each in tried], key=lambda x: x[0])
-
-    def resolve_rank( self , info , * args , ** kwargs ):
-        from django.db.models import Q
-        return User.objects.filter( show = True ).filter( Q( solved__gt = self.solved ) | Q( solved__exact = self.solved , pk__lt = self.pk ) ).count() + 1
-
-    def resolve_userall( self , info , * args , ** kwargs ):
-        return User.objects.filter( show = True ).count()
-
+    def resolve_gravatar( self , info , * args , ** kwargs ):
+        return get_gravatar_url( self.email , size = 250 )
+    
+    def resolve_attach_info( self , info , * args , ** kwargs ):
+        return self.attach_info
+        
 class UserListType(graphene.ObjectType):
     class Meta:
         interfaces = (paginatorList, )
@@ -109,7 +60,7 @@ class UserLogin(graphene.Mutation):
             token = get_token(user)
             payload = get_payload(token, info.context)
             update_last_login( None , user )
-            return UserLogin(payload=payload, token=token, permission=list(user.get_all_permissions()), user=user)
+            return UserLogin( payload = payload, token = token, permission = list( user.get_all_permissions() ), user = user )
         else:
             raise RuntimeError(LoginForm.errors.as_json())
 
@@ -127,40 +78,6 @@ class UserTokenRefresh(JSONWebTokenMixin,
         result.user = user
         result.permission = list(user.get_all_permissions())
         return result
-
-
-class UserInfoUpdate(graphene.Mutation):
-    class Arguments:
-        display_name = graphene.String(required=True)
-        school = graphene.String()
-        company = graphene.String()
-        location = graphene.String()
-        about = graphene.String()
-
-    state = graphene.Boolean()
-
-    @login_required
-    def mutate(self, info, ** kwargs):
-        from .form import UserinfoForm
-        userinfoForm = UserinfoForm(kwargs)
-        user = info.context.user
-        if userinfoForm.is_valid() and userinfoForm._clean(user.display_name):
-            values = userinfoForm.cleaned_data
-            display_name = values['display_name']
-            school = values['school']
-            company = values['company']
-            location = values['location']
-            about = values['about']
-            user.display_name = display_name
-            user.school = school
-            user.company = company
-            user.location = location
-            user.about = about
-            user.save()
-            return UserInfoUpdate(state=True)
-        else:
-            raise RuntimeError(userinfoForm.errors.as_json())
-
 
 class Register(graphene.Mutation):
     class Arguments:

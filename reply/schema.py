@@ -3,7 +3,6 @@ from graphene_django.types import DjangoObjectType
 from annoying.functions import get_object_or_None
 from reply.models import AbstractReply, AbstractReplyVote, Attitude
 from user.schema import UserType
-from graphene.types.generic import GenericScalar
 from graphql_jwt.decorators import login_required
 
 
@@ -13,6 +12,8 @@ class AbstractReplyType( DjangoObjectType ):
     user = graphene.Field( UserType )
     vote = graphene.Int()
     self_attitude = graphene.String()
+    discussion = graphene.List( AbstractReplyType )
+    disable = graphene.Boolean()
 
     def resolve_pk( self , info , * args , ** kwargs ):
         return self.pk
@@ -37,99 +38,55 @@ class AbstractReplyType( DjangoObjectType ):
         if vote is None:
             return Attitude.neutral
         return vote.attitude
-
-
-class DiscussionType( graphene.AbstractType ):
-    pk = graphene.ID()
-    user = graphene.Field( UserType )
-    content = graphene.String()
-    vote = graphene.Int()
-    submit_time = graphene.DateTime()
-    reply = graphene.List( ReplyType )
-    attitude = graphene.String()
-    visibility = graphene.Boolean()
-
-    def resolve_pk( self , info , * args , ** kwargs ):
-        return self.pk
-
-    def resolve_user( self , info , * args , ** kwargs ):
-        return self.user
-
-    def resolve_content( self , info , * args , ** kwargs ):
-        privileage = info.context.user.has_perm( 'discussion.view_all' )
-        if not self.visibility and not privileage:
-            return ''
-        return self.content
-
-    def resolve_vote( self , info , * args , ** kwargs ):
-        return self.vote
-
-    def resolve_submit_time( self , info , * args , ** kwargs ):
-        return self.submit_time
-
-    def resolve_reply( self , info , * args , ** kwargs ):
-        return list( AbstractDiscussion.objects.filter( ancestor = self.pk ) )
-
-    def resolve_attitude( self , info , * args , ** kwargs ):
-        if info.context.user.is_authenticated:
-            s = get_object_or_None( DiscussionVote , discussion = self , user = info.context.user )
-        else:
-            s = None
-        return s.vote if s else DiscussionVote.neutral
     
-    def resolve_visibility( self , info , * args , ** kwargs ):
-        return self.visibility
+    def resolve_discussion( self , info , * args , ** kwargs ):
+        return list( AbstractReply.objects.filter( ancestor = self.pk ) )
+    
+    def resolve_disable( self , info , * args , ** kwargs ):
+        return self.disable
 
-class UpdateDiscussionVote(graphene.Mutation):
+
+class UpdateAbstractReplyVote(graphene.Mutation):
 
     class Arguments:
         attitude = graphene.Boolean( required = True )
-        pk = graphene.ID( required = True )
+        reply_pk = graphene.ID( required = True )
 
     result = graphene.String()
-    vote = graphene.Int()
 
     @login_required
-    def mutate(self, info , pk , attitude ):
+    def mutate(self, info , reply_pk , attitude ):
         from json import loads
-        i = AbstractDiscussion.objects.get( pk = pk )
-        s , created = DiscussionVote.objects.get_or_create(
+        reply = AbstractReply.objects.get( pk = reply_pk )
+        node , created = AbstractReplyVote.objects.get_or_create(
             user = info.context.user,
             discussion = i
         )
-        ret = DiscussionVote.agree if attitude else DiscussionVote.disagree            
-        s.vote = ret if ret != s.vote or created else DiscussionVote.neutral
-        s.save()
-        i.refresh_vote()
-        return UpdateDiscussionVote( result = s.vote , vote = i.vote )
+        attitude = Attitude.agree if attitude else Attitude.disagree            
+        node.vote = attitude if created or attitude != node.vote else Attitude.neutral
+        node.save()
+        return UpdateReplyVote( result = attitude )
 
-class ReplyDiscussion(graphene.Mutation):
+class CreateAbstractReply(graphene.Mutation):
     class Arguments:
         parent = graphene.ID()
         content = graphene.String()
     
     state = graphene.Boolean()
-    
+
     @login_required
     def mutate( self , info , * args , ** kwargs ):
-        from .form import ReplyDiscussionForm
-        replyDiscussionForm = ReplyDiscussionForm( ** kwargs )
-        if replyDiscussionForm.is_valid():
-            values = replyDiscussionForm.cleaned_data
-            reply = AbstractDiscussion.objects.get( pk = values['parent'] )
-            AbstractDiscussion(
+        from reply.form import AbstractReplyForm
+        reply_form = AbstractReplyForm( ** kwargs )
+        if reply_form.is_valid():
+            values = reply_form.cleaned_data
+            parent = AbstractReply.objects.get( pk = values['parent'] )
+            AbstractReply(
                 user = info.context.user,
                 content = values['content'],
-                reply = reply,
-                ancestor = reply.ancestor if reply.ancestor else reply,
+                parent = parent,
+                ancestor = parent.ancestor if parent.ancestor else parent,
             ).save()
-            return ReplyDiscussion( state = True )
+            return CreateAbstractReply( state = True )
         else:
-            raise RuntimeError( replyDiscussionForm.errors.as_json() )
-
-class Query(object):
-    pass
-
-class Mutation(graphene.AbstractType):
-    UpdateDiscussionVote = UpdateDiscussionVote.Field()
-    ReplyDiscussion = ReplyDiscussion.Field()
+            raise RuntimeError( reply_form.errors.as_json() )

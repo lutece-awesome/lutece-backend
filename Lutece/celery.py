@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
-from .settings import rabbitmq_ip, rabbitmq_port, rabbitmq_user, rabbitmq_pwd, rabbitmq_vhost
+from Lutece.settings import rabbitmq_ip, rabbitmq_port, rabbitmq_user, rabbitmq_pwd, rabbitmq_vhost
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Lutece.settings')

@@ -1,10 +1,10 @@
 from channels.routing import ProtocolTypeRouter , URLRouter
-import submission.routing
+from submission.routing import websocket_urlpatterns
 
 application = ProtocolTypeRouter({
     'websocket': (
         URLRouter(
-            submission.routing.websocket_urlpatterns
+            websocket_urlpatterns
         )
     ),
 })
