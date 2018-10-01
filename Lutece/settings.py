@@ -49,14 +49,13 @@ INSTALLED_APPS = [
 # Lutece app
 LUTECE_APPS = [
     'user',
-    # 'contest',
-    # 'problem',
+    'problem',
     # 'submission',
     # 'data_server',
     # 'utils',
     # 'discussion',
     # 'article',
-    # 'record',
+    'record',
     # 'image',
     # 'sample',
 ]

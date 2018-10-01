@@ -1,6 +1,6 @@
+import jwt
 from graphql_jwt.utils import get_user_by_payload
 from graphql_jwt.settings import jwt_settings
-from graphql_jwt.exceptions import GraphQLJWTError
 
 def decode_handler(token, context=None):
     payload = jwt.decode(
@@ -17,5 +17,5 @@ def decode_handler(token, context=None):
     user = get_user_by_payload(payload)
     if user is not None:
         if 'password' not in payload or payload['password'] != user.password[-8:]:
-            raise GraphQLJWTError('Password has changed')
+            raise Exception('Password has changed')
     return payload

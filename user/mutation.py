@@ -21,7 +21,7 @@ class UserLogin(graphene.Mutation):
     user = graphene.Field( UserType )
 
     def mutate(self, info, ** kwargs):
-        login_form = UserLoginForm( ** kwargs )
+        login_form = UserLoginForm( kwargs )
         if login_form.is_valid():
             values = login_form.cleaned_data
             usr = User.objects.get( username = values['username'] )

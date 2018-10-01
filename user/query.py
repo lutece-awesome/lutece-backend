@@ -11,7 +11,7 @@ class Query( object ):
     user_list = graphene.Field( UserListType , filter = graphene.String() , page = graphene.Int() )
 
     def resolve_user( self , info , * args , ** kwargs ):
-        return User.objects.get( username = username )
+        return User.objects.get( username = kwargs.get( 'username' ) )
 
     def resolve_user_list( self , info , * args , ** kwargs ):
         page = kwargs.get( 'page' )
@@ -21,5 +21,3 @@ class Query( object ):
             user_list = user_list.filter( Q ( username__icontains = filter ) )
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType( maxpage = paginator.num_pages, userList = paginator.get_page( page ) )
-
-    

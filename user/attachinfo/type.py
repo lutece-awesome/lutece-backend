@@ -1,6 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from user.attachinfo.models import AttachInfo
+from django_gravatar.helpers import get_gravatar_url
 
 class AttachInfoType( DjangoObjectType ):
     class Meta:
@@ -10,4 +11,4 @@ class AttachInfoType( DjangoObjectType ):
     gravatar = graphene.String()
 
     def resolve_gravatar( self , info , * args , ** kwargs ):
-        return get_gravatar_url( self.email , size = 250 )
+        return get_gravatar_url( self.gravatar , size = 250 )

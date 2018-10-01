@@ -24,4 +24,3 @@ class UserListType( graphene.ObjectType ):
     class Meta:
         interfaces = ( paginatorList, )
     userList = graphene.List( UserType )
-
