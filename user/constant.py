@@ -11,4 +11,4 @@ MIN_USERNAME_LENGTH = 4
 MIN_PASSWORD_LENGTH = 6
 
 # The limitation of items number in single page
-PER_PAGE_COUNT = 20
+PER_PAGE_COUNT = 15

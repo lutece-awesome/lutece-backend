@@ -5,7 +5,7 @@ from problem.baseproblem.constant import MAX_TITLE_LENGTH, MAX_CONTENT_LENGTH, M
 class AbstractProblem( models.Model ):
     title = models.CharField( max_length = MAX_TITLE_LENGTH , db_index = True , unique = True )
     content = models.CharField( max_length = MAX_CONTENT_LENGTH , blank = True )
-    resouces = models.CharField( max_length = MAX_RESOURCES_LENGTH , blank = True )
+    resources = models.CharField( max_length = MAX_RESOURCES_LENGTH , blank = True )
     constraints = models.CharField( max_length = MAX_CONSTRAINTS_LENGTH , blank = True )
     note = models.CharField( max_length = MAX_NOTE_LENGTH , blank = True )
     slug = AutoSlugField( populate_from = 'title' )

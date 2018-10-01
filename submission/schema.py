@@ -5,7 +5,7 @@ from problem.models import Problem
 from .models import Submission, Judgeinfo
 from graphql_jwt.decorators import login_required
 from .tasks import Submission_task
-from utils.schema import paginatorList
+from utils.schema import PaginatorList
 from submission.judge_result import Judge_result, Query_field
 from user.models import User
 
@@ -45,7 +45,7 @@ class SubmissionType(DjangoObjectType):
 
 class SubmissionListType(graphene.ObjectType):
     class Meta:
-        interfaces = (paginatorList, )
+        interfaces = (PaginatorList, )
 
     submissionList = graphene.List(SubmissionType)
 

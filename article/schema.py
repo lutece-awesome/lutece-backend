@@ -6,7 +6,7 @@ from user.schema import UserType
 from user.models import User
 from graphql_jwt.decorators import login_required
 from .form import BasicArticleForm
-from utils.schema import paginatorList
+from utils.schema import PaginatorList
 from discussion.schema import DiscussionType
 
 
@@ -28,13 +28,13 @@ class ArticleDiscussionType(graphene.ObjectType, DiscussionType):
 
 class ArticleDiscussionListType(graphene.ObjectType):
     class Meta:
-        interfaces = (paginatorList, )
+        interfaces = (PaginatorList, )
     discussionList = graphene.List(ArticleDiscussionType)
 
 
 class ArticleListType(graphene.ObjectType):
     class Meta:
-        interfaces = (paginatorList, )
+        interfaces = (PaginatorList, )
 
     articleList = graphene.List(ArticleType)
 

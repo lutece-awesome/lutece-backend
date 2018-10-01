@@ -16,8 +16,8 @@ class Query( object ):
     def resolve_user_list( self , info , * args , ** kwargs ):
         page = kwargs.get( 'page' )
         filter = kwargs.get('filter')
-        user_list = User.objects.all().filter( disable = False )
-        if filter is not None and filter.length > 0:
-            user_list = user_list.filter( Q ( username__icontains = filter ) )
-        paginator = Paginator(user_list, PER_PAGE_COUNT)
-        return UserListType( maxpage = paginator.num_pages, userList = paginator.get_page( page ) )
+        user_list = User.objects.all().filter( is_active = True , is_staff = False )
+        if filter:
+            user_list = user_list.filter( username__icontains = filter )
+        paginator = Paginator (user_list , PER_PAGE_COUNT )
+        return UserListType( maxpage = paginator.num_pages, user_list = paginator.get_page( page ) )

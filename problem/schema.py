@@ -1,7 +1,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from .models import Problem, Sample
-from utils.schema import paginatorList
+from utils.schema import PaginatorList
 from graphql_jwt.decorators import permission_required
 from .form import UpdateProblemForm
 from annoying.functions import get_object_or_None
@@ -22,7 +22,7 @@ class SampleType(DjangoObjectType):
 
 class ProblemListType(graphene.ObjectType):
     class Meta:
-        interfaces = (paginatorList, )
+        interfaces = (PaginatorList, )
     problemList = graphene.List(ProblemType)
 
 
@@ -98,7 +98,7 @@ class Query(object):
         problem_list = Problem.objects.all()
         if not info.context.user.has_perm('problem.view_all'):
             problem_list = problem_list.filter(visible=True)
-        if filter is not None:
+        if not filter:
             problem_list = problem_list.filter(title__icontains=filter)
         return ProblemListType( maxpage = 1, problemList = problem_list[:5] )
 
