@@ -1,15 +1,8 @@
-from graphql_jwt.utils import jwt_payload, get_user_by_payload
+from graphql_jwt.utils import get_user_by_payload
 from graphql_jwt.settings import jwt_settings
 from graphql_jwt.exceptions import GraphQLJWTError
 
-
-def lutece_payload(user, context=None):
-    payload = jwt_payload(user)
-    payload['password'] = user.password[-8:]
-    return payload
-
-
-def lutece_decode(token, context=None):
+def decode_handler(token, context=None):
     payload = jwt.decode(
         token,
         jwt_settings.JWT_SECRET_KEY,

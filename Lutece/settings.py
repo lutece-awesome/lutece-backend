@@ -43,14 +43,14 @@ INSTALLED_APPS = [
     'gunicorn',
     'graphene_django',
     'corsheaders',
-    'channels'
+    'channels',
 ] 
 
 # Lutece app
-lutece_app = [
+LUTECE_APPS = [
+    'user',
     # 'contest',
     # 'problem',
-    'user',
     # 'submission',
     # 'data_server',
     # 'utils',
@@ -61,7 +61,7 @@ lutece_app = [
     # 'sample',
 ]
 
-INSTALLED_APPS += lutece_app
+INSTALLED_APPS += LUTECE_APPS
 
 GRAPHENE = {
     'SCHEMA': 'Lutece.schema.schema'
@@ -100,8 +100,8 @@ GRAPHQL_JWT = {
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_EXPIRATION_DELTA': timedelta(hours=12),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
-    'JWT_PAYLOAD_HANDLER': 'utils.jwt.lutece_payload',
-    'JWT_DECODE_HANDLER': 'utils.jwt.lutece_decode',
+    'JWT_PAYLOAD_HANDLER': 'user.jwt.payload.payload_handler',
+    'JWT_DECODE_HANDLER': 'user.jwt.decode.decode_handler',
 }
 
 TEMPLATES = [
@@ -185,4 +185,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-from .base_setting import *
+from Lutece.base_setting import *
