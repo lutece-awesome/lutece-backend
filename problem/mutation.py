@@ -26,7 +26,7 @@ class UpdateProblem(graphene.Mutation):
         
     state = graphene.Boolean()
 
-    # @permission_required( 'AbstractProblem.change' )
+    @permission_required( 'Problem.change' )
     def mutate( self , info , ** kwargs ):
         form = UpdateProblemForm( kwargs )
         if form.is_valid():
@@ -50,7 +50,7 @@ class UpdateProblem(graphene.Mutation):
 
 class CreateProblem( UpdateProblem ):
 
-    # @permission_required( 'AbstractProblem.add' )
+    @permission_required( 'Problem.add' )
     def mutate( self , info , ** kwargs ):
         form = CreateProblemForm( kwargs )
         if form.is_valid():
