@@ -2,6 +2,7 @@ import graphene
 from json import loads
 from problem.form import UpdateProblemForm, CreateProblemForm
 from problem.models import Problem, ProblemSample
+from problem.limitation.models import Limitation
 from utils.function import assign
 from graphql_jwt.decorators import permission_required
 
@@ -34,7 +35,7 @@ class UpdateProblem(graphene.Mutation):
             assign( prob.limiation , ** values )
             prob.limiation.save()
             prob.save()
-            ProblemSample.objects.filter( problem = prob ).delete()
+            prob.samples_set.all().delete()
             for each in samples:
                 ProblemSample(
                     input_content = each.get( 'input_content' ),
@@ -47,18 +48,19 @@ class UpdateProblem(graphene.Mutation):
 
 class CreateProblem( UpdateProblem ):
 
-    @permission_required( 'AbstractProblem.add' )
+    # @permission_required( 'AbstractProblem.add' )
     def mutate( self , info , ** kwargs ):
         form = CreateProblemForm( kwargs )
         if form.is_valid():
             values = form.cleaned_data
             samples = loads( values.get( 'samples') )
             prob = Problem()
+            limitation = Limitation()
             assign( prob , ** values )
-            assign( prob.limiation , ** values )
-            prob.limiation.save()
+            assign( limitation , ** values )
+            limitation.save()
+            prob.limitation = limitation
             prob.save()
-            ProblemSample.objects.filter( problem = prob ).delete()
             for each in samples:
                 ProblemSample(
                     input_content = each.get( 'input_content' ),
