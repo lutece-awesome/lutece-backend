@@ -1,32 +1,33 @@
-from enum import Enum
+from enum import Enum, unique
 from utils.decorators import classproperty
 
+class _meta:
+
+    __slots__ = (
+        'full',
+        'alias',
+        'color',
+        'detail',
+        '_field'
+    )
+
+    def __init__(self, ** kw):
+        for _ in kw:
+            setattr( self , _ , kw[_] )
+        self._field = [x for x in kw]
+    
+    def __str__(self):            
+        return f'<JudgeResult:{ self.alias }>'
+    
+    def __repr__(self):
+        return f'<JudgeResult:{ self.alias }>'
+
+    @property
+    def attribute(self):
+        return {x: getattr(self, x) for x in self._field}
+
+@unique
 class JudgeResult( Enum ):
-
-    class _meta:
-
-        __slots__ = (
-            'full',
-            'alias',
-            'color',
-            'detail',
-            '_field'
-        )
-
-        def __init__(self, ** kw):
-            for _ in kw:
-                setattr( self , _ , kw[_] )
-            self._field = [x for x in kw]
-        
-        def __str__(self):            
-            return f'<JudgeResult:{ self.alias }>'
-        
-        def __repr__(self):
-            return f'<JudgeResult:{ self.alias }>'
-
-        @property
-        def attribute(self):
-            return {x: getattr(self, x) for x in self._field}
 
     _PD = _meta(
         full = 'Pending',
@@ -147,7 +148,7 @@ class JudgeResult( Enum ):
     
     @classproperty
     def JE( cls ):
-        return cls._JE.value    
+        return cls._JE.value
 
     @classmethod
     def value_of( cls , value ):

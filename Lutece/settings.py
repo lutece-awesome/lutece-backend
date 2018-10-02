@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 LUTECE_APPS = [
     'user',
     'problem',
+    'judge',
     # 'submission',
     # 'data_server',
     # 'utils',

@@ -3,6 +3,10 @@ from django_extensions.db.models import AutoSlugField
 from problem.baseproblem.constant import MAX_TITLE_LENGTH, MAX_CONTENT_LENGTH, MAX_RESOURCES_LENGTH, MAX_CONSTRAINTS_LENGTH, MAX_NOTE_LENGTH
 
 class AbstractProblem( models.Model ):
+
+    class Meta:
+        abstract = True
+
     title = models.CharField( max_length = MAX_TITLE_LENGTH , db_index = True )
     content = models.CharField( max_length = MAX_CONTENT_LENGTH , blank = True )
     resources = models.CharField( max_length = MAX_RESOURCES_LENGTH , blank = True )
