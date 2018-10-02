@@ -21,21 +21,23 @@ class UpdateProblem(graphene.Mutation):
         cpu_limit = graphene.Int( required = True )
 
         samples = graphene.String( required = True )
+
+        slug = graphene.String( required = True )
         
     state = graphene.Boolean()
 
-    @permission_required( 'AbstractProblem.change' )
+    # @permission_required( 'AbstractProblem.change' )
     def mutate( self , info , ** kwargs ):
         form = UpdateProblemForm( kwargs )
         if form.is_valid():
             values = form.cleaned_data
             samples = loads( values.get( 'samples') )
-            prob = Problems.objects.get( title = values.get( 'title' ) )
+            prob = Problem.objects.get( slug = values.get( 'slug' ) )
             assign( prob , ** values )
-            assign( prob.limiation , ** values )
-            prob.limiation.save()
+            assign( prob.limitation , ** values )
+            prob.limitation.save()
             prob.save()
-            prob.samples_set.all().delete()
+            ProblemSample.objects.filter( problem = prob ).delete()
             for each in samples:
                 ProblemSample(
                     input_content = each.get( 'input_content' ),

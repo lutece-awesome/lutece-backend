@@ -3,12 +3,12 @@ from django_extensions.db.models import AutoSlugField
 from problem.baseproblem.constant import MAX_TITLE_LENGTH, MAX_CONTENT_LENGTH, MAX_RESOURCES_LENGTH, MAX_CONSTRAINTS_LENGTH, MAX_NOTE_LENGTH
 
 class AbstractProblem( models.Model ):
-    title = models.CharField( max_length = MAX_TITLE_LENGTH , db_index = True , unique = True )
+    title = models.CharField( max_length = MAX_TITLE_LENGTH , db_index = True )
     content = models.CharField( max_length = MAX_CONTENT_LENGTH , blank = True )
     resources = models.CharField( max_length = MAX_RESOURCES_LENGTH , blank = True )
     constraints = models.CharField( max_length = MAX_CONSTRAINTS_LENGTH , blank = True )
     note = models.CharField( max_length = MAX_NOTE_LENGTH , blank = True )
-    slug = AutoSlugField( populate_from = 'title' )
+    slug = AutoSlugField( populate_from = 'title' , overwrite = True )
     disable = models.BooleanField( default = False )
 
     def __str__( self ):

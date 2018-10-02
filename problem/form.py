@@ -6,19 +6,21 @@ from problem.limitation.form import LimitationForm
 from problem.sample.form import SampleForm
 
 class UpdateProblemForm( AbstractProblemForm, LimitationForm, SampleForm ):
+    slug = forms.CharField( required = True )
 
     def clean( self , * args , ** kwargs ):
         cleaned_data = super().clean()
-        title = cleaned_data.get( 'title' )
-        if title and not get_object_or_None( AbstractProblem , title = title ):
-            self.add_error( 'title' , 'Unknown title for such a problem.' )
+        slug = cleaned_data.get( 'slug' )
+        if not get_object_or_None( AbstractProblem , slug = slug ):
+            self.add_error( 'slug' , 'Unknown problem for such slug.' )
         return cleaned_data
 
 class CreateProblemForm( AbstractProblemForm , LimitationForm, SampleForm ):
+    slug = forms.CharField( required = True )
 
     def clean( self , * args , ** kwargs ):
         cleaned_data = super().clean()
-        title = cleaned_data.get( 'title' )
-        if title and get_object_or_None( AbstractProblem , title = title ):
-            self.add_error( 'title' , 'Title already existed.' )
+        slug = cleaned_data.get( 'slug' )
+        if not get_object_or_None( AbstractProblem , slug = slug ):
+            self.add_error( 'slug' , 'Unknown problem for such slug.' )
         return cleaned_data
