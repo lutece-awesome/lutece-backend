@@ -25,6 +25,5 @@ from django.conf.urls.static import static
 urlpatterns = static( settings.MEDIA_URL , document_root=settings.MEDIA_ROOT) + [
     path('graphql', FileUploadGraphQLView.as_view(graphiql=True)),
     path('admin/', admin.site.urls),
-    path('data_server/', include('data_server.urls')),
     re_path(r'^.*$', TemplateView.as_view(template_name='static/index.html')),
 ]

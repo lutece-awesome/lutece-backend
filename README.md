@@ -1,6 +1,6 @@
 # Lutece-Online-Judge
-[![Python](https://img.shields.io/badge/python-3.5.4-red.svg?style=flat-square)](https://www.python.org/downloads/release/python-354/)
-[![Django](https://img.shields.io/badge/django-2.0.4-ff69b4.svg?style=flat-square)](https://www.djangoproject.com/)
+[![Python](https://img.shields.io/badge/python-3.7.0-red.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
+[![Django](https://img.shields.io/badge/django-2.1.1-ff69b4.svg?style=flat-square)](https://www.djangoproject.com/)
 
 Simplicity online judge
 
@@ -29,3 +29,25 @@ Simplicity online judge
     sudo apt-get update
     sudo apt-get install redis-server
 </pre>
+
+## User configuring
+
++ <b>Any change</b> during this step need to <b>overwrite</b> into data/constant.py
+
++ Generate running user
+```
+$ sudo useradd -m lutece_running_user
+$ sudo passwd lutece_running_user
+```
+
++ Create data directory
+```
+# Set the data dir for data
+$ mkdir ~/lutece_data
+```
+
++ Generate ssh key for data user
+```
+su lutece_running_user
+ssh-keygen
+```
