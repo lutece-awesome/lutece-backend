@@ -1,11 +1,21 @@
-# from django.db import models
-# from user.models import User
-# from problem.models import Problem
-# from contest.models import Contest
-# from django.forms.models import model_to_dict
-# import django.utils.timezone as timezone
-# from django.http import Http404
-# # Create your models here.
+from django.db import models
+from submission.basesubmission.models import AbstractSubmission
+from submission.constant import MAX_CODE_LENGTH
+from submission.attachinfo.models import AbstractAttachInfo
+from judge.models import JudgeResult
+from judge.case.models import AbstractCase
+
+class Submission( AbstractSubmission ):
+    code = models.CharField( max_length = MAX_CODE_LENGTH , blank = True )
+    result = models.OneToOneField( JudgeResult , on_delete = models.CASCADE )
+    attach_info = models.OneToOneField( SubmissionAttachInfo , on_delete = models.CASCADE )
+
+
+class SubmissionCase( AbstractCase ):
+    submission = models.ForeignKey( Submission , on_delete = models.SET_NULL , null = True )
+
+class SubmissionAttachInfo( AbstractAttachInfo ):
+    cases_count = models.IntegerField( default =  0 )
 
 # class Submission(models.Model):
 #     submission_id = models.AutoField(primary_key=True, db_index=True)

@@ -2,8 +2,9 @@ from django.db import models
 from judge.models import JudgeResult
 from user.models import User
 from django.utils import timezone
-from problem.baseproblem.models import AbstractProblem
+from problem.models import Problem
 from submission.basesubmission.constant import MAX_CODE_LENGTH
+from judge.language import Language
 
 class AbstractSubmission( models.Model ):
 
@@ -11,6 +12,11 @@ class AbstractSubmission( models.Model ):
         abstract = True
 
     result = models.OneToOneField( JudgeResult , on_delete = models.CASCADE )
-    problem = models.ForeignKey( AbstractProblem , on_delete = models.SET_NULL )
+    problem = models.ForeignKey( Problem , on_delete = models.SET_NULL )
     user = models.ForeignKey( User , on_delete = models.SET_NULL , null = True )
     create_time = models.DateTimeField( default = timezone.now )
+    _language = models.CharField( choices = ( each.full for each in Language.all() ) , max_length = MAX_RESULT_LENGTH , db_index = True )
+
+    @property
+    def language( self , * args , ** kwargs ):
+        return JudgeResult.value_of( self._language )
