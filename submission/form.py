@@ -1,21 +1,22 @@
 from django import forms
-from Lutece.config import MAX_SOURCECORE_LENGTH
 from problem.models import Problem
-from utils.language import Language
+from judge.language import Language
 from annoying.functions import get_object_or_None
+from submission.constant import MAX_CODE_LENGTH
 
-class SubmitSolutionForm( forms.Form ):
-    problemslug = forms.CharField( required = True )
-    code = forms.CharField( required = True , max_length = MAX_SOURCECORE_LENGTH , min_length = 1 )
+class SubmitSubmissionForm( forms.Form ):
+    problem_slug = forms.CharField( required = True )
+    code = forms.CharField( required = True , max_length = MAX_CODE_LENGTH , min_length = 1 )
     language = forms.CharField( required = True )
 
     def clean( self ):
         cleaned_data = super().clean()
         problemslug = cleaned_data.get( 'problemslug' )
         code = cleaned_data.get( 'code' )
-        language = Language.get_language( cleaned_data.get( 'language' ) )
-        s = get_object_or_None( Problem , slug = problemslug )
-        if problemslug and s is None:
+        language = Language.value_of( cleaned_data.get( 'language' ) )
+        prob = get_object_or_None( Problem , slug = problemslug )
+        if problemslug and not prob:
             self.add_error( 'problemslug' , 'Problem not exists.' )
-        if language is None:
+        if not language:
             self.add_error( 'language' , 'Unknown language' )
+        return cleaned_data

@@ -4,6 +4,7 @@ from user.query import Query as UserQuerySchema
 from user.mutation import Mutation as UserMutationSchema
 from problem.query import Query as ProblemQuerySchema
 from problem.mutation import Mutation as ProblemMutationSchema
+from submission.query import Query as SubmissionQuerySchema
 # import problem.schema as ProblemSchema
 # import image.schema as ImageSchema
 # import submission.schema as SubmissionSchema
@@ -11,7 +12,7 @@ from problem.mutation import Mutation as ProblemMutationSchema
 # import discussion.schema as DiscussionSchema
 
 
-class Query( UserQuerySchema , ProblemQuerySchema , graphene.ObjectType ):
+class Query( UserQuerySchema , ProblemQuerySchema , SubmissionQuerySchema , graphene.ObjectType ):
     pass
 
 

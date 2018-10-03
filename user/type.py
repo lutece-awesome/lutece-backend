@@ -1,5 +1,5 @@
 import graphene
-from user.attachinfo.type import AttachInfoType
+from user.attachinfo.type import UserAttachInfoType
 from utils.interface import PaginatorList
 
 class UserType( graphene.ObjectType ):
@@ -7,7 +7,7 @@ class UserType( graphene.ObjectType ):
     username = graphene.String()
     joined_date = graphene.Date()
     last_login_date = graphene.DateTime()
-    attach_info = graphene.Field( AttachInfoType )
+    attach_info = graphene.Field( UserAttachInfoType )
 
     def resolve_pk( self , info , * args , ** kwargs ):
         return self.pk
