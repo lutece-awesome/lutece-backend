@@ -48,7 +48,23 @@ class UpdateProblem(graphene.Mutation):
         else:
             raise RuntimeError( form.errors.as_json() )
 
-class CreateProblem( UpdateProblem ):
+class CreateProblem( graphene.Mutation ):
+
+    class Arguments:
+        title = graphene.String( required = True )
+        content = graphene.String( required = True )
+        resources = graphene.String( required = True )
+        constraints = graphene.String( required = True )
+        note = graphene.String( required = True )
+        
+        time_limit = graphene.Int( required = True )
+        memory_limit = graphene.Int( required = True )
+        output_limit = graphene.Int( required = True )
+        cpu_limit = graphene.Int( required = True )
+
+        samples = graphene.String( required = True )
+
+    state = graphene.Boolean()
 
     @permission_required( 'Problem.add' )
     def mutate( self , info , ** kwargs ):

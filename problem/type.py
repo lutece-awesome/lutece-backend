@@ -15,7 +15,7 @@ class ProblemSampleListType( graphene.ObjectType ):
 class ProblemType( DjangoObjectType ):
     class Meta:
         model = Problem
-        only_fields = ( 'title' , 'content' , 'resources' , 'constraints' , 'note' , 'slug' )
+        only_fields = ( 'title' , 'content' , 'resources' , 'constraints' , 'note' , 'slug' , 'standard_input' , 'standard_output' , 'submit' , 'accept' )
 
     pk = graphene.ID()
     limitation = graphene.Field( AbstractLimiationType )

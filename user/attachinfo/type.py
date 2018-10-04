@@ -11,4 +11,4 @@ class UserAttachInfoType( DjangoObjectType ):
     gravatar = graphene.String()
 
     def resolve_gravatar( self , info , * args , ** kwargs ):
-        return get_gravatar_url( self.gravatar , size = 250 )
+        return get_gravatar_url( self.user.email , size = 250 )

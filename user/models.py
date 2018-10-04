@@ -8,4 +8,4 @@ class User( AbstractUser ):
     tried = models.IntegerField( default = 0 )
     
     def __str__(self):
-        return self.username
+        return f'<User:{self.username}>'

@@ -4,6 +4,7 @@ from user.attachinfo.type import UserAttachInfoType
 from user.models import User
 from utils.interface import PaginatorList
 from user.statistics.type import UserSubmissionStatisticsType
+from graphene_django.types import DjangoObjectType
 
 class UserRankType( graphene.ObjectType ):
     position = graphene.Int()

@@ -58,7 +58,7 @@ class UserSubmissionStatisticsType( graphene.ObjectType ):
         return Submission.objects.filter( user = self.user , result___result = JudgeResult.MLE.full  ).count()
     
     def resolve_ratio( self , info , * args , ** kwargs ):
-        ac = self.resolve_AC( info , * args , ** kwargs )
+        ac = self.resolve_ac( info , * args , ** kwargs )
         all = Submission.objects.filter( user = self.user ).count()
         return ac / all if all else 0
 

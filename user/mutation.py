@@ -85,7 +85,7 @@ class UserAttachInfoUpdate(graphene.Mutation):
         school = graphene.String( required = True )
         company = graphene.String( required = True )
         location = graphene.String( required = True )
-        gravatar = graphene.String( required = True )
+        # gravatar = graphene.String( required = True )
 
     state = graphene.Boolean()
 
@@ -93,7 +93,7 @@ class UserAttachInfoUpdate(graphene.Mutation):
     def mutate( self , info , * args , ** kwargs ):
         update_form = UserAttachInfoUpdateForm( kwargs )
         if update_form.is_valid():
-            values = signup_form.cleaned_data
+            values = update_form.cleaned_data
             usr = info.context.user
             assign( usr.attach_info , ** values )
             usr.attach_info.save()

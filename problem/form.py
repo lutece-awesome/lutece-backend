@@ -16,11 +16,4 @@ class UpdateProblemForm( AbstractProblemForm, LimitationForm, SampleForm ):
         return cleaned_data
 
 class CreateProblemForm( AbstractProblemForm , LimitationForm, SampleForm ):
-    slug = forms.CharField( required = True )
-
-    def clean( self , * args , ** kwargs ):
-        cleaned_data = super().clean()
-        slug = cleaned_data.get( 'slug' )
-        if not get_object_or_None( AbstractProblem , slug = slug ):
-            self.add_error( 'slug' , 'Unknown problem for such slug.' )
-        return cleaned_data
+    pass

@@ -6,4 +6,4 @@ class AttachInfoForm( forms.Form ):
     school = forms.CharField( required = False , max_length = MAX_SCHOOL_LENGTH )
     company = forms.CharField( required = False , max_length = MAX_COMPANY_LENGTH )
     location = forms.CharField( required = False , max_length = MAX_LOCATION_LENGTH )
-    gravatar = forms.CharField( required = False , max_length = MAX_GRAVATAR_LENGTH )
+    # gravatar = forms.CharField( required = False , max_length = MAX_GRAVATAR_LENGTH )
