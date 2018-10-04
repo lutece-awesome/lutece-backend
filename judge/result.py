@@ -149,7 +149,7 @@ class JudgeResult( Enum ):
     @classproperty
     def JE( cls ):
         return cls._JE.value
-
+    
     @classmethod
     def value_of( cls , value ):
         for each in cls:
@@ -160,3 +160,10 @@ class JudgeResult( Enum ):
     @classmethod
     def all( cls ):
         return [ each.value for each in cls ]
+    
+    @classmethod
+    def is_failed( cls , which ):
+        _fail = ( cls.WA , cls.RE , cls.RN , cls.TLE , cls.OLE , cls.MLE )
+        if which in _fail:
+            return True
+        return False

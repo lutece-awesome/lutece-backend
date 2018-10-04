@@ -4,6 +4,7 @@ from judge.language import Language
 from annoying.functions import get_object_or_None
 from submission.constant import MAX_CODE_LENGTH
 
+
 class SubmitSubmissionForm( forms.Form ):
     problem_slug = forms.CharField( required = True )
     code = forms.CharField( required = True , max_length = MAX_CODE_LENGTH , min_length = 1 )
@@ -11,7 +12,7 @@ class SubmitSubmissionForm( forms.Form ):
 
     def clean( self ):
         cleaned_data = super().clean()
-        problemslug = cleaned_data.get( 'problemslug' )
+        problemslug = cleaned_data.get( 'problem_slug' )
         code = cleaned_data.get( 'code' )
         language = Language.value_of( cleaned_data.get( 'language' ) )
         prob = get_object_or_None( Problem , slug = problemslug )

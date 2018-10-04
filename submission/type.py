@@ -4,6 +4,8 @@ from submission.models import Submission, SubmissionAttachInfo, SubmissionCase
 from user.type import UserType
 from problem.type import ProblemType
 from judge.language import Language
+from judge.result import JudgeResult
+from utils.interface import PaginatorList
 
 class SubmissionAttachInfoType( DjangoObjectType ):
     class Meta:
@@ -12,25 +14,30 @@ class SubmissionAttachInfoType( DjangoObjectType ):
 
 class JudgeResultType( graphene.ObjectType ):
     status = graphene.String()
+    color = graphene.String()
+    done = graphene.Boolean()
     compile_info = graphene.String()
     error_info = graphene.String()
-    done = graphene.Boolean()
 
     def resolve_status( self , info , * args , ** kwargs ):
-        return JudgeResult.value_of( self._result ).full
-
-    def resolve_compile_info( self , info , is_self , is_privileage , * args , ** kwargs ):
-        if is_self or is_privileage:
-            return self.compile_info
-        return ''
+        return self.result.full
     
-    def resolve_error_info( self , info , is_self , is_privileage , * args , ** kwargs ):
-        if is_privileage:
-            return self.error_info
-        return ''
+    def resolve_color( self , info , * args , ** kwargs ):
+        return self.result.color
     
     def resolve_done( self , info , * args , ** kwargs ):
         return self.done
+
+    def resolve_compile_info( self , info , * args , ** kwargs ):
+        usr = info.context.user
+        if self.user == usr or usr.has_perm( 'Submission.view' ):
+            return self.compile_info
+        return ''
+
+    def resolve_error_info( self , info , * args , ** kwargs ):
+        if info.context.user.has_perm( 'Submission.view' ):
+            return self.error_info
+        return ''
 
 class SubmissionCaseType(DjangoObjectType):
     class Meta:
@@ -46,16 +53,18 @@ class SubmissionType( graphene.ObjectType ):
     create_time = graphene.DateTime()
     user = graphene.Field( UserType )
     problem = graphene.Field( ProblemType )
-    result = graphene.Field( JudgeResultType , is_self = graphene.Boolean() , is_privileage = graphene.Boolean() )
+    result = graphene.Field( JudgeResultType )
     attach_info = graphene.Field( SubmissionAttachInfoType )
     cases = graphene.Field( SubmissionCaseTypeList )
     language = graphene.String()
+    failed_case = graphene.Int()
 
     def resolve_pk( self , info , * args , ** kwargs ):
         return self.pk
 
-    def resolve_code( self , info , is_self , is_privileage , * args , ** kwargs ):
-        if is_self or is_privileage:
+    def resolve_code( self , info , * args , ** kwargs ):
+        usr = info.context.user
+        if self.user == usr or usr.has_perm( 'Submission.view' ):
             return self.code
         return ''
     
@@ -72,7 +81,19 @@ class SubmissionType( graphene.ObjectType ):
         return self.result
     
     def resolve_language( self , info , * args , ** kwargs ):
+        print( self )
         return self.language.full
+    
+    def resolve_failed_case(self, info, * args, ** kwargs):
+        if JudgeResult.is_failed( self.result ):
+            return SubmissionCase.objects.filter( submission = self ).count()
+        return None
     
     def resolve_cases( self , info , * args , ** kwargs ):
         return list( SubmissionCase.objects.filter( submission = self ) )
+
+class SubmissionListType(graphene.ObjectType):
+    class Meta:
+        interfaces = (PaginatorList, )
+
+    submission_list = graphene.List( SubmissionType )

@@ -131,3 +131,6 @@ base_setting.py
 
 # media
 media/
+
+# rabbitmq
+judge/rabbitmq.py

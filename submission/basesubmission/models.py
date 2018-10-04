@@ -19,4 +19,4 @@ class AbstractSubmission( models.Model ):
 
     @property
     def language( self , * args , ** kwargs ):
-        return JudgeResult.value_of( self._language )
+        return Language.value_of( self._language )

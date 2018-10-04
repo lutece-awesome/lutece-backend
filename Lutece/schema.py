@@ -5,6 +5,7 @@ from user.mutation import Mutation as UserMutationSchema
 from problem.query import Query as ProblemQuerySchema
 from problem.mutation import Mutation as ProblemMutationSchema
 from submission.query import Query as SubmissionQuerySchema
+from submission.mutation import Mutation as SubmissionMutationSchema
 # import problem.schema as ProblemSchema
 # import image.schema as ImageSchema
 # import submission.schema as SubmissionSchema
@@ -16,7 +17,7 @@ class Query( UserQuerySchema , ProblemQuerySchema , SubmissionQuerySchema , grap
     pass
 
 
-class Mutations( UserMutationSchema , ProblemMutationSchema , graphene.ObjectType):
+class Mutations( UserMutationSchema , ProblemMutationSchema , SubmissionMutationSchema , graphene.ObjectType):
     verify_token = Verify.Field()
 
 

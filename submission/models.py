@@ -15,6 +15,9 @@ class Submission( AbstractSubmission ):
     code = models.CharField( max_length = MAX_CODE_LENGTH , blank = True )
     attach_info = models.OneToOneField( SubmissionAttachInfo , on_delete = models.CASCADE )
 
+    def __str__( self ):
+    	return f'<Submission:{self.pk}>'
+
 
 class SubmissionCase( AbstractCase ):
     submission = models.ForeignKey( Submission , on_delete = models.SET_NULL , null = True )
