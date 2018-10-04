@@ -37,3 +37,8 @@ class UserSignupForm( AttachInfoForm ):
         if email and get_object_or_None( User , email = email ) is not None:
             self.add_error( 'email' , 'Email already exists.' )
         return cleaned_data
+
+class UserAttachInfoUpdateForm( AttachInfoForm ):
+
+    def clean( self ):
+        return super().clean()

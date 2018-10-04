@@ -10,6 +10,7 @@ class SubmissionAttachInfo( AbstractAttachInfo ):
     time_cost = models.IntegerField( default = 0 )
     memory_cost = models.IntegerField( default = 0 )
 
+
 class Submission( AbstractSubmission ):
     code = models.CharField( max_length = MAX_CODE_LENGTH , blank = True )
     attach_info = models.OneToOneField( SubmissionAttachInfo , on_delete = models.CASCADE )

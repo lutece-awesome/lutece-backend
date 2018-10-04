@@ -1,6 +1,6 @@
 import graphene
 from django.contrib.auth.models import update_last_login
-from user.form import UserLoginForm, UserSignupForm
+from user.form import UserLoginForm, UserSignupForm, UserAttachInfoUpdateForm
 from user.models import User
 from user.type import UserType
 from user.attachinfo.models import AttachInfo
@@ -8,6 +8,7 @@ from graphene.types.generic import GenericScalar
 from graphql_jwt.mixins import RefreshMixin
 from graphql_jwt.mutations import JSONWebTokenMixin
 from graphql_jwt.shortcuts import get_token, get_payload, get_user_by_payload
+from graphql_jwt.decorators import login_required
 from utils.function import assign
 
 class UserLogin(graphene.Mutation):
@@ -77,7 +78,31 @@ class UserRegister(graphene.Mutation):
         else:
             raise RuntimeError( signup_form.errors.as_json() )
 
+class UserAttachInfoUpdate(graphene.Mutation):
+
+    class Arguments:
+        about = graphene.String( required = True )
+        school = graphene.String( required = True )
+        company = graphene.String( required = True )
+        location = graphene.String( required = True )
+        gravatar = graphene.String( required = True )
+
+    state = graphene.Boolean()
+
+    @login_required
+    def mutate( self , info , * args , ** kwargs ):
+        update_form = UserAttachInfoUpdateForm( kwargs )
+        if update_form.is_valid():
+            values = signup_form.cleaned_data
+            usr = info.context.user
+            assign( usr.attach_info , ** values )
+            usr.attach_info.save()
+            return UserAttachInfoUpdate( state = True )
+        else:
+            raise RuntimeError( update_form.errors.as_json() )
+
 class Mutation(graphene.AbstractType):
     user_register = UserRegister.Field()
     user_login = UserLogin.Field()
     user_token_refresh = UserTokenRefresh.Field()
+    user_attach_info_update = UserAttachInfoUpdate.Field()

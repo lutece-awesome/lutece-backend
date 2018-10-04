@@ -1,6 +1,6 @@
 # Lutece-Online-Judge
 [![Python](https://img.shields.io/badge/python-3.7.0-red.svg?style=flat-square)](https://www.python.org/downloads/release/python-370/)
-[![Django](https://img.shields.io/badge/django-2.1.1-ff69b4.svg?style=flat-square)](https://www.djangoproject.com/)
+[![Django](https://img.shields.io/badge/django-2.1.2-ff69b4.svg?style=flat-square)](https://www.djangoproject.com/)
 
 Simplicity online judge
 
