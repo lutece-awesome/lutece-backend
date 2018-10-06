@@ -81,7 +81,6 @@ class SubmissionType( graphene.ObjectType ):
         return self.result
     
     def resolve_language( self , info , * args , ** kwargs ):
-        print( self )
         return self.language.full
     
     def resolve_failed_case(self, info, * args, ** kwargs):

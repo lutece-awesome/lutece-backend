@@ -54,6 +54,7 @@ class UserRegister(graphene.Mutation):
         school = graphene.String()
         company = graphene.String()
         location = graphene.String()
+        about = graphene.String()
 
     token = graphene.String()
     payload = GenericScalar()

@@ -11,23 +11,46 @@ Simplicity online judge
     pip3 install -r requirements/requirements.txt
 </pre>
 
-+ Install rabbitmq-server and set task_user
++ Install rabbitmq-server
+### Debian:
 <pre>
     sudo apt-get update
     sudo apt-get install rabbitmq-server
     sudo systemctl enable rabbitmq-server
     sudo systemctl start rabbitmq-server
-    sudo systemctl status rabbitmq-server
-    sudo rabbitmqctl add_user task_user AUTH_KEY # you need to set Judger AUTH_KEY
-    sudo rabbitmqctl set_user_tags task_user normal
-    sudo rabbitmqctl add_vhost judger_host
-    sudo rabbitmqctl set_permissions -p judger_host task_user ".*" ".*" ".*"
 </pre>
 
-+ Install redis for websocket backend
+### Arch:
 <pre>
-    sudo apt-get update
-    sudo apt-get install redis-server
+    sudo pacman -S rabbitmq
+    sudo systemctl enable rabbitmq
+    sudo systemctl start rabbitmq
+</pre>
+
++ Set task user
+<pre>
+    # <strong>You need to set Judger AUTH_KEY</strong>
+    $ sudo rabbitmqctl add_user task_user AUTH_KEY
+    $ sudo rabbitmqctl set_user_tags task_user normal
+    $ sudo rabbitmqctl add_vhost judger_host
+    $ sudo rabbitmqctl set_permissions -p judger_host task_user ".*" ".*" ".*"
+</pre>
+
+
++ Install redis for websocket backend
+### Debian:
+<pre>
+    $ sudo apt-get update
+    $ sudo apt-get install redis-server
+    $ sudo systemctl enable redis-server
+    $ sudo systemctl start redis-server
+</pre>
+
+### Arch:
+<pre>
+    $ sudo pacman -S redis
+    $ sudo systemctl enable redis
+    $ sudo systemctl start redis
 </pre>
 
 ## User configuring
@@ -42,7 +65,6 @@ $ sudo passwd lutece_running_user
 
 + Create data directory
 ```
-# Set the data dir for data
 $ mkdir ~/lutece_data
 ```
 
