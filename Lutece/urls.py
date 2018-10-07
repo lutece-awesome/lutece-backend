@@ -27,7 +27,7 @@ urlpatterns = static( settings.MEDIA_URL , document_root=settings.MEDIA_ROOT) + 
     path('data/', include('data.urls')),
 ]
 
-if DEBUG:
-    urlpatterns += [path('graphql', FileUploadGraphQLView.as_view(graphiql=True))]
+# import graphql
+urlpatterns += [path('graphql', FileUploadGraphQLView.as_view(graphiql=DEBUG))]
 
 urlpatterns += [re_path(r'^.*$', TemplateView.as_view(template_name='static/index.html'))]
