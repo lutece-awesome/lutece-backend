@@ -14,6 +14,9 @@ MD5_FILE_EXTENSION = '.md5'
 # The data zip name
 DATA_ZIP_NAME = 'Data.zip'
 
+# MD5 file name
+MD5_FILE_NAME = 'data.md5'
+
 # Allowed data extension
 ALLOWED_EXTENSION = ( '.zip' , )
 

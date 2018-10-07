@@ -52,6 +52,7 @@ LUTECE_APPS = [
     'problem',
     'judge',
     'submission',
+    'data',
     # 'data_server',
     # 'utils',
     # 'discussion',

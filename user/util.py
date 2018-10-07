@@ -1,4 +1,4 @@
-from user.statistics.models import Solve
+from user.models import Solve
 
 def update_user_solve( usr , prob , status ):
     s , created = Solve.objects.get_or_create( user = usr , problem = prob )

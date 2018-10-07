@@ -58,3 +58,8 @@ Simplicity online judge
     $ sudo systemctl enable redis
     $ sudo systemctl start redis
 </pre>
+
++ Create data folder
+<pre>
+    mkdir ~/lutece_data
+</pre>

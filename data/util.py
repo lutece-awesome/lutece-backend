@@ -1,5 +1,5 @@
 from os import path, listdir, mkdir, system
-from data.constant import META_FIELD, DATA_PATH
+from data.constant import META_FIELD, DATA_PATH, MD5_FILE_NAME
 import hashlib, random
 
 def get_data( problem , data_type ):
@@ -13,7 +13,7 @@ def get_data( problem , data_type ):
         _send = {}
         for _ in li:
             with open( path.join( dr , _ ) , "rb" ) as file:
-                _send[_] = file.read()                
+                _send[_] = file.read()
         return _send
     except:
         return None
@@ -27,7 +27,7 @@ def cal_md5_or_create( problem , force = False ):
     try:
         dr = path.join( path.expanduser( DATA_PATH ) , str( problem ) )
         li = listdir( dr )
-        if 'data.md5' in li and force is False:
+        if MD5_FILE_NAME in li and force is False:
             return True , None
         li = list( filter( lambda x : path.splitext( x )[1] in META_FIELD['md5-check'] , li ) )
         args = []
@@ -38,7 +38,7 @@ def cal_md5_or_create( problem , force = False ):
             content = md5.hexdigest()
             args.append( ( _ , content ) )
         args.sort()
-        with open( path.join( dr , 'data.md5' ) , "w" ) as file:
+        with open( path.join( dr , MD5_FILE_NAME ) , "w" ) as file:
             file.write( str( args ) )
     except Exception as e:
         return False , str( e )

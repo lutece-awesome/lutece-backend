@@ -21,13 +21,13 @@ from .base_setting import DEBUG
 from django.conf import settings
 from django.conf.urls.static import static
 
-if DEBUG:
-    graphql = path('graphql', FileUploadGraphQLView.as_view(graphiql=True))
-else:
-    graphiql = []
 
 urlpatterns = static( settings.MEDIA_URL , document_root=settings.MEDIA_ROOT) + [
     path('admin/', admin.site.urls),
-    path('data_server/', include('data_server.urls')),
-    re_path(r'^.*$', TemplateView.as_view(template_name='static/index.html')),
-] + graphql
+    path('data/', include('data.urls')),
+]
+
+if DEBUG:
+    urlpatterns += [path('graphql', FileUploadGraphQLView.as_view(graphiql=True))]
+
+urlpatterns += [re_path(r'^.*$', TemplateView.as_view(template_name='static/index.html'))]
