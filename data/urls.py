@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import fetch_data
+from data.views import fetch_data
 
 
 urlpatterns = [

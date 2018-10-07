@@ -11,6 +11,11 @@ Simplicity online judge
     pip3 install -r requirements/requirements.txt
 </pre>
 
++ Create configurion file
+<pre>
+    cp judge/configure.example judge/configure.py
+</pre>
+
 + Install rabbitmq-server
 ### Debian:
 <pre>
@@ -66,10 +71,4 @@ $ sudo passwd lutece_running_user
 + Create data directory
 ```
 $ mkdir ~/lutece_data
-```
-
-+ Generate ssh key for data user
-```
-su lutece_running_user
-ssh-keygen
 ```

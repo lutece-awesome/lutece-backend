@@ -1,7 +1,7 @@
 from pickle import dumps as pickle_dumps
 from django.http import HttpResponse
-from .decorators import judger_auth
-from .util import process
+from data.decorators import judger_auth
+from data.util import process
 
 @judger_auth
 def fetch_data( request ):

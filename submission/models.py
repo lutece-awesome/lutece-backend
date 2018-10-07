@@ -18,10 +18,6 @@ class Submission( AbstractSubmission ):
     def __str__( self ):
     	return f'<Submission:{self.pk}>'
 
-
-class SubmissionCase( AbstractCase ):
-    submission = models.ForeignKey( Submission , on_delete = models.SET_NULL , null = True )
-
     def get_websocket_field( self ):
     	return {
     		'result' : self.result.full,
@@ -29,3 +25,18 @@ class SubmissionCase( AbstractCase ):
     		'memory_cost' : self.memory_cost,
     		'case' : self.case
     	}
+    
+    def get_judge_field( self ):
+        return {
+            'submission_id' : self.pk,
+            'language' : self.language.full,
+            'code' : self.code,
+            'problem' : self.problem.pk,
+            'time_limit' : self.problem.limitation.time_limit,
+            'memory_limit' : self.problem.limitation.time_limit,
+            'checker' : self.problem.checker.full
+        }
+
+
+class SubmissionCase( AbstractCase ):
+    submission = models.ForeignKey( Submission , on_delete = models.SET_NULL , null = True )

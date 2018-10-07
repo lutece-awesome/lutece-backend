@@ -1,4 +1,4 @@
-from os import path, listdir, system
+from os import path, listdir, system, mkdir
 from data.constant import DATA_PATH, INPUT_FILE_EXTENSION, DATA_ZIP_NAME
 import zipfile
 
@@ -6,14 +6,20 @@ class DataService:
 
     @staticmethod
     def get_cases_count( problem_pk ):
-        dr = path.join( path.expanduser( DATA_PATH ) , str( problem_pk ) )
-        return len( list( filter( lambda x : path.splitext( x )[1] == INPUT_FILE_EXTENSION , listdir( dr ) ) ) )
+        try:
+            dr = path.join( path.expanduser( DATA_PATH ) , str( problem_pk ) )
+            return len( list( filter( lambda x : path.splitext( x )[1] == INPUT_FILE_EXTENSION , listdir( dr ) ) ) )
+        except:
+            raise RuntimeError( 'Can not load test data.' )
 
     @staticmethod
     def create_data_dir( problem_pk ):
-        dr = path.join( path.expanduser( DATA_PATH ) , str( problem_pk ) )
-        script = f'mkdir {dr} >/dev/null'
-        system( script )
+        try:
+            dr = path.join( path.expanduser( DATA_PATH ) , str( problem_pk ) )
+            mkdir( dr )
+        except:
+            raise RuntimeError( 'Can not create data folder.' )
+
 
     @staticmethod
     def extract_data( problem_pk ):

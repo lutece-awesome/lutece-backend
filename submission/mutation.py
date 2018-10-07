@@ -1,13 +1,14 @@
 import graphene
 from submission.form import SubmitSubmissionForm
 from data.service import DataService
-from judge.rabbitmq import TASK_QUEUE
 from graphql_jwt.decorators import login_required
 from submission.models import Submission, SubmissionAttachInfo
 from judge.models import JudgeResult as JudgeResultModel
 from judge.result import JudgeResult
 from annoying.functions import get_object_or_None
 from problem.models import Problem
+from judge.tasks import apply_submission
+from judge.configure import TASK_QUEUE
 
 class SubmitSubmission(graphene.Mutation):
 
@@ -37,8 +38,7 @@ class SubmitSubmission(graphene.Mutation):
             sub.attach_info = attach_info
             sub.result = result
             sub.save()
-            # Submission_task.apply_async(
-            #     args=(s.get_push_dict(),), queue=TASK_QUEUE)
+            apply_submission.apply_async( args = ( sub.get_judge_field() , ) , queue = TASK_QUEUE )
             problem.ins_submit_times()
             return SubmitSubmission( pk = sub.pk )
         else:
