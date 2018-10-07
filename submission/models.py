@@ -12,7 +12,7 @@ class SubmissionAttachInfo( AbstractAttachInfo ):
 
 
 class Submission( AbstractSubmission ):
-    code = models.CharField( max_length = MAX_CODE_LENGTH , blank = True )
+    code = models.TextField( max_length = MAX_CODE_LENGTH , blank = True )
     attach_info = models.OneToOneField( SubmissionAttachInfo , on_delete = models.CASCADE )
 
     def __str__( self ):
