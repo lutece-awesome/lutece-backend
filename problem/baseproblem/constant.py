@@ -18,3 +18,6 @@ MAX_STANDARD_INPUT_LENGTH = 16384
 
 # The max length limitation of problem standard output
 MAX_STANDARD_OUTPUT_LENGTH = 16384
+
+# The max length of slug
+MAX_SLUG_LENGTH = MAX_TITLE_LENGTH * 2
