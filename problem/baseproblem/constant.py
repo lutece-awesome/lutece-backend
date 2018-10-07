@@ -14,7 +14,7 @@ MAX_CONSTRAINTS_LENGTH = 4096
 MAX_NOTE_LENGTH = 8192
 
 # The max length limitation of problem standard input
-MAX_STANDARD_INPUT_LENGTH = 2048
+MAX_STANDARD_INPUT_LENGTH = 4096
 
 # The max length limitation of problem standard output
-MAX_STANDARD_OUTPUT_LENGTH = 2048
+MAX_STANDARD_OUTPUT_LENGTH = 4096
