@@ -2,9 +2,6 @@
 # The path of lutece data
 DATA_PATH = '~/lutece_data'
 
-# The user of lutece data user
-DATA_USER = 'lutece_running_user'
-
 # The input file extension
 INPUT_FILE_EXTENSION = '.in'
 

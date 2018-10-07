@@ -134,3 +134,4 @@ media/
 
 # configure
 judge/configure.py
+data/configure.py

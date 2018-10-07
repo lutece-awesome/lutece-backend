@@ -14,6 +14,7 @@ Simplicity online judge
 + Create configurion file
 <pre>
     cp judge/configure.example judge/configure.py
+    cp data/configure.example data/configure.py
 </pre>
 
 + Install rabbitmq-server
@@ -57,18 +58,3 @@ Simplicity online judge
     $ sudo systemctl enable redis
     $ sudo systemctl start redis
 </pre>
-
-## User configuring
-
-+ <b>Any change</b> during this step need to <b>overwrite</b> into data/constant.py
-
-+ Generate running user
-```
-$ sudo useradd -m lutece_running_user
-$ sudo passwd lutece_running_user
-```
-
-+ Create data directory
-```
-$ mkdir ~/lutece_data
-```
