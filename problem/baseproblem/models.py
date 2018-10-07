@@ -1,5 +1,5 @@
 from django.db import models
-from django_extensions.db.models import AutoSlugField
+from uuslug import uuslug
 from problem.baseproblem.constant import MAX_TITLE_LENGTH, MAX_CONTENT_LENGTH, MAX_RESOURCES_LENGTH, MAX_CONSTRAINTS_LENGTH, MAX_NOTE_LENGTH, MAX_STANDARD_INPUT_LENGTH, MAX_STANDARD_OUTPUT_LENGTH
 
 class AbstractProblem( models.Model ):
@@ -14,11 +14,12 @@ class AbstractProblem( models.Model ):
     standard_input = models.TextField( max_length = MAX_STANDARD_INPUT_LENGTH , blank = True )
     standard_output = models.TextField( max_length = MAX_STANDARD_OUTPUT_LENGTH , blank = True )
     note = models.TextField( max_length = MAX_NOTE_LENGTH , blank = True )
-    slug = AutoSlugField( populate_from = 'title' , overwrite = True )
+    slug = models.TextField()
     disable = models.BooleanField( default = False )
 
     def __str__( self ):
         return self.title
 
     def save( self , * args , ** kwargs ):
+        self.slug = uuslug( self.title, instance = self )
         super().save( * args , ** kwargs )
