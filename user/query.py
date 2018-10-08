@@ -17,7 +17,7 @@ class Query( object ):
     def resolve_user_list( self , info , * args , ** kwargs ):
         page = kwargs.get( 'page' )
         filter = kwargs.get('filter')
-        user_list = User.objects.all().filter( is_active = True , is_staff = False )
+        user_list = User.objects.all().filter( is_active = True , is_staff = False ).order_by( '-solved' )
         if filter:
             user_list = user_list.filter( username__icontains = filter )
         paginator = Paginator (user_list , PER_PAGE_COUNT )
