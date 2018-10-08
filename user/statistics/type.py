@@ -2,22 +2,23 @@ import graphene
 from graphene.types.generic import GenericScalar
 from judge.result import JudgeResult
 from submission.models import Submission
+from user.models import Solve
+from graphene_django.types import DjangoObjectType
 
-class UserProblemStatisticsType( graphene.ObjectType ):
-    ac = GenericScalar()
-    rj = GenericScalar()
 
-    def __init__( self , * args , ** kwargs ):
-        if 'user' in kwargs:
-            self.user = kwargs['user']
-        else:
-            raise RuntimeError( 'User field is required' )
+class UserSolveType( DjangoObjectType ):
+    class Meta:
+        model = Solve
+        only_fields = ( 'status' )
+    
+    pk = graphene.ID()
+    slug = graphene.String()
 
-    def resolve_ac( self , * args , ** kwargs ):
-        return ( each.pk for each in Submission.objects.filter( user = self.user , result___result = JudgeResult.AC.full ).distinct( 'problem' ) )
-
-    def resolve_rj( self , * args , ** kwargs ):
-        pass
+    def resolve_pk( self , info , * args , ** kwargs ):
+        return self.problem.pk
+    
+    def resolve_slug( self , info , * args , ** kwargs ):
+        return self.problem.slug
 
 class UserSubmissionStatisticsType( graphene.ObjectType ):
     ac = graphene.Int()
@@ -28,7 +29,7 @@ class UserSubmissionStatisticsType( graphene.ObjectType ):
     ole = graphene.Int()
     mle = graphene.Int()
     ratio = graphene.Float()
-    problem = graphene.Field( UserProblemStatisticsType )
+    solve = graphene.List( UserSolveType )
 
     def __init__( self , * args , ** kwargs ):
         if 'user' in kwargs:
@@ -62,5 +63,6 @@ class UserSubmissionStatisticsType( graphene.ObjectType ):
         all = Submission.objects.filter( user = self.user ).count()
         return ac / all if all else 0
 
-    def resolve_problem( self , info , * args , ** kwargs ):
-        return UserProblemStatisticsType( user = self.user )
+    def resolve_solve( self , info , * args , ** kwargs ):
+        obj = Solve.objects.filter( user = self.user ).order_by( 'problem__pk' )
+        return list( obj )

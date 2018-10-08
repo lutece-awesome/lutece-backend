@@ -58,6 +58,7 @@ def Modify_submission_status(** report):
                 Problem.objects.get( pk = sub.problem.pk ).ins_accept_times()
             from user.util import update_user_solve
             update_user_solve( sub.user , sub.problem , True if JudgeResult.value_of( result ) is JudgeResult.AC else False )
+            sub.user.refresh_solve()
             send_data['result'] = result
     if apps.is_installed("channels"):
         from channels.layers import get_channel_layer

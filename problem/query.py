@@ -3,6 +3,7 @@ from problem.models import Problem
 from problem.type import ProblemType, ProblemListType
 from django.core.paginator import Paginator
 from problem.constant import PER_PAGE_COUNT
+from django.db.models import Q
 
 class Query(object):
     problem = graphene.Field( ProblemType , slug = graphene.String() )
@@ -25,7 +26,7 @@ class Query(object):
         if not privileage:
             obj = obj.filter( disable = False )
         if filter:
-            obj = obj.filter( title__icontains = filter )
+            obj = obj.filter( Q( pk__contains = filter ) | Q( title__icontains = filter ) )
         paginator = Paginator( obj , PER_PAGE_COUNT )
         return ProblemListType( maxpage = paginator.num_pages, problem_list = paginator.get_page( page ) )
     
@@ -35,5 +36,5 @@ class Query(object):
         if not info.context.user.has_perm('problem.view_all'):
             problem_list = problem_list.filter( disable = False )
         if filter:
-            problem_list = problem_list.filter( title__icontains = filter )
+            problem_list = problem_list.filter( Q( pk__contains = filter ) | Q( title__icontains = filter ) )
         return ProblemListType( maxpage = 1 , problem_list = problem_list[:5] )

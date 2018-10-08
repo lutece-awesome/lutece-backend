@@ -11,6 +11,11 @@ class User( AbstractUser ):
     def __str__(self):
         return f'<User:{self.username}>'
 
+    def refresh_solve( self ):
+        self.tried = Solve.objects.filter( user = self ).count()
+        self.solved = Solve.objects.filter( user = self , status = True ).count()
+        self.save()
+
 class Solve( models.Model ):
     user = models.ForeignKey( User , on_delete = models.SET_NULL , null = True )
     problem = models.ForeignKey( Problem , on_delete = models.SET_NULL , null = True )

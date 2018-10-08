@@ -1,7 +1,7 @@
 import graphene
 from django.db.models import Q
 from user.attachinfo.type import UserAttachInfoType
-from user.models import User
+from user.models import User, Solve
 from utils.interface import PaginatorList
 from user.statistics.type import UserSubmissionStatisticsType
 from graphene_django.types import DjangoObjectType
@@ -9,6 +9,7 @@ from graphene_django.types import DjangoObjectType
 class UserRankType( graphene.ObjectType ):
     position = graphene.Int()
     count = graphene.Int()
+    solve = graphene.JSONString()
 
     def __init__( self , * args , ** kwargs ):
         if 'user' in kwargs:
