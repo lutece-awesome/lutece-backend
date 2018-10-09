@@ -10,7 +10,7 @@ class DataService:
             dr = path.join( path.expanduser( DATA_PATH ) , str( problem_pk ) )
             return len( list( filter( lambda x : path.splitext( x )[1] == INPUT_FILE_EXTENSION , listdir( dr ) ) ) )
         except:
-            raise RuntimeError( 'Can not load test data.' )
+            raise RuntimeError( 'Can not load test data folder.' )
 
     @staticmethod
     def create_data_dir( problem_pk ):

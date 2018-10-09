@@ -3,6 +3,7 @@ from graphene_django.types import DjangoObjectType
 from problem.limitation.type import AbstractLimiationType
 from problem.models import Problem, ProblemSample
 from utils.interface import PaginatorList
+from data.service import DataService
 
 class ProblemSampleType( DjangoObjectType ):
     class Meta:
@@ -20,6 +21,7 @@ class ProblemType( DjangoObjectType ):
     pk = graphene.ID()
     limitation = graphene.Field( AbstractLimiationType )
     samples = graphene.Field( ProblemSampleListType )
+    data_count = graphene.Int()
 
     def resolve_pk( self , info , * args , ** kwargs ):
         return self.pk
@@ -30,6 +32,9 @@ class ProblemType( DjangoObjectType ):
     def resolve_samples( self , info , * args , ** kwargs ):
         result = ProblemSample.objects.filter( problem = self )
         return ProblemSampleListType( sample_list = result )
+
+    def resolve_data_count( self , info , * args , ** kwargs ):
+        return DataService.get_cases_count( self.pk )
 
 class ProblemListType( graphene.ObjectType ):
     class Meta:
