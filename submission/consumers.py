@@ -15,7 +15,11 @@ class SubmissionDetailConsumer( AsyncWebsocketConsumer ):
     				conn.close_if_unusable_or_obsolete()
 
 	async def connect( self ):
+<<<<<<< HEAD
 		self.close_old_connections()
+=======
+		close_old_connections()
+>>>>>>> 9a3510a8a6b62c097b04876c35a99faa53310f11
 		self.submission = Submission.objects.get( pk = self.scope['url_route']['kwargs']['pk'] )
 		self.group_name = f'SubmissionDetail-{self.submission.pk}'
 		try:
