@@ -9,4 +9,3 @@ class AbstractProblemForm( forms.Form ):
     note = forms.CharField( required = True , max_length = MAX_NOTE_LENGTH )
     standard_input = forms.CharField( required = True , max_length = MAX_STANDARD_INPUT_LENGTH )
     standard_output = forms.CharField( required = True , max_length = MAX_STANDARD_OUTPUT_LENGTH )
-    disable = forms.CharField( required = True )

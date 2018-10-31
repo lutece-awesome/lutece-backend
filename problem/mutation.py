@@ -60,7 +60,9 @@ class CreateProblem( graphene.Mutation ):
         resources = graphene.String( required = True )
         constraints = graphene.String( required = True )
         note = graphene.String( required = True )
-        
+        standard_input = graphene.String( required = True )
+        standard_output = graphene.String( required = True )
+
         time_limit = graphene.Int( required = True )
         memory_limit = graphene.Int( required = True )
         output_limit = graphene.Int( required = True )

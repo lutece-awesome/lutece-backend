@@ -6,10 +6,16 @@ from judge.language import Language
 from judge.result import JudgeResult
 from channels.db import database_sync_to_async
 from json import dumps
+from django.db import connections
 
 class SubmissionDetailConsumer( AsyncWebsocketConsumer ):
 
+	def close_old_connections( self ):
+    		for conn in connections.all():
+    				conn.close_if_unusable_or_obsolete()
+
 	async def connect( self ):
+		self.close_old_connections()
 		self.submission = Submission.objects.get( pk = self.scope['url_route']['kwargs']['pk'] )
 		self.group_name = f'SubmissionDetail-{self.submission.pk}'
 		try:
