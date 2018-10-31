@@ -1,6 +1,6 @@
 from django import forms
 from annoying.functions import get_object_or_None
-from problem.baseproblem.models import AbstractProblem
+from problem.models import Problem
 from problem.baseproblem.form import AbstractProblemForm
 from problem.limitation.form import LimitationForm
 from problem.sample.form import SampleForm
@@ -11,7 +11,7 @@ class UpdateProblemForm( AbstractProblemForm, LimitationForm, SampleForm ):
     def clean( self , * args , ** kwargs ):
         cleaned_data = super().clean()
         slug = cleaned_data.get( 'slug' )
-        if not get_object_or_None( AbstractProblem , slug = slug ):
+        if not get_object_or_None( Problem , slug = slug ):
             self.add_error( 'slug' , 'Unknown problem for such slug.' )
         return cleaned_data
 

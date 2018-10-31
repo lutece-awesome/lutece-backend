@@ -10,6 +10,8 @@ class UpdateProblem(graphene.Mutation):
 
     class Arguments:
         title = graphene.String( required = True )
+        standard_input = graphene.String( required = True )
+        standard_output = graphene.String( required = True )
         content = graphene.String( required = True )
         resources = graphene.String( required = True )
         constraints = graphene.String( required = True )
@@ -21,6 +23,8 @@ class UpdateProblem(graphene.Mutation):
         cpu_limit = graphene.Int( required = True )
 
         samples = graphene.String( required = True )
+
+        disable = graphene.Boolean( required = True )
 
         slug = graphene.String( required = True )
         
@@ -40,8 +44,8 @@ class UpdateProblem(graphene.Mutation):
             ProblemSample.objects.filter( problem = prob ).delete()
             for each in samples:
                 ProblemSample(
-                    input_content = each.get( 'input_content' ),
-                    output_content = each.get( 'output_content' ),
+                    input_content = each.get( 'inputContent' ),
+                    output_content = each.get( 'outputContent' ),
                     problem = prob
                 ).save()
             return UpdateProblem( state = True )
