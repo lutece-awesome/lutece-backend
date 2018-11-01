@@ -56,12 +56,12 @@ class CreateProblem( graphene.Mutation ):
 
     class Arguments:
         title = graphene.String( required = True )
-        content = graphene.String( required = True )
-        resources = graphene.String( required = True )
-        constraints = graphene.String( required = True )
-        note = graphene.String( required = True )
-        standard_input = graphene.String( required = True )
-        standard_output = graphene.String( required = True )
+        content = graphene.String( required = False )
+        resources = graphene.String( required = False )
+        constraints = graphene.String( required = False )
+        note = graphene.String( required = False )
+        standard_input = graphene.String( required = False )
+        standard_output = graphene.String( required = False )
 
         time_limit = graphene.Int( required = True )
         memory_limit = graphene.Int( required = True )
