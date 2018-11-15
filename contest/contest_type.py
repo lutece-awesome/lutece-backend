@@ -1,4 +1,5 @@
-from enum import Enum, unique
+from enum import Enum
+
 
 class _meta:
     __slots__ = (
@@ -7,37 +8,39 @@ class _meta:
         '_field'
     )
 
-    def __init__( self , ** kw ):
+    def __init__(self, **kw):
         for _ in kw:
-            self.__setattr__( _ , kw[_] )
+            self.__setattr__(_, kw[_])
         self._field = [x for x in kw]
 
     def __str__(self):
         return self.full
 
     def __repr__(self):
-        return str( self.full )
-    
+        return str(self.full)
+
     @property
     def attribute(self):
-        return { x : getattr( self , x ) for x in self._field }
-    
-class ContestType( Enum ):
-    
+        return {x: getattr(self, x) for x in self._field}
+
+
+class ContestType(Enum):
     ICPC = _meta(
-        full = 'ACM-ICPC',
-        detail = 'ACM-ICPC Style'
+        full='ACM-ICPC',
+        detail='ACM-ICPC Style'
     )
     # OI = _meta(
     #     full = 'OI( Subtask )',
     #     detail = 'OI Subtask Style'
     # )
 
-def get_contest_type( result ):
+
+def get_contest_type(result):
     for x in ContestType:
         if x.value.full == result:
             return x
     return None
 
+
 def get_contest_type_list():
-    return list( ContestType )
+    return list(ContestType)

@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 
 
-
 class SubmissionConfig(AppConfig):
     name = 'submission'
-    def ready( self ):
+
+    def ready(self):
         pass

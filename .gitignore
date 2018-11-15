@@ -101,6 +101,9 @@ ENV/
 # vscode work file
 .vscode/
 
+# pycharm work file
+.idea/
+
 # vs work file
 .vs/
 

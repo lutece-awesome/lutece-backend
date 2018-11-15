@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-import os
 import environ
+import os
 from datetime import timedelta
 
 env = environ.Env()
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'corsheaders',
     'channels',
-] 
+]
 
 # Lutece app
 LUTECE_APPS = [
@@ -149,7 +149,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -165,7 +164,6 @@ USE_TZ = False
 
 # LOGIN Session: 12 hour
 SESSION_COOKIE_AGE = 12 * 60 * 60
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -184,6 +182,5 @@ STATICFILES_FINDERS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-from Lutece.base_setting import *

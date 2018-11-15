@@ -1,6 +1,7 @@
 import jwt
-from graphql_jwt.utils import get_user_by_payload
 from graphql_jwt.settings import jwt_settings
+from graphql_jwt.utils import get_user_by_payload
+
 
 def decode_handler(token, context=None):
     payload = jwt.decode(

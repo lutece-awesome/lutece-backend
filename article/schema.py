@@ -1,13 +1,12 @@
 import graphene
-from graphene_django.types import DjangoObjectType
-from annoying.functions import get_object_or_None
-from .models import Article, ArticleDiscussion
-from user.schema import UserType
-from user.models import User
-from graphql_jwt.decorators import login_required
-from .form import BasicArticleForm
-from utils.schema import PaginatorList
 from discussion.schema import DiscussionType
+from graphene_django.types import DjangoObjectType
+from graphql_jwt.decorators import login_required
+from user.schema import UserType
+
+from utils.schema import PaginatorList
+from .form import BasicArticleForm
+from .models import Article, ArticleDiscussion
 
 
 class ArticleType(DjangoObjectType):
@@ -18,7 +17,7 @@ class ArticleType(DjangoObjectType):
 
     author = graphene.Field(UserType)
 
-    def resolve_user(self, info, * args, ** kwargs):
+    def resolve_user(self, info, *args, **kwargs):
         return self.user
 
 
@@ -28,13 +27,14 @@ class ArticleDiscussionType(graphene.ObjectType, DiscussionType):
 
 class ArticleDiscussionListType(graphene.ObjectType):
     class Meta:
-        interfaces = (PaginatorList, )
+        interfaces = (PaginatorList,)
+
     discussionList = graphene.List(ArticleDiscussionType)
 
 
 class ArticleListType(graphene.ObjectType):
     class Meta:
-        interfaces = (PaginatorList, )
+        interfaces = (PaginatorList,)
 
     articleList = graphene.List(ArticleType)
 
@@ -47,7 +47,7 @@ class CreateArticle(graphene.Mutation):
     state = graphene.Boolean()
 
     @login_required
-    def mutate(self, info, * args, ** kwargs):
+    def mutate(self, info, *args, **kwargs):
         ArticleForm = BasicArticleForm(kwargs)
         if ArticleForm.is_valid():
             values = ArticleForm.cleaned_data
@@ -81,7 +81,7 @@ class Query(object):
         paginator = Paginator(resultList, 10)
         return ArticleListType(maxpage=paginator.num_pages, articleList=paginator.get_page(page))
 
-    def resolve_articleDiscussionList(self, info, slug, page, * args, ** kwargs):
+    def resolve_articleDiscussionList(self, info, slug, page, *args, **kwargs):
         from django.core.paginator import Paginator
         discussionList = ArticleDiscussion.objects.filter(
             article=Article.objects.get(slug=slug), reply=None).order_by('submit_time')

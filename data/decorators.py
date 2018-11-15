@@ -1,12 +1,15 @@
 from django.http import HttpResponse
+
 from data.configure import AUTHENTICATION_KEY
 
-def judger_auth( function ):
-    def wrapper( * argv , ** kw ):
+
+def judger_auth(function):
+    def wrapper(*argv, **kw):
         try:
-            if argv[0].POST.get( 'authkey' ).encode( 'ascii' ) != AUTHENTICATION_KEY:
-                return HttpResponse( None )
+            if argv[0].POST.get('authkey').encode('ascii') != AUTHENTICATION_KEY:
+                return HttpResponse(None)
         except Exception as e:
-            return HttpResponse( None )
-        return function( * argv , ** kw )
+            return HttpResponse(None)
+        return function(*argv, **kw)
+
     return wrapper

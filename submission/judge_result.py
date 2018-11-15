@@ -1,5 +1,6 @@
-from re import compile, search
 from enum import Enum, unique
+from re import compile
+
 from .models import Judgeinfo
 
 
@@ -13,7 +14,7 @@ class _meta:
         '_field'
     )
 
-    def __init__(self, ** kw):
+    def __init__(self, **kw):
         for _ in kw:
             self.__setattr__(_, kw[_])
         self._field = [x for x in kw]
@@ -31,7 +32,6 @@ class _meta:
 
 @unique
 class Judge_result(Enum):
-
     PD = _meta(
         full='Pending',
         alias='PD',
@@ -120,7 +120,8 @@ class Judge_result(Enum):
 
 class Query_field(Enum):
     all_fields = (Judge_result.PD, Judge_result.PR, Judge_result.AC, Judge_result.RN, Judge_result.CE,
-                  Judge_result.WA, Judge_result.RE, Judge_result.TLE, Judge_result.OLE, Judge_result.MLE, Judge_result.JE)
+                  Judge_result.WA, Judge_result.RE, Judge_result.TLE, Judge_result.OLE, Judge_result.MLE,
+                  Judge_result.JE)
     basic_field = (Judge_result.AC, Judge_result.CE, Judge_result.WA,
                    Judge_result.RE, Judge_result.TLE, Judge_result.OLE, Judge_result.MLE)
     listshow_field = (Judge_result.AC, Judge_result.WA, Judge_result.RE,
@@ -148,7 +149,7 @@ def is_compile_error(result):
 
 
 def is_judger_error(result):
-    return Judge_result.get_judge_result(result)is Judge_result.JE
+    return Judge_result.get_judge_result(result) is Judge_result.JE
 
 
 def get_CE_JE_info(submission):

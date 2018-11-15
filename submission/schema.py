@@ -1,43 +1,44 @@
 import graphene
-from graphene_django.types import DjangoObjectType
 from annoying.functions import get_object_or_None
-from problem.models import Problem
-from .models import Submission, Judgeinfo
+from graphene_django.types import DjangoObjectType
 from graphql_jwt.decorators import login_required
-from .tasks import Submission_task
-from utils.schema import PaginatorList
+
+from problem.models import Problem
 from submission.judge_result import Judge_result, Query_field
-from user.models import User
+from utils.schema import PaginatorList
+from .models import Submission, Judgeinfo
+from .tasks import Submission_task
 
 
 class SubmissionType(DjangoObjectType):
     class Meta:
         model = Submission
         only_fields = ('user', 'problem', 'submission_id', 'language', 'judge_status', 'submit_time',
-                       'case_number', 'completed', 'time_cost', 'memory_cost', 'code', 'judgererror_msg', 'compileerror_msg')
+                       'case_number', 'completed', 'time_cost', 'memory_cost', 'code', 'judgererror_msg',
+                       'compileerror_msg')
 
     color = graphene.String()
     failed_case = graphene.Int()
 
-    def resolve_code(self, info, * args, ** kwargs):
+    def resolve_code(self, info, *args, **kwargs):
         if self.user == info.context.user or info.context.user.has_perm('submission.view_all'):
             return self.code
         return ''
 
-    def resolve_judgererror_msg(self, info, * args, ** kwargs):
+    def resolve_judgererror_msg(self, info, *args, **kwargs):
         if info.context.user.has_perm('submission.view_all'):
             return self.judgererror_msg
         return ''
 
-    def resolve_compileerror_msg(self, info, * args, ** kwargs):
+    def resolve_compileerror_msg(self, info, *args, **kwargs):
         if self.user == info.context.user or info.context.user.has_perm('submission.view_all'):
             return self.compileerror_msg
         return ''
 
-    def resolve_color(self, info, * args, ** kwargs):
+    def resolve_color(self, info, *args, **kwargs):
         return Judge_result.get_judge_result(self.judge_status).value.color
 
-    def resolve_failed_case(self, info, * args, ** kwargs):
+    def resolve_failed_case(self, info, *args, **kwargs):
         if Judge_result.get_judge_result(self.judge_status) in Query_field.failedcase_field.value:
             return Judgeinfo.objects.filter(submission=self).count()
         return None
@@ -45,11 +46,12 @@ class SubmissionType(DjangoObjectType):
 
 class SubmissionListType(graphene.ObjectType):
     class Meta:
-        interfaces = (PaginatorList, )
+        interfaces = (PaginatorList,)
 
     submissionList = graphene.List(SubmissionType)
 
-class SubmissionStatistics( graphene.ObjectType ):
+
+class SubmissionStatistics(graphene.ObjectType):
     AC = graphene.Int()
     TLE = graphene.Int()
     CE = graphene.Int()
@@ -59,40 +61,40 @@ class SubmissionStatistics( graphene.ObjectType ):
     MLE = graphene.Int()
     Ratio = graphene.Float()
 
-    def __init__( self , * args , ** kwargs ):
+    def __init__(self, *args, **kwargs):
         if 'user' in kwargs:
             self.user = kwargs['user']
         else:
-            raise RuntimeError( 'User field is required' )
+            raise RuntimeError('User field is required')
 
-    def resolve_AC( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.AC.value.full  ).count()
+    def resolve_AC(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.AC.value.full).count()
 
-    def resolve_TLE( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.TLE.value.full  ).count()
-    
-    def resolve_CE( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.CE.value.full  ).count()
-    
-    def resolve_WA( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.WA.value.full  ).count()
+    def resolve_TLE(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.TLE.value.full).count()
 
-    def resolve_RE( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.RE.value.full  ).count()
+    def resolve_CE(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.CE.value.full).count()
 
-    def resolve_OLE( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.OLE.value.full  ).count()
+    def resolve_WA(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.WA.value.full).count()
 
-    def resolve_MLE( self , info , * args , ** kwargs ):
-        return Submission.objects.filter( user = self.user , judge_status = Judge_result.MLE.value.full  ).count()
-    
-    def resolve_Ratio( self , info , * args , ** kwargs ):
-        AC = self.resolve_AC( info , * args , ** kwargs )
-        ALL = Submission.objects.filter( user = self.user ).count()
+    def resolve_RE(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.RE.value.full).count()
+
+    def resolve_OLE(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.OLE.value.full).count()
+
+    def resolve_MLE(self, info, *args, **kwargs):
+        return Submission.objects.filter(user=self.user, judge_status=Judge_result.MLE.value.full).count()
+
+    def resolve_Ratio(self, info, *args, **kwargs):
+        AC = self.resolve_AC(info, *args, **kwargs)
+        ALL = Submission.objects.filter(user=self.user).count()
         return AC / ALL if ALL else 0
 
-class SubmitSolution(graphene.Mutation):
 
+class SubmitSolution(graphene.Mutation):
     class Arguments:
         problemslug = graphene.String(required=True)
         code = graphene.String(required=True)
@@ -101,7 +103,7 @@ class SubmitSolution(graphene.Mutation):
     pk = graphene.ID()
 
     @login_required
-    def mutate(self, info, ** kwargs):
+    def mutate(self, info, **kwargs):
         from .form import SubmitSolutionForm
         from data_server.util import get_case_number
         from submission.judge_result import Judge_result

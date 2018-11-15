@@ -1,32 +1,35 @@
+import django.utils.timezone as timezone
 from django.db import models
 
-import django.utils.timezone as timezone
 from user.models import User
+
 
 # Create your models here.
 
-class Contest( models.Model ):
-    contest_id = models.AutoField( primary_key = True , db_index = True )
-    title = models.CharField( max_length = 64 , blank = True , unique = True )
-    contest_type = models.CharField( max_length = 32 , blank = True )
-    password = models.CharField( max_length = 32 , blank = True )
-    note = models.TextField( blank = True )
-    visible = models.BooleanField(default = False )
-    register = models.BooleanField( default = False )
-    confirm = models.BooleanField( default = False )
-    start_time = models.DateTimeField( null = False , default = timezone.now  )
-    end_time = models.DateTimeField( null = False , default = timezone.now )
+class Contest(models.Model):
+    contest_id = models.AutoField(primary_key=True, db_index=True)
+    title = models.CharField(max_length=64, blank=True, unique=True)
+    contest_type = models.CharField(max_length=32, blank=True)
+    password = models.CharField(max_length=32, blank=True)
+    note = models.TextField(blank=True)
+    visible = models.BooleanField(default=False)
+    register = models.BooleanField(default=False)
+    confirm = models.BooleanField(default=False)
+    start_time = models.DateTimeField(null=False, default=timezone.now)
+    end_time = models.DateTimeField(null=False, default=timezone.now)
 
     class Meta:
         ordering = ['-contest_id']
         permissions = (
-            ('view_all' , 'Can view all contest' ),
-            ('hide_submission' , 'Hide the submission in rankboard' ),
+            ('view_all', 'Can view all contest'),
+            ('hide_submission', 'Hide the submission in rankboard'),
         )
 
-class ContestRegisterUser( models.Model ):
-    user = models.ForeignKey( User , on_delete = models.SET_NULL , null = True , blank = True , db_index = True )
 
-class ContestProblem( models.Model ):
-    contest = models.ForeignKey( Contest , on_delete = models.CASCADE , db_index = True )
-    problem = models.IntegerField( blank = False )
+class ContestRegisterUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+
+
+class ContestProblem(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, db_index=True)
+    problem = models.IntegerField(blank=False)

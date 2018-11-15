@@ -1,18 +1,19 @@
 import graphene
-from graphene_django.types import DjangoObjectType
-from .models import Problem, Sample
-from utils.schema import PaginatorList
-from graphql_jwt.decorators import permission_required
-from .form import UpdateProblemForm
-from annoying.functions import get_object_or_None
 from django.db.models import Q
+from graphene_django.types import DjangoObjectType
+from graphql_jwt.decorators import permission_required
+
+from utils.schema import PaginatorList
+from .form import UpdateProblemForm
+from .models import Problem, Sample
 
 
 class ProblemType(DjangoObjectType):
     class Meta:
         model = Problem
-        only_fields = ('problem_id', 'title', 'content', 'standard_input', 'standard_output', 'visible', 'discussionvisible',
-                       'constraints', 'resource', 'note', 'time_limit', 'memory_limit', 'submit', 'accept', 'slug', 'sample_set')
+        only_fields = (
+        'problem_id', 'title', 'content', 'standard_input', 'standard_output', 'visible', 'discussionvisible',
+        'constraints', 'resource', 'note', 'time_limit', 'memory_limit', 'submit', 'accept', 'slug', 'sample_set')
 
 
 class SampleType(DjangoObjectType):
@@ -22,12 +23,12 @@ class SampleType(DjangoObjectType):
 
 class ProblemListType(graphene.ObjectType):
     class Meta:
-        interfaces = (PaginatorList, )
+        interfaces = (PaginatorList,)
+
     problemList = graphene.List(ProblemType)
 
 
 class UpdateProblem(graphene.Mutation):
-
     class Arguments:
         title = graphene.String(required=True)
         content = graphene.String(required=True)
@@ -45,8 +46,8 @@ class UpdateProblem(graphene.Mutation):
 
     state = graphene.Boolean()
 
-    @permission_required( 'problem.change_problem' )
-    def mutate(self, info, ** kwargs):
+    @permission_required('problem.change_problem')
+    def mutate(self, info, **kwargs):
         from json import loads
         updateProblemForm = UpdateProblemForm(kwargs)
         if updateProblemForm.is_valid():
@@ -54,7 +55,7 @@ class UpdateProblem(graphene.Mutation):
             slug, samples = values['slug'], loads(values['samples'])
             values.pop('slug')
             values.pop('samples')
-            Problem.objects.filter(slug=slug).update(** values)
+            Problem.objects.filter(slug=slug).update(**values)
             prob = Problem.objects.get(slug=slug)
             prob.sample_set.all().delete()
             for x in samples:
@@ -100,7 +101,7 @@ class Query(object):
             problem_list = problem_list.filter(visible=True)
         if not filter:
             problem_list = problem_list.filter(title__icontains=filter)
-        return ProblemListType( maxpage = 1, problemList = problem_list[:5] )
+        return ProblemListType(maxpage=1, problemList=problem_list[:5])
 
 
 class Mutation(graphene.AbstractType):
