@@ -1,5 +1,6 @@
 from annoying.functions import get_object_or_None
 from django import forms
+from re import compile
 
 from user.attachinfo.form import AttachInfoForm
 from user.constant import MAX_USERNAME_LENGTH, MIN_USERNAME_LENGTH, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH
@@ -10,7 +11,7 @@ class UserLoginForm(forms.Form):
     username = forms.CharField(required=True)
     password = forms.CharField(required=True)
 
-    def clean(self):
+    def clean(self) -> dict:
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         password = cleaned_data.get('password')
@@ -27,8 +28,7 @@ class UserSignupForm(AttachInfoForm):
     password = forms.CharField(required=True, max_length=MAX_PASSWORD_LENGTH, min_length=MIN_PASSWORD_LENGTH)
     email = forms.EmailField(required=True)
 
-    def clean(self):
-        from re import compile
+    def clean(self) -> dict:
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         password = cleaned_data.get('password')
@@ -44,5 +44,5 @@ class UserSignupForm(AttachInfoForm):
 
 class UserAttachInfoUpdateForm(AttachInfoForm):
 
-    def clean(self):
+    def clean(self) -> dict:
         return super().clean()

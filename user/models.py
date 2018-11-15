@@ -10,7 +10,7 @@ class User(AbstractUser):
     solved = models.IntegerField(default=0)
     tried = models.IntegerField(default=0)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'<User:{self.username}>'
 
     def refresh_solve(self):

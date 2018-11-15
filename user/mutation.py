@@ -1,6 +1,7 @@
 import graphene
 from django.contrib.auth.models import update_last_login
 from graphene.types.generic import GenericScalar
+from graphql import ResolveInfo
 from graphql_jwt.decorators import login_required
 from graphql_jwt.mixins import RefreshMixin
 from graphql_jwt.mutations import JSONWebTokenMixin
@@ -23,11 +24,11 @@ class UserLogin(graphene.Mutation):
     permission = GenericScalar()
     user = graphene.Field(UserType)
 
-    def mutate(self, info, **kwargs):
+    def mutate(self, info: ResolveInfo, **kwargs):
         login_form = UserLoginForm(kwargs)
         if login_form.is_valid():
             values = login_form.cleaned_data
-            usr = User.objects.get(username=values['username'])
+            usr = User.objects.get(username=values.get('username'))
             token = get_token(usr)
             payload = get_payload(token, info.context)
             update_last_login(None, usr)
@@ -64,7 +65,7 @@ class UserRegister(graphene.Mutation):
     permission = GenericScalar()
     user = graphene.Field(UserType)
 
-    def mutate(self, info, **kwargs):
+    def mutate(self, info: ResolveInfo, **kwargs):
         signup_form = UserSignupForm(kwargs)
         if signup_form.is_valid():
             values = signup_form.cleaned_data
@@ -94,7 +95,7 @@ class UserAttachInfoUpdate(graphene.Mutation):
     state = graphene.Boolean()
 
     @login_required
-    def mutate(self, info, *args, **kwargs):
+    def mutate(self, info: ResolveInfo, **kwargs):
         update_form = UserAttachInfoUpdateForm(kwargs)
         if update_form.is_valid():
             values = update_form.cleaned_data
