@@ -11,6 +11,7 @@ class Query(object):
     user_list = graphene.Field(UserListType, filter=graphene.String(), page=graphene.Int())
     user_search = graphene.Field(UserListType, filter=graphene.String())
 
+    @classmethod
     def resolve_user(self, info, *args, **kwargs):
         return User.objects.get(username=kwargs.get('username'))
 

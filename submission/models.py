@@ -32,8 +32,8 @@ class Submission(AbstractSubmission):
 
 
 class SubmissionCase(AbstractCase):
-    submission = models.ForeignKey(Submission, on_delete=models.SET_NULL, null=True) \
- \
+    submission = models.ForeignKey(Submission, on_delete=models.SET_NULL, null=True)
+
     def get_websocket_field(self):
         return {
             'result': self.result.full,
