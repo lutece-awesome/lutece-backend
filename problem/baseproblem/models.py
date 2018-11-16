@@ -20,10 +20,10 @@ class AbstractProblem(models.Model):
     disable = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
+        return f'<Problem:{self.title}>'
 
     def __unicode__(self):
-        return self.title
+        return f'<Problem:{self.title}>'
 
     def save(self, *args, **kwargs):
         self.slug = uuslug(self.title, instance=self)

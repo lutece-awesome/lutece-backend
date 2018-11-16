@@ -5,7 +5,7 @@ from typing import List
 
 from judge.result import JudgeResult
 from submission.models import Submission
-from user.models import Solve
+from user.models import Solve, User
 
 
 class UserSolveType(DjangoObjectType):
@@ -35,7 +35,7 @@ class UserSubmissionStatisticsType(graphene.ObjectType):
     solve = graphene.List(UserSolveType)
 
     __slots__ = (
-        'user'
+        'user'  # type: User
     )
 
     def __init__(self, user, *args, **kwargs):

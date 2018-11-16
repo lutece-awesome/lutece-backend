@@ -15,7 +15,7 @@ class UserRankType(graphene.ObjectType):
     solve = graphene.JSONString()
 
     __slots__ = {
-        'user'
+        'user',  # type: User
     }
 
     def __init__(self, user: User, *args, **kwargs):

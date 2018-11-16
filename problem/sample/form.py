@@ -7,7 +7,7 @@ from problem.sample.constant import MAX_SAMPLE_INPUT_LENGTH, MAX_SAMPLE_OUTPUT_L
 class SampleForm(forms.Form):
     samples = forms.CharField(required=True)
 
-    def clean(self, *args, **kwargs):
+    def clean(self, *args, **kwargs) -> dict:
         cleaned_data = super().clean()
         samples = cleaned_data.get('samples')
         sample_arr = loads(samples)
