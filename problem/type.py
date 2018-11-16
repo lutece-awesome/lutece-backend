@@ -1,5 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
+from graphql import ResolveInfo
 
 from data.service import DataService
 from problem.limitation.type import AbstractLimiationType
@@ -29,22 +30,19 @@ class ProblemType(DjangoObjectType):
     samples = graphene.Field(ProblemSampleListType)
     data_count = graphene.Int()
 
-    def resolve_pk(self, info, *args, **kwargs):
+    def resolve_pk(self, info: ResolveInfo) -> graphene.ID:
         return self.pk
 
-    def resolve_limitation(self, info, *args, **kwargs):
+    def resolve_limitation(self, info: ResolveInfo) -> graphene.Field(AbstractLimiationType):
         return self.limitation
 
-    def resolve_samples(self, info, *args, **kwargs):
+    def resolve_samples(self, info: ResolveInfo) -> graphene.Field(ProblemSampleListType):
         result = ProblemSample.objects.filter(problem=self)
         return ProblemSampleListType(sample_list=result)
 
-    def resolve_data_count(self, info, *args, **kwargs):
+    def resolve_data_count(self, info: ResolveInfo) -> graphene.Int:
         return DataService.get_cases_count(self.pk)
 
 
-class ProblemListType(graphene.ObjectType):
-    class Meta:
-        interfaces = (PaginatorList,)
-
+class ProblemListType(graphene.ObjectType, interfaces=[PaginatorList]):
     problem_list = graphene.List(ProblemType, )

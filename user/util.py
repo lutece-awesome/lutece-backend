@@ -1,8 +1,9 @@
-from user.models import Solve
+from problem.models import Problem
+from user.models import User, Solve
 
 
-def update_user_solve(usr, prob, status):
-    s, created = Solve.objects.get_or_create(user=usr, problem=prob)
-    if not s.status and status is True:
-        s.status = True
-        s.save()
+def update_user_solve(usr: User, prob: Problem, status: bool):
+    solve, created = Solve.objects.get_or_create(user=usr, problem=prob)
+    if not solve.status and status is True:
+        solve.status = True
+        solve.save()

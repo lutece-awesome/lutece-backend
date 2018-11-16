@@ -12,10 +12,10 @@ class Query(object):
     user_list = graphene.Field(UserListType, filter=graphene.String(), page=graphene.Int())
     user_search = graphene.Field(UserListType, filter=graphene.String())
 
-    def resolve_user(self, info: ResolveInfo, username) -> User:
+    def resolve_user(self: None, info: ResolveInfo, username) -> User:
         return User.objects.get(username=username)
 
-    def resolve_user_list(self, info: ResolveInfo, page, filter) -> UserListType:
+    def resolve_user_list(self: None, info: ResolveInfo, page: int, filter: str) -> UserListType:
         request_usr = info.context.user
         user_list = User.objects.all().order_by('-solved')
         if not request_usr.has_perm('user.view'):
@@ -25,7 +25,7 @@ class Query(object):
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, user_list=paginator.get_page(page))
 
-    def resolve_user_search(self, info: ResolveInfo, filter) -> UserListType:
+    def resolve_user_search(self: None, info: ResolveInfo, filter: str) -> UserListType:
         user_list = User.objects.all()
         if not info.context.user.has_perm('user.view'):
             user_list = user_list.filter(is_staff=False)

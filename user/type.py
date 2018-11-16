@@ -1,5 +1,7 @@
 import graphene
+from datetime import datetime, date
 from django.db.models import Q
+from graphql import ResolveInfo
 
 from user.attachinfo.type import UserAttachInfoType
 from user.models import User
@@ -12,17 +14,19 @@ class UserRankType(graphene.ObjectType):
     count = graphene.Int()
     solve = graphene.JSONString()
 
-    def __init__(self, *args, **kwargs):
-        if 'user' in kwargs:
-            self.user = kwargs['user']
-        else:
-            raise RuntimeError('User field is required')
+    __slots__ = {
+        'user'
+    }
 
-    def resolve_position(self, info, *args, **kwargs):
+    def __init__(self, user: User, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def resolve_position(self, info: ResolveInfo) -> int:
         return User.objects.filter(is_staff=False).filter(
             Q(solved__gt=self.user.solved) | Q(solved__exact=self.user.solved, pk__lt=self.user.pk)).count() + 1
 
-    def resolve_count(self, info, *args, **kwargs):
+    def resolve_count(self, info: ResolveInfo) -> int:
         return User.objects.filter(is_staff=False).count()
 
 
@@ -37,36 +41,33 @@ class UserType(graphene.ObjectType):
     rank = graphene.Field(UserRankType)
     statistics = graphene.Field(UserSubmissionStatisticsType)
 
-    def resolve_pk(self, info, *args, **kwargs):
+    def resolve_pk(self, info: ResolveInfo) -> graphene.ID:
         return self.pk
 
-    def resolve_username(self, info, *args, **kwargs):
+    def resolve_username(self, info: ResolveInfo) -> graphene.String:
         return self.username
 
-    def resolve_joined_date(self, info, *args, **kwargs):
+    def resolve_joined_date(self: User, info: ResolveInfo) -> date:
         return self.date_joined.date()
 
-    def resolve_last_login_date(self, info, *args, **kwargs):
+    def resolve_last_login_date(self: User, info: ResolveInfo) -> datetime:
         return self.last_login or self.date_joined
 
-    def resolve_attach_info(self, info, *args, **kwargs):
+    def resolve_attach_info(self, info: ResolveInfo) -> graphene.Field(UserAttachInfoType):
         return self.attach_info
 
-    def resolve_solved(self, info, *args, **kwargs):
+    def resolve_solved(self, info: ResolveInfo) -> graphene.Int:
         return self.solved
 
-    def resolve_tried(self, info, *args, **kwargs):
+    def resolve_tried(self, info: ResolveInfo) -> graphene.Int:
         return self.tried
 
-    def resolve_rank(self, info, *args, **kwargs):
+    def resolve_rank(self: User, info: ResolveInfo) -> UserRankType:
         return UserRankType(user=self)
 
-    def resolve_statistics(self, info, *args, **kwargs):
+    def resolve_statistics(self, info: ResolveInfo) -> graphene.Field(UserSubmissionStatisticsType):
         return UserSubmissionStatisticsType(user=self)
 
 
-class UserListType(graphene.ObjectType):
-    class Meta:
-        interfaces = (PaginatorList,)
-
+class UserListType(graphene.ObjectType, interfaces=[PaginatorList]):
     user_list = graphene.List(UserType)
