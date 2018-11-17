@@ -25,10 +25,16 @@ class Query(object):
         paginator = Paginator(user_list, PER_PAGE_COUNT)
         return UserListType(maxpage=paginator.num_pages, user_list=paginator.get_page(page))
 
+    '''
+        Search the matching user of the specific filter.
+        Nothing would return if there is no filter(to avoid the empty filter situation).
+    '''
     def resolve_user_search(self: None, info: ResolveInfo, filter: str) -> UserListType:
         user_list = User.objects.all()
         if not info.context.user.has_perm('user.view'):
             user_list = user_list.filter(is_staff=False)
         if filter:
             user_list = user_list.filter(username__icontains=filter)
+        else:
+            user_list = []
         return UserListType(maxpage=1, user_list=user_list[:5])
