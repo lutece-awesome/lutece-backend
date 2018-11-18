@@ -1,4 +1,5 @@
 import graphene
+from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required
 from json import loads
 
@@ -32,7 +33,7 @@ class UpdateProblem(graphene.Mutation):
     state = graphene.Boolean()
 
     @permission_required('problem.change')
-    def mutate(self, info, **kwargs):
+    def mutate(self, info: ResolveInfo, **kwargs):
         form = UpdateProblemForm(kwargs)
         if form.is_valid():
             values = form.cleaned_data
@@ -74,7 +75,7 @@ class CreateProblem(graphene.Mutation):
     state = graphene.Boolean()
 
     @permission_required('problem.add')
-    def mutate(self, info, **kwargs):
+    def mutate(self, info: ResolveInfo, **kwargs):
         form = CreateProblemForm(kwargs)
         if form.is_valid():
             values = form.cleaned_data

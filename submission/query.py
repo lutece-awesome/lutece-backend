@@ -1,5 +1,6 @@
 import graphene
 from django.core.paginator import Paginator
+from graphql import ResolveInfo
 
 from submission.constant import PER_PAGE_COUNT
 from submission.models import Submission
@@ -12,29 +13,29 @@ class Query(object):
                                     problem=graphene.String(), judge_status=graphene.String(),
                                     language=graphene.String())
 
-    def resolve_submission(self, info, pk):
+    def resolve_submission(self: None, info: ResolveInfo, pk: int):
         return Submission.objects.get(pk=pk)
 
-    def resolve_submissionList(self, info, page, **kwargs):
+    def resolve_submissionList(self: None, info: ResolveInfo, page: int, **kwargs):
         pk = kwargs.get('pk')
         user = kwargs.get('user')
         problem = kwargs.get('problem')
         judge_status = kwargs.get('judge_status')
         language = kwargs.get('language')
-        statuslist = Submission.objects.all().order_by('-pk')
+        status_list = Submission.objects.all().order_by('-pk')
         if not info.context.user.has_perm('problem.view'):
-            statuslist = statuslist.filter(problem__disable=False)
+            status_list = status_list.filter(problem__disable=False)
         if not info.context.user.has_perm('user.view') or not info.context.user.has_perm('submission.view'):
-            statuslist = statuslist.filter(user__is_staff=False)
+            status_list = status_list.filter(user__is_staff=False)
         if pk:
-            statuslist = statuslist.filter(pk=pk)
+            status_list = status_list.filter(pk=pk)
         if user:
-            statuslist = statuslist.filter(user__username=user)
+            status_list = status_list.filter(user__username=user)
         if problem:
-            statuslist = statuslist.filter(problem__title=problem)
+            status_list = status_list.filter(problem__slug=problem)
         if judge_status:
-            statuslist = statuslist.filter(result___result=judge_status)
+            status_list = status_list.filter(result___result=judge_status)
         if language:
-            statuslist = statuslist.filter(_language=language)
-        paginator = Paginator(statuslist, PER_PAGE_COUNT)
+            status_list = status_list.filter(_language=language)
+        paginator = Paginator(status_list, PER_PAGE_COUNT)
         return SubmissionListType(maxpage=paginator.num_pages, submission_list=paginator.get_page(page))

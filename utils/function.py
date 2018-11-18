@@ -1,4 +1,7 @@
-def assign(object, **kwargs):
+from typing import Any
+
+
+def assign(obj: Any, **kwargs: dict):
     for key, value in kwargs.items():
-        if hasattr(object, key):
-            setattr(object, key, value)
+        if hasattr(obj, key):
+            setattr(obj, key, value)
