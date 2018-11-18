@@ -1,4 +1,5 @@
 from enum import Enum, unique
+from typing import List
 
 from utils.decorators import classproperty
 
@@ -108,62 +109,62 @@ class JudgeResult(Enum):
     )
 
     @classproperty
-    def PD(cls):
+    def PD(cls) -> _meta:
         return cls._PD.value
 
     @classproperty
-    def PR(cls):
+    def PR(cls) -> _meta:
         return cls._PR.value
 
     @classproperty
-    def AC(cls):
+    def AC(cls) -> _meta:
         return cls._AC.value
 
     @classproperty
-    def RN(cls):
+    def RN(cls) -> _meta:
         return cls._RN.value
 
     @classproperty
-    def CE(cls):
+    def CE(cls) -> _meta:
         return cls._CE.value
 
     @classproperty
-    def WA(cls):
+    def WA(cls) -> _meta:
         return cls._WA.value
 
     @classproperty
-    def RE(cls):
+    def RE(cls) -> _meta:
         return cls._RE.value
 
     @classproperty
-    def TLE(cls):
+    def TLE(cls) -> _meta:
         return cls._TLE.value
 
     @classproperty
-    def OLE(cls):
+    def OLE(cls) -> _meta:
         return cls._OLE.value
 
     @classproperty
-    def MLE(cls):
+    def MLE(cls) -> _meta:
         return cls._MLE.value
 
     @classproperty
-    def JE(cls):
+    def JE(cls) -> _meta:
         return cls._JE.value
 
     @classmethod
-    def value_of(cls, value):
+    def value_of(cls, value) -> _meta:
         for each in cls:
             if each.value.full == value:
                 return each.value
         return None
 
     @classmethod
-    def all(cls):
+    def all(cls) -> List[_meta]:
         return [each.value for each in cls]
 
     @classmethod
-    def is_failed(cls, which):
+    def is_failed(cls, which: _meta) -> bool:
         _fail = (cls.WA, cls.RE, cls.RN, cls.TLE, cls.OLE, cls.MLE)
         if which in _fail:
             return True

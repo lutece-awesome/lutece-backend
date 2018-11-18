@@ -1,4 +1,5 @@
 from enum import Enum, unique
+from typing import List
 
 from utils.decorators import classproperty
 
@@ -87,44 +88,44 @@ class Language(Enum):
     )
 
     @classproperty
-    def GNUCPP(cls):
+    def GNUCPP(cls) -> _meta:
         return cls._GNUCPP.value
 
     @classproperty
-    def GNUGCC(cls):
+    def GNUGCC(cls) -> _meta:
         return cls._GNUGCC.value
 
     @classproperty
-    def CLANG(cls):
+    def CLANG(cls) -> _meta:
         return cls._CLANG.value
 
     @classproperty
-    def PYTHON(cls):
+    def PYTHON(cls) -> _meta:
         return cls._PYTHON.value
 
     @classproperty
-    def JAVA(cls):
+    def JAVA(cls) -> _meta:
         return cls._JAVA.value
 
     @classproperty
-    def GO(cls):
+    def GO(cls) -> _meta:
         return cls._GO.value
 
     @classproperty
-    def RUBY(cls):
+    def RUBY(cls) -> _meta:
         return cls._RUBY.value
 
     @classproperty
-    def RUST(cls):
+    def RUST(cls) -> _meta:
         return cls._RUST.value
 
     @classmethod
-    def value_of(cls, value):
+    def value_of(cls, value: str) -> _meta:
         for each in cls:
             if each.value.full == value:
                 return each.value
         return None
 
     @classmethod
-    def all(cls):
+    def all(cls) -> List[_meta]:
         return [each.value for each in cls]

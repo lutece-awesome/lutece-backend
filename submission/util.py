@@ -2,6 +2,7 @@ from django.apps import apps
 
 from judge.result import JudgeResult
 from problem.models import Problem
+from submission.consumers import UpdatingData, CaseData
 from submission.models import Submission, SubmissionCase
 
 
@@ -12,30 +13,29 @@ def Modify_submission_status(**report):
     result = report['result']
     submission = report['submission']
     name = f'SubmissionDetail-{submission}'
-    send_data = dict()
-    if 'complete' in report and report['complete'] is True:
-        send_data['completed'] = report['complete']
+    send_data = UpdatingData()
     sub = Submission.objects.get(pk=submission)
+    compile_info = report.get('compileerror_msg')
+    error_info = report.get('judgererror_msg')
     if result == JudgeResult.RN.full or result == JudgeResult.PR.full:
         sub.result._result = result
         sub.result.save()
-        send_data['result'] = result
-    elif 'judgererror_msg' in report:
+        send_data.result = result
+    elif error_info:
         sub.result.done = True
-        sub.result.error_info = report['judgererror_msg']
+        sub.result.error_info = error_info
         sub.result._result = result
         sub.result.save()
-        send_data['result'] = result
-        send_data['judgererror_msg'] = report['judgererror_msg']
-    elif 'compileerror_msg' in report:
+        send_data.result = result
+        send_data.error_info = error_info
+    elif compile_info:
         sub.result.done = True
-        sub.result.compile_info = report['compileerror_msg']
+        sub.result.compile_info = compile_info
         sub.result._result = result
         sub.result.save()
-        send_data['result'] = result
-        send_data['compileerror_msg'] = report['compileerror_msg']
+        send_data.result = result
+        send_data.compile_info = compile_info
     else:
-        case = report['case']
         complete = report['complete']
         sub = Submission.objects.get(pk=submission)
         s = SubmissionCase(
@@ -46,11 +46,16 @@ def Modify_submission_status(**report):
             case=report.get('case'),
         )
         s.save()
-        send_data['judge'] = [s.get_websocket_field()]
+        send_data.case_list = [CaseData(
+            result=s.result.full,
+            time_cost=s.time_cost,
+            memory_cost=s.memory_cost,
+            case=s.case
+        )]
         sub.attach_info.time_cost = max(sub.attach_info.time_cost, int(s.time_cost))
         sub.attach_info.memory_cost = max(sub.attach_info.memory_cost, int(s.memory_cost))
         sub.attach_info.save()
-        if complete == True:
+        if complete:
             sub.result._result = result
             sub.result.done = True
             sub.result.save()
@@ -59,7 +64,7 @@ def Modify_submission_status(**report):
             from user.util import update_user_solve
             update_user_solve(sub.user, sub.problem, True if JudgeResult.value_of(result) is JudgeResult.AC else False)
             sub.user.refresh_solve()
-            send_data['result'] = result
+            send_data.result = result
     if apps.is_installed("channels"):
         from channels.layers import get_channel_layer
         from asgiref.sync import async_to_sync

@@ -33,11 +33,3 @@ class Submission(AbstractSubmission):
 
 class SubmissionCase(AbstractCase):
     submission = models.ForeignKey(Submission, on_delete=models.SET_NULL, null=True)
-
-    def get_websocket_field(self):
-        return {
-            'result': self.result.full,
-            'time_cost': self.time_cost,
-            'memory_cost': self.memory_cost,
-            'case': self.case
-        }
