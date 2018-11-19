@@ -70,4 +70,9 @@ def Modify_submission_status(**report):
         from asgiref.sync import async_to_sync
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
-            name, {"type": "update_result", 'data': send_data})
+            name,
+            {
+                "type": "update_result",
+                'data': send_data.serialization()
+            }
+        )

@@ -8,7 +8,7 @@ from typing import List
 
 from submission.models import Submission, SubmissionCase
 from user.models import User
-from utils.function import close_old_connections
+from utils.function import close_old_connections, pop_property
 
 
 class CaseData:
@@ -53,6 +53,18 @@ class UpdatingData:
             if key in self.__slots__:
                 setattr(self, key, value)
 
+    def serialization(self):
+        case_list = 'case_list'
+        ret = dict()
+        for each in self.__slots__:
+            if hasattr(self, each):
+                val = getattr(self, each)
+                if val:
+                    ret[each] = val
+        if hasattr(self, case_list):
+            ret[case_list] = [each.serialization() for each in getattr(self, case_list)]
+        return ret
+
 
 class SubmissionDetailConsumer(AsyncWebsocketConsumer):
     __slots__ = {
@@ -69,7 +81,8 @@ class SubmissionDetailConsumer(AsyncWebsocketConsumer):
             self.user = await database_sync_to_async(get_user_by_token)(token=self.scope['query_string'])
         except Exception:
             self.user = AnonymousUser()
-        if not self.user.has_perm('problem.view') and self.submission.problem.disable:
+        if not self.user.has_perm('problem.view') and (
+                self.submission.problem.disable or self.submission.user.is_staff):
             raise RuntimeError('Permission Denied')
         await self.channel_layer.group_add(
             self.group_name,
@@ -101,7 +114,7 @@ class SubmissionDetailConsumer(AsyncWebsocketConsumer):
                         memory_cost=each.memory_cost,
                         case=each.case
                     ) for each in cases]
-                )
+                ).serialization()
             }
         )
 
@@ -116,15 +129,8 @@ class SubmissionDetailConsumer(AsyncWebsocketConsumer):
         perm = self.submission.user == self.user
         privilege = self.user.has_perm('submission.view')
         if not (perm or privilege):
-            data.filter(['compile_info', 'code'])
+            pop_property(data, ['compile_info', 'code'])
         if not privilege:
-            data.filter(['error_info'])
-        setattr(data, 'case_list', [each.serialization() for each in getattr(data, 'case_list')])
-        ret = dict()
-        for each in data.__slots__:
-            if hasattr(data, each):
-                val = getattr(data, each)
-                if val:
-                    ret[camelize(each)] = val
-
+            pop_property(data, ['error_info'])
+        ret = {camelize(each): data.get(each) for each in data}
         await self.send(text_data=dumps(ret))
