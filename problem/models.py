@@ -1,7 +1,7 @@
 from django.db import models
 
 from judge.checker import Checker
-from problem.baseproblem.models import AbstractProblem
+from problem.base.models import AbstractProblem
 from problem.constant import MAX_CHECKER_LENGTH
 from problem.limitation.models import Limitation
 from problem.sample.models import AbstractSample

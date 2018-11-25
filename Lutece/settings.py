@@ -56,7 +56,7 @@ LUTECE_APPS = [
     # 'data_server',
     # 'utils',
     # 'discussion',
-    # 'article',
+    'article',
     'record',
     # 'image',
     # 'sample',

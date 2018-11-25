@@ -1,7 +1,7 @@
 from annoying.functions import get_object_or_None
 from django import forms
 
-from problem.baseproblem.form import AbstractProblemForm
+from problem.base.form import AbstractProblemForm
 from problem.limitation.form import LimitationForm
 from problem.models import Problem
 from problem.sample.form import SampleForm
