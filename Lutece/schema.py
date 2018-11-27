@@ -1,6 +1,7 @@
 import graphene
 from graphql_jwt import Verify
 
+from article.query import Query as ArticleQuerySchema
 from problem.mutation import Mutation as ProblemMutationSchema
 from problem.query import Query as ProblemQuerySchema
 from submission.mutation import Mutation as SubmissionMutationSchema
@@ -16,7 +17,7 @@ from user.query import Query as UserQuerySchema
 # import discussion.schema as DiscussionSchema
 
 
-class Query(UserQuerySchema, ProblemQuerySchema, SubmissionQuerySchema, graphene.ObjectType):
+class Query(UserQuerySchema, ProblemQuerySchema, SubmissionQuerySchema, ArticleQuerySchema, graphene.ObjectType):
     pass
 
 

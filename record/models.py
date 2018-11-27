@@ -8,6 +8,8 @@ from user.models import User
 
 
 class AbstractRecord(models.Model):
+    class Meta:
+        abstract = True
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

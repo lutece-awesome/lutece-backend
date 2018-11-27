@@ -1,6 +1,11 @@
 from django import forms
 
+from article.base.form import AbstractArticleForm
+from article.constant import MAX_PREVIEW_LENGTH
 
-class BasicArticleForm(forms.Form):
-    title = forms.CharField(required=True, max_length=128)
-    content = forms.CharField(required=False, max_length=65535)
+
+class HomeArticleForm(AbstractArticleForm):
+    preview = forms.CharField(required=False, max_length=MAX_PREVIEW_LENGTH)
+
+    def clean(self) -> dict:
+        return super().clean()
