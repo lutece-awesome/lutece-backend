@@ -10,6 +10,11 @@ class Article(AbstractArticle):
         super().save(*args, **kwargs)
 
 
+'''
+    Home article permission: article.<add/change/delete>_homearticle
+'''
+
+
 class HomeArticle(Article):
     preview = models.TextField(blank=True)
 

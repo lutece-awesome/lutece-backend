@@ -1,6 +1,7 @@
 import graphene
 from graphql_jwt import Verify
 
+from article.mutation import Mutation as ArticleMutationSchema
 from article.query import Query as ArticleQuerySchema
 from problem.mutation import Mutation as ProblemMutationSchema
 from problem.query import Query as ProblemQuerySchema
@@ -21,7 +22,8 @@ class Query(UserQuerySchema, ProblemQuerySchema, SubmissionQuerySchema, ArticleQ
     pass
 
 
-class Mutations(UserMutationSchema, ProblemMutationSchema, SubmissionMutationSchema, graphene.ObjectType):
+class Mutations(UserMutationSchema, ProblemMutationSchema, SubmissionMutationSchema, ArticleMutationSchema,
+                graphene.ObjectType):
     verify_token = Verify.Field()
 
 
