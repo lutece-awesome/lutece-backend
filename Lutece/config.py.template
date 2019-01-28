@@ -190,8 +190,8 @@ class TravisConfiguration(DefaultConfiguration):
                 'PORT': '3306',  # default as 3306
                 'TEST': {
                     'NAME': 'unit_test_db',
-                    'TEST_CHARSET': "utf8",
-                    'TEST_COLLATION': 'utf8_general_ci'
+                    'TEST_CHARSET': "utf8mb4",
+                    'TEST_COLLATION': 'utf8mb4_unicode_ci'
                 }
             }
         }
