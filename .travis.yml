@@ -1,6 +1,6 @@
+dist: xenial
 language: python
 sudo: enabled
-dist: trusty
 services:
     - mysql
 python:
