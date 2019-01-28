@@ -10,10 +10,8 @@ env:
      - lutece_runtime_mode=travis
 before_install:
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS runtime_test_db CHARACTER SET utf8;"
-    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS unit_test_db CHARACTER SET utf8;"
     - mysql -u root -e "CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'lUtEcEtRaViSdB';"
-    - mysql -u root -e "GRANT ALL PRIVILEGES ON runtime_test_db.* TO 'test_user'@'localhost';"
-    - mysql -u root -e "GRANT ALL PRIVILEGES ON unit_test_db.* TO 'test_user'@'localhost';"
+    - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost';"
     - mysql -u root -e "FLUSH PRIVILEGES;"
     - cp Lutece/config.py.template Lutece/config.py
 install:
