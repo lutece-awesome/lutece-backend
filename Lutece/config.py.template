@@ -3,7 +3,7 @@ from enum import Enum
 from utils.function import recursive_merge_dicts
 
 DEFAULT_SECURITY_KEY = 'MakeSecretKeySecretInProdEnv'
-TRAVIS_TEST_DB_NAME = 'test_db'
+TRAVIS_TEST_DB_NAME = 'runtime_test_db'
 TRAVIS_TEST_DB_USER = 'test_user'
 TRAVIS_TEST_DB_PASSWORD = 'lUtEcEtRaViSdB'
 
@@ -188,6 +188,9 @@ class TravisConfiguration(DefaultConfiguration):
                 'PASSWORD': TRAVIS_TEST_DB_PASSWORD,
                 'HOST': 'localhost',  # default as localhost
                 'PORT': '3306',  # default as 3306
+                'TEST' : {
+                    'NAME': 'unit_test_db'
+                }
             }
         }
     }
