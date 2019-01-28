@@ -12,7 +12,7 @@ before_install:
     - mysql -e 'CREATE USER "test_user@localhost" IDENTIFIED BY "lUtEcEtRaViSdB"'
     - mv Lutece/config.py.template Lutece/config.py
 install:
-    - pip install -r requirements.txt
+    - pip install -r requirements/requirements.txt
 
 script:
     python manage.py makemigartions --noinput
