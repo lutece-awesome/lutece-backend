@@ -16,6 +16,6 @@ install:
     - pip install -r requirements/requirements.txt
 
 script:
-    python manage.py makemigartions --noinput
-    python manage.py migrate --noinput
-    python manage.py test
+    - python manage.py makemigartions --noinput
+    - python manage.py migrate --noinput
+    - python manage.py test
