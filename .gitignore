@@ -130,11 +130,8 @@ Lutece/local_hezhu.py
 # production.py
 production.py
 
-base_setting.py
-
 # media
 media/
 
 # configure
-judge/configure.py
-data/configure.py
+Lutece/config.py

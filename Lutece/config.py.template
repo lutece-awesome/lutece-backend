@@ -1,0 +1,213 @@
+from enum import Enum
+
+from utils.function import recursive_merge_dicts
+
+DEFAULT_SECURITY_KEY = 'MakeSecretKeySecretInProdEnv'
+TRAVIS_TEST_DB_NAME = 'runtime_test_db'
+TRAVIS_TEST_DB_USER = 'test_user'
+TRAVIS_TEST_DB_PASSWORD = 'lUtEcEtRaViSdB'
+
+
+class RunTimeEnv(Enum):
+    DEV = 1
+    PROD = 2
+    TRAVIS_CI = 3
+
+    @staticmethod
+    def value_of(mode: str):
+        assert isinstance(mode, str)
+        mode = mode.lower()
+        if mode == 'dev' or mode == 'develop':
+            return RunTimeEnv.DEV
+        elif mode == 'prod' or mode == 'production':
+            return RunTimeEnv.PROD
+        elif mode == 'travis' or mode == 'travisci' or mode == 'tarvis_ci' or mode == 'travis-ci':
+            return RunTimeEnv.TRAVIS_CI
+        else:
+            raise TypeError('Unknown mode ', mode)
+
+
+class RunTimeConfiguration:
+
+    def get_runtime_variables(self, check: bool) -> dict:
+        if check:
+            self._check_db()
+            self._check_security_key()
+            self._check_data_server()
+            self._check_judge()
+        return dict()
+
+    def _check_db(self):
+        conf = self.get_runtime_variables(False)
+        if 'DATABASES' not in conf:
+            raise RuntimeError('There is no dataset configuration')
+        db = conf.get('DATABASES').get('default')
+        engine = db.get('ENGINE')
+        if engine == 'django.db.backends.sqlite3':
+            pass
+        elif engine == 'django.db.backends.mysql':
+            name = db.get('NAME')
+            user = db.get('USER')
+            pwd = db.get('PASSWORD')
+            if not name:
+                raise RuntimeError('DB name should not empty.')
+            if not user:
+                raise RuntimeError('DB username should not empty.')
+            elif not pwd:
+                raise RuntimeError('DB password should not empty.')
+        else:
+            raise TypeError("Unknown dataset type.")
+
+    def _check_security_key(self):
+        if isinstance(self, ProdConfiguration):
+            conf = self.get_runtime_variables(False)
+            security_key = conf.get('SECRET_KEY')
+            if security_key == DEFAULT_SECURITY_KEY:
+                raise RuntimeError(
+                    'In prod env, security key should not set as default, '
+                    'please ref https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-SECRET_KEY '
+                    'to gain detail info.')
+
+    def _check_data_server(self):
+        if isinstance(self, ProdConfiguration):
+            conf = self.get_runtime_variables(False)
+            if not conf.get('DATA_SERVER').get('auth_key'):
+                raise RuntimeError('In prod env, the data server password should not empty.')
+
+    def _check_judge(self):
+        if isinstance(self, ProdConfiguration):
+            conf = self.get_runtime_variables(False)
+            if not conf.get('JUDGE').get('rabbitmq_pwd'):
+                raise RuntimeError('In prod env, the RabbitMQ password should not empty.')
+
+
+# The Default Configuration, for most cases, there is no need to change this.
+class DefaultConfiguration(RunTimeConfiguration):
+    _default_config = {
+        # Open debug mode
+        'DEBUG': True,
+        # Close CORS checking
+        'CORS_ORIGIN_ALLOW_ALL': True,
+        # Allowed host
+        'ALLOWED_HOSTS': ['*'],
+        # SecretKey, keep this secret in prod env
+        'SECRET_KEY': DEFAULT_SECURITY_KEY,
+        # Use sqlite3 as default DB
+        'DATABASES': {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': 'Lutece.db',
+            }
+        },
+        # Channels layer(using in web-socket message publish and subscribe), use redis as default
+        'CHANNEL_LAYERS': {
+            "default": {
+                "BACKEND": "channels_redis.core.RedisChannelLayer",
+                "CONFIG": {
+                    "hosts": [("localhost", 6379)],
+                },
+            },
+        },
+        # Data server configuration
+        'DATA_SERVER': {
+            'auth_key': ''
+        },
+        # The judge configuration
+        'JUDGE': {
+            # The ip address that RabbitMQ server
+            'rabbitmq_ip': '127.0.0.1',
+            # The port of RabbitMQ
+            'rabbitmq_port': '5672',
+            # The RabbitMQ user
+            'rabbitmq_user': 'task_user',
+            # The RabbitMQ user pwd
+            'rabbitmq_pwd': '',
+            # The virtual host of RabbitMQ
+            'rabbitmq_vhost': 'judger_host',
+            # The celery task queue name, for most cases, this should not be changed.
+            'task_queue': 'task',
+            # The celery result queue name, for most cases, this should not be changed.
+            'result_queue': 'result'
+        }
+    }
+
+    def get_runtime_variables(self, check) -> dict:
+        return recursive_merge_dicts(super().get_runtime_variables(check), self._default_config)
+
+
+class DevConfiguration(DefaultConfiguration):
+    _dev_config = dict()
+
+    def get_runtime_variables(self, check) -> dict:
+        return recursive_merge_dicts(super().get_runtime_variables(check), self._dev_config)
+
+
+class ProdConfiguration(DefaultConfiguration):
+    _prod_config = {
+        # Close debug in prod env
+        'DEBUG': False,
+        # Open CORS checking
+        'CORS_ORIGIN_ALLOW_ALL': False,
+        # Only accept the request delegated by nginx
+        'ALLOWED_HOSTS': ['127.0.0.1:80'],
+        # SecretKey, keep this secret in prod env
+        'SECRET_KEY': DEFAULT_SECURITY_KEY,
+        'DATABASES': {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': '',
+                'USER': '',
+                'PASSWORD': '',
+                'HOST': 'localhost',  # default as localhost
+                'PORT': '3306',  # default as 3306
+            }
+        },
+        # Data server auth key.
+        'DATA_SERVER': {
+            'auth_key': ''
+        },
+        # The judge configuration
+        'JUDGE': {
+            # The RabbitMQ user pwd
+            'rabbitmq_pwd': '',
+        }
+    }
+
+    def get_runtime_variables(self, check) -> dict:
+        return recursive_merge_dicts(super().get_runtime_variables(check), self._prod_config)
+
+
+class TravisConfiguration(DefaultConfiguration):
+    _travis_config = {
+        'DEBUG': False,
+        'DATABASES': {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': TRAVIS_TEST_DB_NAME,
+                'USER': TRAVIS_TEST_DB_USER,
+                'PASSWORD': TRAVIS_TEST_DB_PASSWORD,
+                'HOST': 'localhost',  # default as localhost
+                'PORT': '3306',  # default as 3306
+                'TEST': {
+                    'NAME': 'unit_test_db',
+                    'CHARSET': "utf8",
+                    'COLLATION': 'utf8_general_ci'
+                }
+            }
+        }
+    }
+
+    def get_runtime_variables(self, check) -> dict:
+        return recursive_merge_dicts(super().get_runtime_variables(check), self._travis_config)
+
+
+def get_runtime_configuration(mode: RunTimeEnv) -> RunTimeConfiguration:
+    assert isinstance(mode, RunTimeEnv)
+    if mode is RunTimeEnv.DEV:
+        return DevConfiguration()
+    elif mode is RunTimeEnv.PROD:
+        return ProdConfiguration()
+    elif mode is RunTimeEnv.TRAVIS_CI:
+        return TravisConfiguration()
+    else:
+        raise TypeError('Unknown type of ', mode)

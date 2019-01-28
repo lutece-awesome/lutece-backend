@@ -1,0 +1,29 @@
+dist: xenial
+language: python
+sudo: enabled
+services:
+    - mysql
+python:
+    - "3.7.0"
+env:
+    global:
+     - lutece_runtime_mode=travis
+before_install:
+    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS runtime_test_db CHARACTER SET utf8 COLLATE utf8_general_ci;"
+    - mysql -u root -e "CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'lUtEcEtRaViSdB';"
+    - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost';"
+    - mysql -u root -e "FLUSH PRIVILEGES;"
+    - cp Lutece/config.py.template Lutece/config.py
+install:
+    - pip install -r requirements/requirements.txt
+
+script:
+    - python manage.py makemigrations user
+    - python manage.py makemigrations problem
+    - python manage.py makemigrations judge
+    - python manage.py makemigrations submission
+    - python manage.py makemigrations data
+    - python manage.py makemigrations article
+    - python manage.py makemigrations record
+    - python manage.py migrate
+    - python manage.py test
