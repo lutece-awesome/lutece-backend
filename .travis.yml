@@ -18,6 +18,4 @@ install:
     - pip install -r requirements/requirements.txt
 
 script:
-    - python manage.py makemigrations --noinput
-    - python manage.py migrate --noinput
     - python manage.py test
