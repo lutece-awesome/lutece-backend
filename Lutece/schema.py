@@ -11,13 +11,6 @@ from user.mutation import Mutation as UserMutationSchema
 from user.query import Query as UserQuerySchema
 
 
-# import problem.schema as ProblemSchema
-# import image.schema as ImageSchema
-# import submission.schema as SubmissionSchema
-# import article.schema as ArticleSchema
-# import discussion.schema as DiscussionSchema
-
-
 class Query(UserQuerySchema, ProblemQuerySchema, SubmissionQuerySchema, ArticleQuerySchema, graphene.ObjectType):
     pass
 

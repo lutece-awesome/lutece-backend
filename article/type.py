@@ -12,27 +12,31 @@ class ArticleType(graphene.ObjectType):
     create_time = graphene.DateTime()
     last_update_time = graphene.DateTime()
 
-    def resolve_pk(self, info: ResolveInfo):
+    def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
         return self.pk
 
-    def resolve_title(self, info: ResolveInfo):
+    def resolve_title(self, info: ResolveInfo) -> graphene.String():
         return self.title
 
-    def resolve_author(self, info: ResolveInfo):
+    def resolve_author(self, info: ResolveInfo) -> graphene.String():
         return self.author
 
-    def resolve_content(self, info: ResolveInfo):
+    def resolve_content(self, info: ResolveInfo) -> graphene.String():
         return self.content
 
-    def resolve_create_time(self, info: ResolveInfo):
+    def resolve_create_time(self, info: ResolveInfo) -> graphene.DateTime():
         return self.create_time
 
-    def resolve_last_update_time(self, info: ResolveInfo):
+    def resolve_last_update_time(self, info: ResolveInfo) -> graphene.DateTime():
         return self.last_update_time
 
 
 class HomeArticleType(ArticleType):
     preview = graphene.String()
 
-    def resolve_preview(self, info: ResolveInfo):
+    def resolve_preview(self, info: ResolveInfo) -> graphene.String():
         return self.preview
+
+
+class UserArticleType(ArticleType):
+    pass

@@ -4,22 +4,24 @@ from article.base.models import AbstractArticle
 from record.models import SimpleRecord
 
 
+# The base class of all sub-class of article
 class Article(AbstractArticle):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
 
-'''
-    Home article permission: article.<add/change/delete>_homearticle
-'''
-
-
+# The home page article model
 class HomeArticle(Article):
     preview = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+
+# The user article model
+class UserArticle(Article):
+    pass
 
 
 class ArticleRecord(SimpleRecord):
