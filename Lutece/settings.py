@@ -34,26 +34,17 @@ INSTALLED_APPS = [
     'gunicorn',
     'graphene_django',
     'corsheaders',
-    'channels',
-]
 
-# Lutece app
-LUTECE_APPS = [
+    # Lutece app
+    'channels',
     'user',
     'problem',
     'judge',
     'submission',
     'data',
-    # 'data_server',
-    # 'utils',
-    # 'discussion',
     'article',
     'record',
-    # 'image',
-    # 'sample',
 ]
-
-INSTALLED_APPS += LUTECE_APPS
 
 GRAPHENE = {
     'SCHEMA': 'Lutece.schema.schema'

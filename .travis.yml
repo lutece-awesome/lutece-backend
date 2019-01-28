@@ -18,4 +18,12 @@ install:
     - pip install -r requirements/requirements.txt
 
 script:
+    - python manage.py makemigrations user
+    - python manage.py makemigrations problem
+    - python manage.py makemigrations judge
+    - python manage.py makemigrations submission
+    - python manage.py makemigrations data
+    - python manage.py makemigrations article
+    - python manage.py makemigrations record
+    - python manage.py migrate
     - python manage.py test
