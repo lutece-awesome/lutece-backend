@@ -13,8 +13,7 @@ Simplicity online judge
 
 + Create configurion file
 <pre>
-    cp judge/configure.example judge/configure.py
-    cp data/configure.example data/configure.py
+    cp Lutece/config.py.tempalte Lutece/config.py
 </pre>
 
 + Install rabbitmq-server
@@ -59,7 +58,20 @@ Simplicity online judge
     $ sudo systemctl start redis
 </pre>
 
-+ Create data folder
+### Set running mode
+open the <b>.bash_profile</b> file and append the following:
+
+```
+    # Lutece settings, can be 'dev' or 'prod' or 'travis', default is dev
+    export lutece_runtime_mode=dev
+```
+
+Then source the terminal to make the change work:
+<pre>
+    $ source ~/.bash_profile
+</pre>
+
+### Create data folder
 <pre>
     mkdir ~/lutece_data
 </pre>

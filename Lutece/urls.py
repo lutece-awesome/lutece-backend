@@ -20,14 +20,12 @@ from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 from graphene_file_upload.django import FileUploadGraphQLView
 
-from .base_setting import DEBUG
-
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path('admin/', admin.site.urls),
     path('data/', include('data.urls')),
 ]
 
 # import graphql
-urlpatterns += [path('graphql', FileUploadGraphQLView.as_view(graphiql=DEBUG))]
+urlpatterns += [path('graphql', FileUploadGraphQLView.as_view(graphiql=settings.DEBUG))]
 
 urlpatterns += [re_path(r'^.*$', TemplateView.as_view(template_name='static/index.html'))]

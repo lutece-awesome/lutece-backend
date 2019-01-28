@@ -2,18 +2,19 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 from celery import Celery
-
-from judge.configure import RABBITMQ_IP, RABBITMQ_PORT, RABBITMQ_USER, RABBITMQ_PWD, RABBITMQ_VHOST
+from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Lutece.settings')
 
+JUDGE = settings.JUDGE
+
 BROKER_URL = 'pyamqp://{user}:{pwd}@{ip}:{port}/{vhost}'.format(
-    user=RABBITMQ_USER,
-    pwd=RABBITMQ_PWD,
-    ip=RABBITMQ_IP,
-    port=RABBITMQ_PORT,
-    vhost=RABBITMQ_VHOST)
+    user=JUDGE.get('rabbitmq_user'),
+    pwd=JUDGE.get('rabbitmq_pwd'),
+    ip=JUDGE.get('rabbitmq_ip'),
+    port=JUDGE.get('rabbitmq_port'),
+    vhost=JUDGE.get('rabbitmq_vhost'))
 
 app = Celery(
     name='Lutece',

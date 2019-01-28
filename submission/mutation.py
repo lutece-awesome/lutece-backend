@@ -1,9 +1,9 @@
 import graphene
 from annoying.functions import get_object_or_None
+from django.conf import settings
 from graphql_jwt.decorators import login_required
 
 from data.service import DataService
-from judge.configure import TASK_QUEUE
 from judge.models import JudgeResult as JudgeResultModel
 from judge.result import JudgeResult
 from judge.tasks import apply_submission
@@ -39,7 +39,7 @@ class SubmitSubmission(graphene.Mutation):
             sub.attach_info = attach_info
             sub.result = result
             sub.save()
-            apply_submission.apply_async(args=(sub.get_judge_field(),), queue=TASK_QUEUE)
+            apply_submission.apply_async(args=(sub.get_judge_field(),), queue=settings.JUDGE.get('task_queue'))
             problem.ins_submit_times()
             return SubmitSubmission(pk=sub.pk)
         else:

@@ -9,25 +9,16 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
 import environ
 import os
 from datetime import timedelta
+
+from Lutece.config import RunTimeEnv, get_runtime_configuration
 
 env = environ.Env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=o@-q3&terk1z5sd8a!fwp368@r9_+4cc(9h&7q2=iprnba&*&'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -84,14 +75,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("localhost", 6379)],
-        },
-    },
-}
 # Django channels
 ASGI_APPLICATION = "Lutece.routing.application"
 
@@ -104,22 +87,6 @@ GRAPHQL_JWT = {
     'JWT_PAYLOAD_HANDLER': 'user.jwt.payload.payload_handler',
     'JWT_DECODE_HANDLER': 'user.jwt.decode.decode_handler',
 }
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [''],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
 
 WSGI_APPLICATION = 'Lutece.wsgi.application'
 AUTH_USER_MODEL = 'user.User'
@@ -170,6 +137,7 @@ SESSION_COOKIE_AGE = 12 * 60 * 60
 
 STATIC_URL = '/static/'
 
+# The frontend static
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/dist/static')
 ]
@@ -184,4 +152,30 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-from Lutece.base_setting import *
+# Lutece setting
+mode = RunTimeEnv.value_of(env.get_value('lutece_runtime_mode', str, 'dev'))
+print(f'- start server with {mode}')
+config = get_runtime_configuration(mode).get_runtime_variables(check=True)
+
+# Inject config variables to settings
+
+# The DB settings
+DATABASES = config.get('DATABASES')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config.get('DEBUG')
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config.get('SECRET_KEY')
+
+# The allowed hosts
+ALLOWED_HOSTS = config.get('ALLOWED_HOSTS')
+
+# The channel layers
+CHANNEL_LAYERS = config.get('CHANNEL_LAYERS')
+
+# The data server configuration
+DATA_SERVER = config.get('DATA_SERVER')
+
+# The judge configuration
+JUDGE = config.get('JUDGE')
