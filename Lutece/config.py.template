@@ -188,8 +188,10 @@ class TravisConfiguration(DefaultConfiguration):
                 'PASSWORD': TRAVIS_TEST_DB_PASSWORD,
                 'HOST': 'localhost',  # default as localhost
                 'PORT': '3306',  # default as 3306
-                'TEST' : {
-                    'NAME': 'unit_test_db'
+                'TEST': {
+                    'NAME': 'unit_test_db',
+                    'TEST_CHARSET': "utf8",
+                    'TEST_COLLATION': 'utf8_general_ci'
                 }
             }
         }
