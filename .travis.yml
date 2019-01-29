@@ -9,7 +9,7 @@ env:
     global:
      - lutece_runtime_mode=travis
 before_install:
-    - declare -a lutece_install_apps = ( "user"  "problem"  "judge"  "submission"  "data"  "article"  "record" )
+    - declare -a lutece_install_apps=("user"  "problem"  "judge"  "submission"  "data"  "article"  "record")
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS runtime_test_db CHARACTER SET utf8 COLLATE utf8_general_ci;"
     - mysql -u root -e "CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'lUtEcEtRaViSdB';"
     - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost';"
