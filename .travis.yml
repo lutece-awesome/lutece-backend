@@ -20,7 +20,7 @@ install:
 
 script:
     # Database migrations / migrate test
-    - python manage.py makemigrations user problem judge submission data article recordd
+    - python manage.py makemigrations user problem judge submission data article record
     - python manage.py migrate
     # Coverage unit test
     - coverage run --source=./ manage.py test --noinput
