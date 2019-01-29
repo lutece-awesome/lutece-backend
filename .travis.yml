@@ -7,10 +7,7 @@ python:
     - "3.7.0"
 env:
     global:
-     # Set Lutece runtime mode as travis
      - lutece_runtime_mode=travis
-     # Lutece apps
-     - lutece_install_apps=("user"  "problem"  "judge"  "submission"  "data"  "article"  "record")
 before_install:
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS runtime_test_db CHARACTER SET utf8 COLLATE utf8_general_ci;"
     - mysql -u root -e "CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'lUtEcEtRaViSdB';"
@@ -22,14 +19,12 @@ install:
 
 script:
     # Database migrations / migrate test
-    - for each in "${lutece_install_apps[@]}"; do python manage.py makemigrations $each ; echo run python manage.py makemigrations $each ; done
+    - python manage.py makemigrations user problem judge submission data article record
     - python manage.py migrate
     # Unit test
     - python manage.py test --noinput
     # Coverage test
-    - function join { local IFS="$1"; shift; echo "$*"; }
-    - source=join , ${lutece_install_apps[@]}
-    - coverage run --source=$resource manage.py test --noinput
+    - coverage run --source=user,problem,judge,submission,data,article,record manage.py test --noinput
 
 after_success:
     - coveralls
