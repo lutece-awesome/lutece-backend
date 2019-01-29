@@ -16,14 +16,14 @@ before_install:
     - cp Lutece/config.py.template Lutece/config.py
 install:
     - pip install -r requirements/requirements.txt
+    - pip install coveralls
 
 script:
-    - python manage.py makemigrations user
-    - python manage.py makemigrations problem
-    - python manage.py makemigrations judge
-    - python manage.py makemigrations submission
-    - python manage.py makemigrations data
-    - python manage.py makemigrations article
-    - python manage.py makemigrations record
+    # Database migrations / migrate test
+    - python manage.py makemigrations user problem judge submission data article record
     - python manage.py migrate
-    - python manage.py test
+    # Coverage unit test
+    - coverage run --source=./ manage.py test --noinput
+
+after_success:
+    - coveralls
