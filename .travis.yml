@@ -9,7 +9,6 @@ env:
     global:
      - lutece_runtime_mode=travis
 before_install:
-    - declare -a lutece_install_apps=("user"  "problem"  "judge"  "submission"  "data"  "article"  "record")
     - mysql -u root -e "CREATE DATABASE IF NOT EXISTS runtime_test_db CHARACTER SET utf8 COLLATE utf8_general_ci;"
     - mysql -u root -e "CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'lUtEcEtRaViSdB';"
     - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost';"
@@ -19,6 +18,8 @@ install:
     - pip install -r requirements/requirements.txt
 
 script:
+    # Set Lutece apps
+    - declare -a lutece_install_apps=("user"  "problem"  "judge"  "submission"  "data"  "article"  "record")
     # Database migrations / migrate test
     - for each in "${lutece_install_apps[@]}"; do python manage.py makemigrations $each ; echo run python manage.py makemigrations $each ; done
     - python manage.py migrate
