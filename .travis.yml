@@ -20,14 +20,14 @@ install:
 
 script:
     # Database migrations / migrate test
-    - for each in "${lutece_install_apps[@]}"; do python manage.py makemigrations $each ; done
+    - for each in "${lutece_install_apps[@]}"; do python manage.py makemigrations $each ; echo run python manage.py makemigrations $each ; done
     - python manage.py migrate
     # Unit test
-    - python manage.py test
+    - python manage.py test --noinput
     # Coverage test
     - function join { local IFS="$1"; shift; echo "$*"; }
     - source=join , ${lutece_install_apps[@]}
-    - coverage run --source=$resource manage.py test
+    - coverage run --source=$resource manage.py test --noinput
 
 after_success:
     - coveralls
