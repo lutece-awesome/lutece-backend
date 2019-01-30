@@ -32,7 +32,11 @@ class ArticleType(graphene.ObjectType):
 
 
 class HomeArticleType(ArticleType):
+    slug = graphene.String()
     preview = graphene.String()
+
+    def resolve_slug(self, info: ResolveInfo) -> graphene.String():
+        return self.slug
 
     def resolve_preview(self, info: ResolveInfo) -> graphene.String():
         return self.preview

@@ -64,7 +64,7 @@ class UpdateUserArticle(graphene.Mutation):
         update_user_article_form = UpdateUserArticleForm(kwargs)
         if update_user_article_form.is_valid():
             values = update_user_article_form.cleaned_data
-            article = HomeArticle.objects.get(pk=values.get('pk'))
+            article = UserArticle.objects.get(pk=values.get('pk'))
             if article.author != info.context.user and not info.context.user.has_perm('article.change_userarticle'):
                 raise PermissionError('Permission Denied')
             article.title = values.get('title')
@@ -80,6 +80,8 @@ class CreateUserArticle(graphene.Mutation):
         title = graphene.String(required=True)
         content = graphene.String(required=True)
 
+    pk = graphene.ID()
+
     @login_required
     def mutate(self: None, info: ResolveInfo, **kwargs):
         create_user_article_form = CreateUserArticleForm(kwargs)
@@ -89,7 +91,7 @@ class CreateUserArticle(graphene.Mutation):
                 **values,
                 author=info.context.user
             )
-            return CreateUserArticle(slug=article.slug)
+            return CreateUserArticle(pk=article.pk)
         else:
             raise RuntimeError(create_user_article_form.errors.as_json())
 

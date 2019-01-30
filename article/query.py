@@ -8,7 +8,7 @@ from article.type import HomeArticleType, UserArticleType
 
 class Query(object):
     user_article = graphene.Field(UserArticleType, pk=graphene.ID())
-    home_article = graphene.Field(HomeArticleType, pk=graphene.ID())
+    home_article = graphene.Field(HomeArticleType, slug=graphene.ID())
 
     def resolve_user_article(self: None, info: ResolveInfo, pk: int) -> UserArticle or None:
         ret = get_object_or_None(UserArticle, pk=pk)
@@ -18,8 +18,8 @@ class Query(object):
             return None
         return ret
 
-    def resolve_home_article(self: None, info: ResolveInfo, pk: int) -> HomeArticle or None:
-        ret = get_object_or_None(HomeArticle, pk=pk)
+    def resolve_home_article(self: None, info: ResolveInfo, slug: str) -> HomeArticle or None:
+        ret = get_object_or_None(HomeArticle, slug=slug)
         # if ret is not None and been disabled and the request user do not have read permission, ignore
         # this request and return none
         if ret and ret.disable and not info.context.user.has_perm('article.view_homearticle'):
