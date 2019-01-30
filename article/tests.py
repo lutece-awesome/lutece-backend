@@ -174,3 +174,30 @@ class UserArticleTest(TestCase):
                 'username': self.TEST_MOCK_USERNAME
             }
         }
+
+
+class UpdateArticleTest(TestCase):
+    TEST_MOCK_USERNAME = "TESTING-USERNAME"
+    TEST_MOCK_PASSWORD = "TESTING-PASSWORD"
+    TEST_ARTICLE_TITLE = "Juliet and Romeo"
+    TEST_ARTILE_CONTENT = "nissassA deerC"
+    TEST_ARTICLE_PREVIEW = "Origin"
+    TEST_CREATE_USER_ARTICLE = '''
+        mutation createUserArticle(){
+            
+        }
+    '''
+    TEST_QUERY_USER_ARTICLE = '''
+        query getUserArticle( $pk: ID ){
+            userArticle( pk: $pk ){
+                title
+                content
+                author{
+                    username
+                }
+            }
+        }
+    '''
+
+    def test_create_and_update_article(self):
+        pass

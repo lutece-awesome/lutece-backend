@@ -20,3 +20,18 @@ class UpdateHomeArticleForm(AbstractArticleForm):
 
 class CreateHomeArticleForm(AbstractArticleForm):
     preview = forms.CharField(required=False, max_length=MAX_PREVIEW_LENGTH)
+
+
+class CreateUserArticleForm(AbstractArticleForm):
+    pass
+
+
+class UpdateUserArticleForm(AbstractArticleForm):
+    pk = forms.IntegerField(required=True)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        if not pk or not get_object_or_None(Article, pk=pk):
+            self.add_error("pk", "No such user article")
+        return cleaned_data
