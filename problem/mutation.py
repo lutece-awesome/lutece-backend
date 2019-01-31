@@ -37,7 +37,6 @@ class UpdateProblem(graphene.Mutation):
         form = UpdateProblemForm(kwargs)
         if form.is_valid():
             values = form.cleaned_data
-            print(values)
             samples = loads(values.get('samples'))
             prob = Problem.objects.get(slug=values.get('slug'))
             assign(prob, **values)
