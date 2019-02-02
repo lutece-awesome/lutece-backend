@@ -126,6 +126,23 @@ USE_TZ = False
 # LOGIN Session: 12 hour
 SESSION_COOKIE_AGE = 12 * 60 * 60
 
+# Templates config
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [''],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
@@ -164,6 +181,9 @@ SECRET_KEY = config.get('SECRET_KEY')
 
 # The allowed hosts
 ALLOWED_HOSTS = config.get('ALLOWED_HOSTS')
+
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = config.get('CORS_ORIGIN_ALLOW_ALL')
 
 # The channel layers
 CHANNEL_LAYERS = config.get('CHANNEL_LAYERS')
