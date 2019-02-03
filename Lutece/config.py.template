@@ -87,7 +87,7 @@ class DefaultConfiguration(RunTimeConfiguration):
         # Open debug mode
         'DEBUG': True,
         # Close CORS checking
-        'CORS_ORIGIN_ALLOW_ALL': True,
+        'CORS_ORIGIN_ALLOW_ALL': False,
         # Allowed host
         'ALLOWED_HOSTS': ['*'],
         # SecretKey, keep this secret in prod env
@@ -136,7 +136,9 @@ class DefaultConfiguration(RunTimeConfiguration):
 
 
 class DevConfiguration(DefaultConfiguration):
-    _dev_config = dict()
+    _dev_config = {
+        'CORS_ORIGIN_ALLOW_ALL': True
+    }
 
     def get_runtime_variables(self, check) -> dict:
         return recursive_merge_dicts(super().get_runtime_variables(check), self._dev_config)
