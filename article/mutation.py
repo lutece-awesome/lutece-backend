@@ -3,7 +3,7 @@ from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required, login_required
 
 from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm
-from article.models import HomeArticle, UserArticle
+from article.models import HomeArticle, UserArticle, ArticleRecord
 from utils.function import assign
 
 
@@ -45,7 +45,8 @@ class CreateHomeArticle(graphene.Mutation):
             values = create_home_article_form.cleaned_data
             article = HomeArticle.objects.create(
                 **values,
-                author=info.context.user
+                author=info.context.user,
+                record=ArticleRecord.objects.create()
             )
             return CreateHomeArticle(slug=article.slug)
         else:
@@ -89,7 +90,8 @@ class CreateUserArticle(graphene.Mutation):
             values = create_user_article_form.cleaned_data
             article = UserArticle.objects.create(
                 **values,
-                author=info.context.user
+                author=info.context.user,
+                record=ArticleRecord.objects.create()
             )
             return CreateUserArticle(pk=article.pk)
         else:

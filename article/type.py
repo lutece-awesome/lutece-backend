@@ -1,7 +1,16 @@
 import graphene
+from graphene_django import DjangoObjectType
 from graphql import ResolveInfo
 
+from article.models import ArticleRecord
 from user.type import UserType
+from utils.interface import PaginatorList
+
+
+class ArticleRecordType(DjangoObjectType):
+    class Meta:
+        model = ArticleRecord
+        only_fields = ('count',)
 
 
 class ArticleType(graphene.ObjectType):
@@ -11,6 +20,7 @@ class ArticleType(graphene.ObjectType):
     content = graphene.String()
     create_time = graphene.DateTime()
     last_update_time = graphene.DateTime()
+    record = graphene.Field(ArticleRecordType)
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
         return self.pk
@@ -30,10 +40,14 @@ class ArticleType(graphene.ObjectType):
     def resolve_last_update_time(self, info: ResolveInfo) -> graphene.DateTime():
         return self.last_update_time
 
+    def resolve_record(self, info: ResolveInfo) -> ArticleRecordType:
+        return self.record
+
 
 class HomeArticleType(ArticleType):
     slug = graphene.String()
     preview = graphene.String()
+    rank = graphene.Int()
 
     def resolve_slug(self, info: ResolveInfo) -> graphene.String():
         return self.slug
@@ -41,6 +55,13 @@ class HomeArticleType(ArticleType):
     def resolve_preview(self, info: ResolveInfo) -> graphene.String():
         return self.preview
 
+    def resolve_rank(self, info: ResolveInfo) -> graphene.Int():
+        return self.rank
+
 
 class UserArticleType(ArticleType):
     pass
+
+
+class HomeArticleListType(graphene.ObjectType, interfaces=[PaginatorList]):
+    home_article_list = graphene.List(HomeArticleType, )
