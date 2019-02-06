@@ -22,8 +22,9 @@ class ProblemType(DjangoObjectType):
     class Meta:
         model = Problem
         only_fields = (
-        'title', 'content', 'resources', 'constraints', 'note', 'slug', 'standard_input', 'standard_output', 'submit',
-        'accept', 'disable')
+            'title', 'content', 'resources', 'constraints', 'note', 'slug', 'standard_input', 'standard_output',
+            'submit',
+            'accept', 'disable')
 
     pk = graphene.ID()
     limitation = graphene.Field(AbstractLimiationType)
