@@ -28,7 +28,7 @@ class ArticleType(graphene.ObjectType):
     def resolve_title(self, info: ResolveInfo) -> graphene.String():
         return self.title
 
-    def resolve_author(self, info: ResolveInfo) -> graphene.String():
+    def resolve_author(self, info: ResolveInfo) -> graphene.Field(UserType):
         return self.author
 
     def resolve_content(self, info: ResolveInfo) -> graphene.String():

@@ -34,3 +34,19 @@ class SimpleRecord(AbstractRecord):
 
     def increase(self):
         self.__ins(1)
+
+
+class Attitude:
+    agree = 'Agree'
+    neutral = 'Neutral'
+    disagree = 'Disagree'
+    choice = {
+        (agree, 'Agree this discussion'),
+        (neutral, 'Only god knows its attitude'),
+        (disagree, 'Disagree this discussion'),
+    }
+
+# class BaseReplyVote(DetailedRecord):
+#     reply = models.ForeignKey(AbstractReply, on_delete=models.SET_NULL, null=True)
+#     attitude = models.CharField(choices=Attitude.choice, default=Attitude.neutral, max_length=MAX_ATTITUDE_LENGTH,
+#                                 db_index=True)
