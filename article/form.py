@@ -3,7 +3,7 @@ from django import forms
 
 from article.base.form import AbstractArticleForm
 from article.constant import MAX_PREVIEW_LENGTH
-from article.models import HomeArticle, UserArticle
+from article.models import HomeArticle, UserArticle, Article
 
 
 class UpdateHomeArticleForm(AbstractArticleForm):
@@ -32,6 +32,17 @@ class UpdateUserArticleForm(AbstractArticleForm):
     def clean(self) -> dict:
         cleaned_data = super().clean()
         pk = cleaned_data.get('pk')
-        if not pk or not get_object_or_None(UserArticle, pk=pk):
+        if pk and not get_object_or_None(UserArticle, pk=pk):
             self.add_error("pk", "No such user article")
+        return cleaned_data
+
+
+class UpdateArticleRecordForm(forms.Form):
+    pk = forms.IntegerField(required=True)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        if pk and not get_object_or_None(Article, pk=pk):
+            self.add_error("pk", "No such article")
         return cleaned_data

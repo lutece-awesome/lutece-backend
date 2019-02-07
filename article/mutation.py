@@ -2,8 +2,9 @@ import graphene
 from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required, login_required
 
-from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm
-from article.models import HomeArticle, UserArticle, ArticleRecord
+from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm, \
+    UpdateArticleRecordForm
+from article.models import HomeArticle, UserArticle, ArticleRecord, Article
 from utils.function import assign
 
 
@@ -98,8 +99,27 @@ class CreateUserArticle(graphene.Mutation):
             raise RuntimeError(create_user_article_form.errors.as_json())
 
 
+class UpdateArticleRecord(graphene.Mutation):
+    class Arguments:
+        pk = graphene.ID(required=True)
+
+    state = graphene.Boolean()
+
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        update_article_record = UpdateArticleRecordForm(kwargs)
+        if update_article_record.is_valid():
+            values = update_article_record.cleaned_data
+            article = Article.objects.get(pk=values.get('pk'))
+            article.record.increase()
+            article.record.save()
+            return UpdateArticleRecord(state=True)
+        else:
+            raise RuntimeError(update_article_record.errors.as_json())
+
+
 class Mutation(graphene.AbstractType):
     update_home_article = UpdateHomeArticle.Field()
     create_home_article = CreateHomeArticle.Field()
     update_user_article = UpdateUserArticle.Field()
     create_user_article = CreateUserArticle.Field()
+    update_article_record = UpdateArticleRecord.Field()
