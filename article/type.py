@@ -21,6 +21,7 @@ class ArticleType(graphene.ObjectType):
     create_time = graphene.DateTime()
     last_update_time = graphene.DateTime()
     record = graphene.Field(ArticleRecordType)
+    disable = graphene.Boolean()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
         return self.pk
@@ -42,6 +43,9 @@ class ArticleType(graphene.ObjectType):
 
     def resolve_record(self, info: ResolveInfo) -> ArticleRecordType:
         return self.record
+
+    def resolve_disable(self, info: ResolveInfo) -> graphene.Boolean():
+        return self.disable
 
 
 class HomeArticleType(ArticleType):

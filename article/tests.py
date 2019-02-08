@@ -218,7 +218,7 @@ class UpdateArticleTest(TestCase):
     TEST_UPDATE_HOME_ARTICLE = '''
         mutation UpdateHomeArticle( $slug: String!, $title: String!, $content: String!, $preview: String!, $disable: Boolean!){
             updateHomeArticle( slug: $slug, title: $title, content: $content, preview: $preview, disable: $disable ){
-                state
+                slug
             }
         } 
     '''
@@ -339,7 +339,6 @@ class UpdateArticleTest(TestCase):
             },
             context_value=context
         )
-        assert response.get('data').get('updateHomeArticle').get('state') is True
         # After updated, refresh the slug
         article = get_object_or_None(HomeArticle, pk=article.pk)
         response = client.execute(
