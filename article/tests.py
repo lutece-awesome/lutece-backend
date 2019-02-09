@@ -3,7 +3,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 
-from article.models import HomeArticle, UserArticle
+from article.models import HomeArticle, UserArticle, Article
 from tests.utils import create_mock_user, get_test_graphql_client, get_query_context
 
 
@@ -12,7 +12,7 @@ class HomeArticleTest(TestCase):
     TEST_MOCK_USERNAME = "TESTING-USERNAME"
     TEST_MOCK_PASSWORD = "TESTING-PASSWORD"
     TEST_ARTICLE_TITLE = "Romeo and Juliet"
-    TEST_ARTILE_CONTENT = "deerC nissassA"
+    TEST_ARTICLE_CONTENT = "deerC nissassA"
     TEST_ARTICLE_PREVIEW = "Odyssey"
     TEST_EXECUTE_QUERY = '''
         query GetHomeArticle( $slug: ID ){
@@ -32,7 +32,7 @@ class HomeArticleTest(TestCase):
         self.test_article = HomeArticle.objects.create(
             title=self.TEST_ARTICLE_TITLE,
             author=self.mock_usr,
-            content=self.TEST_ARTILE_CONTENT,
+            content=self.TEST_ARTICLE_CONTENT,
             preview=self.TEST_ARTICLE_PREVIEW
         )
 
@@ -50,7 +50,7 @@ class HomeArticleTest(TestCase):
         )
         assert HomeArticleTest.get_response_result(response) == {
             'title': self.TEST_ARTICLE_TITLE,
-            'content': self.TEST_ARTILE_CONTENT,
+            'content': self.TEST_ARTICLE_CONTENT,
             'author': {
                 'username': self.TEST_MOCK_USERNAME
             },
@@ -86,7 +86,7 @@ class HomeArticleTest(TestCase):
         )
         assert HomeArticleTest.get_response_result(response) == {
             'title': self.TEST_ARTICLE_TITLE,
-            'content': self.TEST_ARTILE_CONTENT,
+            'content': self.TEST_ARTICLE_CONTENT,
             'author': {
                 'username': self.TEST_MOCK_USERNAME
             },
@@ -99,7 +99,7 @@ class UserArticleTest(TestCase):
     TEST_MOCK_USERNAME = "TESTING-USERNAME"
     TEST_MOCK_PASSWORD = "TESTING-PASSWORD"
     TEST_ARTICLE_TITLE = "Juliet and Romeo"
-    TEST_ARTILE_CONTENT = "nissassA deerC"
+    TEST_ARTICLE_CONTENT = "nissassA deerC"
     TEST_ARTICLE_PREVIEW = "Origin"
     TEST_EXECUTE_QUERY = '''
         query GetUserArticle( $pk: ID ){
@@ -118,7 +118,7 @@ class UserArticleTest(TestCase):
         self.test_article = UserArticle.objects.create(
             title=self.TEST_ARTICLE_TITLE,
             author=self.mock_usr,
-            content=self.TEST_ARTILE_CONTENT,
+            content=self.TEST_ARTICLE_CONTENT,
         )
 
     @staticmethod
@@ -135,7 +135,7 @@ class UserArticleTest(TestCase):
         )
         assert UserArticleTest.get_response_result(response) == {
             'title': self.TEST_ARTICLE_TITLE,
-            'content': self.TEST_ARTILE_CONTENT,
+            'content': self.TEST_ARTICLE_CONTENT,
             'author': {
                 'username': self.TEST_MOCK_USERNAME
             }
@@ -170,7 +170,7 @@ class UserArticleTest(TestCase):
         )
         assert UserArticleTest.get_response_result(response) == {
             'title': self.TEST_ARTICLE_TITLE,
-            'content': self.TEST_ARTILE_CONTENT,
+            'content': self.TEST_ARTICLE_CONTENT,
             'author': {
                 'username': self.TEST_MOCK_USERNAME
             }
@@ -181,7 +181,7 @@ class UpdateArticleTest(TestCase):
     TEST_MOCK_USERNAME = "TESTING-USERNAME"
     TEST_MOCK_PASSWORD = "TESTING-PASSWORD"
     TEST_ARTICLE_TITLE = "Juliet and Romeo"
-    TEST_ARTILE_CONTENT = "nissassA deerC"
+    TEST_ARTICLE_CONTENT = "nissassA deerC"
     TEST_ARTICLE_PREVIEW = "Origin"
     TEST_CREATE_USER_ARTICLE = '''
         mutation CreateUserArticle( $title: String! , $content: String! ){
@@ -234,6 +234,22 @@ class UpdateArticleTest(TestCase):
             }
         }
     '''
+    TEST_UPDATE_ARTICLE_RECORD = '''
+        mutation updateArticleRecord($pk: ID!){
+            updateArticleRecord( pk : $pk ){
+                state
+            }
+        }
+    '''
+    TEST_QUERY_ARTICLE_RECORD = '''
+        query GetHomeArticleRecord( $slug: ID ){
+            homeArticle( slug: $slug ){
+                record {
+                    count
+                }
+            }
+        }
+    '''
 
     def setUp(self):
         self.mock_usr = create_mock_user(self.TEST_MOCK_USERNAME, self.TEST_MOCK_PASSWORD)
@@ -271,7 +287,7 @@ class UpdateArticleTest(TestCase):
             variables={
                 'pk': article.pk,
                 'title': self.TEST_ARTICLE_TITLE,
-                'content': self.TEST_ARTILE_CONTENT
+                'content': self.TEST_ARTICLE_CONTENT
             },
             context_value=context
         )
@@ -285,7 +301,7 @@ class UpdateArticleTest(TestCase):
         )
         assert response.get('data').get('userArticle') == {
             'title': self.TEST_ARTICLE_TITLE,
-            'content': self.TEST_ARTILE_CONTENT,
+            'content': self.TEST_ARTICLE_CONTENT,
             'author': {
                 'username': self.TEST_MOCK_USERNAME
             }
@@ -333,7 +349,7 @@ class UpdateArticleTest(TestCase):
             variables={
                 'slug': article.slug,
                 'title': self.TEST_ARTICLE_TITLE,
-                'content': self.TEST_ARTILE_CONTENT,
+                'content': self.TEST_ARTICLE_CONTENT,
                 'preview': self.TEST_ARTICLE_PREVIEW,
                 'disable': False,
             },
@@ -350,9 +366,42 @@ class UpdateArticleTest(TestCase):
         )
         assert response.get('data').get('homeArticle') == {
             'title': self.TEST_ARTICLE_TITLE,
-            'content': self.TEST_ARTILE_CONTENT,
+            'content': self.TEST_ARTICLE_CONTENT,
             'preview': self.TEST_ARTICLE_PREVIEW,
             'author': {
                 'username': self.TEST_MOCK_USERNAME
             }
         }
+
+    def test_update_article_record(self):
+        client = get_test_graphql_client()
+        context = get_query_context()
+        context.user = self.mock_usr
+        perm = Permission.objects.get(content_type=ContentType.objects.get_for_model(HomeArticle),
+                                      codename="add_homearticle")
+        self.mock_usr.user_permissions.add(perm)
+        self.mock_usr.save()
+        response = client.execute(
+            self.TEST_CREATE_HOME_ARTICLE,
+            variables={
+                'title': self.TEST_ARTICLE_TITLE,
+                'content': self.TEST_ARTICLE_CONTENT,
+                'preview': self.TEST_ARTICLE_PREVIEW
+            },
+            context_value=context,
+        )
+        article = HomeArticle.objects.get(slug=response.get('data').get('createHomeArticle').get('slug'))
+        response = client.execute(
+            self.TEST_UPDATE_ARTICLE_RECORD,
+            variables={
+                'pk': article.pk
+            }
+        )
+        assert response.get('data').get('updateArticleRecord').get('state') is True
+        response = client.execute(
+            self.TEST_QUERY_ARTICLE_RECORD,
+            variables={
+                'slug': article.slug
+            }
+        )
+        assert response.get('data').get('homeArticle').get('record').get('count') == 1
