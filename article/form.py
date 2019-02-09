@@ -46,3 +46,14 @@ class UpdateArticleRecordForm(forms.Form):
         if pk and not get_object_or_None(Article, pk=pk):
             self.add_error("pk", "No such article")
         return cleaned_data
+
+
+class ToggleArticleStarForm(forms.Form):
+    pk = forms.IntegerField(required=True)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        if pk and not get_object_or_None(Article, pk=pk):
+            self.add_error("pk", "No such article")
+        return cleaned_data

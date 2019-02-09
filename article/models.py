@@ -3,7 +3,7 @@ from uuslug import uuslug
 
 from article.base.models import AbstractArticle
 from article.constant import MAX_SLUG_LENGTH
-from record.models import SimpleRecord
+from record.models import SimpleRecord, DetailedRecord
 
 
 class ArticleRecord(SimpleRecord):
@@ -16,6 +16,11 @@ class Article(AbstractArticle):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+
+class ArticleVote(DetailedRecord):
+    attitude = models.BooleanField(default=False)
+    article = models.ForeignKey(Article, on_delete=models.SET_NULL, null=True)
 
 
 # The home page article model

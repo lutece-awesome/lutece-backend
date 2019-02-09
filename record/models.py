@@ -41,9 +41,9 @@ class Attitude:
     neutral = 'Neutral'
     disagree = 'Disagree'
     choice = {
-        (agree, 'Agree this discussion'),
-        (neutral, 'Only god knows its attitude'),
-        (disagree, 'Disagree this discussion'),
+        (agree, 'Agree'),
+        (neutral, 'Only god knows'),
+        (disagree, 'Disagree'),
     }
 
 # class BaseReplyVote(DetailedRecord):
