@@ -36,5 +36,6 @@ class Query(object):
             home_article_list = home_article_list.filter(disable=False)
         if filter:
             home_article_list = home_article_list.filter(title__icontains=filter)
+        home_article_list = home_article_list.order_by('-create_time')
         paginator = Paginator(home_article_list, PER_PAGE_COUNT)
         return HomeArticleListType(maxpage=paginator.num_pages, home_article_list=paginator.get_page(page))

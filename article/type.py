@@ -1,8 +1,9 @@
 import graphene
+from annoying.functions import get_object_or_None
 from graphene_django import DjangoObjectType
 from graphql import ResolveInfo
 
-from article.models import ArticleRecord
+from article.models import ArticleRecord, ArticleVote
 from user.type import UserType
 from utils.interface import PaginatorList
 
@@ -21,6 +22,8 @@ class ArticleType(graphene.ObjectType):
     create_time = graphene.DateTime()
     last_update_time = graphene.DateTime()
     record = graphene.Field(ArticleRecordType)
+    vote = graphene.Int()
+    self_attitude = graphene.Boolean()
     disable = graphene.Boolean()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
@@ -43,6 +46,16 @@ class ArticleType(graphene.ObjectType):
 
     def resolve_record(self, info: ResolveInfo) -> ArticleRecordType:
         return self.record
+
+    def resolve_vote(self, info: ResolveInfo) -> graphene.Int():
+        return ArticleVote.objects.filter(article=self, attitude=True).count()
+
+    def resolve_self_attitude(self, info: ResolveInfo) -> graphene.Boolean():
+        usr = info.context.user
+        if not usr.is_authenticated:
+            return False
+        vote = get_object_or_None(ArticleVote, article=self, record_user=usr)
+        return vote.attitude if vote else False
 
     def resolve_disable(self, info: ResolveInfo) -> graphene.Boolean():
         return self.disable

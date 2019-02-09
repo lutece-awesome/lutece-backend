@@ -3,8 +3,8 @@ from graphql import ResolveInfo, GraphQLError
 from graphql_jwt.decorators import permission_required, login_required
 
 from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm, \
-    UpdateArticleRecordForm
-from article.models import HomeArticle, UserArticle, ArticleRecord, Article
+    UpdateArticleRecordForm, ToggleArticleStarForm
+from article.models import HomeArticle, UserArticle, ArticleRecord, Article, ArticleVote
 from utils.function import assign
 
 
@@ -117,9 +117,30 @@ class UpdateArticleRecord(graphene.Mutation):
             raise RuntimeError(update_article_record.errors.as_json())
 
 
+class ToggleArticleVote(graphene.Mutation):
+    class Arguments:
+        pk = graphene.ID(required=True)
+
+    state = graphene.Boolean()
+
+    @login_required
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        toggle_article_star = ToggleArticleStarForm(kwargs)
+        if toggle_article_star.is_valid():
+            values = toggle_article_star.cleaned_data
+            article = Article.objects.get(pk=values.get('pk'))
+            vote, state = ArticleVote.objects.get_or_create(article=article, record_user=info.context.user)
+            vote.attitude = False if vote.attitude else True
+            vote.save()
+            return ToggleArticleVote(state=True)
+        else:
+            raise GraphQLError(toggle_article_star.errors.as_json())
+
+
 class Mutation(graphene.AbstractType):
     update_home_article = UpdateHomeArticle.Field()
     create_home_article = CreateHomeArticle.Field()
     update_user_article = UpdateUserArticle.Field()
     create_user_article = CreateUserArticle.Field()
     update_article_record = UpdateArticleRecord.Field()
+    toggle_article_vote = ToggleArticleVote.Field()
