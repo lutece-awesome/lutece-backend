@@ -4,6 +4,7 @@ from uuslug import uuslug
 from article.base.models import AbstractArticle
 from article.constant import MAX_SLUG_LENGTH
 from record.models import SimpleRecord, DetailedRecord
+from reply.models import BaseReply
 
 
 class ArticleRecord(SimpleRecord):
@@ -37,3 +38,7 @@ class HomeArticle(Article):
 # The user article model
 class UserArticle(Article):
     pass
+
+
+class ArticleReply(BaseReply):
+    article = models.ForeignKey(Article, on_delete=models.SET_NULL, null=True)
