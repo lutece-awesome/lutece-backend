@@ -20,8 +20,8 @@ class AbstractReplyType(DjangoObjectType):
         return self.pk
 
     def resolve_content(self, info, *args, **kwargs):
-        privileage = info.context.user.has_perm('AbstractReply.view')
-        if self.disable and not privileage:
+        privilege = info.context.user.has_perm('AbstractReply.view')
+        if self.disable and not privilege:
             return ''
         return self.content
 

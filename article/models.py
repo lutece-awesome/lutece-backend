@@ -40,5 +40,5 @@ class UserArticle(Article):
     pass
 
 
-class ArticleReply(BaseReply):
+class ArticleComment(BaseReply):
     article = models.ForeignKey(Article, on_delete=models.SET_NULL, null=True)

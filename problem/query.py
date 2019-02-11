@@ -15,15 +15,15 @@ class Query(object):
 
     def resolve_problem(self: None, info: ResolveInfo, slug):
         problem_list = Problem.objects.all()
-        privileage = info.context.user.has_perm('problem.view')
-        if not privileage:
+        privilege = info.context.user.has_perm('problem.view')
+        if not privilege:
             problem_list = problem_list.filter(disable=False)
         return problem_list.get(slug=slug)
 
     def resolve_problem_list(self: None, info: ResolveInfo, page: int, filter: str):
         problem_list = Problem.objects.all()
-        privileage = info.context.user.has_perm('problem.view')
-        if not privileage:
+        privilege = info.context.user.has_perm('problem.view')
+        if not privilege:
             problem_list = problem_list.filter(disable=False)
         if filter:
             problem_list = problem_list.filter(Q(pk__contains=filter) | Q(title__icontains=filter))
