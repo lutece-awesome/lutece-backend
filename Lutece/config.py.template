@@ -1,3 +1,4 @@
+import os
 from enum import Enum
 
 from utils.function import recursive_merge_dicts
@@ -6,7 +7,7 @@ DEFAULT_SECURITY_KEY = 'MakeSecretKeySecretInProdEnv'
 TRAVIS_TEST_DB_NAME = 'runtime_test_db'
 TRAVIS_TEST_DB_USER = 'test_user'
 TRAVIS_TEST_DB_PASSWORD = 'lUtEcEtRaViSdB'
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class RunTimeEnv(Enum):
     DEV = 1
@@ -99,6 +100,8 @@ class DefaultConfiguration(RunTimeConfiguration):
                 'NAME': 'Lutece.db',
             }
         },
+        # The static files dirs
+        'STATICFILES_DIRS': [os.path.join(BASE_DIR, 'frontend/dist/static')],
         # Channels layer(using in web-socket message publish and subscribe), use redis as default
         'CHANNEL_LAYERS': {
             "default": {
@@ -164,6 +167,7 @@ class ProdConfiguration(DefaultConfiguration):
                 'PORT': '3306',  # default as 3306
             }
         },
+        'STATICFILES_DIRS': ['lutece-frontend-dirs/dist'],
         # Data server auth key.
         'DATA_SERVER': {
             'auth_key': ''

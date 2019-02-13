@@ -8,7 +8,7 @@ class BaseReplyType(graphene.ObjectType):
     pk = graphene.ID()
     content = graphene.String()
     author = graphene.Field(UserType)
-    reply = graphene.ObjectType(lambda: BaseReplyType)
+    reply = graphene.List(lambda: BaseReplyType)
     create_time = graphene.DateTime()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID():

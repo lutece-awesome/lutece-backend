@@ -45,6 +45,7 @@ LUTECE_APPS = [
     'data',
     'article',
     'record',
+    'reply',
 ]
 
 INSTALLED_APPS += LUTECE_APPS
@@ -148,11 +149,6 @@ TEMPLATES = [
 
 STATIC_URL = '/static/'
 
-# The frontend static
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/dist/static')
-]
-
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
@@ -169,6 +165,9 @@ print(f'- start server with {mode}')
 config = get_runtime_configuration(mode).get_runtime_variables(check=True)
 
 # Inject config variables to settings
+
+# The frontend dist dir
+STATICFILES_DIRS = config.get('STATICFILES_DIRS')
 
 # The DB settings
 DATABASES = config.get('DATABASES')
