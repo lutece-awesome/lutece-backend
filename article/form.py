@@ -63,7 +63,7 @@ class ToggleArticleStarForm(forms.Form):
 
 class CreateArticleCommentForm(forms.Form):
     pk = forms.IntegerField(required=True)
-    content = forms.CharField(max=MAX_CONTENT_LENGTH)
+    content = forms.CharField(max_length=MAX_CONTENT_LENGTH)
     reply = forms.IntegerField(required=False)
 
     def clean(self) -> dict:

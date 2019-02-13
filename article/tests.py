@@ -3,7 +3,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 
-from article.models import HomeArticle, UserArticle, Article
+from article.models import HomeArticle, UserArticle, ArticleComment
 from tests.utils import create_mock_user, get_test_graphql_client, get_query_context
 
 
@@ -405,3 +405,101 @@ class UpdateArticleTest(TestCase):
             }
         )
         assert response.get('data').get('homeArticle').get('record').get('count') == 1
+
+
+class ArticleCommentTest(TestCase):
+    TEST_MOCK_USERNAME = "TESTING-USERNAME"
+    TEST_MOCK_PASSWORD = "TESTING-PASSWORD"
+    TEST_CONTENT = 'This is reply comment test template'
+    TEST_CREATE_USER_ARTICLE = '''
+        mutation CreateUserArticle( $title: String! , $content: String! ){
+            createUserArticle( title: $title, content: $content ){
+                pk
+            }
+        }
+    '''
+    TEST_CREATE_ARTICLE_COMMENT = '''
+        mutation CreateArticleComment( $pk: ID!, $content: String!, $reply: ID ){
+            createArticleComment(pk: $pk, content: $content, reply: $reply){
+                pk
+            }
+        }
+    '''
+    TEST_UPDATE_ARTICLE_COMMENT = '''
+        mutation UpdateArticleComment( $pk: ID!, $content: String! ){
+            updateArticleComment(pk: $pk, content: $content){
+                state
+            }
+        }
+    '''
+
+    def setUp(self):
+        self.mock_usr = create_mock_user(self.TEST_MOCK_USERNAME, self.TEST_MOCK_PASSWORD)
+
+    def create_test_article(self):
+        client = get_test_graphql_client()
+        context = get_query_context()
+        context.user = self.mock_usr
+        res = client.execute(
+            self.TEST_CREATE_USER_ARTICLE,
+            variables={
+                'title': 'TestTitle',
+                'content': 'TestContent',
+            },
+            context_value=context
+        )
+        return UserArticle.objects.get(pk=res.get('data').get('createUserArticle').get('pk'))
+
+    def test_create_and_update_article_comment(self):
+        client = get_test_graphql_client()
+        context = get_query_context()
+        context.user = self.mock_usr
+        article = self.create_test_article()
+        response = client.execute(
+            self.TEST_CREATE_ARTICLE_COMMENT,
+            variables={
+                'pk': article.pk,
+                'content': 'TestContent'
+            },
+            context_value=context
+        )
+        pk = response.get('data').get('createArticleComment').get('pk')
+        assert pk is not None
+        response = client.execute(
+            self.TEST_UPDATE_ARTICLE_COMMENT,
+            variables={
+                'pk': pk,
+                'content': 'TestContent2'
+            },
+            context_value=context
+        )
+        assert response.get('data').get('updateArticleComment').get('state') is True
+        assert ArticleComment.objects.get(pk=pk).content == 'TestContent2'
+
+    def test_create_comment_with_reply(self):
+        client = get_test_graphql_client()
+        context = get_query_context()
+        context.user = self.mock_usr
+        article = self.create_test_article()
+        response = client.execute(
+            self.TEST_CREATE_ARTICLE_COMMENT,
+            variables={
+                'pk': article.pk,
+                'content': 'Parent'
+            },
+            context_value=context
+        )
+        parent = response.get('data').get('createArticleComment').get('pk')
+        assert parent is not None
+        response = client.execute(
+            self.TEST_CREATE_ARTICLE_COMMENT,
+            variables={
+                'pk': article.pk,
+                'content': 'Child',
+                'reply': parent
+            },
+            context_value=context
+        )
+        child = response.get('data').get('createArticleComment').get('pk')
+        assert child is not None
+        assert ArticleComment.objects.get(pk=child).reply.pk == int(parent)

@@ -144,7 +144,7 @@ class CreateArticleComment(graphene.Mutation):
         content = graphene.String(required=True)
         reply = graphene.ID(required=False)
 
-    state = graphene.Boolean()
+    pk = graphene.ID()
 
     @login_required
     def mutate(self: None, info: ResolveInfo, **kwargs):
@@ -152,14 +152,16 @@ class CreateArticleComment(graphene.Mutation):
         if create_article_comment.is_valid():
             values = create_article_comment.cleaned_data
             article = Article.objects.get(pk=values.get('pk'))
-            reply = values.get('reply') if 'reply' in values else None
-            ArticleComment.objects.create(
+            reply = values.get('reply')
+            if reply:
+                reply = ArticleComment.objects.get(pk=reply)
+            comment = ArticleComment.objects.create(
                 article=article,
                 content=values.get('content'),
                 reply=reply,
                 author=info.context.user
             )
-            return CreateArticleComment(state=True)
+            return CreateArticleComment(pk=comment.pk)
         else:
             raise GraphQLError(create_article_comment.errors.as_json())
 
@@ -194,3 +196,5 @@ class Mutation(graphene.AbstractType):
     create_user_article = CreateUserArticle.Field()
     update_article_record = UpdateArticleRecord.Field()
     toggle_article_vote = ToggleArticleVote.Field()
+    create_article_comment = CreateArticleComment.Field()
+    update_article_comment = UpdateArticleComment.Field()

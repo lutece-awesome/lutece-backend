@@ -21,7 +21,7 @@ class BaseReplyForm(forms.Form):
 
 class UpdateBaseReplyForm(forms.Form):
     pk = forms.IntegerField(required=True)
-    content = forms.CharField(max=MAX_CONTENT_LENGTH)
+    content = forms.CharField(max_length=MAX_CONTENT_LENGTH)
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
