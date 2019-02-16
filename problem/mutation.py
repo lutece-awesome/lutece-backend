@@ -70,9 +70,11 @@ class CreateProblem(graphene.Mutation):
         output_limit = graphene.Int(required=True)
         cpu_limit = graphene.Int(required=True)
 
+        disable = graphene.Boolean(required=True)
+
         samples = graphene.String(required=True)
 
-    state = graphene.Boolean()
+    slug = graphene.String()
 
     @permission_required('problem.add')
     def mutate(self, info: ResolveInfo, **kwargs):
@@ -87,13 +89,14 @@ class CreateProblem(graphene.Mutation):
             limitation.save()
             prob.limitation = limitation
             prob.save()
+            print(samples)
             for each in samples:
                 ProblemSample(
-                    input_content=each.get('input_content'),
-                    output_content=each.get('output_content'),
+                    input_content=each.get('inputContent'),
+                    output_content=each.get('outputContent'),
                     problem=prob
                 ).save()
-            return CreateProblem(state=True)
+            return CreateProblem(slug=prob.slug)
         else:
             raise RuntimeError(form.errors.as_json())
 
