@@ -161,7 +161,7 @@ class Query(object):
         if language is not None:
             statuslist = statuslist.filter(language=language)
         paginator = Paginator(statuslist, PER_PAGE_COUNT)
-        return SubmissionListType(maxpage=paginator.num_pages, submissionList=paginator.get_page(page))
+        return SubmissionListType(max_page=paginator.num_pages, submissionList=paginator.get_page(page))
 
 
 class Mutation(graphene.AbstractType):

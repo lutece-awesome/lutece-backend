@@ -426,8 +426,8 @@ class ArticleCommentTest(TestCase):
         }
     '''
     TEST_UPDATE_ARTICLE_COMMENT = '''
-        mutation UpdateArticleComment( $pk: ID!, $content: String! ){
-            updateArticleComment(pk: $pk, content: $content){
+        mutation UpdateBaseReply( $pk: ID!, $content: String! ){
+            updateBaseReply(pk: $pk, content: $content){
                 state
             }
         }
@@ -473,7 +473,7 @@ class ArticleCommentTest(TestCase):
             },
             context_value=context
         )
-        assert response.get('data').get('updateArticleComment').get('state') is True
+        assert response.get('data').get('updateBaseReply').get('state') is True
         assert ArticleComment.objects.get(pk=pk).content == 'TestContent2'
 
     def test_create_comment_with_reply(self):

@@ -38,4 +38,4 @@ class Query(object):
         if language:
             status_list = status_list.filter(_language=language)
         paginator = Paginator(status_list, PER_PAGE_COUNT)
-        return SubmissionListType(maxpage=paginator.num_pages, submission_list=paginator.get_page(page))
+        return SubmissionListType(max_page=paginator.num_pages, submission_list=paginator.get_page(page))

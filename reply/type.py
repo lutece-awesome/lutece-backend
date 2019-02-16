@@ -10,6 +10,7 @@ class BaseReplyType(graphene.ObjectType):
     author = graphene.Field(UserType)
     reply = graphene.List(lambda: BaseReplyType)
     create_time = graphene.DateTime()
+    last_update_time = graphene.DateTime()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
         return self.pk
@@ -25,3 +26,6 @@ class BaseReplyType(graphene.ObjectType):
 
     def resolve_create_time(self, info: ResolveInfo) -> graphene.DateTime():
         return self.create_time
+
+    def resolve_last_update_time(self, info: ResolveInfo) -> graphene.DateTime():
+        return self.last_update_time

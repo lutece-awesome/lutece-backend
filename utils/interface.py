@@ -2,4 +2,4 @@ import graphene
 
 
 class PaginatorList(graphene.Interface):
-    maxpage = graphene.Int(required=True)
+    max_page = graphene.Int(required=True)

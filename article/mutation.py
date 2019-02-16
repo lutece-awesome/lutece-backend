@@ -3,8 +3,7 @@ from graphql import ResolveInfo, GraphQLError
 from graphql_jwt.decorators import permission_required, login_required
 
 from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm, \
-    UpdateArticleRecordForm, ToggleArticleStarForm, CreateArticleCommentForm, \
-    UpdateArticleCommentForm
+    UpdateArticleRecordForm, ToggleArticleStarForm, CreateArticleCommentForm
 from article.models import HomeArticle, UserArticle, ArticleRecord, Article, ArticleVote, ArticleComment
 from utils.function import assign
 
@@ -166,29 +165,6 @@ class CreateArticleComment(graphene.Mutation):
             raise GraphQLError(create_article_comment.errors.as_json())
 
 
-class UpdateArticleComment(graphene.Mutation):
-    class Arguments:
-        pk = graphene.ID(required=True)
-        content = graphene.String(required=True)
-
-    state = graphene.Boolean()
-
-    @login_required
-    def mutate(self: None, info: ResolveInfo, **kwargs):
-        update_article_comment = UpdateArticleCommentForm(kwargs)
-        if update_article_comment.is_valid():
-            values = update_article_comment.cleaned_data
-            usr = info.context.user
-            comment = ArticleComment.objects.get(pk=values.get('pk'))
-            if not usr.has_perm('article.change_articlecomment') and usr != comment.author:
-                raise PermissionError('Permission Denied.')
-            comment.content = values.get('content')
-            comment.save()
-            return UpdateArticleComment(state=True)
-        else:
-            raise GraphQLError(update_article_comment.errors.as_json())
-
-
 class Mutation(graphene.AbstractType):
     update_home_article = UpdateHomeArticle.Field()
     create_home_article = CreateHomeArticle.Field()
@@ -197,4 +173,3 @@ class Mutation(graphene.AbstractType):
     update_article_record = UpdateArticleRecord.Field()
     toggle_article_vote = ToggleArticleVote.Field()
     create_article_comment = CreateArticleComment.Field()
-    update_article_comment = UpdateArticleComment.Field()

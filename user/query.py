@@ -23,7 +23,7 @@ class Query(object):
         if filter:
             user_list = user_list.filter(username__icontains=filter)
         paginator = Paginator(user_list, PER_PAGE_COUNT)
-        return UserListType(maxpage=paginator.num_pages, user_list=paginator.get_page(page))
+        return UserListType(max_page=paginator.num_pages, user_list=paginator.get_page(page))
 
     '''
         Search the matching user of the specific filter.
@@ -37,4 +37,4 @@ class Query(object):
             user_list = user_list.filter(username__icontains=filter)
         else:
             user_list = []
-        return UserListType(maxpage=1, user_list=user_list[:5])
+        return UserListType(max_page=1, user_list=user_list[:5])
