@@ -5,6 +5,7 @@ from article.mutation import Mutation as ArticleMutationSchema
 from article.query import Query as ArticleQuerySchema
 from problem.mutation import Mutation as ProblemMutationSchema
 from problem.query import Query as ProblemQuerySchema
+from reply.mutation import Mutation as ReplyMutationSchema
 from submission.mutation import Mutation as SubmissionMutationSchema
 from submission.query import Query as SubmissionQuerySchema
 from user.mutation import Mutation as UserMutationSchema
@@ -16,6 +17,7 @@ class Query(UserQuerySchema, ProblemQuerySchema, SubmissionQuerySchema, ArticleQ
 
 
 class Mutations(UserMutationSchema, ProblemMutationSchema, SubmissionMutationSchema, ArticleMutationSchema,
+                ReplyMutationSchema,
                 graphene.ObjectType):
     verify_token = Verify.Field()
 

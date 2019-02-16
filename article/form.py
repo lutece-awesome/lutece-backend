@@ -5,7 +5,6 @@ from article.base.form import AbstractArticleForm
 from article.constant import MAX_PREVIEW_LENGTH
 from article.models import HomeArticle, UserArticle, Article, ArticleComment
 from reply.constant import MAX_CONTENT_LENGTH
-from reply.form import UpdateBaseReplyForm
 
 
 class UpdateHomeArticleForm(AbstractArticleForm):
@@ -75,7 +74,3 @@ class CreateArticleCommentForm(forms.Form):
         if reply and not get_object_or_None(ArticleComment, pk=reply):
             self.add_error("reply", "No such reply node")
         return cleaned_data
-
-
-class UpdateArticleCommentForm(UpdateBaseReplyForm):
-    pass

@@ -28,7 +28,7 @@ class Query(object):
         if filter:
             problem_list = problem_list.filter(Q(pk__contains=filter) | Q(title__icontains=filter))
         paginator = Paginator(problem_list, PER_PAGE_COUNT)
-        return ProblemListType(maxpage=paginator.num_pages, problem_list=paginator.get_page(page))
+        return ProblemListType(max_page=paginator.num_pages, problem_list=paginator.get_page(page))
 
     '''
         Search the matching problem of the specific filter.
@@ -42,4 +42,4 @@ class Query(object):
             problem_list = problem_list.filter(Q(pk__contains=filter) | Q(title__icontains=filter))
         else:
             problem_list = []
-        return ProblemListType(maxpage=1, problem_list=problem_list[:5])
+        return ProblemListType(max_page=1, problem_list=problem_list[:5])
