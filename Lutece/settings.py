@@ -46,6 +46,7 @@ LUTECE_APPS = [
     'article',
     'record',
     'reply',
+    'contest',
 ]
 
 INSTALLED_APPS += LUTECE_APPS

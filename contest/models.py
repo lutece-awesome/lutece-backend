@@ -1,7 +1,7 @@
 import django.utils.timezone as timezone
 from django.db import models
 
-from contest.constant import MAX_TEAM_NAME_LENGTH, MAX_CONTEST_TITLE_LENGTH
+from contest.constant import MAX_CONTEST_TITLE_LENGTH, MAX_CONTEST_PASSWORD_LENGTH, MAX_CONTEST_TEAM_NAME_LENGTH
 from problem.models import Problem
 from user.models import User
 
@@ -12,6 +12,7 @@ class ContestSettings(models.Model):
     start_time = models.DateTimeField(null=False, default=timezone.now)
     end_time = models.DateTimeField(null=False, default=timezone.now)
     max_team_member_number = models.IntegerField(default=1)
+    password = models.CharField(max_length=MAX_CONTEST_PASSWORD_LENGTH)
 
 
 class Contest(models.Model):
@@ -26,7 +27,7 @@ class ContestProblem(models.Model):
 
 class ContestTeam(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.SET_NULL, null=True)
-    team_name = models.CharField(max_length=MAX_TEAM_NAME_LENGTH)
+    team_name = models.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
 
 
 class ContestTeamMember(models.Model):
