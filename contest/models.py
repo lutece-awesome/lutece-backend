@@ -1,35 +1,34 @@
 import django.utils.timezone as timezone
 from django.db import models
 
+from contest.constant import MAX_TEAM_NAME_LENGTH, MAX_CONTEST_TITLE_LENGTH
+from problem.models import Problem
 from user.models import User
 
 
-# Create your models here.
-
-class Contest(models.Model):
-    contest_id = models.AutoField(primary_key=True, db_index=True)
-    title = models.CharField(max_length=64, blank=True, unique=True)
-    contest_type = models.CharField(max_length=32, blank=True)
-    password = models.CharField(max_length=32, blank=True)
+class ContestSettings(models.Model):
     note = models.TextField(blank=True)
-    visible = models.BooleanField(default=False)
-    register = models.BooleanField(default=False)
-    confirm = models.BooleanField(default=False)
+    disable = models.BooleanField(default=False)
     start_time = models.DateTimeField(null=False, default=timezone.now)
     end_time = models.DateTimeField(null=False, default=timezone.now)
-
-    class Meta:
-        ordering = ['-contest_id']
-        permissions = (
-            ('view_all', 'Can view all contest'),
-            ('hide_submission', 'Hide the submission in rankboard'),
-        )
+    max_team_member_number = models.IntegerField(default=1)
 
 
-class ContestRegisterUser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, db_index=True)
+class Contest(models.Model):
+    title = models.CharField(max_length=MAX_CONTEST_TITLE_LENGTH, blank=True, unique=True)
+    settings = models.OneToOneField(ContestSettings, on_delete=models.CASCADE)
 
 
 class ContestProblem(models.Model):
-    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, db_index=True)
-    problem = models.IntegerField(blank=False)
+    contest = models.ForeignKey(Contest, on_delete=models.SET_NULL, null=True)
+    problem = models.ForeignKey(Problem, on_delete=models.SET_NULL, null=True)
+
+
+class ContestTeam(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.SET_NULL, null=True)
+    team_name = models.CharField(max_length=MAX_TEAM_NAME_LENGTH)
+
+
+class ContestTeamMember(models.Model):
+    contest_team = models.ForeignKey(ContestTeam, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
