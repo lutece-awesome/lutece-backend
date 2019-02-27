@@ -1,9 +1,9 @@
 import graphene
+from annoying.functions import get_object_or_None
 from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required
 
-from contest.models import ContestProblem
-from problem.type import ProblemType
+from contest.models import ContestTeamMember
 
 
 class ContestSettingsType(graphene.ObjectType):
@@ -37,7 +37,7 @@ class ContestSettingsType(graphene.ObjectType):
 class ContestType(graphene.ObjectType):
     title = graphene.String()
     settings = graphene.Field(ContestSettingsType)
-    problem_list = graphene.List(ProblemType)
+    registered = graphene.Boolean()
 
     def resolve_title(self, info: ResolveInfo) -> graphene.String():
         return self.title
@@ -45,5 +45,30 @@ class ContestType(graphene.ObjectType):
     def resolve_settings(self, info: ResolveInfo) -> ContestSettingsType:
         return self.settings
 
-    def resolve_problem_list(self, info: ResolveInfo) -> graphene.List(ProblemType):
-        return map(lambda x: x.problem, ContestProblem.objects.filter(contest=self))
+    def resolve_registered(self, info: ResolveInfo) -> graphene.Boolean():
+        usr = info.context.user
+        return usr.has_perm('contest.view') or get_object_or_None(ContestTeamMember, user=usr,
+                                                                  contest_team__contest=self)
+
+
+# This is the duck type of Submission
+class ContestRankingType(graphene.ObjectType):
+    status = graphene.String()
+    create_time = graphene.DateTime()
+
+    def resolve_status(self, info: ResolveInfo) -> graphene.String():
+        return self.status.full
+
+    def resolve_create_time(self, info: ResolveInfo) -> graphene.String():
+        return self.create_time
+
+
+class ContestRankingGroupType(graphene.ObjectType):
+    group_name = graphene.String()
+    team_ranking_list = graphene.List(ContestRankingType)
+
+    def resolve_group_name(self, info: ResolveInfo) -> graphene.String():
+        return self.group_name
+
+    def resolve_team_ranking_list(self, info: ResolveInfo) -> graphene.List(ContestRankingType):
+        return self.team_ranking_list
