@@ -89,7 +89,6 @@ class CreateProblem(graphene.Mutation):
             limitation.save()
             prob.limitation = limitation
             prob.save()
-            print(samples)
             for each in samples:
                 ProblemSample(
                     input_content=each.get('inputContent'),
