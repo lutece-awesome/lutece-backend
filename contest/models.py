@@ -15,6 +15,7 @@ class ContestSettings(models.Model):
     max_team_member_number = models.IntegerField(default=1)
     password = models.CharField(max_length=MAX_CONTEST_PASSWORD_LENGTH)
     can_join_after_contest_begin = models.BooleanField(default=False)
+    join_need_approve = models.BooleanField(default=False)
 
 
 class Contest(models.Model):

@@ -4,6 +4,7 @@ from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required
 
 from contest.models import ContestTeamMember
+from utils.interface import PaginatorList
 
 
 class ContestSettingsType(graphene.ObjectType):
@@ -35,9 +36,14 @@ class ContestSettingsType(graphene.ObjectType):
 
 
 class ContestType(graphene.ObjectType):
+    pk = graphene.ID()
     title = graphene.String()
     settings = graphene.Field(ContestSettingsType)
     registered = graphene.Boolean()
+    register_member_number = graphene.Int()
+
+    def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
+        return self.pk
 
     def resolve_title(self, info: ResolveInfo) -> graphene.String():
         return self.title
@@ -47,8 +53,17 @@ class ContestType(graphene.ObjectType):
 
     def resolve_registered(self, info: ResolveInfo) -> graphene.Boolean():
         usr = info.context.user
+        if not usr.is_authenticated:
+            return False
         return usr.has_perm('contest.view') or get_object_or_None(ContestTeamMember, user=usr,
                                                                   contest_team__contest=self)
+
+    def resolve_register_member_number(self, info: ResolveInfo) -> graphene.Int():
+        return ContestTeamMember.objects.filter(contest_team__contest=self).count()
+
+
+class ContestListType(graphene.ObjectType, interfaces=[PaginatorList]):
+    contest_list = graphene.List(ContestType, )
 
 
 # This is the duck type of Submission

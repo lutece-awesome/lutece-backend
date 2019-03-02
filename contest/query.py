@@ -1,23 +1,35 @@
 import graphene
 from annoying.functions import get_object_or_None
 from django.core.paginator import Paginator
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from graphql import ResolveInfo, GraphQLError
 
 from contest.constant import PER_PAGE_COUNT
 from contest.decorators import check_contest_permission
 from contest.models import ContestProblem, Contest, ContestSubmission, ContestTeam, ContestTeamMember
-from contest.type import ContestRankingGroupType
+from contest.type import ContestRankingGroupType, ContestListType
 from problem.type import ProblemType
-from submission.schema import SubmissionListType
+from submission.type import SubmissionListType
 
 
 class Query(object):
+    contest_list = graphene.Field(ContestListType, page=graphene.Int(), filter=graphene.String())
     problem_list = graphene.List(ProblemType, pk=graphene.ID())
     team_submission_list = graphene.List(ProblemType, pk=graphene.ID(), team_pk=graphene.ID(), page=graphene.Int(),
                                          problem_pk=graphene.Int(), user=graphene.String(),
                                          judge_status=graphene.String(), language=graphene.String())
     ranking_list = graphene.List(ContestRankingGroupType, pk=graphene.ID())
+
+    def resolve_contest_list(self: None, info: ResolveInfo, page: int, filter: str):
+        contest_list = Contest.objects.all()
+        privilege = info.context.user.has_perm('contest.view')
+        if not privilege:
+            contest_list = contest_list.filter(settings__disable=False)
+        if filter:
+            contest_list = contest_list.filter(Q(pk__contains=filter) | Q(title__icontains=filter))
+        contest_list = contest_list.order_by('-pk')
+        paginator = Paginator(contest_list, PER_PAGE_COUNT)
+        return ContestListType(max_page=paginator.num_pages, contest_list=paginator.get_page(page))
 
     @check_contest_permission
     def resolve_problem_list(self: None, info: ResolveInfo, pk: graphene.ID()):
