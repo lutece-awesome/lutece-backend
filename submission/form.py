@@ -14,7 +14,6 @@ class SubmitSubmissionForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         problemslug = cleaned_data.get('problem_slug')
-        code = cleaned_data.get('code')
         language = Language.value_of(cleaned_data.get('language'))
         prob = get_object_or_None(Problem, slug=problemslug)
         if problemslug and not prob:
