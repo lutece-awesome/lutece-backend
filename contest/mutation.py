@@ -1,5 +1,6 @@
 import graphene
 import json
+from django.utils import timezone
 from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required
 
@@ -29,8 +30,8 @@ class CreateContest(graphene.Mutation):
         form = ContestForm(kwargs)
         if form.is_valid():
             values = form.cleaned_data
-            values['start_time'] = values['start_time'].replace(tzinfo=None)
-            values['end_time'] = values['end_time'].replace(tzinfo=None)
+            values['start_time'] = timezone.localtime(values['start_time']).replace(tzinfo=None)
+            values['end_time'] = timezone.localtime(values['end_time']).replace(tzinfo=None)
             problems = json.loads(values.get('problems'))
             contest = Contest()
             settings = ContestSettings()
@@ -44,7 +45,6 @@ class CreateContest(graphene.Mutation):
                     contest=contest,
                     problem=Problem.objects.get(pk=each)
                 ).save()
-            print(contest.title)
             return CreateContest(pk=contest.pk)
         else:
             raise RuntimeError(form.errors.as_json())

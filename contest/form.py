@@ -21,11 +21,11 @@ class ContestSettingForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        start_time = cleaned_data.get('start_time')
-        end_time = cleaned_data.get('end_time')
+        start_time = timezone.localtime(cleaned_data.get('start_time')).replace(tzinfo=None)
+        end_time = timezone.localtime(cleaned_data.get('end_time')).replace(tzinfo=None)
         if start_time >= end_time:
             self.add_error('start_time', 'Start time could not before the end time')
-        elif start_time.replace(tzinfo=None) <= timezone.now():
+        elif start_time <= timezone.now():
             self.add_error('start_time', 'Start time could not before the current time')
         return cleaned_data
 
