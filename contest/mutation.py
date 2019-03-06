@@ -1,11 +1,12 @@
 import graphene
 import json
 from django.utils import timezone
-from graphql import ResolveInfo
+from graphql import ResolveInfo, GraphQLError
 from graphql_jwt.decorators import permission_required
 
-from contest.form import ContestForm
-from contest.models import Contest, ContestSettings, ContestProblem
+from contest.decorators import check_contest_permission
+from contest.form import ContestForm, CreateContestClarificationForm
+from contest.models import Contest, ContestSettings, ContestProblem, ContestClarification
 from problem.models import Problem
 from utils.function import assign
 
@@ -50,5 +51,34 @@ class CreateContest(graphene.Mutation):
             raise RuntimeError(form.errors.as_json())
 
 
+class CreateContestClarification(graphene.Mutation):
+    class Arguments:
+        pk = graphene.ID(required=True)
+        content = graphene.String(required=True)
+        reply = graphene.ID(required=False)
+
+    pk = graphene.ID()
+
+    @check_contest_permission
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        form = CreateContestClarificationForm(kwargs)
+        if form.is_valid():
+            values = form.cleaned_data
+            contest = Contest.objects.get(pk=values.get('pk'))
+            reply = values.get('reply')
+            if reply:
+                reply = ContestClarification.objects.get(pk=reply)
+            comment = ContestClarification.objects.create(
+                contest=contest,
+                content=values.get('content'),
+                reply=reply,
+                author=info.context.user
+            )
+            return CreateContestClarification(pk=comment.pk)
+        else:
+            raise GraphQLError(form.errors.as_json())
+
+
 class Mutation(graphene.AbstractType):
     create_contest = CreateContest.Field()
+    create_contest_clarification = CreateContestClarification.Field()

@@ -1,10 +1,13 @@
 import json
+from annoying.functions import get_object_or_None
 from django import forms
 from django.utils import timezone
 
 from contest.constant import MAX_CONTEST_TITLE_LENGTH, MAX_CONTEST_TEAM_MEMBER, MIN_CONTEST_TEAM_MEMBER, \
     MAX_CONTEST_PASSWORD_LENGTH
+from contest.models import Contest, ContestClarification
 from problem.models import Problem
+from reply.constant import MAX_CONTENT_LENGTH
 
 
 class ContestSettingForm(forms.Form):
@@ -25,8 +28,6 @@ class ContestSettingForm(forms.Form):
         end_time = timezone.localtime(cleaned_data.get('end_time')).replace(tzinfo=None)
         if start_time >= end_time:
             self.add_error('start_time', 'Start time could not before the end time')
-        elif start_time <= timezone.now():
-            self.add_error('start_time', 'Start time could not before the current time')
         return cleaned_data
 
 
@@ -42,6 +43,8 @@ class ContestProblemForm(forms.Form):
             problem_arr.append(Problem.objects.get(pk=each_pk))
         if len(problem_arr) != len(problem_pk_arr):
             self.add_error('problems', 'No duplicated problem allowded')
+        elif len(problem_arr) > 26:
+            self.add_error('problem', 'At most 26 problems')
         return cleaned_data
 
 
@@ -49,3 +52,19 @@ class ContestForm(ContestProblemForm, ContestSettingForm):
 
     def clean(self):
         return super().clean()
+
+
+class CreateContestClarificationForm(forms.Form):
+    pk = forms.IntegerField(required=True)
+    content = forms.CharField(max_length=MAX_CONTENT_LENGTH)
+    reply = forms.IntegerField(required=False)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        if pk and not get_object_or_None(Contest, pk=pk):
+            self.add_error("pk", "No such contest")
+        reply = cleaned_data.get('reply')
+        if reply and not get_object_or_None(ContestClarification, pk=reply):
+            self.add_error("reply", "No such reply node")
+        return cleaned_data

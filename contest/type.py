@@ -3,7 +3,11 @@ from annoying.functions import get_object_or_None
 from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required
 
-from contest.models import ContestTeamMember
+from contest.models import ContestTeamMember, ContestSubmission, Contest, ContestTeam
+from judge.result import JudgeResult
+from problem.type import ProblemType
+from reply.type import BaseReplyType
+from user.type import UserType
 from utils.interface import PaginatorList
 
 
@@ -41,6 +45,7 @@ class ContestType(graphene.ObjectType):
     settings = graphene.Field(ContestSettingsType)
     registered = graphene.Boolean()
     register_member_number = graphene.Int()
+    is_public = graphene.Boolean()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID():
         return self.pk
@@ -61,15 +66,20 @@ class ContestType(graphene.ObjectType):
     def resolve_register_member_number(self, info: ResolveInfo) -> graphene.Int():
         return ContestTeamMember.objects.filter(contest_team__contest=self).count()
 
+    def resolve_is_public(self, info: ResolveInfo) -> graphene.Boolean():
+        return self.is_public()
+
 
 class ContestListType(graphene.ObjectType, interfaces=[PaginatorList]):
     contest_list = graphene.List(ContestType, )
 
 
 # This is the duck type of Submission
-class ContestRankingType(graphene.ObjectType):
+class ContestRankingSubmissionType(graphene.ObjectType):
     status = graphene.String()
     create_time = graphene.DateTime()
+    team = graphene.String()
+    slug = graphene.String()
 
     def resolve_status(self, info: ResolveInfo) -> graphene.String():
         return self.status.full
@@ -77,13 +87,49 @@ class ContestRankingType(graphene.ObjectType):
     def resolve_create_time(self, info: ResolveInfo) -> graphene.String():
         return self.create_time
 
+    def resolve_team(self, info: ResolveInfo) -> graphene.String():
+        return self.team.name
 
-class ContestRankingGroupType(graphene.ObjectType):
-    group_name = graphene.String()
-    team_ranking_list = graphene.List(ContestRankingType)
+    def resolve_slug(self, info: ResolveInfo) -> graphene.String():
+        return self.slug
 
-    def resolve_group_name(self, info: ResolveInfo) -> graphene.String():
-        return self.group_name
 
-    def resolve_team_ranking_list(self, info: ResolveInfo) -> graphene.List(ContestRankingType):
-        return self.team_ranking_list
+class ContestClarificationType(BaseReplyType):
+    pass
+
+
+class ContestClarificationListType(graphene.ObjectType, interfaces=[PaginatorList]):
+    contest_clarification_list = graphene.List(ContestClarificationType, )
+
+
+class ContestProblemType(ProblemType):
+    solved = graphene.Boolean()
+
+    def resolve_solved(self, info: ResolveInfo) -> graphene.Boolean():
+        usr = info.context.user
+        if usr.has_perm('contest.view') or not usr.is_authenticated:
+            return False
+        contest = Contest.objects.get(pk=info.variable_values.get('pk'))
+        team = ContestTeam.objects.get(contest=contest, memeber__user=usr)
+        return ContestSubmission.objects.filter(contest=contest, team=team,
+                                                result___result=JudgeResult.AC.full).exists()
+
+
+class ContestTeamType(graphene.ObjectType):
+    member_list = graphene.List(UserType)
+
+    def resolve_member_list(self, info: ResolveInfo) -> graphene.List:
+        return self.member_list
+
+
+class ContestRankingMetaType(graphene.ObjectType):
+    start_time = graphene.DateTime()
+
+    def resolve_start_time(self, info: ResolveInfo):
+        return self.settings.start_time
+
+
+class ContestRankingType(graphene.ObjectType):
+    submissions = graphene.List(ContestRankingSubmissionType)
+    problems = graphene.List(ContestProblemType)
+    meta = graphene.Field(ContestRankingMetaType)

@@ -1,24 +1,34 @@
 import graphene
 from annoying.functions import get_object_or_None
 from django.core.paginator import Paginator
-from django.db.models import Prefetch, Q
+from django.db.models import Q
 from graphql import ResolveInfo, GraphQLError
 
-from contest.constant import PER_PAGE_COUNT
+from contest.constant import PER_PAGE_COUNT, CLARIFICATION_PER_PAGE_COUNT
 from contest.decorators import check_contest_permission
-from contest.models import ContestProblem, Contest, ContestSubmission, ContestTeam, ContestTeamMember
-from contest.type import ContestRankingGroupType, ContestListType
-from problem.type import ProblemType
+from contest.models import ContestProblem, Contest, ContestSubmission, ContestTeamMember, \
+    ContestClarification
+from contest.type import ContestListType, ContestType, ContestClarificationListType, \
+    ContestProblemType, ContestRankingType
 from submission.type import SubmissionListType
 
 
 class Query(object):
+    contest = graphene.Field(ContestType, pk=graphene.ID())
     contest_list = graphene.Field(ContestListType, page=graphene.Int(), filter=graphene.String())
-    problem_list = graphene.List(ProblemType, pk=graphene.ID())
-    team_submission_list = graphene.List(ProblemType, pk=graphene.ID(), team_pk=graphene.ID(), page=graphene.Int(),
-                                         problem_pk=graphene.Int(), user=graphene.String(),
-                                         judge_status=graphene.String(), language=graphene.String())
-    ranking_list = graphene.List(ContestRankingGroupType, pk=graphene.ID())
+    contest_problem_list = graphene.List(ContestProblemType, pk=graphene.ID())
+    contest_submission_list = graphene.Field(SubmissionListType, pk=graphene.ID(), page=graphene.Int(),
+                                             problem=graphene.String(), user=graphene.String(),
+                                             judge_status=graphene.String(), language=graphene.String())
+    contest_ranking_list = graphene.Field(ContestRankingType, pk=graphene.ID())
+    contest_clarification_list = graphene.Field(ContestClarificationListType, pk=graphene.ID(), page=graphene.Int())
+
+    def resolve_contest(self: None, info: ResolveInfo, pk: int):
+        contest_list = Contest.objects.all()
+        privilege = info.context.user.has_perm('contest.view')
+        if not privilege:
+            contest_list = contest_list.filter(settings__disable=False)
+        return contest_list.get(pk=pk)
 
     def resolve_contest_list(self: None, info: ResolveInfo, page: int, filter: str):
         contest_list = Contest.objects.all()
@@ -32,36 +42,34 @@ class Query(object):
         return ContestListType(max_page=paginator.num_pages, contest_list=paginator.get_page(page))
 
     @check_contest_permission
-    def resolve_problem_list(self: None, info: ResolveInfo, pk: graphene.ID()):
-        return map(lambda each: each.problem, ContestProblem.objects.filter(contest=Contest.objects.get(pk=pk)))
+    def resolve_contest_problem_list(self: None, info: ResolveInfo, pk: graphene.ID()):
+        contest = Contest.objects.get(pk=pk)
+        return map(lambda each: each.problem, ContestProblem.objects.filter(contest=contest))
 
     @check_contest_permission
-    def resolve_team_submission_list(self: None, info: ResolveInfo, pk: graphene.ID(), team_pk: graphene.ID(),
-                                     page: graphene.Int(),
-                                     **kwargs):
-        problem_pk = kwargs.get('problem_pk')
+    def resolve_contest_submission_list(self: None, info: ResolveInfo, pk: graphene.ID(), page: graphene.Int(),
+                                        **kwargs):
+        problem = kwargs.get('problem')
         user = kwargs.get('user')
         judge_status = kwargs.get('judge_status')
         language = kwargs.get('language')
         contest = Contest.objects.get(pk=pk)
-        contest_team = ContestTeam.objects.get(pk=team_pk)
         privilege = info.context.user.has_perm('contest.view')
         status_list = ContestSubmission.objects.filter(contest=contest)
         if not privilege:
-            if not get_object_or_None(ContestTeamMember, contest_team=contest_team, user=info.context.user):
+            team_member = get_object_or_None(ContestTeamMember, contest_team__contest=contest, user=info.context.user)
+            if not team_member:
                 raise GraphQLError('Permission Denied')
-            status_list = status_list.filter(team=contest_team)
+            status_list = status_list.filter(team=team_member.contest_team)
         status_list = status_list.order_by('-pk')
         if not info.context.user.has_perm('problem.view'):
             status_list = status_list.filter(problem__disable=False)
         if not info.context.user.has_perm('user.view') or not info.context.user.has_perm('submission.view'):
             status_list = status_list.filter(user__is_staff=False)
-        if pk:
-            status_list = status_list.filter(pk=pk)
         if user:
             status_list = status_list.filter(user__username=user)
-        if problem_pk:
-            status_list = status_list.filter(problem__pk=problem_pk)
+        if problem:
+            status_list = status_list.filter(problem__slug=problem)
         if judge_status:
             status_list = status_list.filter(result___result=judge_status)
         if language:
@@ -70,8 +78,23 @@ class Query(object):
         return SubmissionListType(max_page=paginator.num_pages, submission_list=paginator.get_page(page))
 
     @check_contest_permission
-    def resolve_ranking_list(self: None, info: ResolveInfo, pk: graphene.ID()):
+    def resolve_contest_ranking_list(self: None, info: ResolveInfo, pk: graphene.ID()):
         contest = Contest.objects.get(pk=pk)
-        status_list = ContestSubmission.objects.prefetch_related(
-            Prefetch('team', ContestTeam.objects.filter(contest=contest), to_attr='team'))
-        return [ContestRankingGroupType(name=each.team.name, team_ranking_list=each) for each in status_list]
+        return ContestRankingType(submissions=ContestSubmission.objects.filter(Q(contest=contest) & ~Q(team=None)),
+                                  problems=map(lambda each: each.problem,
+                                               ContestProblem.objects.filter(contest=contest)),
+                                  meta=contest)
+
+    @check_contest_permission
+    def resolve_contest_clarification_list(self: None, info: ResolveInfo, pk: graphene.ID(), page: graphene.Int()):
+        contest = get_object_or_None(Contest, pk=pk)
+        if not contest:
+            raise GraphQLError('No such contest')
+        clarification_list = ContestClarification.objects.filter(contest=contest)
+        privilege = info.context.user.has_perm('contest.view_contestclarification')
+        if not privilege:
+            clarification_list = clarification_list.filter(disable=False)
+        clarification_list = clarification_list.order_by('-create_time')
+        paginator = Paginator(clarification_list, CLARIFICATION_PER_PAGE_COUNT)
+        return ContestClarificationListType(max_page=paginator.num_pages,
+                                            contest_clarification_list=paginator.get_page(page))
