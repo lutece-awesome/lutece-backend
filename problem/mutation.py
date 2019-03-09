@@ -30,7 +30,7 @@ class UpdateProblem(graphene.Mutation):
 
         slug = graphene.String(required=True)
 
-    state = graphene.Boolean()
+    slug = graphene.String()
 
     @permission_required('problem.change')
     def mutate(self, info: ResolveInfo, **kwargs):
@@ -50,7 +50,8 @@ class UpdateProblem(graphene.Mutation):
                     output_content=each.get('outputContent'),
                     problem=prob
                 ).save()
-            return UpdateProblem(state=True)
+            # To avoid the slug change, re-fetch the problem object
+            return UpdateProblem(slug=prob.slug)
         else:
             raise RuntimeError(form.errors.as_json())
 

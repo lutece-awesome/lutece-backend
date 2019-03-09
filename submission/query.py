@@ -23,6 +23,8 @@ class Query(object):
         judge_status = kwargs.get('judge_status')
         language = kwargs.get('language')
         status_list = Submission.objects.all().order_by('-pk')
+        # Only consider base class
+        status_list = status_list.filter(submission_type=0)
         if not info.context.user.has_perm('problem.view'):
             status_list = status_list.filter(problem__disable=False)
         if not info.context.user.has_perm('user.view') or not info.context.user.has_perm('submission.view'):
