@@ -45,7 +45,7 @@ class ContestTeam(models.Model):
 class ContestTeamMember(models.Model):
     contest_team = models.ForeignKey(ContestTeam, on_delete=models.SET_NULL, null=True, related_name='memeber')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    confirmed = models.BooleanField(default=True)
+    confirmed = models.BooleanField(default=False)
 
 
 # SubmissionType = 1

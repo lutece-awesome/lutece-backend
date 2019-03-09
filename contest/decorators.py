@@ -1,5 +1,4 @@
 from annoying.functions import get_object_or_None
-from django.utils.datetime_safe import datetime
 from graphql import GraphQLError
 
 from contest.models import Contest, ContestTeamMember
@@ -17,7 +16,8 @@ def check_contest_permission(func):
             privilege = usr.has_perm('contest.view_contest')
             if privilege or contest.is_public() or (
                     usr.is_authenticated and get_object_or_None(ContestTeamMember, user=usr,
-                                                                contest_team__contest=contest)):
+                                                                contest_team__contest=contest,
+                                                                confirmed=True).contest_team.approved):
                 return func(*args, **kwargs)
             else:
                 raise GraphQLError('Permission Denied')

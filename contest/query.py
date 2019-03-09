@@ -24,7 +24,7 @@ class Query(object):
     contest_ranking_list = graphene.Field(ContestRankingType, pk=graphene.ID())
     contest_clarification_list = graphene.Field(ContestClarificationListType, pk=graphene.ID(), page=graphene.Int())
     contest_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
-    related_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
+    related_contest_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
 
     def resolve_contest(self: None, info: ResolveInfo, pk: int):
         contest_list = Contest.objects.all()
@@ -63,8 +63,9 @@ class Query(object):
             return SubmissionListType(max_page=1, submission_list=[])
         status_list = ContestSubmission.objects.filter(contest=contest)
         if not privilege:
-            team_member = get_object_or_None(ContestTeamMember, contest_team__contest=contest, user=info.context.user)
-            if not team_member:
+            team_member = get_object_or_None(ContestTeamMember, contest_team__contest=contest, user=info.context.user,
+                                             confirmed=True)
+            if not team_member or not team_member.contest_team.approved:
                 return SubmissionListType(max_page=1, submission_list=[])
             status_list = status_list.filter(team=team_member.contest_team)
         status_list = status_list.order_by('-pk')
@@ -116,5 +117,7 @@ class Query(object):
         contest = Contest.objects.get(pk=pk)
         return ContestTeam.objects.filter(contest=contest)
 
-    def resolve_related_contest_list(self: None, info: ResolveInfo, pk: graphene.ID()):
-        pass
+    def resolve_related_contest_team_list(self: None, info: ResolveInfo, pk: graphene.ID()):
+        contest = Contest.objects.get(pk=pk)
+        return map(lambda each: each.contest_team,
+                   ContestTeamMember.objects.filter(contest_team__contest=contest, user=info.context.user))
