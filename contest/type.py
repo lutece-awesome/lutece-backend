@@ -18,7 +18,6 @@ class ContestSettingsType(graphene.ObjectType):
     end_time = graphene.DateTime()
     max_team_member_number = graphene.Int()
     password = graphene.String()
-    can_join_after_contest_begin = graphene.Boolean()
 
     def resolve_note(self, info: ResolveInfo) -> graphene.String():
         return self.note
@@ -34,9 +33,6 @@ class ContestSettingsType(graphene.ObjectType):
 
     def resolve_max_team_member_number(self, info: ResolveInfo) -> graphene.Int():
         return self.max_team_member_number
-
-    def resolve_can_join_after_contest_begin(self, info: ResolveInfo) -> graphene.Boolean():
-        return self.can_join_after_contest_begin
 
     @permission_required('contest.view_contest')
     def resolve_password(self, info: ResolveInfo) -> graphene.String():

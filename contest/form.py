@@ -21,7 +21,6 @@ class ContestSettingForm(forms.Form):
     max_team_member_number = forms.IntegerField(required=False, min_value=MIN_CONTEST_TEAM_MEMBER,
                                                 max_value=MAX_CONTEST_TEAM_MEMBER)
     password = forms.CharField(required=False, max_length=MAX_CONTEST_PASSWORD_LENGTH)
-    can_join_after_contest_begin = forms.BooleanField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()
