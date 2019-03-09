@@ -117,10 +117,21 @@ class ContestProblemType(ProblemType):
                                                 result___result=JudgeResult.AC.full).exists()
 
 
+class ContestTeamMember(graphene.ObjectType):
+    user = graphene.Field(UserType)
+    confirmed = graphene.Boolean()
+
+    def resolve_user(self, info: ResolveInfo):
+        return self.user
+
+    def resolve_confirmed(self, info: ResolveInfo):
+        return self.confirmed
+
+
 class ContestTeamType(graphene.ObjectType):
     pk = graphene.ID()
     name = graphene.String()
-    member_list = graphene.List(UserType)
+    member_list = graphene.List(ContestTeamMember)
     approved = graphene.Boolean()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID:
@@ -130,7 +141,7 @@ class ContestTeamType(graphene.ObjectType):
         return self.name
 
     def resolve_member_list(self, info: ResolveInfo) -> graphene.List:
-        return self.member_list
+        return self.member.all()
 
     def resolve_approved(self, info: ResolveInfo) -> graphene.Boolean:
         return self.approved

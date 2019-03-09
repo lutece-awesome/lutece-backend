@@ -24,6 +24,7 @@ class Query(object):
     contest_ranking_list = graphene.Field(ContestRankingType, pk=graphene.ID())
     contest_clarification_list = graphene.Field(ContestClarificationListType, pk=graphene.ID(), page=graphene.Int())
     contest_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
+    related_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
 
     def resolve_contest(self: None, info: ResolveInfo, pk: int):
         contest_list = Contest.objects.all()
@@ -114,3 +115,6 @@ class Query(object):
     def resolve_contest_team_list(self: None, info: ResolveInfo, pk: graphene.ID()):
         contest = Contest.objects.get(pk=pk)
         return ContestTeam.objects.filter(contest=contest)
+
+    def resolve_related_contest_list(self: None, info: ResolveInfo, pk: graphene.ID()):
+        pass

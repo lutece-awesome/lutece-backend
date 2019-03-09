@@ -6,7 +6,7 @@ from gunicorn.config import User
 
 from contest.constant import MAX_CONTEST_TITLE_LENGTH, MAX_CONTEST_TEAM_MEMBER, MIN_CONTEST_TEAM_MEMBER, \
     MAX_CONTEST_PASSWORD_LENGTH, MAX_USER_LIST_LENGTH, MAX_CONTEST_TEAM_NAME_LENGTH
-from contest.models import Contest, ContestClarification, ContestPendingTeam, ContestTeam, ContestTeamMember
+from contest.models import Contest, ContestClarification, ContestTeam, ContestTeamMember
 from problem.models import Problem
 from reply.constant import MAX_CONTENT_LENGTH
 from submission.form import SubmitSubmissionForm
@@ -108,9 +108,7 @@ class CreateContestTeamForm(forms.Form):
                     self.add_error('members', 'no such user')
                 elif ContestTeamMember.objects.get(contest_team__contest=contest, user=usr):
                     self.add_error('members', f'{usr.username} already in other teams')
-        if get_object_or_None(ContestPendingTeam, contest=contest, name=name) or get_object_or_None(ContestTeam,
-                                                                                                    contest=contest,
-                                                                                                    name=name):
+        if get_object_or_None(ContestTeam, contest=contest, name=name):
             self.add_error('name', 'duplicate team name')
         return cleaned_data
 
@@ -153,4 +151,29 @@ class JoinContestTeamForm(forms.Form):
         team = get_object_or_None(ContestTeam, pk=pk)
         if not team:
             self.add_error('pk', 'no such team')
+        return cleaned_data
+
+
+class UpdateContestTeamForm(forms.Form):
+    pk = forms.IntegerField(required=True)
+    members = forms.CharField(max_length=MAX_USER_LIST_LENGTH)
+    name = forms.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        name = cleaned_data.get('name')
+        team = ContestTeam.objects.get(pk=pk)
+        members = json.loads(cleaned_data.get('members'))
+        if members.length + 1 > team.contest.settings.max_team_member_number:
+            self.add_error('members', 'Team Size exceeded')
+        if len(set(members)) != members.length:
+            self.add_error('members', 'Duplicate users')
+        else:
+            for each in members:
+                usr = get_object_or_None(User, username=each)
+                if not usr:
+                    self.add_error('members', 'no such user')
+        if get_object_or_None(ContestTeam, contest=team.contest, name=name) != team:
+            self.add_error('name', 'duplicate team name')
         return cleaned_data

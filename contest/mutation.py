@@ -9,7 +9,7 @@ from graphql_jwt.decorators import permission_required, login_required
 
 from contest.decorators import check_contest_permission
 from contest.form import ContestForm, CreateContestClarificationForm, ContestSubmissionForm, CreateContestTeamForm, \
-    ExitContestTeamForm, ToggleContestTeamForm, JoinContestTeamForm
+    ExitContestTeamForm, ToggleContestTeamForm, JoinContestTeamForm, UpdateContestTeamForm
 from contest.models import Contest, ContestSettings, ContestProblem, ContestClarification, ContestTeamMember, \
     ContestSubmission, ContestTeam
 from data.service import DataService
@@ -157,8 +157,13 @@ class CreateContestTeam(graphene.Mutation):
             values = form.cleaned_data
             contest = Contest.objects.get(pk=values.get('pk'))
             current_time = datetime.now()
+            usr = info.context.user
             if current_time > contest.settings.end_time:
                 raise GraphQLError('Time denied')
+            if get_object_or_None(ContestTeam, contest=contest, owner=usr):
+                raise GraphQLError('Only one team can be created in one contest')
+            if get_object_or_None(ContestTeamMember, contest_team__contest=contest, user=usr, confirmed=True):
+                raise GraphQLError('To create a team, must exit the previous one')
             members = json.loads(values.get('members'))
             usr = info.context.user
             contain_owner = False
@@ -177,7 +182,7 @@ class CreateContestTeam(graphene.Mutation):
                 ContestTeamMember.objects.create(
                     contest_team=team,
                     user=User.objects.get(username=each)
-                ).save()
+                )
             return CreateContestTeam(state=True)
         else:
             raise RuntimeError(form.errors.as_json())
@@ -206,9 +211,9 @@ class ExitContestTeam(graphene.Mutation):
                 team.memeber.all().delete()
                 team.delete()
             else:
-                if not team.memeber.get(user=usr):
-                    raise RuntimeError('Permission Denied')
-                team.memeber.get(user=usr).delete()
+                member = team.memeber.get(user=usr)
+                member.confirmed = False
+                member.save()
             return ExitContestTeam(state=True)
         else:
             raise RuntimeError(form.errors.as_json())
@@ -227,6 +232,7 @@ class ToggleContestTeam(graphene.Mutation):
             values = form.cleaned_data
             team = ContestTeam.objects.get(pk=values.get('pk'))
             team.approved = False if team.approved else True
+            team.save()
             return ToggleContestTeam(state=team.approved)
         else:
             raise RuntimeError(form.errors.as_json())
@@ -243,9 +249,51 @@ class JoinContestTeam(graphene.Mutation):
         form = JoinContestTeamForm(kwargs)
         if form.is_valid():
             values = form.cleaned_data
+            usr = info.context.user
             team = ContestTeam.objects.get(pk=values.get('pk'))
-            team.approved = False if team.approved else True
-            return ToggleContestTeam(state=team.approved)
+            member = team.memeber.get(user=usr)
+            member.confirmed = True
+            member.save()
+            return JoinContestTeam(state=True)
+        else:
+            raise RuntimeError(form.errors.as_json())
+
+
+class UpdateContestTeam(graphene.Mutation):
+    class Arguments:
+        pk = graphene.ID(required=True)
+        members = graphene.String(required=True)
+        name = graphene.String(required=True)
+
+    state = graphene.Boolean()
+
+    @login_required
+    def mutate(self, info: ResolveInfo, *args, **kwargs):
+        form = UpdateContestTeamForm(kwargs)
+        if form.is_valid():
+            values = form.cleaned_data
+            team = ContestTeam.objects.get(pk=values.get('pk'))
+            current_time = datetime.now()
+            if current_time > team.contest.settings.end_time:
+                raise GraphQLError('Time denied')
+            members = json.loads(values.get('members'))
+            usr = info.context.user
+            contain_owner = False
+            for each in members:
+                if usr.username == each:
+                    contain_owner = True
+                    break
+            if (not contain_owner or team.owner != usr) and not usr.has_perm('contest.change_contestteam'):
+                raise GraphQLError('No owner or permission denied')
+            for each in team.memeber.all():
+                if each.username not in members:
+                    each.delete()
+            for each in members:
+                ContestTeamMember.objects.get_or_create(
+                    contest_team=team,
+                    user=User.objects.get(username=each)
+                )
+            return CreateContestTeam(state=True)
         else:
             raise RuntimeError(form.errors.as_json())
 
@@ -257,3 +305,5 @@ class Mutation(graphene.AbstractType):
     create_contest_team = CreateContestTeam.Field()
     exit_contest_team = ExitContestTeam.Field()
     toggle_contest_team = ToggleContestTeam.Field()
+    join_contest_team = JoinContestTeam.Field()
+    update_contest_team = UpdateContestTeam.Field()
