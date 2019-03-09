@@ -11,7 +11,7 @@ from article.type import HomeArticleType, UserArticleType, HomeArticleListType, 
 class Query(object):
     user_article = graphene.Field(UserArticleType, pk=graphene.ID())
     home_article = graphene.Field(HomeArticleType, slug=graphene.ID())
-    home_article_list = graphene.Field(HomeArticleListType, page=graphene.Int(), filter=graphene.String(), choice=graphene.String())
+    home_article_list = graphene.Field(HomeArticleListType, page=graphene.Int(), filter=graphene.String())
     article_comment_list = graphene.Field(ArticleCommentListType, pk=graphene.ID(), page=graphene.Int())
 
     def resolve_user_article(self: None, info: ResolveInfo, pk: int) -> UserArticle or None:
@@ -30,17 +30,14 @@ class Query(object):
             return None
         return ret
 
-    def resolve_home_article_list(self: None, info: ResolveInfo, page: int, filter: str, choice: str) -> HomeArticleListType:
+    def resolve_home_article_list(self: None, info: ResolveInfo, page: int, filter: str) -> HomeArticleListType:
         home_article_list = HomeArticle.objects.all()
         privilege = info.context.user.has_perm('article.view_homearticle')
         if not privilege:
             home_article_list = home_article_list.filter(disable=False)
         if filter:
             home_article_list = home_article_list.filter(title__icontains=filter)
-        if choice == "Date":
-            home_article_list = home_article_list.order_by('-create_time')
-        elif choice == "Rank":
-            home_article_list = home_article_list.order_by('-rank')
+        home_article_list = home_article_list.order_by('-create_time')
         paginator = Paginator(home_article_list, PER_PAGE_COUNT)
         return HomeArticleListType(max_page=paginator.num_pages, home_article_list=paginator.get_page(page))
 
