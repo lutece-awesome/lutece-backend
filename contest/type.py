@@ -34,7 +34,7 @@ class ContestSettingsType(graphene.ObjectType):
     def resolve_max_team_member_number(self, info: ResolveInfo) -> graphene.Int():
         return self.max_team_member_number
 
-    @permission_required('contest.view')
+    @permission_required('contest.view_contest')
     def resolve_password(self, info: ResolveInfo) -> graphene.String():
         return self.password
 
@@ -60,8 +60,8 @@ class ContestType(graphene.ObjectType):
         usr = info.context.user
         if not usr.is_authenticated:
             return False
-        return usr.has_perm('contest.view') or get_object_or_None(ContestTeamMember, user=usr,
-                                                                  contest_team__contest=self)
+        return usr.has_perm('contest.view_contest') or get_object_or_None(ContestTeamMember, user=usr,
+                                                                          contest_team__contest=self)
 
     def resolve_register_member_number(self, info: ResolveInfo) -> graphene.Int():
         return ContestTeamMember.objects.filter(contest_team__contest=self).count()
@@ -107,19 +107,33 @@ class ContestProblemType(ProblemType):
 
     def resolve_solved(self, info: ResolveInfo) -> graphene.Boolean():
         usr = info.context.user
-        if usr.has_perm('contest.view') or not usr.is_authenticated:
+        if usr.has_perm('contest.view_contest') or not usr.is_authenticated:
             return False
         contest = Contest.objects.get(pk=info.variable_values.get('pk'))
-        team = ContestTeam.objects.get(contest=contest, memeber__user=usr)
+        team = get_object_or_None(ContestTeam, contest=contest, memeber__user=usr)
+        if not team:
+            return False
         return ContestSubmission.objects.filter(contest=contest, team=team,
                                                 result___result=JudgeResult.AC.full).exists()
 
 
 class ContestTeamType(graphene.ObjectType):
+    pk = graphene.ID()
+    name = graphene.String()
     member_list = graphene.List(UserType)
+    approved = graphene.Boolean()
+
+    def resolve_pk(self, info: ResolveInfo) -> graphene.ID:
+        return self.pk
+
+    def resolve_name(self, info: ResolveInfo) -> graphene.String:
+        return self.name
 
     def resolve_member_list(self, info: ResolveInfo) -> graphene.List:
         return self.member_list
+
+    def resolve_approved(self, info: ResolveInfo) -> graphene.Boolean:
+        return self.approved
 
 
 class ContestRankingMetaType(graphene.ObjectType):

@@ -34,15 +34,21 @@ class ContestProblem(models.Model):
 
 class ContestTeam(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
+    name = models.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH, unique=True)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    approved = models.BooleanField(default=False)
+
+    def member_list(self):
+        return self.memeber.all()
 
 
 class ContestTeamMember(models.Model):
     contest_team = models.ForeignKey(ContestTeam, on_delete=models.SET_NULL, null=True, related_name='memeber')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    confirmed = models.BooleanField(default=True)
 
 
+# SubmissionType = 1
 class ContestSubmission(Submission):
     contest = models.ForeignKey(Contest, on_delete=models.SET_NULL, null=True)
     team = models.ForeignKey(ContestTeam, on_delete=models.SET_NULL, null=True)

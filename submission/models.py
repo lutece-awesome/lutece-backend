@@ -15,6 +15,8 @@ class SubmissionAttachInfo(AbstractAttachInfo):
 class Submission(AbstractSubmission):
     code = models.TextField(max_length=MAX_CODE_LENGTH, blank=True)
     attach_info = models.OneToOneField(SubmissionAttachInfo, on_delete=models.CASCADE)
+    # Used to divide the base class and subclass
+    submission_type = models.IntegerField(default=0)
 
     def __str__(self):
         return f'<Submission:{self.pk}>'
