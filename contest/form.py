@@ -100,7 +100,7 @@ class CreateContestTeamForm(forms.Form):
         if pk and not contest:
             self.add_error("pk", "No such contest")
         members = json.loads(cleaned_data.get('members'))
-        if len(members) + 1 > contest.settings.max_team_member_number:
+        if len(members) > contest.settings.max_team_member_number:
             self.add_error('members', 'Team Size exceeded')
         if len(set(members)) != len(members):
             self.add_error('members', 'Duplicate users')
@@ -161,7 +161,7 @@ class UpdateContestTeamForm(forms.Form):
         name = cleaned_data.get('name')
         team = ContestTeam.objects.get(pk=pk)
         members = json.loads(cleaned_data.get('members'))
-        if len(members) + 1 > team.contest.settings.max_team_member_number:
+        if len(members) > team.contest.settings.max_team_member_number:
             self.add_error('members', 'Team Size exceeded')
         if len(set(members)) != len(members):
             self.add_error('members', 'Duplicate users')
