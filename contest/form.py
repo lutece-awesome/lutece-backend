@@ -170,6 +170,7 @@ class UpdateContestTeamForm(forms.Form):
                 usr = get_object_or_None(User, username=each)
                 if not usr:
                     self.add_error('members', 'no such user')
-        if get_object_or_None(ContestTeam, contest=team.contest, name=name) != team:
+        check_team = get_object_or_None(ContestTeam, contest=team.contest, name=name)
+        if check_team and check_team != team:
             self.add_error('name', 'duplicate team name')
         return cleaned_data

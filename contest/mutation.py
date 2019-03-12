@@ -246,7 +246,7 @@ class ExitContestTeam(graphene.Mutation):
                 raise GraphQLError('Time denied')
             usr = info.context.user
             # If owner exit, delete the entire team
-            if team.owner == usr or usr.has_perm('contest.delete_contestteam'):
+            if team.owner == usr:
                 team.memeber.all().delete()
                 team.delete()
             else:
@@ -322,6 +322,11 @@ class UpdateContestTeam(graphene.Mutation):
             contain_owner = usr.username in members
             if (not contain_owner or team.owner != usr) and not usr.has_perm('contest.change_contestteam'):
                 raise GraphQLError('No owner or permission denied')
+            name = values.get('name')
+            if name != team.name or set(map(lambda each: each.user.username, team.memeber.all())) != set(members):
+                team.approved = False
+            team.name = name
+            team.save()
             for each in team.memeber.all():
                 if each.user.username not in members:
                     each.delete()
@@ -330,7 +335,7 @@ class UpdateContestTeam(graphene.Mutation):
                     contest_team=team,
                     user=User.objects.get(username=each)
                 )
-            return CreateContestTeam(state=True)
+            return UpdateContestTeam(state=True)
         else:
             raise RuntimeError(form.errors.as_json())
 
