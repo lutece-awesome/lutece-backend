@@ -110,7 +110,18 @@ class ContestClarificationListType(graphene.ObjectType, interfaces=[PaginatorLis
 
 
 class ContestProblemType(ProblemType):
+    tried = graphene.Boolean()
     solved = graphene.Boolean()
+
+    def resolve_tried(self, info: ResolveInfo) -> graphene.Boolean():
+        usr = info.context.user
+        if usr.has_perm('contest.view_contest') or not usr.is_authenticated:
+            return False
+        contest = Contest.objects.get(pk=info.variable_values.get('pk'))
+        team = get_object_or_None(ContestTeam, contest=contest, memeber__user=usr, memeber__confirmed=True)
+        if not team:
+            return False
+        return ContestSubmission.objects.filter(contest=contest, team=team, problem=self).exists()
 
     def resolve_solved(self, info: ResolveInfo) -> graphene.Boolean():
         usr = info.context.user
