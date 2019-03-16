@@ -69,8 +69,6 @@ class Query(object):
                 return SubmissionListType(max_page=1, submission_list=[])
             status_list = status_list.filter(team=team_member.contest_team)
         status_list = status_list.order_by('-pk')
-        if not info.context.user.has_perm('problem.view'):
-            status_list = status_list.filter(problem__disable=False)
         if not info.context.user.has_perm('user.view') or not info.context.user.has_perm('submission.view'):
             status_list = status_list.filter(user__is_staff=False)
         # if user:
