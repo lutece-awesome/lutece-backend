@@ -87,7 +87,7 @@ class Query(object):
         if datetime.now() < contest.settings.start_time and not privilege:
             return ContestRankingType(submissions=None, problems=None, meta=None)
         return ContestRankingType(
-            submissions=ContestSubmission.objects.filter(Q(contest=contest) & ~Q(team=None) & Q(team__approved=True)),
+            submissions=ContestSubmission.objects.filter(Q(contest=contest) & ~Q(team=None)),
             problems=map(lambda each: each.problem,
                          ContestProblem.objects.filter(contest=contest)),
             meta=contest)
