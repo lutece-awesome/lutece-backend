@@ -34,7 +34,7 @@ class ContestProblem(models.Model):
 
 class ContestTeam(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH, unique=True)
+    name = models.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     approved = models.BooleanField(default=False)
 
