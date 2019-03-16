@@ -3,9 +3,9 @@ from django.contrib.auth.models import update_last_login
 from graphene.types.generic import GenericScalar
 from graphql import ResolveInfo
 from graphql_jwt.decorators import login_required
-from graphql_jwt.mixins import RefreshMixin
-from graphql_jwt.mutations import JSONWebTokenMixin
+from graphql_jwt.mixins import RefreshMixin, JSONWebTokenMixin
 from graphql_jwt.shortcuts import get_token, get_payload, get_user_by_payload
+from graphql_jwt import Refresh
 
 from user.attachinfo.models import AttachInfo
 from user.form import UserLoginForm, UserSignupForm, UserAttachInfoUpdateForm
@@ -37,7 +37,7 @@ class UserLogin(graphene.Mutation):
             raise RuntimeError(login_form.errors.as_json())
 
 
-class UserTokenRefresh(JSONWebTokenMixin, RefreshMixin, graphene.Mutation):
+class UserTokenRefresh(Refresh):
     permission = GenericScalar()
     user = graphene.Field(UserType)
 

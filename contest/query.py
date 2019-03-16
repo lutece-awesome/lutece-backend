@@ -86,8 +86,23 @@ class Query(object):
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
             return ContestRankingType(submissions=None, problems=None, meta=None)
+        submissions = ContestSubmission.objects.filter(contest=contest).raw(
+            '''
+                SELECT 
+                    submission_ptr_id,
+                    contest_contestteam.name as team_name,
+                    submission_submission.create_time as create_time,
+                    submission_submission.problem_id as problem_id,
+                    submission_submission.result_id as result_id,
+                    judge_judgeresult._result as judge_result
+                FROM contest_contestsubmission
+                LEFT JOIN contest_contestteam ON contest_contestsubmission.team_id = contest_contestteam.id
+                LEFT JOIN submission_submission ON contest_contestsubmission.submission_ptr_id = submission_submission.id
+                LEFT JOIN judge_judgeresult ON result_id = judge_judgeresult.id
+            '''
+        )
         return ContestRankingType(
-            submissions=ContestSubmission.objects.filter(Q(contest=contest) & ~Q(team=None)),
+            submissions=submissions,
             problems=map(lambda each: each.problem,
                          ContestProblem.objects.filter(contest=contest)),
             meta=contest)

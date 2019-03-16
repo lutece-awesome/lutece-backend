@@ -52,7 +52,10 @@ LUTECE_APPS = [
 INSTALLED_APPS += LUTECE_APPS
 
 GRAPHENE = {
-    'SCHEMA': 'Lutece.schema.schema'
+    'SCHEMA': 'Lutece.schema.schema',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
 
 MIDDLEWARE = [

@@ -86,19 +86,19 @@ class ContestRankingSubmissionType(graphene.ObjectType):
     status = graphene.String()
     create_time = graphene.DateTime()
     team = graphene.String()
-    slug = graphene.String()
+    problem_id = graphene.String()
 
     def resolve_status(self, info: ResolveInfo) -> graphene.String():
-        return self.result.result.full
+        return self.judge_result
 
     def resolve_create_time(self, info: ResolveInfo) -> graphene.String():
         return self.create_time
 
     def resolve_team(self, info: ResolveInfo) -> graphene.String():
-        return self.team.name
+        return self.team_name
 
-    def resolve_slug(self, info: ResolveInfo) -> graphene.String():
-        return self.problem.slug
+    def resolve_problem_id(self, info: ResolveInfo) -> graphene.String():
+        return self.problem_id
 
 
 class ContestClarificationType(BaseReplyType):
