@@ -7,17 +7,16 @@ from graphql import ResolveInfo, GraphQLError
 
 from contest.constant import PER_PAGE_COUNT, CLARIFICATION_PER_PAGE_COUNT
 from contest.decorators import check_contest_permission
-from contest.models import ContestProblem, Contest, ContestSubmission, ContestTeamMember, \
+from contest.models import Contest, ContestSubmission, ContestTeamMember, \
     ContestClarification, ContestTeam
 from contest.type import ContestListType, ContestType, ContestClarificationListType, \
-    ContestProblemType, ContestRankingType, ContestTeamType
+    ContestRankingType, ContestTeamType
 from submission.type import SubmissionListType
 
 
 class Query(object):
     contest = graphene.Field(ContestType, pk=graphene.ID())
     contest_list = graphene.Field(ContestListType, page=graphene.Int(), filter=graphene.String())
-    contest_problem_list = graphene.List(ContestProblemType, pk=graphene.ID())
     contest_submission_list = graphene.Field(SubmissionListType, pk=graphene.ID(), page=graphene.Int(),
                                              problem=graphene.String(), user=graphene.String(),
                                              judge_status=graphene.String(), language=graphene.String())
@@ -45,18 +44,11 @@ class Query(object):
         return ContestListType(max_page=paginator.num_pages, contest_list=paginator.get_page(page))
 
     @check_contest_permission
-    def resolve_contest_problem_list(self: None, info: ResolveInfo, pk: graphene.ID()):
-        contest = Contest.objects.get(pk=pk)
-        privilege = info.context.user.has_perm('contest.view_contest')
-        if datetime.now() < contest.settings.start_time and not privilege:
-            return []
-        return map(lambda each: each.problem, ContestProblem.objects.filter(contest=contest))
-
-    @check_contest_permission
     def resolve_contest_submission_list(self: None, info: ResolveInfo, pk: graphene.ID(), page: graphene.Int(),
                                         **kwargs):
         judge_status = kwargs.get('judge_status')
         language = kwargs.get('language')
+        problem = kwargs.get('problem')
         contest = Contest.objects.get(pk=pk)
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
@@ -71,8 +63,8 @@ class Query(object):
         status_list = status_list.order_by('-pk')
         # if user:
         #     status_list = status_list.filter(user__username=user)
-        # if problem:
-        #     status_list = status_list.filter(problem__slug=problem)
+        if problem:
+            status_list = status_list.filter(problem__slug=problem)
         if judge_status:
             status_list = status_list.filter(result___result=judge_status)
         if language:
@@ -85,8 +77,8 @@ class Query(object):
         contest = Contest.objects.get(pk=pk)
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
-            return ContestRankingType(submissions=None, problems=None, meta=None)
-        submissions = ContestSubmission.objects.filter(contest=contest).raw(
+            return ContestRankingType(submissions=[])
+        submissions = ContestSubmission.objects.filter(Q(contest=contest) & ~Q(team=None)).raw(
             '''
                 SELECT 
                     submission_ptr_id,
@@ -101,11 +93,7 @@ class Query(object):
                 LEFT JOIN judge_judgeresult ON result_id = judge_judgeresult.id
             '''
         )
-        return ContestRankingType(
-            submissions=submissions,
-            problems=map(lambda each: each.problem,
-                         ContestProblem.objects.filter(contest=contest)),
-            meta=contest)
+        return ContestRankingType(submissions=submissions)
 
     @check_contest_permission
     def resolve_contest_clarification_list(self: None, info: ResolveInfo, pk: graphene.ID(), page: graphene.Int()):

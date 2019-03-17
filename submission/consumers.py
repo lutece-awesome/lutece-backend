@@ -7,7 +7,7 @@ from humps import camelize
 from json import dumps
 from typing import List
 
-from contest.models import ContestTeam, ContestSubmission, ContestTeamMember
+from contest.models import ContestSubmission, ContestTeamMember
 from submission.models import Submission, SubmissionCase
 from user.models import User
 from utils.function import close_old_connections, pop_property
@@ -83,16 +83,16 @@ class SubmissionDetailConsumer(AsyncWebsocketConsumer):
             self.user = await database_sync_to_async(get_user_by_token)(token=self.scope['query_string'])
         except Exception:
             self.user = AnonymousUser()
-        contest_permission = False
+        self.contest_permission = False
         if self.submission.submission_type == 1:
             sub = ContestSubmission.objects.get(pk=self.submission.pk)
             contest = sub.contest
             sub_team = sub.team
             usr_team_member = get_object_or_None(ContestTeamMember, contest_team__contest=contest, user=self.user)
             if usr_team_member and usr_team_member.contest_team == sub_team:
-                contest_permission = True
+                self.contest_permission = True
         if not self.user.has_perm('problem.view') and (
-                self.submission.problem.disable or self.submission.user.is_staff) and not contest_permission:
+                self.submission.problem.disable or self.submission.user.is_staff) and not self.contest_permission:
             raise RuntimeError('Permission Denied')
         await self.channel_layer.group_add(
             self.group_name,
@@ -138,7 +138,7 @@ class SubmissionDetailConsumer(AsyncWebsocketConsumer):
         data = event.get('data')
         perm = self.submission.user == self.user
         privilege = self.user.has_perm('submission.view')
-        if not (perm or privilege):
+        if not (perm or privilege or self.contest_permission):
             pop_property(data, ['compile_info', 'code'])
         if not privilege:
             pop_property(data, ['error_info'])
