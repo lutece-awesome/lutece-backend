@@ -190,6 +190,7 @@ class CreateContestTeam(graphene.Mutation):
         pk = graphene.ID(required=True)
         members = graphene.String(required=True)
         name = graphene.String(required=True)
+        additional_info = graphene.String(required=False)
 
     state = graphene.Boolean()
 
@@ -214,7 +215,8 @@ class CreateContestTeam(graphene.Mutation):
             team = ContestTeam.objects.create(
                 contest=contest,
                 name=values.get('name'),
-                owner=info.context.user
+                owner=info.context.user,
+                additional_info=values.get('additional_info')
             )
             for each in members:
                 ContestTeamMember.objects.create(
@@ -253,6 +255,8 @@ class ExitContestTeam(graphene.Mutation):
                 member = team.memeber.get(user=usr)
                 member.confirmed = False
                 member.save()
+                team.approved = False
+                team.save()
             return ExitContestTeam(state=True)
         else:
             raise RuntimeError(form.errors.as_json())
@@ -305,6 +309,7 @@ class UpdateContestTeam(graphene.Mutation):
         pk = graphene.ID(required=True)
         members = graphene.String(required=True)
         name = graphene.String(required=True)
+        additional_info = graphene.String(required=False)
 
     state = graphene.Boolean()
 
@@ -323,9 +328,12 @@ class UpdateContestTeam(graphene.Mutation):
             if (not contain_owner or team.owner != usr) and not usr.has_perm('contest.change_contestteam'):
                 raise GraphQLError('No owner or permission denied')
             name = values.get('name')
-            if name != team.name or set(map(lambda each: each.user.username, team.memeber.all())) != set(members):
+            additional_info = values.get('additional_info')
+            if name != team.name or additional_info != team.additional_info or set(
+                    map(lambda each: each.user.username, team.memeber.all())) != set(members):
                 team.approved = False
             team.name = name
+            team.additional_info = additional_info
             team.save()
             for each in team.memeber.all():
                 if each.user.username not in members:

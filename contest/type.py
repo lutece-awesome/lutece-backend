@@ -165,6 +165,7 @@ class ContestTeamType(graphene.ObjectType):
     member_list = graphene.List(ContestTeamMemberType)
     approved = graphene.Boolean()
     owner = graphene.Field(UserType)
+    info = graphene.String()
 
     def resolve_pk(self, info: ResolveInfo) -> graphene.ID:
         return self.pk
@@ -180,6 +181,13 @@ class ContestTeamType(graphene.ObjectType):
 
     def resolve_owner(self, info: ResolveInfo):
         return self.owner
+
+    def resolve_info(self, info: ResolveInfo):
+        usr = info.context.user
+        if not usr.has_perm('contest.view_contestteam') and not get_object_or_None(ContestTeamMember, contest_team=self,
+                                                                                   user=usr, confirmed=True):
+            return ''
+        return self.additional_info
 
 
 class ContestRankingMetaType(graphene.ObjectType):
