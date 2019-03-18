@@ -84,6 +84,7 @@ class Query(object):
                 SELECT 
                     submission_ptr_id,
                     contest_contestteam.name as team_name,
+                    contest_contestteam.approved as team_approved,
                     submission_submission.create_time as create_time,
                     submission_submission.problem_id as problem_id,
                     submission_submission.result_id as result_id,

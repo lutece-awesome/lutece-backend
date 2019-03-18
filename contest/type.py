@@ -126,6 +126,7 @@ class ContestRankingSubmissionType(graphene.ObjectType):
     create_time = graphene.DateTime()
     team = graphene.String()
     problem_id = graphene.String()
+    team_approved = graphene.Boolean()
 
     def resolve_status(self, info: ResolveInfo) -> graphene.String():
         return self.judge_result
@@ -135,6 +136,9 @@ class ContestRankingSubmissionType(graphene.ObjectType):
 
     def resolve_team(self, info: ResolveInfo) -> graphene.String():
         return self.team_name
+
+    def resolve_team_approved(self, info: ResolveInfo) -> graphene.Boolean():
+        return self.team_approved
 
     def resolve_problem_id(self, info: ResolveInfo) -> graphene.String():
         return self.problem_id
