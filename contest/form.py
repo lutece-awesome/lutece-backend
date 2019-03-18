@@ -91,7 +91,7 @@ class CreateContestTeamForm(forms.Form):
     pk = forms.IntegerField(required=True)
     members = forms.CharField(max_length=MAX_USER_LIST_LENGTH)
     name = forms.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
-    additional_info = forms.CharField(max_length=MAX_CONTEST_TEAM_INFO_LENGTH)
+    additional_info = forms.CharField(required=False, max_length=MAX_CONTEST_TEAM_INFO_LENGTH)
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
@@ -155,7 +155,7 @@ class UpdateContestTeamForm(forms.Form):
     pk = forms.IntegerField(required=True)
     members = forms.CharField(max_length=MAX_USER_LIST_LENGTH)
     name = forms.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
-    additional_info = forms.CharField(max_length=MAX_CONTEST_TEAM_INFO_LENGTH)
+    additional_info = forms.CharField(required=False, max_length=MAX_CONTEST_TEAM_INFO_LENGTH)
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
