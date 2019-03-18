@@ -1,7 +1,8 @@
 import django.utils.timezone as timezone
 from django.db import models
 
-from contest.constant import MAX_CONTEST_TITLE_LENGTH, MAX_CONTEST_PASSWORD_LENGTH, MAX_CONTEST_TEAM_NAME_LENGTH
+from contest.constant import MAX_CONTEST_TITLE_LENGTH, MAX_CONTEST_PASSWORD_LENGTH, MAX_CONTEST_TEAM_NAME_LENGTH, \
+    MAX_CONTEST_TEAM_INFO_LENGTH
 from problem.models import Problem
 from reply.models import BaseReply
 from submission.models import Submission
@@ -37,6 +38,7 @@ class ContestTeam(models.Model):
     name = models.CharField(max_length=MAX_CONTEST_TEAM_NAME_LENGTH)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     approved = models.BooleanField(default=False)
+    additional_info = models.CharField(max_length=MAX_CONTEST_TEAM_INFO_LENGTH, default='')
 
     def member_list(self):
         return self.memeber.all()

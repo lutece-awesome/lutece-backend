@@ -22,6 +22,7 @@ class Query(object):
                                              judge_status=graphene.String(), language=graphene.String())
     contest_ranking_list = graphene.Field(ContestRankingType, pk=graphene.ID())
     contest_clarification_list = graphene.Field(ContestClarificationListType, pk=graphene.ID(), page=graphene.Int())
+    contest_team = graphene.Field(ContestTeamType, pk=graphene.ID())
     contest_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
     related_contest_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
 
@@ -78,7 +79,7 @@ class Query(object):
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
             return ContestRankingType(submissions=[])
-        submissions = ContestSubmission.objects.filter(Q(contest=contest) & ~Q(team=None)).raw(
+        submissions = ContestSubmission.objects.raw(
             '''
                 SELECT 
                     submission_ptr_id,
@@ -91,7 +92,9 @@ class Query(object):
                 LEFT JOIN contest_contestteam ON contest_contestsubmission.team_id = contest_contestteam.id
                 LEFT JOIN submission_submission ON contest_contestsubmission.submission_ptr_id = submission_submission.id
                 LEFT JOIN judge_judgeresult ON result_id = judge_judgeresult.id
-            '''
+                WHERE contest_contestsubmission.contest_id = (%s) and contest_contestsubmission.team_id IS NOT NULL
+            ''',
+            (pk,)
         )
         return ContestRankingType(submissions=submissions)
 
@@ -120,3 +123,6 @@ class Query(object):
         contest = Contest.objects.get(pk=pk)
         return map(lambda each: each.contest_team,
                    ContestTeamMember.objects.filter(contest_team__contest=contest, user=info.context.user))
+
+    def resolve_contest_team(self: None, info: ResolveInfo, pk: graphene.ID()):
+        return ContestTeam.objects.get(pk=pk)
