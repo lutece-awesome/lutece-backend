@@ -1,6 +1,7 @@
 import graphene
 from annoying.functions import get_object_or_None
 from django.db.models import Q
+from django.utils.datetime_safe import datetime
 from graphql import ResolveInfo
 from graphql_jwt.decorators import permission_required
 
@@ -109,6 +110,9 @@ class ContestType(graphene.ObjectType):
 
     @check_contest_permission
     def resolve_problems(self, info: ResolveInfo):
+        privilege = info.context.user.has_perm('contest.view_contestproblem')
+        if datetime.now() < self.settings.start_time and not privilege:
+            return []
         return map(lambda each: each.problem, ContestProblem.objects.filter(contest=self))
 
 
