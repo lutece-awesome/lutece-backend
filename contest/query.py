@@ -50,6 +50,7 @@ class Query(object):
         judge_status = kwargs.get('judge_status')
         language = kwargs.get('language')
         problem = kwargs.get('problem')
+        user = kwargs.get('user')
         contest = Contest.objects.get(pk=pk)
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
@@ -62,8 +63,8 @@ class Query(object):
                 return SubmissionListType(max_page=1, submission_list=[])
             status_list = status_list.filter(team=team_member.contest_team)
         status_list = status_list.order_by('-pk')
-        # if user:
-        #     status_list = status_list.filter(user__username=user)
+        if user:
+            status_list = status_list.filter(user__username=user)
         if problem:
             status_list = status_list.filter(problem__slug=problem)
         if judge_status:

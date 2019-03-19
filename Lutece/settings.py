@@ -196,3 +196,7 @@ DATA_SERVER = config.get('DATA_SERVER')
 
 # The judge configuration
 JUDGE = config.get('JUDGE')
+
+# Max 200 mb file
+FILE_UPLOAD_MAX_MEMORY_SIZE = 200 * 1024 * 1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE
