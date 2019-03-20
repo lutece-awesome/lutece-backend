@@ -14,7 +14,9 @@ def check_contest_permission(func):
             raise GraphQLError('No such contest')
         else:
             privilege = usr.has_perm('contest.view_contest')
-            member = get_object_or_None(ContestTeamMember, user=usr, contest_team__contest=contest, confirmed=True)
+            member = None
+            if usr.is_authenticated:
+                member = get_object_or_None(ContestTeamMember, user=usr, contest_team__contest=contest, confirmed=True)
             if privilege or contest.is_public() or (
                     usr.is_authenticated and member and member.contest_team.approved):
                 return func(*args, **kwargs)
