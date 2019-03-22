@@ -3,7 +3,6 @@ from annoying.functions import get_object_or_None
 from django.db.models import Q
 from django.utils.datetime_safe import datetime
 from graphql import ResolveInfo
-from graphql_jwt.decorators import permission_required
 
 from contest.decorators import check_contest_permission
 from contest.models import ContestTeamMember, ContestSubmission, Contest, ContestTeam, ContestProblem
@@ -54,7 +53,7 @@ class ContestSettingsType(graphene.ObjectType):
     start_time = graphene.DateTime()
     end_time = graphene.DateTime()
     max_team_member_number = graphene.Int()
-    password = graphene.String()
+    is_public = graphene.Boolean()
 
     def resolve_note(self, info: ResolveInfo) -> graphene.String():
         return self.note
@@ -71,9 +70,8 @@ class ContestSettingsType(graphene.ObjectType):
     def resolve_max_team_member_number(self, info: ResolveInfo) -> graphene.Int():
         return self.max_team_member_number
 
-    @permission_required('contest.view_contest')
-    def resolve_password(self, info: ResolveInfo) -> graphene.String():
-        return self.password
+    def resolve_is_public(self, info: ResolveInfo) -> graphene.Boolean():
+        return self.is_public
 
 
 class ContestType(graphene.ObjectType):

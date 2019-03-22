@@ -21,6 +21,6 @@ def check_contest_permission(func):
                     usr.is_authenticated and member and member.contest_team.approved):
                 return func(*args, **kwargs)
             else:
-                raise GraphQLError('Permission Denied')
+                return None
 
     return wrapper

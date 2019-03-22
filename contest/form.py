@@ -4,7 +4,7 @@ from django import forms
 from django.utils import timezone
 
 from contest.constant import MAX_CONTEST_TITLE_LENGTH, MAX_CONTEST_TEAM_MEMBER, MIN_CONTEST_TEAM_MEMBER, \
-    MAX_CONTEST_PASSWORD_LENGTH, MAX_USER_LIST_LENGTH, MAX_CONTEST_TEAM_NAME_LENGTH, MAX_CONTEST_TEAM_INFO_LENGTH
+    MAX_USER_LIST_LENGTH, MAX_CONTEST_TEAM_NAME_LENGTH, MAX_CONTEST_TEAM_INFO_LENGTH
 from contest.models import Contest, ContestClarification, ContestTeam
 from problem.models import Problem
 from reply.constant import MAX_CONTENT_LENGTH
@@ -20,7 +20,7 @@ class ContestSettingForm(forms.Form):
     end_time = forms.DateTimeField(required=False)
     max_team_member_number = forms.IntegerField(required=False, min_value=MIN_CONTEST_TEAM_MEMBER,
                                                 max_value=MAX_CONTEST_TEAM_MEMBER)
-    password = forms.CharField(required=False, max_length=MAX_CONTEST_PASSWORD_LENGTH)
+    is_public = forms.BooleanField(required=False)
 
     def clean(self):
         cleaned_data = super().clean()

@@ -30,7 +30,7 @@ class CreateContest(graphene.Mutation):
         start_time = graphene.DateTime(required=True)
         end_time = graphene.DateTime(required=True)
         max_team_member_number = graphene.Int(required=True)
-        password = graphene.String(required=True)
+        is_public = graphene.Boolean(required=True)
         problems = graphene.String(required=True)
 
     pk = graphene.ID()
@@ -69,7 +69,7 @@ class UpdateContest(graphene.Mutation):
         start_time = graphene.DateTime(required=True)
         end_time = graphene.DateTime(required=True)
         max_team_member_number = graphene.Int(required=True)
-        password = graphene.String(required=True)
+        is_public = graphene.Boolean(required=True)
         problems = graphene.String(required=True)
 
     pk = graphene.ID()
@@ -89,7 +89,7 @@ class UpdateContest(graphene.Mutation):
             contest.settings.start_time = values.get('start_time')
             contest.settings.end_time = values.get('end_time')
             contest.settings.max_team_member_number = values.get('max_team_member_number')
-            contest.settings.password = values.get('password')
+            contest.settings.is_public = values.get('is_public')
             contest.settings.save()
             contest.save()
             ContestProblem.objects.filter(contest=contest).delete()
