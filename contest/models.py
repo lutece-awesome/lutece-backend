@@ -16,6 +16,7 @@ class ContestSettings(models.Model):
     end_time = models.DateTimeField(null=False, default=timezone.now)
     max_team_member_number = models.IntegerField(default=1)
     password = models.CharField(max_length=MAX_CONTEST_PASSWORD_LENGTH)
+    is_public = models.BooleanField(default=True)
     can_join_after_contest_begin = models.BooleanField(default=False)
     join_need_approve = models.BooleanField(default=False)
 
@@ -25,7 +26,7 @@ class Contest(models.Model):
     settings = models.OneToOneField(ContestSettings, on_delete=models.CASCADE)
 
     def is_public(self):
-        return len(self.settings.password) == 0
+        return self.settings.is_public
 
 
 class ContestProblem(models.Model):
