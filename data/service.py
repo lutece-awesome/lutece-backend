@@ -1,5 +1,5 @@
 import zipfile
-from os import path, mkdir, remove, listdir
+from os import path, remove, listdir, mkdir
 
 from data.constant import DATA_PATH, INPUT_FILE_EXTENSION
 
@@ -25,6 +25,8 @@ class DataService:
     @staticmethod
     def clear_folder_and_extract_data(problem_pk, file):
         dr = path.join(path.expanduser(DATA_PATH), str(problem_pk))
+        if not path.exists(dr):
+            mkdir(dr)
         for each in listdir(dr):
             remove(path.join(dr, each))
         with zipfile.ZipFile(file) as zip_file:
