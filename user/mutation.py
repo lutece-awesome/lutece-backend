@@ -59,6 +59,9 @@ class UserRegister(graphene.Mutation):
         company = graphene.String()
         location = graphene.String()
         about = graphene.String()
+        codeforces = graphene.String()
+        atcoder = graphene.String()
+        
 
     token = graphene.String()
     payload = GenericScalar()
@@ -91,6 +94,10 @@ class UserAttachInfoUpdate(graphene.Mutation):
         company = graphene.String(required=True)
         location = graphene.String(required=True)
         # gravatar = graphene.String( required = True )
+        codeforces = graphene.String()
+        atcoder = graphene.String()
+        
+
 
     state = graphene.Boolean()
 

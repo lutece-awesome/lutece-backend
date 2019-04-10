@@ -1,6 +1,6 @@
 from django import forms
 
-from user.attachinfo.constant import MAX_ABOUT_LENGTH, MAX_COMPANY_LENGTH, MAX_LOCATION_LENGTH, MAX_SCHOOL_LENGTH
+from user.attachinfo.constant import MAX_ABOUT_LENGTH, MAX_COMPANY_LENGTH, MAX_LOCATION_LENGTH, MAX_SCHOOL_LENGTH, MAX_USERNAME_LENGTH
 
 
 class AttachInfoForm(forms.Form):
@@ -9,3 +9,5 @@ class AttachInfoForm(forms.Form):
     company = forms.CharField(required=False, max_length=MAX_COMPANY_LENGTH)
     location = forms.CharField(required=False, max_length=MAX_LOCATION_LENGTH)
     # gravatar = forms.CharField( required = False , max_length = MAX_GRAVATAR_LENGTH )
+    codeforces = forms.CharField(required=False, max_length=MAX_USERNAME_LENGTH)
+    atcoder = forms.CharField(required=False, max_length=MAX_USERNAME_LENGTH)

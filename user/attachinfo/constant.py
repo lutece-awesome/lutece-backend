@@ -15,3 +15,6 @@ DEFAULT_ABOUT = '这个人很懒,什么都没有写.'
 
 # The max length limitation of user gravatar
 MAX_GRAVATAR_LENGTH = 128
+
+# The max length limitation of username
+MAX_USERNAME_LENGTH = 32
