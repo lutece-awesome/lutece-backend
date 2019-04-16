@@ -16,5 +16,11 @@ DEFAULT_ABOUT = '这个人很懒,什么都没有写.'
 # The max length limitation of user gravatar
 MAX_GRAVATAR_LENGTH = 128
 
-# The max length limitation of username
-MAX_USERNAME_LENGTH = 32
+# The max length limitation of codeforces username
+MAX_CODEFORCESNAME_LENGTH = 32
+
+# The max length limitation of atcoder username
+MAX_ATCODERNAME_LENGTH = 32
+
+# The max length limitation of studentId
+MAX_STUDENTID_LENGTH = 13
