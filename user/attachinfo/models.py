@@ -11,7 +11,7 @@ class AttachInfo(models.Model):
     location = models.CharField(max_length=MAX_LOCATION_LENGTH, blank=True)
     about = models.CharField(max_length=MAX_ABOUT_LENGTH, blank=True, default=DEFAULT_ABOUT)
     gravatar = models.CharField(max_length=MAX_GRAVATAR_LENGTH, blank=True)
-    codeforces = models.CharField(max_length=MAX_CODEFORCESNAME_LENGTH, blank=True, default='errorerror')
+    codeforces = models.CharField(max_length=MAX_CODEFORCESNAME_LENGTH, blank=True)
     atcoder = models.CharField(max_length=MAX_ATCODERNAME_LENGTH, blank=True)
     studentid = models.CharField(max_length=MAX_STUDENTID_LENGTH, blank=True)
     gender = models.BooleanField(default=True)
