@@ -100,8 +100,6 @@ class UserAttachInfoUpdate(graphene.Mutation):
         studentid = graphene.String(required=True)
         gender = graphene.Boolean(required=True)
         
-
-
     state = graphene.Boolean()
 
     @login_required
