@@ -9,7 +9,7 @@ from user.attachinfo.models import AttachInfo
 class UserAttachInfoType(DjangoObjectType):
     class Meta:
         model = AttachInfo
-        only_fields = ('school', 'company', 'location', 'about')
+        only_fields = ('school', 'company', 'location', 'about', 'codeforces', 'atcoder', 'studentid', 'gender')
 
     gravatar = graphene.String()
 

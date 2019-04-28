@@ -36,7 +36,6 @@ class UserLogin(graphene.Mutation):
         else:
             raise RuntimeError(login_form.errors.as_json())
 
-
 class UserTokenRefresh(Refresh):
     permission = GenericScalar()
     user = graphene.Field(UserType)
@@ -59,6 +58,11 @@ class UserRegister(graphene.Mutation):
         company = graphene.String()
         location = graphene.String()
         about = graphene.String()
+        codeforces = graphene.String()
+        atcoder = graphene.String()
+        studentid = graphene.String()
+        gender = graphene.Boolean()
+        
 
     token = graphene.String()
     payload = GenericScalar()
@@ -91,7 +95,11 @@ class UserAttachInfoUpdate(graphene.Mutation):
         company = graphene.String(required=True)
         location = graphene.String(required=True)
         # gravatar = graphene.String( required = True )
-
+        codeforces = graphene.String(required=True)
+        atcoder = graphene.String(required=True)
+        studentid = graphene.String(required=True)
+        gender = graphene.Boolean(required=True)
+        
     state = graphene.Boolean()
 
     @login_required
