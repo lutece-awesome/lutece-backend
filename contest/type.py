@@ -118,30 +118,6 @@ class ContestListType(graphene.ObjectType, interfaces=[PaginatorList]):
     contest_list = graphene.List(ContestType, )
 
 
-# This is the duck type of Submission
-class ContestRankingSubmissionType(graphene.ObjectType):
-    status = graphene.String()
-    create_time = graphene.DateTime()
-    team = graphene.String()
-    problem_id = graphene.String()
-    team_approved = graphene.Boolean()
-
-    def resolve_status(self, info: ResolveInfo) -> graphene.String():
-        return self.judge_result
-
-    def resolve_create_time(self, info: ResolveInfo) -> graphene.String():
-        return self.create_time
-
-    def resolve_team(self, info: ResolveInfo) -> graphene.String():
-        return self.team_name
-
-    def resolve_team_approved(self, info: ResolveInfo) -> graphene.Boolean():
-        return self.team_approved
-
-    def resolve_problem_id(self, info: ResolveInfo) -> graphene.String():
-        return self.problem_id
-
-
 class ContestClarificationType(BaseReplyType):
     pass
 
@@ -197,7 +173,3 @@ class ContestRankingMetaType(graphene.ObjectType):
 
     def resolve_start_time(self, info: ResolveInfo):
         return self.settings.start_time
-
-
-class ContestRankingType(graphene.ObjectType):
-    submissions = graphene.List(ContestRankingSubmissionType)
