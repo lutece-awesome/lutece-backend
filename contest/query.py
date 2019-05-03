@@ -1,4 +1,5 @@
 import graphene
+import json
 from annoying.functions import get_object_or_None
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -9,8 +10,7 @@ from contest.constant import PER_PAGE_COUNT, CLARIFICATION_PER_PAGE_COUNT
 from contest.decorators import check_contest_permission
 from contest.models import Contest, ContestSubmission, ContestTeamMember, \
     ContestClarification, ContestTeam
-from contest.type import ContestListType, ContestType, ContestClarificationListType, \
-    ContestRankingType, ContestTeamType
+from contest.type import ContestListType, ContestType, ContestClarificationListType, ContestTeamType
 from submission.type import SubmissionListType
 
 
@@ -20,7 +20,7 @@ class Query(object):
     contest_submission_list = graphene.Field(SubmissionListType, pk=graphene.ID(), page=graphene.Int(),
                                              problem=graphene.String(), user=graphene.String(),
                                              judge_status=graphene.String(), language=graphene.String())
-    contest_ranking_list = graphene.Field(ContestRankingType, pk=graphene.ID())
+    contest_ranking_list = graphene.Field(graphene.String, pk=graphene.ID())
     contest_clarification_list = graphene.Field(ContestClarificationListType, pk=graphene.ID(), page=graphene.Int())
     contest_team = graphene.Field(ContestTeamType, pk=graphene.ID())
     contest_team_list = graphene.List(ContestTeamType, pk=graphene.ID())
@@ -79,8 +79,14 @@ class Query(object):
         contest = Contest.objects.get(pk=pk)
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
-            return ContestRankingType(submissions=[])
-        submissions = ContestSubmission.objects.raw(
+            return ''
+        return json.dumps([{
+            'status': each.judge_result,
+            'createTime': str(each.create_time),
+            'team': each.team_name,
+            'problemId': each.problem_id,
+            'teamApproved': each.team_approved
+        } for each in (ContestSubmission.objects.raw(
             '''
                 SELECT 
                     submission_ptr_id,
@@ -97,8 +103,7 @@ class Query(object):
                 WHERE contest_contestsubmission.contest_id = (%s) and contest_contestsubmission.team_id IS NOT NULL
             ''',
             (pk,)
-        )
-        return ContestRankingType(submissions=submissions)
+        ))])
 
     @check_contest_permission
     def resolve_contest_clarification_list(self: None, info: ResolveInfo, pk: graphene.ID(), page: graphene.Int()):
