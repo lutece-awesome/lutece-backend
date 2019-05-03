@@ -10,8 +10,7 @@ from contest.constant import PER_PAGE_COUNT, CLARIFICATION_PER_PAGE_COUNT
 from contest.decorators import check_contest_permission
 from contest.models import Contest, ContestSubmission, ContestTeamMember, \
     ContestClarification, ContestTeam
-from contest.type import ContestListType, ContestType, ContestClarificationListType, \
-    ContestRankingType, ContestTeamType
+from contest.type import ContestListType, ContestType, ContestClarificationListType, ContestTeamType
 from submission.type import SubmissionListType
 
 
@@ -80,7 +79,7 @@ class Query(object):
         contest = Contest.objects.get(pk=pk)
         privilege = info.context.user.has_perm('contest.view_contest')
         if datetime.now() < contest.settings.start_time and not privilege:
-            return ContestRankingType(submissions=[])
+            return ''
         return json.dumps([{
             'status': each.judge_result,
             'createTime': str(each.create_time),
