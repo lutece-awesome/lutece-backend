@@ -6,7 +6,7 @@ from graphql import ResolveInfo
 from article.models import ArticleRecord, ArticleVote
 from user.type import UserType
 from utils.interface import PaginatorList
-from reply.type import BaseReplyType
+from reply.type import AbstractBaseReplyType
 
 
 class ArticleRecordType(DjangoObjectType):
@@ -85,7 +85,7 @@ class HomeArticleListType(graphene.ObjectType, interfaces=[PaginatorList]):
     home_article_list = graphene.List(HomeArticleType, )
 
 
-class ArticleCommentType(BaseReplyType):
+class ArticleCommentType(AbstractBaseReplyType):
     pass
 
 

@@ -31,13 +31,26 @@ class UpdateBaseReplyForm(forms.Form):
         return cleaned_data
 
 
-class CreateCommentReply(forms.Form):
+class CreateCommentReplyForm(forms.Form):
     parent = forms.IntegerField(required=True)
     content = forms.CharField(max_length=MAX_CONTENT_LENGTH)
 
     def clean(self) -> dict:
         cleaned_data = super().clean()
+        parent = cleaned_data.get('parent')
+        reply = get_object_or_None(BaseReply, pk=parent)
+        if parent and (not reply or reply.disable):
+            self.add_error("parent", "No such reply")
+        if reply.ancestor:
+            self.add_error("parent", "Nested reply is not supported")
+
+
+class ToggleReplyVoteForm(forms.Form):
+    pk = forms.IntegerField(required=True)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
         pk = cleaned_data.get('pk')
-        reply = get_object_or_None(BaseReply, pk=pk)
-        if pk and (not reply or reply.disable):
+        if pk and not get_object_or_None(BaseReply, pk=pk):
             self.add_error("pk", "No such reply")
+        return cleaned_data
