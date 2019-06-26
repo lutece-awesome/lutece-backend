@@ -2,7 +2,6 @@ import graphene
 from annoying.functions import get_object_or_None
 from graphql import ResolveInfo
 
-from reply.constant import REPLY_COMMENT_PER_PAGE_COUNT
 from reply.models import BaseReply, ReplyVote
 from user.type import UserType
 
@@ -44,10 +43,3 @@ class AbstractBaseReplyType(graphene.ObjectType):
 
     def resolve_total_reply_number(self, info: ResolveInfo) -> graphene.Int():
         return BaseReply.objects.filter(ancestor=self).count()
-
-
-class BaseReplyType(AbstractBaseReplyType):
-    reply = graphene.List(AbstractBaseReplyType)
-
-    def resolve_reply(self, info: ResolveInfo) -> lambda: AbstractBaseReplyType:
-        return BaseReply.objects.filter(ancestor=self).order_by('-vote')[:REPLY_COMMENT_PER_PAGE_COUNT]

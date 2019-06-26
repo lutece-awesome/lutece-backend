@@ -8,7 +8,7 @@ from contest.decorators import check_contest_permission
 from contest.models import ContestTeamMember, ContestSubmission, Contest, ContestTeam, ContestProblem
 from judge.result import JudgeResult
 from problem.type import ProblemType
-from reply.type import BaseReplyType
+from reply.type import AbstractBaseReplyType
 from user.type import UserType
 from utils.interface import PaginatorList
 
@@ -118,7 +118,7 @@ class ContestListType(graphene.ObjectType, interfaces=[PaginatorList]):
     contest_list = graphene.List(ContestType, )
 
 
-class ContestClarificationType(BaseReplyType):
+class ContestClarificationType(AbstractBaseReplyType):
     pass
 
 

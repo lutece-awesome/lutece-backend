@@ -117,7 +117,7 @@ class Query(object):
         privilege = info.context.user.has_perm('contest.view_contestclarification')
         if not privilege:
             clarification_list = clarification_list.filter(disable=False)
-        clarification_list = clarification_list.order_by('-create_time')
+        clarification_list = clarification_list.order_by('-vote')
         paginator = Paginator(clarification_list, CLARIFICATION_PER_PAGE_COUNT)
         return ContestClarificationListType(max_page=paginator.num_pages,
                                             contest_clarification_list=paginator.get_page(page))
