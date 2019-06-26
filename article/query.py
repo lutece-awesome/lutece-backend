@@ -49,6 +49,6 @@ class Query(object):
         privilege = info.context.user.has_perm('article.view_articlecomment')
         if not privilege:
             article_comment_list = article_comment_list.filter(disable=False)
-        article_comment_list = article_comment_list.order_by('-create_time')
+        article_comment_list = article_comment_list.order_by('-vote')
         paginator = Paginator(article_comment_list, COMMENT_PER_PAGE_COUNT)
         return ArticleCommentListType(max_page=paginator.num_pages, article_comment_list=paginator.get_page(page))
