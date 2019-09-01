@@ -15,7 +15,7 @@ Simplicity online judge
 
 + Create configurion file
 <pre>
-    cp Lutece/config.py.tempalte Lutece/config.py
+    cp Lutece/config.py.template Lutece/config.py
 </pre>
 
 + Install rabbitmq-server
