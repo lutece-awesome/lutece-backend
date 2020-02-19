@@ -6,6 +6,16 @@ from article.constant import MAX_PREVIEW_LENGTH
 from article.models import HomeArticle, UserArticle, Article, ArticleComment
 from reply.constant import MAX_CONTENT_LENGTH
 
+class DeleHomeArticleForm(AbstractArticleForm):
+    slug = forms.CharField(required = True)
+    
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        slug = cleaned_data.get('slug')
+        if not slug or not get_object_or_None(HomeArticle, slug=slug):
+            self.add_error("slug", "No such home article")
+        return cleaned_data
+
 
 class UpdateHomeArticleForm(AbstractArticleForm):
     preview = forms.CharField(required=False, max_length=MAX_PREVIEW_LENGTH)

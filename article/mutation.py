@@ -3,9 +3,31 @@ from graphql import ResolveInfo, GraphQLError
 from graphql_jwt.decorators import permission_required, login_required
 
 from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm, \
-    UpdateArticleRecordForm, ToggleArticleStarForm, CreateArticleCommentForm
+    UpdateArticleRecordForm, ToggleArticleStarForm, CreateArticleCommentForm \
+    , DeleHomeArticleForm
 from article.models import HomeArticle, UserArticle, ArticleRecord, Article, ArticleVote, ArticleComment
 from utils.function import assign
+
+class DeleHomeArticle(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        slug = graphene.String(required=True)
+        content = graphene.String(required=True)
+        disable = graphene.Boolean()
+
+    slug = graphene.String()
+
+    @permission_required('article.change_homearticle')
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        dele_home_article_form = DeleHomeArticleForm(kwargs)
+        if dele_home_article_form.is_valid():
+            values = dele_home_article_form.cleaned_data
+            article = HomeArticle.objects.get(slug=values.get('slug'))
+            article.delete()
+            return DeleHomeArticle(slug=article.slug)
+        else:
+            raise GraphQLError(update_home_article_form.errors.as_json())
+
 
 
 class UpdateHomeArticle(graphene.Mutation):
@@ -166,6 +188,7 @@ class CreateArticleComment(graphene.Mutation):
 
 
 class Mutation(graphene.AbstractType):
+    dele_home_article = DeleHomeArticle.Field()
     update_home_article = UpdateHomeArticle.Field()
     create_home_article = CreateHomeArticle.Field()
     update_user_article = UpdateUserArticle.Field()

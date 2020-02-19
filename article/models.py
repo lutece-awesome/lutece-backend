@@ -17,6 +17,10 @@ class Article(AbstractArticle):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        super().delete()
+
 
 
 class ArticleVote(DetailedRecord):
@@ -34,6 +38,8 @@ class HomeArticle(Article):
         self.slug = uuslug(self.title, instance=self)
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        super().delete()
 
 # The user article model
 class UserArticle(Article):
