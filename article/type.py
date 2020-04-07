@@ -78,7 +78,13 @@ class HomeArticleType(ArticleType):
 
 
 class UserArticleType(ArticleType):
-    pass
+    rank = graphene.Int()
+
+    def resolve_rank(self, info: ResolveInfo) -> graphene.Int():
+        return self.rank
+
+class UserArticleListType(graphene.ObjectType, interfaces=[PaginatorList]):
+    user_article_list = graphene.List(UserArticleType, )
 
 
 class HomeArticleListType(graphene.ObjectType, interfaces=[PaginatorList]):
