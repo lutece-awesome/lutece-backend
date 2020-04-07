@@ -3,9 +3,31 @@ from graphql import ResolveInfo, GraphQLError
 from graphql_jwt.decorators import permission_required, login_required
 
 from article.form import UpdateHomeArticleForm, CreateHomeArticleForm, CreateUserArticleForm, UpdateUserArticleForm, \
-    UpdateArticleRecordForm, ToggleArticleStarForm, CreateArticleCommentForm
+    UpdateArticleRecordForm, ToggleArticleStarForm, CreateArticleCommentForm \
+    , DeleHomeArticleForm, DeleUserArticleForm, DeleArticleCommentForm
 from article.models import HomeArticle, UserArticle, ArticleRecord, Article, ArticleVote, ArticleComment
 from utils.function import assign
+
+class DeleHomeArticle(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        slug = graphene.String(required=True)
+        content = graphene.String(required=True)
+        disable = graphene.Boolean()
+
+    slug = graphene.String()
+
+    @permission_required('article.change_homearticle')
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        dele_home_article_form = DeleHomeArticleForm(kwargs)
+        if dele_home_article_form.is_valid():
+            values = dele_home_article_form.cleaned_data
+            article = HomeArticle.objects.get(slug=values.get('slug'))
+            article.delete()
+            return DeleHomeArticle(slug=article.slug)
+        else:
+            raise GraphQLError(update_home_article_form.errors.as_json())
+
 
 
 class UpdateHomeArticle(graphene.Mutation):
@@ -54,20 +76,45 @@ class CreateHomeArticle(graphene.Mutation):
             raise RuntimeError(create_home_article_form.errors.as_json())
 
 
+
+class DeleUserArticle(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        pk = graphene.ID(required=True)
+        content = graphene.String(required=True)
+
+    pk = graphene.ID()
+
+    @permission_required('article.change_userarticle')
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        dele_user_article_form = DeleUserArticleForm(kwargs)
+        if dele_user_article_form.is_valid():
+            values = dele_user_article_form.cleaned_data
+            article = UserArticle.objects.get(pk=values.get('pk'))
+            if article.author != info.context.user or not info.context.user.has_perm('article.change_userarticle'):
+                raise PermissionError('Permission Denied')
+            article.delete()
+            return DeleUserArticle(pk=article.pk)
+        else:
+            raise GraphQLError(update_user_article_form.errors.as_json())
+
+
 class UpdateUserArticle(graphene.Mutation):
     class Arguments:
-        pk = graphene.ID(required=True)
         title = graphene.String(required=True)
+        pk = graphene.ID(required=True)
         content = graphene.String(required=True)
 
     state = graphene.Boolean()
+    pk = graphene.ID()
 
+    @permission_required('article.change_homearticle')
     def mutate(self: None, info: ResolveInfo, **kwargs):
         update_user_article_form = UpdateUserArticleForm(kwargs)
         if update_user_article_form.is_valid():
             values = update_user_article_form.cleaned_data
             article = UserArticle.objects.get(pk=values.get('pk'))
-            if article.author != info.context.user and not info.context.user.has_perm('article.change_userarticle'):
+            if article.author != info.context.user or not info.context.user.has_perm('article.change_userarticle'):
                 raise PermissionError('Permission Denied')
             article.title = values.get('title')
             article.content = values.get('content')
@@ -84,7 +131,8 @@ class CreateUserArticle(graphene.Mutation):
 
     pk = graphene.ID()
 
-    @login_required
+    # @login_required
+    @permission_required('article.add_homearticle')
     def mutate(self: None, info: ResolveInfo, **kwargs):
         create_user_article_form = CreateUserArticleForm(kwargs)
         if create_user_article_form.is_valid():
@@ -164,12 +212,35 @@ class CreateArticleComment(graphene.Mutation):
         else:
             raise GraphQLError(create_article_comment.errors.as_json())
 
+class DeleArticleComment(graphene.Mutation):
+    class Arguments:
+        pk = graphene.ID(required=True)
+    
+    pk = graphene.ID()
+
+    @login_required
+    def mutate(self: None, info: ResolveInfo, **kwargs):
+        dele_article_comment = DeleArticleCommentForm(kwargs)
+        if dele_article_comment.is_valid():
+            values = dele_article_comment.cleaned_data
+            article = ArticleComment.objects.get(pk=values.get('pk'))
+            if article.author != info.context.user and not info.context.user.has_perm('article.change_userarticle'):
+                raise PermissionError('Permission Denied')
+            article.delete()
+            return DeleArticleComment(pk=values.get('pk'))
+        else:
+            raise GraphQLError(dele_article_comment.errors.as_json())
+        
+
 
 class Mutation(graphene.AbstractType):
+    dele_home_article = DeleHomeArticle.Field()
     update_home_article = UpdateHomeArticle.Field()
     create_home_article = CreateHomeArticle.Field()
     update_user_article = UpdateUserArticle.Field()
+    dele_user_article = DeleUserArticle.Field()
     create_user_article = CreateUserArticle.Field()
     update_article_record = UpdateArticleRecord.Field()
     toggle_article_vote = ToggleArticleVote.Field()
     create_article_comment = CreateArticleComment.Field()
+    dele_article_comment = DeleArticleComment.Field()

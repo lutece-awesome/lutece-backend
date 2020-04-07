@@ -6,6 +6,16 @@ from article.constant import MAX_PREVIEW_LENGTH
 from article.models import HomeArticle, UserArticle, Article, ArticleComment
 from reply.constant import MAX_CONTENT_LENGTH
 
+class DeleHomeArticleForm(AbstractArticleForm):
+    slug = forms.CharField(required = True)
+    
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        slug = cleaned_data.get('slug')
+        if not slug or not get_object_or_None(HomeArticle, slug=slug):
+            self.add_error("slug", "No such home article")
+        return cleaned_data
+
 
 class UpdateHomeArticleForm(AbstractArticleForm):
     preview = forms.CharField(required=False, max_length=MAX_PREVIEW_LENGTH)
@@ -22,6 +32,16 @@ class UpdateHomeArticleForm(AbstractArticleForm):
 class CreateHomeArticleForm(AbstractArticleForm):
     preview = forms.CharField(required=False, max_length=MAX_PREVIEW_LENGTH)
 
+
+class DeleUserArticleForm(AbstractArticleForm):
+    pk = forms.IntegerField(required = True)
+    
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        if not pk or not get_object_or_None(UserArticle, pk=pk):
+            self.add_error("pk", "No such user article")
+        return cleaned_data
 
 class CreateUserArticleForm(AbstractArticleForm):
     pass
@@ -73,4 +93,14 @@ class CreateArticleCommentForm(forms.Form):
         reply = cleaned_data.get('reply')
         if reply and not get_object_or_None(ArticleComment, pk=reply):
             self.add_error("reply", "No such reply node")
+        return cleaned_data
+
+class DeleArticleCommentForm(forms.Form):
+    pk = forms.IntegerField(required=True)
+
+    def clean(self) -> dict:
+        cleaned_data = super().clean()
+        pk = cleaned_data.get('pk')
+        if pk and not get_object_or_None(ArticleComment, pk=pk):
+            self.add_error("pk", "is this bug? article")
         return cleaned_data
