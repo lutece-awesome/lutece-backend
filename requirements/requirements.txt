@@ -9,7 +9,7 @@ autobahn==19.6.2
 Automat==0.7.0
 backcall==0.1.0
 billiard==3.6.0.0
-celery==4.3.0
+celery==5.2.2
 cffi==1.12.3
 channels==2.2.0
 channels-redis==2.4.0
